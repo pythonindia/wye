@@ -1,0 +1,8 @@
+
+# Importing from base.txt
+-r requirements.txt
+
+# Extensions
+# -------------------------------------------------
+django-extensions==1.5.2
+ipython==3.0.0
