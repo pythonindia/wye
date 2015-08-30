@@ -1,6 +1,15 @@
-#python==3.4.1
+# python==3.4.1
 Django==1.8.3
 
 # Persistent Store
-# -------------------------------------------------
+# --------------------------------------
 psycopg2==2.6.1
+
+# Rest FrameWork
+#---------------------------------------
+djangorestframework==3.2.3
+django-filter==0.10.0
+
+#MarkDown
+
+Markdown==2.6.2

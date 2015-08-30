@@ -45,7 +45,9 @@ OUR_APPS = (
     'wye.workshops',
 )
 
-INSTALLED_APPS = DEFAULT_APPS + OUR_APPS
+THIRD_PARTY_APPS = ('rest_framework',
+                    )
+INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS
 
 
 MIDDLEWARE_CLASSES = (
@@ -85,8 +87,12 @@ WSGI_APPLICATION = 'wye.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
     }
 }
 
@@ -94,14 +100,11 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+ATOMIC_REQUESTS = True
+TIME_ZONE = 'Asia/Kolkata'
+LANGUAGE_CODE = "en"
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -109,3 +112,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+    ),
+
+}
