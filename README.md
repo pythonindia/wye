@@ -6,8 +6,10 @@ How to setup
 
  - Create a PostgreSQL 9.3 database
  - It is advised to install all the requirements inside virtualenv, use virtualenvwrapper to manage virtualenvs.
-		pip install -r requirements/dev.txt
-		python manage.py migrate --noinput
+``` 
+	pip install -r requirements/dev.txt
+	python manage.py migrate --noinput
+```
 
  
 # License
