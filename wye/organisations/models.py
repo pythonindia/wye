@@ -41,15 +41,15 @@ class Location(TimeAuditModel):
         return '{}' % (self.name)
 
 
-class Organisations(TimeAuditModel):
+class Organisation(TimeAuditModel):
     organisation_type = models.ForeignKey(OrganisationType)
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
     location = models.ForeignKey(Location)
-    orgnaisation_role = models.CharField(max_length=300)
+    organisation_role = models.CharField(max_length=300)
 
     class Meta:
-        db_table = 'orgnaisations'
+        db_table = 'organisations'
 
     def __str__(self):
         return '{}-{}-{}' % (self.name, self.organisation_type, self.location)
