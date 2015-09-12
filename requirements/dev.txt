@@ -1,6 +1,6 @@
 
 # Importing from base.txt
--r requirements.txt
+-r base.txt
 
 # Extensions
 # -------------------------------------------------
