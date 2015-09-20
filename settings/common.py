@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+SITE_ID = 1
 # Application definition
 
 DEFAULT_APPS = (
@@ -37,6 +37,7 @@ DEFAULT_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 )
 
 OUR_APPS = (
@@ -45,8 +46,12 @@ OUR_APPS = (
     'wye.workshops',
 )
 
-THIRD_PARTY_APPS = ('rest_framework',
-                    )
+THIRD_PARTY_APPS = (
+    'rest_framework',
+    'wye.allauth',
+    'wye.allauth.account',
+)
+
 INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS
 
 
@@ -74,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
             ],
         },
     },
@@ -124,3 +130,10 @@ REST_FRAMEWORK = {
     ),
 
 }
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
