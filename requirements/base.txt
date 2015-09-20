@@ -9,6 +9,7 @@ psycopg2==2.6.1
 #---------------------------------------
 djangorestframework==3.2.3
 django-filter==0.10.0
+django-allauth==0.23.0
 
 #MarkDown
 
