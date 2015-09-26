@@ -64,8 +64,10 @@ class WorkshopRatingValues(TimeAuditModel):
 
 
 class WorkshopVoting(TimeAuditModel):
-    requester_rating = models.ForeignKey(WorkshopRatingValues)
-    presenter_rating = models.ForeignKey(WorkshopRatingValues)
+    requester_rating = models.ForeignKey(
+        WorkshopRatingValues, related_name='requester_rating')
+    presenter_rating = models.ForeignKey(
+        WorkshopRatingValues, related_name='presenter_rating')
     workshop = models.ForeignKey(Workshop)
 
     class Meta:
