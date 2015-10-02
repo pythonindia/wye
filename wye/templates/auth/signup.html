@@ -7,15 +7,35 @@
         <div class="col-sm-6 col-md-4 col-md-offset-4">
             <h1 class="text-center login-title">Sign Up</h1>
             <div class="account-wall">
-                <form class="form-signin">
-                <input type="text" class="form-control" placeholder="Full Name" required autofocus>
+                <!--  form class="form-signin" action="/signup/" method="POST">
+                {% csrf_token %} 
+                <input type="text" class="form-control" placeholder="First Name" required autofocus>
+                <input type="text" class="form-control" placeholder="Last Name" required autofocus>
                 <input type="text" class="form-control" placeholder="Email" required autofocus>
                 <input type="text" class="form-control" placeholder="Mobile No" required autofocus>
                 <input type="password" class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
                     Sign up</button>
-                
-                </form>
+                </form-->
+                <div class="login-error">
+					{% if form.errors %}
+						{% for field in form %}
+							{% if field.errors %}
+								{{ field.label_tag }}: {{ field.errors }}
+							{% endif %}
+						{% endfor %}
+						{{ form.non_field_errors }}
+					{% endif %}
+				</div>
+                <form class="form-signin" action="/signup/" method="POST">
+	  				{% csrf_token %}
+                	{% for field in form %}
+						{{ field.label_tag }}:{{ field }}
+   					<br/>
+   					{% endfor %}
+   				
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    Sign up</button>
             </div>
         </div>
     </div>
