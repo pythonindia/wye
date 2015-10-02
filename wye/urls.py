@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^about/$', TemplateView.as_view(template_name='about.html',),
         name='about'),
     url(r'^organisation/',
-        include('wye.organistions.urls', namespace="organisations")),
+        include('wye.organisations.urls', namespace="organisations")),
     url(r'^workshop/',
         include('wye.workshops.urls', namespace="workshops")),
     url(r'^signup/$', registration, name='signup'),
