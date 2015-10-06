@@ -24,7 +24,7 @@ APP_DIR = join(BASE_DIR, 'wye')
 SECRET_KEY = '(7a-1a$5rsmii8grbapha!r4du4dmh1xnp0p8_(lnx_cx(p7+^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -35,12 +35,14 @@ DEFAULT_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sites',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 )
 
 OUR_APPS = (
+    'wye.base',
     'wye.profiles',
     'wye.organisations',
     'wye.workshops',
@@ -63,6 +65,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'wye.urls'
+SITE_ID = 1
 
 TEMPLATES = [
     {
@@ -96,12 +99,10 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT', ''),
     }
 }
-
+ATOMIC_REQUESTS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
-
-ATOMIC_REQUESTS = True
 TIME_ZONE = 'Asia/Kolkata'
 LANGUAGE_CODE = "en"
 USE_I18N = True
@@ -127,5 +128,4 @@ REST_FRAMEWORK = {
         'rest_framework.filters.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ),
-
 }
