@@ -11,8 +11,8 @@ from . import forms, models
 # Create your views here.
 def registration(request):
     template = loader.get_template('auth/signup.html')
-    next = request.GET.get('next', '')
-    redirect_url = next
+    redirect_next = request.GET.get('next', '')
+    redirect_url = redirect_next
     if request.method == 'POST':
         form = forms.SignupForm(request.POST)
         if form.is_valid():
@@ -39,14 +39,14 @@ def registration(request):
                              dict(
                                  form=form,
                                  redirect_url=redirect_url,
-                                 next=next))
+                                 next=redirect_next))
     return HttpResponse(template.render(context))
 
 
 def login(request):
     template = loader.get_template('auth/login.html')
-    next = request.GET.get('next', '')
-    redirect_url = next
+    redirect_next = request.GET.get('next', '')
+    redirect_url = redirect_next
     if request.method == 'POST':
         form = forms.UserAuthenticationForm(None, request.POST)
         print(form.is_valid())
@@ -88,7 +88,7 @@ def login(request):
                              dict(
                                  form=form,
                                  redirect_url=redirect_url,
-                                 next=next))
+                                 next=redirect_next))
     return HttpResponse(template.render(context))
 
 
