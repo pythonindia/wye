@@ -40,8 +40,6 @@ DEFAULT_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
 )
 
 OUR_APPS = (
@@ -53,6 +51,8 @@ OUR_APPS = (
 
 THIRD_PARTY_APPS = (
     'rest_framework',
+    'allauth',
+    'allauth.account',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS
@@ -143,7 +143,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_AUTHENTICATION_METHOD = "username"
 
 ACCOUNT_EMAIL_REQUIRED = True
 
