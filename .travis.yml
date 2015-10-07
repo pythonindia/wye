@@ -1,0 +1,7 @@
+language: python
+sudo: false
+install:
+  - pip install --upgrade pip
+  - pip install -r requirements/dev.txt
+script:
+  - flake8

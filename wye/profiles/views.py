@@ -1,12 +1,11 @@
-from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 
-from . import forms
-from . import models
+from . import forms, models
 
 
 # Create your views here.
