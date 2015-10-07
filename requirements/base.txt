@@ -14,3 +14,7 @@ django-allauth==0.23.0
 #MarkDown
 
 Markdown==2.6.2
+
+# Sample Data
+# -----------------------------------------
+fake-factory==0.5.3

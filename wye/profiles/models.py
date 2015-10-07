@@ -1,10 +1,10 @@
-from django.conf import settings
+# from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from rest_framework.authtoken.models import Token
 
-from rest_framework.authtoken.models import Token
 from wye.workshops.models import WorkshopSections
 
 
@@ -40,7 +40,7 @@ class Profile(models.Model):
         verbose_name_plural = 'UserProfiles'
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        token, created = Token.objects.get_or_create(user=instance)
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_auth_token(sender, instance=None, created=False, **kwargs):
+#     if created:
+#         token, created = Token.objects.get_or_create(user=instance)
