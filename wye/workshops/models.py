@@ -15,7 +15,7 @@ class WorkshopLevel(TimeAuditModel):
         db_table = 'workshop_level'
 
     def __str__(self):
-        return '{}' % (self.name)
+        return '{}'.format(self.name)
 
 
 class WorkshopSections(TimeAuditModel):
@@ -28,7 +28,7 @@ class WorkshopSections(TimeAuditModel):
         db_table = 'workshop_section'
 
     def __str__(self):
-        return '{}' % (self.name)
+        return '{}'.format(self.name)
 
 
 class Workshop(TimeAuditModel):
@@ -46,7 +46,7 @@ class Workshop(TimeAuditModel):
         db_table = 'workshops'
 
     def __str__(self):
-        return '{}-{}' % (self.requester, self.presenter)
+        return '{}-{}'.format(self.requester, self.presenter)
 
 
 class WorkshopRatingValues(TimeAuditModel):
