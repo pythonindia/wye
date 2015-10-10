@@ -13,7 +13,7 @@ class OrganisationType(TimeAuditModel):
         db_table = 'organisation_types'
 
     def __str__(self):
-        return '{}' % (self.name)
+        return '{}'.format(self.name)
 
 
 class State(TimeAuditModel):
@@ -26,7 +26,7 @@ class State(TimeAuditModel):
         db_table = 'states'
 
     def __str__(self):
-        return '{}' % (self.name)
+        return '{}'.format(self.name)
 
 
 class Location(TimeAuditModel):
@@ -39,7 +39,7 @@ class Location(TimeAuditModel):
         db_table = 'locations'
 
     def __str__(self):
-        return '{}' % (self.name)
+        return '{}'.format(self.name)
 
 
 class Organisation(TimeAuditModel):
@@ -53,4 +53,5 @@ class Organisation(TimeAuditModel):
         db_table = 'organisations'
 
     def __str__(self):
-        return '{}-{}-{}' % (self.name, self.organisation_type, self.location)
+        return '{}-{}-{}'.format(self.name,
+                                 self.organisation_type, self.location)

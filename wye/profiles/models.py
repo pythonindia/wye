@@ -1,13 +1,14 @@
 # from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
-# from rest_framework.authtoken.models import Token
 
+from wye.organisations.models import Location
 from wye.workshops.models import WorkshopSections
 
 
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from rest_framework.authtoken.models import Token
 class UserType(models.Model):
     '''
     USER_TYPE = ['Tutor', 'POC', 'admin']
@@ -25,7 +26,7 @@ class UserType(models.Model):
         ordering = ('-id',)
 
     def __str__(self):
-        return self.name
+        return '{} - {}'.format(self.slug, self.display_name)
 
 
 class Profile(models.Model):
@@ -35,6 +36,7 @@ class Profile(models.Model):
     mobile = models.CharField(max_length=10)
     usertype = models.ForeignKey(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
+    interested_locations = models.ManyToManyField(Location)
 
     class Meta:
         db_table = 'user_profile'
@@ -43,6 +45,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.user, self.slug)
+
+    def get_workshop_details(self):
+        from wye.workshops.models import Workshop
+        return Workshop.objects.filter(presenter=self.user)
+
+
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:

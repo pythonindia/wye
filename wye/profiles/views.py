@@ -1,9 +1,11 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.template import RequestContext, loader
+from django.views.generic import DetailView
 
 from . import forms, models
 
@@ -99,3 +101,17 @@ def logout(request):
 
 def profile(request):
     pass
+
+
+class ProfileView(DetailView):
+    model = models.Profile
+    template_name = 'profile/index.html'
+
+    def get_context_data(self, *args, **kwargs):
+        slug = self.kwargs['slug']
+        self.object = models.Profile.objects.get(
+            slug=slug)
+        workshop_info = self.object.get_workshop_details()
+        context = super(
+            ProfileView, self).get_context_data(*args, **kwargs)
+        return context
