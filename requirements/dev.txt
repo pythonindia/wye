@@ -1,8 +1,8 @@
-
-# Importing from base.txt
+# Import from base.txt
 -r base.txt
 
-# Extensions
+# Debugging
 # -------------------------------------------------
 django-extensions==1.5.2
-ipython==3.0.0
+ipython==4.0.0
+flake8==2.4.1

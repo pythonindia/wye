@@ -1,5 +1,5 @@
 # python==3.4.1
-Django==1.8.3
+Django==1.8.5
 django-braces==1.8.1
 
 # Persistent Store
@@ -7,10 +7,15 @@ django-braces==1.8.1
 psycopg2==2.6.1
 
 # Rest FrameWork
-#---------------------------------------
-djangorestframework==3.2.3
-django-filter==0.10.0
+# ---------------------------------------
+djangorestframework==3.2.4
+django-filter==0.11.0
 
-#MarkDown
-
+# MarkDown Support
+# ---------------------------------------
 Markdown==2.6.2
+
+=======
+# Sample Data
+# -----------------------------------------
+fake-factory==0.5.3
