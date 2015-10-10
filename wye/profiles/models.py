@@ -30,6 +30,8 @@ class UserType(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
+    # the slug fields become the username and should be unique for each user
+    slug = models.CharField(max_length=100, unique=True)
     mobile = models.CharField(max_length=10)
     usertype = models.ForeignKey(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
@@ -39,7 +41,8 @@ class Profile(models.Model):
         verbose_name = 'UserProfile'
         verbose_name_plural = 'UserProfiles'
 
-
+    def __str__(self):
+        return '{} {}'.format(self.user, self.slug)
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:
