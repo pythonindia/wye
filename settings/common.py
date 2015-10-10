@@ -129,3 +129,7 @@ REST_FRAMEWORK = {
     ),
 
 }
+
+ALLOWED_DATE_FORMAT = (
+    '%d-%m-%Y', '%d/%m/%Y',  
+    '%d/%m/%y')
