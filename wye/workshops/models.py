@@ -46,7 +46,7 @@ class Workshop(TimeAuditModel):
         db_table = 'workshops'
 
     def __str__(self):
-        return '{}-{}'.format(self.requester, self.presenter)
+        return '{}-{}'.format(self.requester, self.workshop_section)
 
 
 class WorkshopRatingValues(TimeAuditModel):

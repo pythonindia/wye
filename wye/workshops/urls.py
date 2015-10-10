@@ -3,9 +3,9 @@ from .views import WorkshopList, WorkshopDetail, \
     WorkshopCreate, WorkshopUpdate, WorkshopDelete
 
 urlpatterns = [
-    url(r'^$', WorkshopList.as_view()),
-    url(r'^(?P<pk>\d+)$', WorkshopDetail.as_view()),
-    url(r'^create/(?P<pk>\d+)$', WorkshopCreate.as_view()),
-    url(r'^update/(?P<pk>\d+)$', WorkshopUpdate.as_view()),
-    url(r'^delete/(?P<pk>\d+)$', WorkshopDelete.as_view()),
+    url(r'^$', WorkshopList.as_view(), name="workshop_list"),
+    url(r'^(?P<pk>\d+)$', WorkshopDetail.as_view(), name="workshop_detail"),
+    url(r'^create$', WorkshopCreate.as_view(), name="workshop_create"),
+    url(r'^update/(?P<pk>\d+)$', WorkshopUpdate.as_view(), name="workshop_update"),
+    url(r'^delete/(?P<pk>\d+)$', WorkshopDelete.as_view(), name="workshop_delete"),
 ]
