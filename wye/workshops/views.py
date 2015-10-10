@@ -1,5 +1,6 @@
 from django.views import generic
 from django.core.urlresolvers import reverse, reverse_lazy
+from braces import views
 from .models import Workshop
 from .forms import WorkshopForm
 
@@ -16,14 +17,14 @@ class WorkshopDetail(generic.DetailView):
     template_name = 'workshops/workshop_list.html'
 
 
-class WorkshopCreate(generic.CreateView):
+class WorkshopCreate(views.LoginRequiredMixin, generic.CreateView):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_create.html'
     success_url = reverse_lazy('workshops:workshop_list')
 
 
-class WorkshopUpdate(generic.UpdateView):
+class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_update.html'
@@ -34,7 +35,7 @@ class WorkshopUpdate(generic.UpdateView):
             "workshops:workshop_update", args=[pk])
         return super(WorkshopUpdate, self).get_success_url()
 
-class WorkshopDelete(generic.DeleteView):
+class WorkshopDelete(views.LoginRequiredMixin, generic.DeleteView):
     model = Workshop
     context_object_name = "workshop"
     template_name = 'workshops/workshop_confirm_delete.html'
