@@ -137,7 +137,7 @@ REST_FRAMEWORK = {
 
 LOGIN_URL = 'login'
 ALLOWED_DATE_FORMAT = (
-    '%d-%m-%Y', '%d/%m/%Y', 
+    '%d-%m-%Y', '%d/%m/%Y',
     '%d/%m/%y')
 
 AUTHENTICATION_BACKENDS = (
@@ -152,4 +152,3 @@ ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-

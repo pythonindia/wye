@@ -2,11 +2,11 @@
 
 {% block content %}
 <div>
-<div>Full Name: </div>
-<div>Workshop completed: </div>
-<div>Workshop Upcoming: </div>
-<div>No of Students : </div>
-<div>Last Workshop Date: </div>
-<div>Tutors Avg rating: </div>
+<div>Full Name: {{object.user.first_name}} {{object.user.last_name}}</div>
+<div>No of workshop completed: {{object.get_workshop_count}}</div>
+<div>No of workshop upcoming: </div>
+<div>No of Students : {{object.get_total_no_of_participants}}</div>
+<div>Last Workshop Date: {{object.get_last_workshop_date}}</div>
+<div>Tutors Avg rating: {{object.get_avg_workshop_rating</div>
 </div>
 {% endblock %}

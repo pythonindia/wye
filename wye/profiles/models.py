@@ -2,8 +2,9 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Location
-from wye.workshops.models import WorkshopSections
+from wye.workshops.models import Workshop, WorkshopSections
 
 
 # from django.db.models.signals import post_save
@@ -46,11 +47,32 @@ class Profile(models.Model):
     def __str__(self):
         return '{} {}'.format(self.user, self.slug)
 
+    @property
     def get_workshop_details(self):
-        from wye.workshops.models import Workshop
-        return Workshop.objects.filter(presenter=self.user)
+        return Workshop.objects.filter(presenter=self.user).order_by(-id)
 
+    @property
+    def get_workshop_completed_count(self):
+        return len([x for x in
+                    self.get_workshop_details() if x.status == WorkshopStatus._COMPLETED])
 
+    @property
+    def get_workshop_upcoming_count(self):
+        return len([x for x in
+                    self.get_workshop_details() if x.status == WorkshopStatus._ACCEPTED])
+
+    @property
+    def get_total_no_of_participants(self):
+        return sum([x.no_of_participants for x in
+                    self.get_workshop_details() if x.status == WorkshopStatus._COMPLETED])
+
+    @property
+    def get_last_workshop_date(self):
+        pass
+
+    @property
+    def get_avg_workshop_rating(self):
+        pass
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:

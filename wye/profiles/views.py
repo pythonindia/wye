@@ -111,7 +111,6 @@ class ProfileView(DetailView):
         slug = self.kwargs['slug']
         self.object = models.Profile.objects.get(
             slug=slug)
-        workshop_info = self.object.get_workshop_details()
         context = super(
             ProfileView, self).get_context_data(*args, **kwargs)
         return context
