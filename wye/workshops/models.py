@@ -41,12 +41,46 @@ class Workshop(TimeAuditModel):
     location = models.ForeignKey(Location, related_name='workshop_location')
     workshop_level = models.ForeignKey(WorkshopLevel)
     workshop_section = models.ForeignKey(WorkshopSections)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'workshops'
 
     def __str__(self):
         return '{}-{}'.format(self.requester, self.workshop_section)
+
+    @classmethod
+    def toggle_active(cls, **kwargs):
+        """
+        Helper method to toggle is_active for the model.
+        """
+
+        action_map = {'active': True, 'deactive': False}
+        response = {'status': False, 'msg': ''}
+        pk = kwargs.get('pk')
+        action = kwargs.get('action')
+
+        # validate parameters
+        if not (pk and action):
+            response['msg'] = 'Invalid request.'
+            return response
+
+        # validate action
+        if action not in action_map.keys():
+            response['msg'] = 'Action not allowed.'
+            return response
+
+        try:
+            obj = cls.objects.get(pk=pk)
+        except cls.DoesNotExist:
+            response['msg'] = 'Workshop does not exists.'
+            return response
+
+        obj.is_active = action_map.get(action)
+        obj.save()
+        return { 
+            'status': True,
+            'msg': 'Workshop successfully updated.'}
 
 
 class WorkshopRatingValues(TimeAuditModel):

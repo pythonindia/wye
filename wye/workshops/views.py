@@ -35,8 +35,12 @@ class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
             "workshops:workshop_update", args=[pk])
         return super(WorkshopUpdate, self).get_success_url()
 
-class WorkshopDelete(views.LoginRequiredMixin, generic.DeleteView):
+
+class WorkshopToggleActive(views.LoginRequiredMixin,
+    views.CsrfExemptMixin, views.JSONResponseMixin,
+    generic.View):
     model = Workshop
-    context_object_name = "workshop"
-    template_name = 'workshops/workshop_confirm_delete.html'
-    success_url = reverse_lazy('workshops:workshop_list')
+
+    def post(self, request, *args, **kwargs):
+        response = self.model.toggle_active(**kwargs)
+        return self.render_json_response(response)
