@@ -1,11 +1,9 @@
-from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from django.shortcuts import render
-from django.views import generic
 from django.views.generic.list import ListView
+from django.views.generic import UpdateView, DetailView
 
-from braces import views
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Organisation
 from wye.workshops.models import Workshop
@@ -14,33 +12,17 @@ from . import models
 from .forms import UserProfileForm
 
 
-class ProfileView(generic.DetailView):
+class ProfileView(DetailView):
     model = models.Profile
     template_name = 'profile/index.html'
+    slug_field = 'user__username'
 
     def get_context_data(self, *args, **kwargs):
         slug = self.kwargs['slug']
-        self.object = models.Profile.objects.get(
-            user__username=slug)
+        self.object = self.model.objects.get(user__username=slug)
         context = super(
             ProfileView, self).get_context_data(*args, **kwargs)
         return context
-
-
-class ProfileCreateView(views.LoginRequiredMixin, generic.CreateView):
-    model = models.Profile
-    template_name = 'profile/profile_create.html'
-    form_class = UserProfileForm
-    success_url = reverse_lazy('dashboard')
-
-    def post(self, request, *args, **kwargs):
-        profile = models.Profile.objects.get(user=request.user)
-        form = UserProfileForm(data=request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(self.success_url)
-        else:
-            return render(request, self.template_name, {'form': form})
 
 
 class UserDashboard(ListView):
@@ -99,3 +81,22 @@ class UserDashboard(ListView):
                 context['workshops_by_region'] = Workshop.objects.all().order_by(
                     'location')
         return context
+
+
+class ProfileEditView(UpdateView):
+    model = models.Profile
+    template_name = 'profile/update.html'
+    form_class = UserProfileForm
+    slug_field = 'user__username'
+
+    def form_valid(self, form):
+        return super(ProfileEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('profiles:profile-page', kwargs={'slug': self.object.slug})
+
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.pk == self.get_object().pk:
+            return super(ProfileEditView, self).dispatch(*args, **kwargs)
+        else:
+            raise PermissionDenied
