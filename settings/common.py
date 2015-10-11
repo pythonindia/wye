@@ -151,7 +151,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-LOGIN_URL = 'login'
+LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 ALLOWED_DATE_FORMAT = (
     '%d-%m-%Y', '%d/%m/%Y',
@@ -176,13 +176,7 @@ EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 LOGIN_REDIRECT_URL = '/'
 
 # E-Mail Settings
-
-#For development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-#For Production
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.com'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', ''),
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', ''),
