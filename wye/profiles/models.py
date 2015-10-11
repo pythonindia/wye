@@ -49,7 +49,7 @@ class Profile(models.Model):
 
     @property
     def get_workshop_details(self):
-        return Workshop.objects.filter(presenter=self.user).order_by(-id)
+        return Workshop.objects.filter(presenter=self.user).order_by('-id')
 
     @property
     def get_workshop_completed_count(self):
