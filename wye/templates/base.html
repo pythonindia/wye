@@ -21,7 +21,7 @@
           <ul class="nav navbar-nav">
             <li><a href="/about/">About</a></li>
             {% if user.is_authenticated %}
-            	<li><a href="/orgs">Organizations</a></li>
+            	<li><a href="/organisation">Organizations</a></li>
             	<li><a href="/trainers">Trainers</a></li>
             	<li><a href="/workshop">Workshops</a></li>
             {% endif %}
@@ -38,10 +38,10 @@
               			<div class="navbar-text" style="">Welcome <strong>{{user.name}}</strong></div>
               		</li>
               		<li>
-                		<li><a class="auth" id="logout" href="">Logout</a></li>
+                		<li><a class="auth" id="logout" href="/accounts/logout">Logout</a></li>
               		</li>
             	{% else %}
-              		<li><a href="/login">Log In</a>
+              		<li><a href="/accounts/login">Log In</a>
             	{% endif %}
             {%endblock loginindicator %}
           </ul>
