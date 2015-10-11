@@ -20,7 +20,13 @@ python manage.py runserver
 ```
 
 Initial auth (admin / 123123)
+
+# Community
+
+- [Mailing List]
  
 # License
 
 This software is licensed under The MIT License(MIT). See the LICENSE file in the top distribution directory for the full license text.
+
+[Mailing List]: http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress
