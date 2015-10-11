@@ -176,7 +176,13 @@ EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 LOGIN_REDIRECT_URL = '/'
 
 # E-Mail Settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+#For development
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#For Production
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL_HOST = 'smtp.sendgrid.com'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', ''),
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', ''),
