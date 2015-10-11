@@ -7,7 +7,10 @@ django-braces==1.8.1
 psycopg2==2.6.1
 
 # Rest FrameWork
-# ---------------------------------------
+#---------------------------------------
+djangorestframework==3.2.3
+django-filter==0.10.0
+django-allauth==0.23.0
 djangorestframework==3.2.4
 django-filter==0.11.0
 

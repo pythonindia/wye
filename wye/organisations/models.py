@@ -53,4 +53,5 @@ class Organisation(TimeAuditModel):
         db_table = 'organisations'
 
     def __str__(self):
-        return '{}-{}-{}'.format(self.name, self.organisation_type, self.location)
+        return '{}-{}-{}'.format(self.name,
+                                 self.organisation_type, self.location)
