@@ -135,6 +135,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+LOGIN_URL = 'login'
+ALLOWED_DATE_FORMAT = (
+    '%d-%m-%Y', '%d/%m/%Y', 
+    '%d/%m/%y')
+
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',

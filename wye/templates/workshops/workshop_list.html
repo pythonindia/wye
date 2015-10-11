@@ -1,0 +1,6 @@
+{% for wl in workshop_list %}
+    <a href="{% url 'workshops:workshop_detail' wl.pk %}" >{{ wl }} </a>
+    <br />
+{% endfor %}
+{{workshop}}
+
