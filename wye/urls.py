@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
-from wye.profiles.views import login, logout, registration, ProfileView
+from wye.profiles.views import ProfileView
 
 urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),

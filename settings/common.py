@@ -136,6 +136,7 @@ REST_FRAMEWORK = {
 }
 
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
 ALLOWED_DATE_FORMAT = (
     '%d-%m-%Y', '%d/%m/%Y',
     '%d/%m/%y')
