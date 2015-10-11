@@ -31,6 +31,17 @@ ALLOWED_HOSTS = []
 SITE_ID = 1
 # Application definition
 
+SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
+
+# General project information
+# These are available in the template as SITE_INFO.<title>
+SITE_VARIABLES = {
+    'site_name': os.environ.get('SITE_NAME', 'PythonExpress'),
+    'site_description': '',
+    'site_url': SITE_URL,
+    'footer': 'Copyright &copy; 2015. Python Software Society of India.'
+}
+
 DEFAULT_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -154,7 +165,21 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
-
 ACCOUNT_EMAIL_REQUIRED = True
-
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[{}] ".format(SITE_VARIABLES['site_name'])
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
+EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
+
+LOGIN_REDIRECT_URL = '/'
+
+# E-Mail Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.com'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', ''),
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', ''),
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = SITE_VARIABLES['site_name'] + ' <noreply@pssi.org.in>'
