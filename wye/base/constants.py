@@ -32,3 +32,17 @@ class WorkshopStatus:
     _DECLINED = [4, "Workshop Declined"]
     _COMPLETED = [5, "Workshop Completed"]
     _HOLD = [6, "Workshop On Hold"]
+
+
+@choices
+class WorkshopLevel:
+    _BEGINNER = [1, "Beginner"]
+    _INTERMEDIATE = [2, "Intermediate"]
+
+
+@choices
+class OrganisationType:
+    _COLLEGE = [1, "College"]
+    _ORGANISATION = [2, "Free Software Organisation"]
+    _STUDENT_GROUP = [3, "Student Group"]
+    _OTHERS = [4, "Others"]

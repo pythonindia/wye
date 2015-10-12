@@ -1,23 +1,24 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from wye.base.constants import WorkshopStatus, WorkshopLevel
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation, Location
 
 
-class WorkshopLevel(TimeAuditModel):
-    '''
-    Beginners, Intermediate, Advance
-    '''
-    name = models.CharField(max_length=300, unique=True)
-
-    class Meta:
-        db_table = 'workshop_level'
-
-    def __str__(self):
-        return '{}'.format(self.name)
-
-
+# class WorkshopLevel(TimeAuditModel):
+#     '''
+#     Beginners, Intermediate, Advance
+#     '''
+#     name = models.CharField(max_length=300, unique=True)
+#
+#     class Meta:
+#         db_table = 'workshop_level'
+#
+#     def __str__(self):
+#         return '{}'.format(self.name)
+#
+#
 class WorkshopSections(TimeAuditModel):
     '''
     python2, Python3, Django, Flask, Gaming
@@ -32,16 +33,19 @@ class WorkshopSections(TimeAuditModel):
 
 
 class Workshop(TimeAuditModel):
-    no_of_participants = models.IntegerField()
+    no_of_participants = models.PositiveIntegerField()
     expected_date = models.DateField()
     description = models.TextField()
     requester = models.ForeignKey(
         Organisation, related_name='workshop_requester')
     presenter = models.ManyToManyField(User, related_name='workshop_presenter')
     location = models.ForeignKey(Location, related_name='workshop_location')
-    workshop_level = models.ForeignKey(WorkshopLevel)
+    workshop_level = models.PositiveSmallIntegerField(
+        choices=WorkshopLevel.CHOICES, verbose_name="Workshop Level")
     workshop_section = models.ForeignKey(WorkshopSections)
     is_active = models.BooleanField(default=True)
+    status = models.PositiveSmallIntegerField(
+        choices=WorkshopStatus.CHOICES, verbose_name="Current Status")
 
     class Meta:
         db_table = 'workshops'
@@ -78,7 +82,7 @@ class Workshop(TimeAuditModel):
 
         obj.is_active = action_map.get(action)
         obj.save()
-        return { 
+        return {
             'status': True,
             'msg': 'Workshop successfully updated.'}
 

@@ -4,12 +4,14 @@ from django.db import models
 
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Location
-from wye.workshops.models import Workshop, WorkshopSections
-
+from wye.workshops.models import Workshop
+from wye.workshops.models import WorkshopSections
 
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
 # from rest_framework.authtoken.models import Token
+
+
 class UserType(models.Model):
     '''
     USER_TYPE = ['Tutor', 'POC', 'admin']
@@ -54,17 +56,17 @@ class Profile(models.Model):
     @property
     def get_workshop_completed_count(self):
         return len([x for x in
-                    self.get_workshop_details() if x.status == WorkshopStatus._COMPLETED])
+                    self.get_workshop_details if x.status == WorkshopStatus.COMPLETED])
 
     @property
     def get_workshop_upcoming_count(self):
         return len([x for x in
-                    self.get_workshop_details() if x.status == WorkshopStatus._ACCEPTED])
+                    self.get_workshop_details if x.status == WorkshopStatus.ACCEPTED])
 
     @property
     def get_total_no_of_participants(self):
         return sum([x.no_of_participants for x in
-                    self.get_workshop_details() if x.status == WorkshopStatus._COMPLETED])
+                    self.get_workshop_details if x.status == WorkshopStatus.COMPLETED])
 
     @property
     def get_last_workshop_date(self):
