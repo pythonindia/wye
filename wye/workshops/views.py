@@ -44,3 +44,10 @@ class WorkshopToggleActive(views.LoginRequiredMixin,
     def post(self, request, *args, **kwargs):
         response = self.model.toggle_active(**kwargs)
         return self.render_json_response(response)
+
+
+class WorkshopAssignMe(views.LoginRequiredMixin,
+     views.CsrfExemptMixin, views.JSONResponseMixin,
+     generic.View):
+     model = Workshop
+
