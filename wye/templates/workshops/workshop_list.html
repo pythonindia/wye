@@ -1,6 +1,10 @@
-{% for wl in workshop_list %}
-    <a href="{% url 'workshops:workshop_detail' wl.pk %}" >{{ wl }} </a>
+{% extends "base.html" %}
+
+{% block content %}
+{% for workshop in workshop_list %}
+    <a href="{% url 'workshops:workshop_detail' workshop.pk %}" >{{ wl }} </a>
     <br />
 {% endfor %}
 {{workshop}}
 
+{% endblock %}
