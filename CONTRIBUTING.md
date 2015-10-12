@@ -1,6 +1,6 @@
 # Contributing
 
-All contributions are much welcome and greatly appreciated! Expect to be credited for you effort.
+All contributions are much welcome and greatly appreciated! Expect to be credited for your effort.
 
 
 ## General
@@ -17,12 +17,10 @@ Before you submit a pull request, check that it meets these guidelines:
 1. All the pull requests are made against `master` branch.
 
 2. The pull request should include tests.
-
-3. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in README.md.
-
-4. The pull request containing UI changes should have screen shots.
-
-5. If you are already not added to `CONTRIBUTORS.txt`, please add yourself in :)
+3. The pull request should include description about test cases.
+4. If the pull request adds functionality, the docs should be updated. Put your new functionality into a function with a docstring, and add the feature to the list in README.md.
+5. The pull request containing UI changes should have screen shots.
+6. If you are already not added to `CONTRIBUTORS.txt`, please add yourself in :)
 
 ## Conventions
 
@@ -33,7 +31,7 @@ Before you submit a pull request, check that it meets these guidelines:
 
 If there is any error, fix it and then commit.
 
-- For the Django part, we follow standard [Django coding style](https://docs.djangoproject.com/en/1.7/internals/contributing/writing-code/coding-style/).
+- For the Django part, we follow standard [Django coding style](https://docs.djangoproject.com/en/1.8/internals/contributing/writing-code/coding-style/).
 
 - If you are changing/creating any model, use `./manage.py makemigrations <appname>` to generate the migrations. Send PR. Let other's review the models.
 
