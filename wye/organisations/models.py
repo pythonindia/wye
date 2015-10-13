@@ -49,7 +49,7 @@ class Organisation(TimeAuditModel):
     description = models.TextField()
     location = models.ForeignKey(Location)
     organisation_role = models.CharField(max_length=300)
-    user = models.ForeignKey(User)
+    user = models.ManyToManyField(User, related_name='organisation_users')
 
     class Meta:
         db_table = 'organisations'
