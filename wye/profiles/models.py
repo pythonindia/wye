@@ -14,7 +14,7 @@ from wye.workshops.models import WorkshopSections
 
 class UserType(models.Model):
     '''
-    USER_TYPE = ['Tutor', 'POC', 'admin']
+    USER_TYPE = ['Tutor', 'Regional Lead', 'College POC','admin']
     '''
     slug = models.CharField(max_length=100,
                             verbose_name="slug")
@@ -37,7 +37,7 @@ class Profile(models.Model):
     # the slug fields become the username and should be unique for each user
     slug = models.CharField(max_length=100, unique=True)
     mobile = models.CharField(max_length=10)
-    usertype = models.ForeignKey(UserType)
+    usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
 
