@@ -46,8 +46,14 @@ class WorkshopToggleActive(views.LoginRequiredMixin,
         return self.render_json_response(response)
 
 
-class WorkshopAssignMe(views.LoginRequiredMixin,
+class WorkshopAssignMe(#views.LoginRequiredMixin,
      views.CsrfExemptMixin, views.JSONResponseMixin,
-     generic.View):
+     generic.UpdateView):
      model = Workshop
 
+     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        from django.contrib.auth.models import User
+        user = User.objects.get(pk=1)
+        response = self.object.assign_me(user, **kwargs)
+        return self.render_json_response(response)

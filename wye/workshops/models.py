@@ -86,6 +86,22 @@ class Workshop(TimeAuditModel):
             'status': True,
             'msg': 'Workshop successfully updated.'}
 
+    def assign_me(self, user, **kwargs):
+        action_map = {
+            'opt-in': self.presenter.add, 
+            'opt-out': self.presenter.remove}
+        message_map = {
+            'opt-in': 'Assigned succesfully.',
+            'opt-out': 'Unassigned Successfully.'
+        }
+        action = kwargs.get('action')
+
+        object = action_map.get(action)
+        object(user)
+        return {
+            'status': True, 
+            'msg': message_map[action]}
+
 
 class WorkshopRatingValues(TimeAuditModel):
     '''
