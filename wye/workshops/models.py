@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from wye.base.constants import WorkshopStatus, WorkshopLevel
+from wye.base.constants import WorkshopStatus, WorkshopLevel, WorkshopAction
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation, Location
 
+from .decorators import validate_action_param
 
 # class WorkshopLevel(TimeAuditModel):
 #     '''
@@ -86,6 +87,7 @@ class Workshop(TimeAuditModel):
             'status': True,
             'msg': 'Workshop successfully updated.'}
 
+    @validate_action_param(WorkshopAction.ASSIGNME)
     def assign_me(self, user, **kwargs):
         action_map = {
             'opt-in': self.presenter.add, 
@@ -96,8 +98,8 @@ class Workshop(TimeAuditModel):
         }
         action = kwargs.get('action')
 
-        object = action_map.get(action)
-        object(user)
+        func = action_map.get(action)
+        func(user)
         return {
             'status': True, 
             'msg': message_map[action]}

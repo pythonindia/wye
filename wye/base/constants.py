@@ -46,3 +46,8 @@ class OrganisationType:
     _ORGANISATION = [2, "Free Software Organisation"]
     _STUDENT_GROUP = [3, "Student Group"]
     _OTHERS = [4, "Others"]
+
+
+class WorkshopAction:
+    ACTIVE = ('active', 'deactive')
+    ASSIGNME = ('opt-in', 'opt-out')
