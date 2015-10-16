@@ -36,13 +36,14 @@ class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
         return super(WorkshopUpdate, self).get_success_url()
 
 
-class WorkshopToggleActive(views.LoginRequiredMixin,
+class WorkshopToggleActive(#views.LoginRequiredMixin,
     views.CsrfExemptMixin, views.JSONResponseMixin,
-    generic.View):
+    generic.UpdateView):
     model = Workshop
 
     def post(self, request, *args, **kwargs):
-        response = self.model.toggle_active(**kwargs)
+        self.object = self.get_object()
+        response = self.object.toggle_active(request.user, **kwargs)
         return self.render_json_response(response)
 
 

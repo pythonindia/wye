@@ -54,41 +54,33 @@ class Workshop(TimeAuditModel):
     def __str__(self):
         return '{}-{}'.format(self.requester, self.workshop_section)
 
-    @classmethod
-    def toggle_active(cls, **kwargs):
+    @validate_action_param(WorkshopAction.ACTIVE)
+    def toggle_active(self, user, **kwargs):
         """
         Helper method to toggle is_active for the model.
         """
 
         action_map = {'active': True, 'deactive': False}
-        response = {'status': False, 'msg': ''}
-        pk = kwargs.get('pk')
         action = kwargs.get('action')
-
-        # validate parameters
-        if not (pk and action):
-            response['msg'] = 'Invalid request.'
-            return response
-
-        # validate action
-        if action not in action_map.keys():
-            response['msg'] = 'Action not allowed.'
-            return response
-
-        try:
-            obj = cls.objects.get(pk=pk)
-        except cls.DoesNotExist:
-            response['msg'] = 'Workshop does not exists.'
-            return response
-
-        obj.is_active = action_map.get(action)
-        obj.save()
+        self.is_active = action_map.get(action)
+        self.save()
         return {
             'status': True,
             'msg': 'Workshop successfully updated.'}
 
     @validate_action_param(WorkshopAction.ASSIGNME)
     def assign_me(self, user, **kwargs):
+        """
+        Method to assign workshop by presenter self.
+        """
+
+        # if workshop completed don't accept
+        # presenter.
+        if self.status == WorkshopStatus.COMPLETED:
+            return {
+                'status': False, 
+                'msg': 'Workshop completed.'}
+
         action_map = {
             'opt-in': self.presenter.add, 
             'opt-out': self.presenter.remove}
@@ -97,7 +89,6 @@ class Workshop(TimeAuditModel):
             'opt-out': 'Unassigned Successfully.'
         }
         action = kwargs.get('action')
-
         func = action_map.get(action)
         func(user)
         return {

@@ -1,5 +1,15 @@
+from functools import wraps
+
+
 def validate_action_param(action_map):
+    """
+    Decorator to validate parameter, basically 
+    kwargs have pk and action keys. Also checks
+    if action is valid.
+    """
+
     def wrapper(func):
+        @wraps(func)
         def inner(self, user, **kwargs):
             response = {'status': False, 'msg': ''}
             pk = kwargs.get('pk')
