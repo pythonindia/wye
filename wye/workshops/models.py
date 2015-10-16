@@ -7,6 +7,7 @@ from wye.organisations.models import Organisation, Location
 
 from .decorators import validate_action_param
 
+
 # class WorkshopLevel(TimeAuditModel):
 #     '''
 #     Beginners, Intermediate, Advance
@@ -18,8 +19,8 @@ from .decorators import validate_action_param
 #
 #     def __str__(self):
 #         return '{}'.format(self.name)
-#
-#
+
+
 class WorkshopSections(TimeAuditModel):
     '''
     python2, Python3, Django, Flask, Gaming
@@ -78,11 +79,11 @@ class Workshop(TimeAuditModel):
         # presenter.
         if self.status == WorkshopStatus.COMPLETED:
             return {
-                'status': False, 
+                'status': False,
                 'msg': 'Workshop completed.'}
 
         action_map = {
-            'opt-in': self.presenter.add, 
+            'opt-in': self.presenter.add,
             'opt-out': self.presenter.remove}
         message_map = {
             'opt-in': 'Assigned succesfully.',
@@ -92,7 +93,7 @@ class Workshop(TimeAuditModel):
         func = action_map.get(action)
         func(user)
         return {
-            'status': True, 
+            'status': True,
             'msg': message_map[action]}
 
 

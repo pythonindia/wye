@@ -3,7 +3,7 @@ from functools import wraps
 
 def validate_action_param(action_map):
     """
-    Decorator to validate parameter, basically 
+    Decorator to validate parameter, basically
     kwargs have pk and action keys. Also checks
     if action is valid.
     """
