@@ -1,0 +1,21 @@
+{
+  "name": "wye",
+  "version": "0.0.1",
+  "description": "wye is the platform to help organisations(Colleges/FOSS) connect to expereinced tutors which will benefit number of students to learn Python and real time use of Python in different domains.",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pythonindia/wye.git"
+  },
+  "author": "pythonindia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pythonindia/wye/issues"
+  },
+  "homepage": "https://github.com/pythonindia/wye#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  }
+}
