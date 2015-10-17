@@ -74,3 +74,5 @@ debug.log
 
 # Local Media Files
 .media/
+
+node_modules/
