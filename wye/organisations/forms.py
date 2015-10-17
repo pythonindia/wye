@@ -10,4 +10,4 @@ class OrganisationForm(forms.ModelForm):
 
     class Meta:
         model = Organisation
-        exclude = ('user', 'created_at', 'modified_at')
+        exclude = ('user', 'created_at', 'modified_at', 'active')
