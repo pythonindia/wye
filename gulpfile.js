@@ -7,7 +7,7 @@ var sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
     sass: 'wye/static/sass/*.scss',
-    css: 'wye/static/css/*.css'
+    css: 'wye/static/css'
 };
 
 gulp.task('css', function() {
