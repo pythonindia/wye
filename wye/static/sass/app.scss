@@ -1,3 +1,12 @@
-body {
-    background: #EFEFEF;
+@import "vars";
+@import "theme";
+@import "typography";
+@import "layout";
+@import "utils";
+@import "custom";
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
