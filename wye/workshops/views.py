@@ -36,9 +36,8 @@ class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
         return super(WorkshopUpdate, self).get_success_url()
 
 
-class WorkshopToggleActive(
-    views.LoginRequiredMixin, views.CsrfExemptMixin,
-    views.JSONResponseMixin, generic.UpdateView):
+class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
+                           views.JSONResponseMixin, generic.UpdateView):
 
     model = Workshop
 
@@ -48,9 +47,8 @@ class WorkshopToggleActive(
         return self.render_json_response(response)
 
 
-class WorkshopAssignMe(
-    views.LoginRequiredMixin, views.CsrfExemptMixin,
-    views.JSONResponseMixin, generic.UpdateView):
+class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
+                       views.JSONResponseMixin, generic.UpdateView):
 
     model = Workshop
 

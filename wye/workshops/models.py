@@ -80,7 +80,8 @@ class Workshop(TimeAuditModel):
         if self.status == WorkshopStatus.COMPLETED:
             return {
                 'status': False,
-                'msg': 'Workshop completed.'}
+                'msg': 'Not accepting presenter, \
+                    as Workshop is completed.'}
 
         action_map = {
             'opt-in': self.presenter.add,
