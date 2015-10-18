@@ -90,12 +90,24 @@ class Workshop(TimeAuditModel):
             'opt-in': 'Assigned succesfully.',
             'opt-out': 'Unassigned Successfully.'
         }
+        assigned = {
+            'opt-in': True,
+            'opt-out': False
+        }
         action = kwargs.get('action')
+        if assigned[action] and self.presenter.filter(pk=user.pk).exists():
+            return {
+                'status': False,
+                'msg': 'Workshop already assigned.'
+            }
+
         func = action_map.get(action)
         func(user)
         return {
             'status': True,
-            'msg': message_map[action]}
+            'assigned': assigned[action],
+            'msg': message_map[action]
+         }
 
 
 class WorkshopRatingValues(TimeAuditModel):
