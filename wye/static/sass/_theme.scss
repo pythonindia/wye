@@ -1,8 +1,10 @@
 .fill-primary       { background-color: $primary; color: white; }
 .fill-secondary     { background-color: $secondary; }
 .fill-tertiary      { background-color: $tertiary; }
+.fill-white         { background-color: white; }
 
 .white      { color: white; }
+.gray       { color: $gray-text; }
 .color1     { color: $color1; }
 .color2     { color: $color2; }
 .color3     { color: $color3; }

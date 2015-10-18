@@ -1,14 +1,31 @@
 .btn-theme-1 {
     background-color: $color1;
     border-color: $color1;
+    color: $dark;
+    &:hover {
+        background-color: $color1-alt;
+        border-color: $color1-alt;
+        color: $dark;
+    }
 }
 .btn-theme-2 {
     background-color: $color2;
     border-color: $color2;
     color: white;
+    &:hover {
+        background-color: $color2-alt;
+        border-color: $color2-alt;
+        color: white;
+    }
 }
 .btn-theme-3 {
     background-color: $color3;
     border-color: $color3;
+    color: white;
+    &:hover {
+        background-color: $color3-alt;
+        border-color: $color3-alt;
+        color: white;
+    }
 }
 

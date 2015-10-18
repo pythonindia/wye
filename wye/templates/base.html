@@ -6,7 +6,8 @@
         <title>{% block title %}Wye{% endblock %}</title>
         <link rel="stylesheet" href="/static/css/libs/bootstrap.min.css">
         <link rel="stylesheet" href="/static/css/app.css">
-        <link href='https://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=EB+Garamond|Source+Sans+Pro|Mallanna' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         {% block extracss %}{% endblock %}
     </head>
     <body>
@@ -17,7 +18,8 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href=""><img src="../static/img/logo_yellow.png" width="80" alt="logo"></a></li>
+                        <li><a href="/"><img src="../static/img/logo_yellow.png" width="80" alt="logo"></a></li>
+                        <li><a href="/">Wye</a></li>
                         <li><a href="/about/">About</a></li>
                         {% if user.is_authenticated %}
                             <li><a href="/organisation">Organizations</a></li>
@@ -53,7 +55,7 @@
             {% endblock %}
 
             {% block container_body %}
-                <div class="container">
+                <div class="container push-4-top">
                     {% block content_body %}
                         {% block content %}
                         {% endblock %}
@@ -62,10 +64,10 @@
             {% endblock %}
         {% endblock %}
 
-        <footer>
-            <div class="container">
+        <footer class="fill-white push-1">
+            <div class="container text-center">
             {% block footer %}
-                &copy; 2014 <a href="http://python.org.in/">Python Software Society of India</a>
+                &copy; 2014-2015 <a href="http://python.org.in/">Python Software Society of India</a>
             {% endblock %}
             </div>
         </footer>
