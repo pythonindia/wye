@@ -1,6 +1,8 @@
 from django.views import generic
 from django.core.urlresolvers import reverse, reverse_lazy
+
 from braces import views
+
 from wye.base.emailer import send_mail
 from wye.profiles.models import Profile
 from .models import Workshop
@@ -40,7 +42,6 @@ class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
                            views.JSONResponseMixin, generic.UpdateView):
-
     model = Workshop
 
     def post(self, request, *args, **kwargs):
@@ -51,12 +52,11 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
 
 class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
                        views.JSONResponseMixin, generic.UpdateView):
-
     model = Workshop
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        user = request.user
+        user = request.user 
         response = self.object.assign_me(user, **kwargs)
         if response['status']:
             self.send_mail(user, response['assigned'])

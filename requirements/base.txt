@@ -19,3 +19,6 @@ Markdown==2.6.2
 # Sample Data
 # -----------------------------------------
 fake-factory==0.5.3
+
+#AutoComplete
+django-autocomplete-light==2.2.10

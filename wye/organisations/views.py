@@ -36,7 +36,7 @@ class OrganisationDetail(views.LoginRequiredMixin, generic.DetailView):
     success_url = reverse_lazy('home-page')
 
     def get_queryset(self):
-        return Organisation.objects.filter(user=self.request.user)
+        return Organisation.objects.filter(user=self.request.user, id=self.kwargs['pk'])
 
 
 class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
