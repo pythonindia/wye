@@ -1,5 +1,7 @@
 from django import forms
-from django.conf import settings
+
+import autocomplete_light
+
 from .models import Organisation
 
 
@@ -11,3 +13,6 @@ class OrganisationForm(forms.ModelForm):
     class Meta:
         model = Organisation
         exclude = ('user', 'created_at', 'modified_at', 'active')
+        widgets = {
+            'name': autocomplete_light.TextWidget('OrganisationAutocomplete'),
+        }

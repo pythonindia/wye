@@ -60,6 +60,7 @@ OUR_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'autocomplete_light',
     'rest_framework',
     'allauth',
     'allauth.account',
