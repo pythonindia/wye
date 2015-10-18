@@ -1,0 +1,1 @@
+Workshop {% if assigned %} assigned {% else %} deassined {% endif %}.

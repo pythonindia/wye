@@ -1,0 +1,16 @@
+{% if presenter %}
+    Hi {{ presenter_name }},
+
+    Workshop have been {% if assigned %} assigned to {% else %} deassigned from {% endif %} you. Please visit url below for more information.
+    {{ workshop_url }}
+ 
+{% else %}
+     Hi All,
+     
+     Workshop have been {% if assigned %} assigned to {% else %} deassigned from {% endif %} {{ presenter_name }}. Please visit url below for more information.
+     {{ workshop_url }}
+
+{% endif %}
+
+Thanks
+Python Express
