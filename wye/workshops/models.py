@@ -1,11 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from wye.base.constants import WorkshopStatus, WorkshopLevel, WorkshopAction
+from wye.base.constants import WorkshopStatus, WorkshopLevel
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation, Location
-
-from .decorators import validate_action_param
 
 
 # class WorkshopLevel(TimeAuditModel):
@@ -19,8 +17,8 @@ from .decorators import validate_action_param
 #
 #     def __str__(self):
 #         return '{}'.format(self.name)
-
-
+#
+#
 class WorkshopSections(TimeAuditModel):
     '''
     python2, Python3, Django, Flask, Gaming
@@ -55,47 +53,38 @@ class Workshop(TimeAuditModel):
     def __str__(self):
         return '{}-{}'.format(self.requester, self.workshop_section)
 
-    @validate_action_param(WorkshopAction.ACTIVE)
-    def toggle_active(self, user, **kwargs):
+    @classmethod
+    def toggle_active(cls, **kwargs):
         """
         Helper method to toggle is_active for the model.
         """
 
         action_map = {'active': True, 'deactive': False}
+        response = {'status': False, 'msg': ''}
+        pk = kwargs.get('pk')
         action = kwargs.get('action')
-        self.is_active = action_map.get(action)
-        self.save()
+
+        # validate parameters
+        if not (pk and action):
+            response['msg'] = 'Invalid request.'
+            return response
+
+        # validate action
+        if action not in action_map.keys():
+            response['msg'] = 'Action not allowed.'
+            return response
+
+        try:
+            obj = cls.objects.get(pk=pk)
+        except cls.DoesNotExist:
+            response['msg'] = 'Workshop does not exists.'
+            return response
+
+        obj.is_active = action_map.get(action)
+        obj.save()
         return {
             'status': True,
             'msg': 'Workshop successfully updated.'}
-
-    @validate_action_param(WorkshopAction.ASSIGNME)
-    def assign_me(self, user, **kwargs):
-        """
-        Method to assign workshop by presenter self.
-        """
-
-        # if workshop completed don't accept
-        # presenter.
-        if self.status == WorkshopStatus.COMPLETED:
-            return {
-                'status': False,
-                'msg': 'Not accepting presenter, \
-                    as Workshop is completed.'}
-
-        action_map = {
-            'opt-in': self.presenter.add,
-            'opt-out': self.presenter.remove}
-        message_map = {
-            'opt-in': 'Assigned succesfully.',
-            'opt-out': 'Unassigned Successfully.'
-        }
-        action = kwargs.get('action')
-        func = action_map.get(action)
-        func(user)
-        return {
-            'status': True,
-            'msg': message_map[action]}
 
 
 class WorkshopRatingValues(TimeAuditModel):
