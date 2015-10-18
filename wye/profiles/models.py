@@ -75,6 +75,17 @@ class Profile(models.Model):
     @property
     def get_avg_workshop_rating(self):
         pass
+
+    @staticmethod
+    def get_user_with_type(user_type=None):
+        """
+        Would return user with user type list in argument.
+        Eg Collage POC, admin etc
+        """
+        return User.objects.filter(
+            profile__usertype__display_name__in=user_type
+        )
+
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:
