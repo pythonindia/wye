@@ -5,7 +5,7 @@ form {
     }
     input[type=text], input[type=email], input[type=password] {
         float: right;
-        background: #efefef;
+        background: $form-input-bg;
         border: none;
         line-height: 1.7;
         padding: 0 0.5em;

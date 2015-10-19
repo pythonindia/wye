@@ -1,10 +1,11 @@
-.fill-primary       { background-color: $primary; color: white; }
+.fill-primary       { background-color: $primary; color: $dark; }
 .fill-secondary     { background-color: $secondary; }
 .fill-tertiary      { background-color: $tertiary; }
 .fill-white         { background-color: white; }
+.fill-banner        { background-color: $banner; color: white; }
 
 .white      { color: white; }
 .gray       { color: $gray-text; }
-.color1     { color: $color1; }
-.color2     { color: $color2; }
-.color3     { color: $color3; }
+.primary    { color: $primary; }
+.secondary  { color: $secondary; }
+.tertiary   { color: $tertiary; }
