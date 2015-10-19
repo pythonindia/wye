@@ -1,15 +1,17 @@
 {% load staticfiles %}
 <!doctype html>
 <html lang="en">
+    {% load static from staticfiles %}
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}Wye{% endblock %}</title>
-        <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
-        <link rel="stylesheet" href="/static/css/libs/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/css/app.css">
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+        <link rel="stylesheet" href="{% static 'css/libs/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/app.css' %}">
         <link href='//fonts.googleapis.com/css?family=EB+Garamond|Source+Sans+Pro|Mallanna' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <script src="{% static 'js/libs/jquery-2.1.4.min.js' %}"></script>
         {% block extracss %}{% endblock %}
     </head>
     <body>
