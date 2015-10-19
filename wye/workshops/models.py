@@ -80,15 +80,17 @@ class Workshop(TimeAuditModel):
         if self.status == WorkshopStatus.COMPLETED:
             return {
                 'status': False,
-                'msg': 'Not accepting presenter, \
-                    as Workshop is completed.'}
+                'msg': 'Sorry, but it would seem that this \
+                        workshop is already completed and hence \
+                        won\'t be able to accept a presenter.'}
 
         action_map = {
             'opt-in': self.presenter.add,
-            'opt-out': self.presenter.remove}
+            'opt-out': self.presenter.remove
+        }
         message_map = {
-            'opt-in': 'Assigned succesfully.',
-            'opt-out': 'Unassigned Successfully.'
+            'opt-in': 'Assigned successfully.',
+            'opt-out': 'Unassigned successfully.'
         }
         assigned = {
             'opt-in': True,
@@ -98,7 +100,7 @@ class Workshop(TimeAuditModel):
         if assigned[action] and self.presenter.filter(pk=user.pk).exists():
             return {
                 'status': False,
-                'msg': 'Workshop already assigned.'
+                'msg': 'Workshop has already been assigned.'
             }
 
         func = action_map.get(action)
