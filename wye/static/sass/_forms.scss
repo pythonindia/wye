@@ -1,0 +1,17 @@
+form {
+    p {
+        overflow: hidden;
+        clear: both;
+    }
+    input[type=text], input[type=email], input[type=password] {
+        float: right;
+        background: #efefef;
+        border: none;
+        line-height: 1.7;
+        padding: 0 0.5em;
+        border-radius: 0.2em;
+        &:focus {
+            outline: none;
+        }
+    }
+}

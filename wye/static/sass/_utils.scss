@@ -1,3 +1,13 @@
+.btn-theme-primary {
+    background-color: $primary;
+    border-color: $primary;
+    color: white;
+    &:hover {
+        background-color: $primary-alt;
+        border-color: $primary-alt;
+        color: white;
+    }
+}
 .btn-theme-1 {
     background-color: $color1;
     border-color: $color1;

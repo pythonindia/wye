@@ -1,16 +1,17 @@
 .navbar, .navbar-nav {
     height: 54px;
     border-radius: 0;
+    border: none;
 }
 .navbar-default {
-    border-color: $primary;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3);
 }
 .navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
-    color: $color1;
+    color: $dark;
     font-size: 1em;
     text-transform: uppercase;
     &:hover {
-        color: $color1-alt;
+        color: $gray-text;
     }
 }
 .btn {

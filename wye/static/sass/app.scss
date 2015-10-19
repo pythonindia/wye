@@ -4,6 +4,7 @@
 @import "layout";
 @import "utils";
 @import "custom";
+@import "forms";
 
 * {
     padding: 0;
@@ -39,4 +40,7 @@ p a {
     &:hover, &:active, &:focus {
         border-bottom: 1px dashed $gray-text;
     }
+}
+#logo {
+    margin-top: -0.2em;
 }
