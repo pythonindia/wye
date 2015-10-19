@@ -65,6 +65,7 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
     def send_mail(self, user, assigned):
         """Send email to presenter and org users."""
 
+        workshop = self.get_object()
         email_dir = 'workshops/email/assign_me/'
         last_presenter = user
         # Collage POC and admin email
@@ -84,7 +85,9 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         context = {
             'presenter': True,
             'assigned': assigned,
+            'date':workshop.expected_date,
             'presenter_name': last_presenter.username,
+            'workshop_organization': workshop.requester,
             'workshop_url': self.request.build_absolute_uri(reverse(
                 'workshops:workshop_detail', args=[self.object.pk]
              ))
