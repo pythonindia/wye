@@ -22,5 +22,5 @@ def send_mail(to, context, template_dir=None):
     html_message = to_str('message.html')
     recipient_list = to
     return mail.send_mail(subject, text_message, from_email,
-                          to, html_message=None)
+                          recipient_list, html_message=html_message)
 
