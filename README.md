@@ -21,6 +21,18 @@ python manage.py runserver
 
 Initial auth (admin / 123123)
 
+### Making Frontend Changes
+
+Make sure you have [nodejs][node] & [npm][npm] installed
+
+```
+$ npm install
+$ gulp   // This starts a watcher to watch for file changes
+```
+
+[node]: https://nodejs.org/en/
+[npm]: https://www.npmjs.com/
+
 # Community
 
 - [Mailing List]

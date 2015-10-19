@@ -1,5 +1,30 @@
 {% extends "base.html" %}
+
 {% block title %}Home | {{ block.super }}{% endblock %}
+
+{% block content_head %}
+    <div class="fill-banner push-8-bottom push-6-top text-center">
+        <h1 class="prose-type extralarge">wye connects <span class="primary">python tutors</span>, <span class="secondary">organizations</span> and <span class="tertiary">students</span>.</h1>
+    </div>
+{% endblock %}
+
 {% block content %}
-WIP
+    <p class="push-4-bottom push-2-top pad-6">Wye is a learning programme by <a href="https://pssi.org.in/" target="_blank">Python Software Society of India (PSSI)</a>. We are the team of volunteers who wanted to teach python and create awareness about Python programming Language Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pretium purus erat, id congue mauris gravida eu. Sed feugiat, ex viverra interdum pharetra, ante ligula molestie tortor, sit amet ullamcorper velit elit ac sapien. Nunc vehicula magna nec justo posuere.</p>
+    <div class="row text-center push-6-bottom">
+        <div class="col-md-4 push-3">
+            <p><i class="fa fa-keyboard-o fa-4x"></i></p>
+            <p class="push-3q-bottom pad-2">If you have good expertise in Python, and love to teach others, then register as a tutor.</p>
+            <div><a href="" class="btn btn-theme-primary regular push-1q pad-2">I can teach Python</a></div>
+        </div>
+        <div class="col-md-4 push-3">
+            <p><i class="fa fa-university fa-4x"></i></p>
+            <p class="push-3q-bottom pad-1h">If you are a part of college/organization/FOSS group and looking for python instructors for talk/workshops, let us know.</p>
+            <div><a href="" class="btn btn-theme-secondary regular push-1q pad-2">I'm from an organization</a></div>
+        </div>
+        <div class="col-md-4 push-3">
+            <p><i class="fa fa-graduation-cap fa-4x"></i></p>
+            <p class="push-3q-bottom pad-2">If you are a student, explore details of the upcoming events on python and participate in it.</p>
+            <div><a href="" class="btn btn-theme-tertiary regular push-1q pad-2">I'm a Student</a></div>
+        </div>
+    </div>
 {% endblock %}

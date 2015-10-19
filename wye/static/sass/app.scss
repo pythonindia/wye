@@ -1,0 +1,46 @@
+@import "vars";
+@import "theme";
+@import "typography";
+@import "layout";
+@import "utils";
+@import "custom";
+@import "forms";
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+/* sticky footer */
+html, body {
+    height: 100%
+}
+.wrapper {
+    min-height: 100%;
+    margin: 0 auto -4em;
+}
+footer {
+    height: 4em;
+}
+
+body {
+    color: $gray-text;
+}
+a {
+    color: $dark;
+    text-decoration: none;
+    &:hover, &:active, &:focus {
+        color: $dark;
+        text-decoration: none;
+    }
+}
+p a {
+    display: inline-block;
+    line-height: 1;
+    &:hover, &:active, &:focus {
+        border-bottom: 1px dashed $gray-text;
+    }
+}
+#logo {
+    margin-top: -0.2em;
+}
