@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from wye.base.constants import OrganisationType
-from wye.base.models import TimeAuditModel
+from wye.base.models import TimeAuditModel, AuditModel
 
 
 # class OrganisationType(TimeAuditModel):
@@ -42,7 +42,7 @@ class Location(TimeAuditModel):
         return '{}'.format(self.name)
 
 
-class Organisation(TimeAuditModel):
+class Organisation(AuditModel):
     organisation_type = models.PositiveSmallIntegerField(
         choices=OrganisationType.CHOICES, verbose_name="Organisation Type")
     name = models.CharField(max_length=300, unique=True)

@@ -9,6 +9,25 @@ from .forms import OrganisationForm
 from .models import Organisation
 
 
+class OrganisationList(generic.ListView):
+    model = Organisation
+    template_name = 'organisation/list.html'
+
+    def get_queryset(self):
+        return Organisation.objects.filter(user=self.request.user)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(
+            OrganisationList, self).get_context_data(*args, **kwargs)
+        context['organsation_list'] = self.get_queryset()
+        context['org_created_list'] = self.get_queryset().filter(
+            created_by=self.request.user)
+        context['org_belongs_list'] = self.get_queryset().exclude(
+            created_by=self.request.user)
+        context['user'] = self.request.user
+        return context
+
+
 class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     model = Organisation
     form_class = OrganisationForm
@@ -21,6 +40,8 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     def post(self, request, *args, **kwargs):
         form = OrganisationForm(data=request.POST)
         if form.is_valid():
+            form.modified_by = request.user
+            form.created_by = request.user
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
@@ -53,9 +74,11 @@ class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
         form = OrganisationForm(data=request.POST)
         if form.is_valid():
             if kwargs['action'] == 'edit':
+                self.object.modified_by = request.user
                 self.object.save()
             # Need to test this part of code
             if kwargs['action'] == 'deactive':
+                self.object.modified_by = request.user
                 self.object.active = False
                 self.object.save()
                 # send email on new organisation created

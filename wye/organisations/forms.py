@@ -12,7 +12,8 @@ class OrganisationForm(forms.ModelForm):
 
     class Meta:
         model = Organisation
-        exclude = ('user', 'created_at', 'modified_at', 'active')
+        exclude = ('user', 'created_at', 'modified_at',
+                   'active', 'created_by', 'modified_by')
         widgets = {
             'name': autocomplete_light.TextWidget('OrganisationAutocomplete'),
         }
