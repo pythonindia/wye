@@ -23,4 +23,3 @@ def send_mail(to, context, template_dir=None):
     recipient_list = to
     return mail.send_mail(subject, text_message, from_email,
                           recipient_list, html_message=html_message)
-

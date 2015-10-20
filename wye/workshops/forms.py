@@ -3,8 +3,8 @@ from django.conf import settings
 from .models import Workshop
 
 
-
 class WorkshopForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(WorkshopForm, self).__init__(*args, **kwargs)
         self.fields['expected_date'] = forms.DateField(
@@ -13,5 +13,3 @@ class WorkshopForm(forms.ModelForm):
     class Meta:
         model = Workshop
         exclude = ('presenter', 'created_at', 'modified_at')
-
-

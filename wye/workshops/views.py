@@ -18,7 +18,8 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         context = super(
             WorkshopList, self).get_context_data(*args, **kwargs)
         workshop_list = Workshop.objects.filter()
-        organisation_list = Organisation.objects.filter(user=self.request.user)
+        # organisation_list = Organisation.objects.filter(
+        #                user=self.request.user)
         context['workshop_list'] = workshop_list
         context['workshop_feedback_pending'] = []
         context['workshop_in_queue'] = []

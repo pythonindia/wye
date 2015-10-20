@@ -109,7 +109,7 @@ class Workshop(TimeAuditModel):
             'status': True,
             'assigned': assigned[action],
             'msg': message_map[action]
-         }
+        }
 
 
 class WorkshopRatingValues(TimeAuditModel):
