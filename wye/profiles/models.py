@@ -4,15 +4,17 @@ from django.db import models
 
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Location
-from wye.workshops.models import Workshop, WorkshopSections
-
+from wye.workshops.models import Workshop
+from wye.workshops.models import WorkshopSections
 
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
 # from rest_framework.authtoken.models import Token
+
+
 class UserType(models.Model):
     '''
-    USER_TYPE = ['Tutor', 'POC', 'admin']
+    USER_TYPE = ['Tutor', 'Regional Lead', 'College POC','admin']
     '''
     slug = models.CharField(max_length=100,
                             verbose_name="slug")
@@ -35,7 +37,7 @@ class Profile(models.Model):
     # the slug fields become the username and should be unique for each user
     slug = models.CharField(max_length=100, unique=True)
     mobile = models.CharField(max_length=10)
-    usertype = models.ForeignKey(UserType)
+    usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
 
@@ -49,22 +51,22 @@ class Profile(models.Model):
 
     @property
     def get_workshop_details(self):
-        return Workshop.objects.filter(presenter=self.user).order_by(-id)
+        return Workshop.objects.filter(presenter=self.user).order_by('-id')
 
     @property
     def get_workshop_completed_count(self):
         return len([x for x in
-                    self.get_workshop_details() if x.status == WorkshopStatus._COMPLETED])
+                    self.get_workshop_details if x.status == WorkshopStatus.COMPLETED])
 
     @property
     def get_workshop_upcoming_count(self):
         return len([x for x in
-                    self.get_workshop_details() if x.status == WorkshopStatus._ACCEPTED])
+                    self.get_workshop_details if x.status == WorkshopStatus.ACCEPTED])
 
     @property
     def get_total_no_of_participants(self):
         return sum([x.no_of_participants for x in
-                    self.get_workshop_details() if x.status == WorkshopStatus._COMPLETED])
+                    self.get_workshop_details if x.status == WorkshopStatus.COMPLETED])
 
     @property
     def get_last_workshop_date(self):
@@ -73,6 +75,17 @@ class Profile(models.Model):
     @property
     def get_avg_workshop_rating(self):
         pass
+
+    @staticmethod
+    def get_user_with_type(user_type=None):
+        """
+        Would return user with user type list in argument.
+        Eg Collage POC, admin etc
+        """
+        return User.objects.filter(
+            profile__usertype__display_name__in=user_type
+        )
+
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:

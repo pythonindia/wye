@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<section>
+<a href="{% url 'organisations:organisation_create'  %}"" class="btn btn-primary btn-lg "> Add Organisation </a>
+</section>
+<section class="myorganisations">
+	<div class="push-4-bottom push-1-top">
+		<div class="row">
+        	<div class="col-sm-12">
+        		<p><u>My Organisations</u></p>
+        		<div class="row">
+					{% for org in org_created_list %}
+						<div class="col-sm-12">
+							<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
+							<div class="col-sm-3">{{org.location}}</div>
+							<div class="col-sm-3">{{org.get_organisation_type}}</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="organisations_working_for">
+	<div class="push-4-bottom push-1-top">
+		<p><u>Other organisation am member of </u></p>
+		<div class="row">
+				{% for org in org_belongs_list %}
+				<div class="col-sm-12">
+					<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
+					<div class="col-sm-3">{{org.location}}</div>
+					<div class="col-sm-3">{{org.get_organisation_type}}</div>
+					
+				</div>
+				{% endfor %}
+			
+		</div>
+	</div>
+</section>
+{% endblock %}

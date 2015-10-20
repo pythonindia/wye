@@ -20,7 +20,36 @@ python manage.py runserver
 ```
 
 Initial auth (admin / 123123)
- 
+
+### Making Frontend Changes
+
+Make sure you have [nodejs][node] & [npm][npm] installed
+
+```
+$ npm install
+$ gulp   // This starts a watcher to watch for file changes
+```
+
+[node]: https://nodejs.org/en/
+[npm]: https://www.npmjs.com/
+
+# Community
+
+- [Mailing List]
+
+Contributing
+------------
+
+1. Choose an [issue][issue-list] and ask any doubts in the issue thread.
+2. Report any bugs/feature request as github [new issue][new-issue], if it's already not present.
+3. If you are starting to work on an issue, please leave a comment saying "I am working on it".
+4. Once you are done with feature/bug fix, send a pull request according to the [guidelines].
+
+[issue-list]: https://github.com/pythonindia/wye/issues/
+[new-issue]: https://github.com/pythonindia/wye/issues/new
+[guidelines]: https://github.com/pythonindia/wye/blob/master/CONTRIBUTING.md
 # License
 
 This software is licensed under The MIT License(MIT). See the LICENSE file in the top distribution directory for the full license text.
+
+[Mailing List]: http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress

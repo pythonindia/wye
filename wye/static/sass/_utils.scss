@@ -1,0 +1,30 @@
+.btn-theme-primary {
+    background-color: $primary;
+    border-color: $primary;
+    color: $dark;
+    &:hover {
+        background-color: $primary-alt;
+        border-color: $primary-alt;
+        color: $dark;
+    }
+}
+.btn-theme-secondary {
+    background-color: $secondary;
+    border-color: $secondary;
+    color: white;
+    &:hover {
+        background-color: $secondary-alt;
+        border-color: $secondary-alt;
+        color: white;
+    }
+}
+.btn-theme-tertiary {
+    background-color: $tertiary;
+    border-color: $tertiary;
+    color: white;
+    &:hover {
+        background-color: $tertiary-alt;
+        border-color: $tertiary-alt;
+        color: white;
+    }
+}

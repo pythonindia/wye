@@ -1,0 +1,1 @@
+[PythonExpress] Workshop status - {% if assigned %} Assigned {% else %} Unassigned {% endif %}.

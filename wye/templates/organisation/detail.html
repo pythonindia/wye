@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+<div>{{object.name}}</div>
+<div>{{object.get_organisation_type}}</div>
+<div>{{object.description}}</div>
+<div>{{object.location}}</div>
+<div>
+	<ul>
+		{% for u in object.user.all %}
+			<li>{{u.first_name}} {{u.first_name}}  |  {{u.email}}</li>
+		{% endfor %}
+	</ul>
+</div>
+</div>
+<div>{{object.active}}</div>
+
+{% endblock %}
