@@ -1,3 +1,7 @@
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+[![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye)
+
 wye is the platform to help organisations(Colleges/FOSS) connect to expereinced tutors which will benefit number of students to learn Python and real time use of Python in different domains. 
 
 wye is pronounced as #Y
