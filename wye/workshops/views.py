@@ -3,7 +3,7 @@ from django.views import generic
 
 from braces import views
 from wye.base.emailer import send_mail
-from wye.organisations.models import Organisation
+#from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 
 from .forms import WorkshopForm
