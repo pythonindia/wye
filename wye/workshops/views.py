@@ -1,21 +1,34 @@
-from django.views import generic
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.views import generic
 
 from braces import views
-
 from wye.base.emailer import send_mail
+from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
-from .models import Workshop
+
 from .forms import WorkshopForm
+from .models import Workshop
 
 
-class WorkshopList(generic.ListView):
+class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     model = Workshop
-    context_object_name = 'workshop_list'
     template_name = 'workshops/workshop_list.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(
+            WorkshopList, self).get_context_data(*args, **kwargs)
+        workshop_list = Workshop.objects.filter()
+        organisation_list = Organisation.objects.filter(user=self.request.user)
+        context['workshop_list'] = workshop_list
+        context['workshop_feedback_pending'] = []
+        context['workshop_in_queue'] = []
+        context['workshop_completed'] = []
+        context['workshop_withdrawn'] = []
+        context['user'] = self.request.user
+        return context
 
-class WorkshopDetail(generic.DetailView):
+
+class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
     model = Workshop
     context_object_name = "workshop"
     template_name = 'workshops/workshop_list.html'
@@ -85,12 +98,12 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         context = {
             'presenter': True,
             'assigned': assigned,
-            'date':workshop.expected_date,
+            'date': workshop.expected_date,
             'presenter_name': last_presenter.username,
             'workshop_organization': workshop.requester,
             'workshop_url': self.request.build_absolute_uri(reverse(
                 'workshops:workshop_detail', args=[workshop.pk]
-             ))
+            ))
         }
         # Send email to presenter
         send_mail([last_presenter.email], context, email_dir)
@@ -102,4 +115,3 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         all_email.extend(poc_admin_user)
         all_email = list(set(all_email))
         send_mail(all_email, context, email_dir)
-
