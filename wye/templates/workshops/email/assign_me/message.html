@@ -1,0 +1,16 @@
+{% if presenter %}
+    Hey {{ presenter_name }},
+
+    We're writing in to let you know that the Workshop at {{ workshop_organization }} to be conducted on {{ date }} has been {% if assigned %} assigned to {% else %} unassigned from {% endif %} you. Please visit the url below for more information.
+    {{ workshop_url }}
+ 
+{% else %}
+     Hello folks!
+     
+     Just giving you a heads up. The Workshop you are planning to conduct on {{ date }} has been {% if assigned %} assigned to {% else %} unassigned from {% endif %} {{ presenter_name }}. Please visit the url below for more information.
+     {{ workshop_url }}
+
+{% endif %}
+
+Warmly,
+The PythonExpress team.
