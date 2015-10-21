@@ -12,4 +12,6 @@ class WorkshopForm(forms.ModelForm):
 
     class Meta:
         model = Workshop
-        exclude = ('presenter', 'created_at', 'modified_at')
+        exclude = (
+            'presenter', 'created_at', 'modified_at', 
+            'is_active', 'status')
