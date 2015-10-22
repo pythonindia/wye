@@ -19,12 +19,14 @@
             <nav class="navbar no-space-bottom navbar-default fill-white" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="/">{{ site_title }}</a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" href="/"><img id="logo" src="{% static 'img/logo_python_express.png' %}" width="80" alt="{{ site_title }}"></a>
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/"><img id="logo" src="{% static 'img/logo_python_express.png' %}" width="80" alt="logo"></a></li>
-                            <li><a href="/">Wye</a></li>
                             <li><a href="/about/">About</a></li>
                             {% if user.is_authenticated %}
                                 <li><a href="/organisation">Organizations</a></li>
@@ -71,5 +73,8 @@
             {% endblock %}
             </div>
         </footer>
+
+
+        <script src="{% static 'js/libs/bootstrap.min.js' %}"></script>
     </body>
 </html>
