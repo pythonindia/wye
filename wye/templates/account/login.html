@@ -14,7 +14,7 @@
                     <div class="panel-body">
                         <div>
                             <div class="account-wall">
-                                <form class="login" method="POST" action="{% url 'account_login' %}">
+                                <form class="auth-form login" method="POST" action="{% url 'account_login' %}">
                                     {% csrf_token %}
                                     {{ form.as_p }}
                                     {% if redirect_field_value %}

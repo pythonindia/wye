@@ -12,7 +12,7 @@
                     <div class="panel-heading text-center regular">Sign Up</div>
                     <div class="panel-body">
                         <div>
-                            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                            <form class="auth-form signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
                                 {% csrf_token %}
                                 {{ form.as_p }}
                                 {% if redirect_field_value %}
