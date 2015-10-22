@@ -6,12 +6,14 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from faker import Faker
 
-from wye.organisations.models import Organisation, Location, State
+from wye.organisations.models import Location, Organisation, State
+from wye.workshops.models import WorkshopSections
 
 
+NUMBER_OF_USERS = getattr(settings, "NUMBER_OF_USERS", 10)
 NUMBER_OF_LOCATIONS = getattr(settings, "NUMBER_OF_LOCATIONS", 10)
 NUMBER_OF_ORGANISATIONS = getattr(settings, "NUMBER_OF_ORGANISATIONS", 10)
-NUMBER_OF_USERS = getattr(settings, "NUMBER_OF_USERS", 10)
+NUMBER_OF_WORKSHOP_SECTIONS = getattr(settings, "NUMBER_OF_WORKSHOP_SECTIONS", 5)
 
 
 class Command(BaseCommand):
@@ -39,6 +41,9 @@ class Command(BaseCommand):
 
         print('  Creating sample organisations')
         self.create_organisations(counter=NUMBER_OF_ORGANISATIONS)
+
+        print('  Creating sample workshop sections')
+        self.create_workshop_sections(counter=NUMBER_OF_WORKSHOP_SECTIONS)
 
     def create_user(self, counter=None, **kwargs):
         params = {
@@ -85,3 +90,7 @@ class Command(BaseCommand):
                 description=text,
             )
             org.user.add(users[number])
+
+    def create_workshop_sections(self, counter=None):
+        for i in range(counter):
+            WorkshopSections.objects.update_or_create(name=self.fake.sentence())
