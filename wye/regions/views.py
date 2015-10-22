@@ -5,6 +5,7 @@ from . import forms
 from . import models
 
 
-class RegionalLeadUpdate(views.LoginRequiredMixin, generic.CreateView):
+class RegionalLeadList(views.LoginRequiredMixin, generic.CreateView):
     model = models.RegionalLead
     form_class = forms.RegionalLeadForm
+    template_name = 'regions/list.html'
