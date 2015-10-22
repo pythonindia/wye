@@ -1,16 +1,31 @@
 {% extends "base.html" %}
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Workshops</h1>
+    </div>
+{% endblock %}
 
 {% block content %}
-
-<section>
-<a href="{% url 'workshops:workshop_create'  %}"" class="btn btn-primary btn-lg "> Request for workshop </a>
-</section>
-<section>
-{% for workshop in workshop_list %}
-    <a href="{% url 'workshops:workshop_detail' workshop.pk %}" >{{ workshop }} </a>
-    <br />
-{% endfor %}
-</section>
-{{workshop}}
-
+    <div class="push-4-bottom">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>My Workshops List</h3>
+            </div>
+            <div class="col-sm-6 text-right">
+                <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request for workshop</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {% if not workshop_list %}
+                    <p class="gray sub"><em>No workshops on your list.</em></p>
+                {% else %}
+                    {% for workshop in workshop_list %}
+                        <div><a href="{% url 'workshops:workshop_detail' workshop.pk %}" >{{ workshop }} </a></div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {#{{workshop}}#}
+    </div>
 {% endblock %}
