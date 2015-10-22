@@ -17,3 +17,15 @@
 .btn {
     font-weight: 200;
 }
+
+.navbar-nav>li>a.nav-btn {
+    background: $primary;
+    color: #fff;
+    margin: 13px 0;
+    border-radius: 0.4em;
+    padding: 4px 15px;
+    &:hover {
+        background-color: $primary-alt;
+        color: white;
+    }
+}

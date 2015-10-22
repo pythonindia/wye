@@ -41,7 +41,7 @@
                                         </ul>
                                     </li>
                                 {% else %}
-                                    <li><a href="/accounts/login">Log In</a>
+                                    <li><a href="/accounts/login" class="nav-btn">Log In</a>
                                 {% endif %}
                             {%endblock loginindicator %}
                         </ul>
@@ -50,10 +50,8 @@
             </nav>
 
             {% block content_wrapper %}
-                {% block container_head %}
-                    {% block content_head %}
-                    {% endblock %}
-                {% endblock %}
+                {% block header %}{% endblock %}
+                {% block sub_header %}{% endblock %}
 
                 {% block container_body %}
                     <div class="container push-4-top">
