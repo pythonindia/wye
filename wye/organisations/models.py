@@ -2,44 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from wye.base.constants import OrganisationType
-from wye.base.models import TimeAuditModel, AuditModel
-
-
-# class OrganisationType(TimeAuditModel):
-#     '''
-#     College, Orgnaisation , Student Groups
-#     '''
-#     name = models.CharField(max_length=300, unique=True)
-#
-#     class Meta:
-#         db_table = 'organisation_types'
-#
-#     def __str__(self):
-#         return '{}'.format(self.name)
-class State(TimeAuditModel):
-    '''
-
-    '''
-    name = models.CharField(max_length=300, unique=True)
-
-    class Meta:
-        db_table = 'states'
-
-    def __str__(self):
-        return '{}'.format(self.name)
-
-
-class Location(TimeAuditModel):
-    '''
-    '''
-    name = models.CharField(max_length=300, unique=True)
-    state = models.ForeignKey(State)
-
-    class Meta:
-        db_table = 'locations'
-
-    def __str__(self):
-        return '{}'.format(self.name)
+from wye.base.models import AuditModel
+from wye.regions.models import Location
 
 
 class Organisation(AuditModel):

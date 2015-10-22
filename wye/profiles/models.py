@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from wye.base.constants import WorkshopStatus
-from wye.organisations.models import Location
+from wye.regions.models import Location
 from wye.workshops.models import Workshop
 from wye.workshops.models import WorkshopSections
 
@@ -85,6 +85,7 @@ class Profile(models.Model):
         return User.objects.filter(
             profile__usertype__display_name__in=user_type
         )
+
 
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):

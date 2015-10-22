@@ -6,14 +6,16 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 from faker import Faker
 
-from wye.organisations.models import Location, Organisation, State
+from wye.organisations.models import Organisation
+from wye.regions.models import Location, State
 from wye.workshops.models import WorkshopSections
 
 
 NUMBER_OF_USERS = getattr(settings, "NUMBER_OF_USERS", 10)
 NUMBER_OF_LOCATIONS = getattr(settings, "NUMBER_OF_LOCATIONS", 10)
 NUMBER_OF_ORGANISATIONS = getattr(settings, "NUMBER_OF_ORGANISATIONS", 10)
-NUMBER_OF_WORKSHOP_SECTIONS = getattr(settings, "NUMBER_OF_WORKSHOP_SECTIONS", 5)
+NUMBER_OF_WORKSHOP_SECTIONS = getattr(
+    settings, "NUMBER_OF_WORKSHOP_SECTIONS", 5)
 
 
 class Command(BaseCommand):
@@ -71,8 +73,10 @@ class Command(BaseCommand):
 
     def create_locations(self, counter=None):
         for i in range(counter):
-            state, updated = State.objects.update_or_create(name=self.fake.state())
-            Location.objects.update_or_create(name=self.fake.city(), state=state)
+            state, updated = State.objects.update_or_create(
+                name=self.fake.state())
+            Location.objects.update_or_create(
+                name=self.fake.city(), state=state)
 
     def create_organisations(self, counter=None):
         users = get_user_model().objects.all()
@@ -93,4 +97,5 @@ class Command(BaseCommand):
 
     def create_workshop_sections(self, counter=None):
         for i in range(counter):
-            WorkshopSections.objects.update_or_create(name=self.fake.sentence())
+            WorkshopSections.objects.update_or_create(
+                name=self.fake.sentence())
