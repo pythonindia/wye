@@ -9,6 +9,8 @@ from faker import Faker
 from wye.organisations.models import Organisation, Location, State
 
 
+NUMBER_OF_LOCATIONS = getattr(settings, "NUMBER_OF_LOCATIONS", 10)
+NUMBER_OF_ORGANISATIONS = getattr(settings, "NUMBER_OF_ORGANISATIONS", 10)
 NUMBER_OF_USERS = getattr(settings, "NUMBER_OF_USERS", 10)
 
 
@@ -31,6 +33,13 @@ class Command(BaseCommand):
         print('  Creating sample users')
         for i in range(NUMBER_OF_USERS):
             self.create_user()
+
+        print('  Creating sample locations')
+        self.create_locations(counter=NUMBER_OF_LOCATIONS)
+
+        print('  Creating sample organisations')
+        self.create_organisations(counter=NUMBER_OF_ORGANISATIONS)
+
     def create_user(self, counter=None, **kwargs):
         params = {
             "first_name": kwargs.get('first_name', self.fake.first_name()),
@@ -54,3 +63,25 @@ class Command(BaseCommand):
             )
 
         return user
+
+    def create_locations(self, counter=None):
+        for i in range(counter):
+            state, updated = State.objects.update_or_create(name=self.fake.state())
+            Location.objects.update_or_create(name=self.fake.city(), state=state)
+
+    def create_organisations(self, counter=None):
+        users = get_user_model().objects.all()
+        locations = Location.objects.all()
+
+        for i in range(counter):
+            number = self.fake.random_digit()
+            text = self.fake.text()
+            name = self.fake.company()
+            org, updated = Organisation.objects.update_or_create(
+                name=name,
+                location=locations[number],
+                organisation_type=number,
+                organisation_role=text,
+                description=text,
+            )
+            org.user.add(users[number])
