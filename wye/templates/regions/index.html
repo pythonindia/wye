@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<section>
+<a href="{% url 'regions:lead-create'  %}"" class="btn btn-primary btn-lg "> Add Regional Lead </a>
+<a href="{% url 'regions:state-create'  %}"" class="btn btn-primary btn-lg "> Add State </a>
+<a href="{% url 'regions:location-create'  %}"" class="btn btn-primary btn-lg "> Add Location </a>
+
+</section>
+
+<section>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<h2>Regional Info</h2>
+				{% for regional in regional_list %}
+					<div class="row">
+					<div class="col-md-2">
+						<div>{{regional}}</div>
+					</div>
+					<div class="col-md-2">
+						<div>{{regional}}</div>
+					</div>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="col-md-3">
+				<h2>Location List</h2>
+				{% for regional in location_list %}
+					<div class="row">
+						{{regional}}
+					</div>    
+      			{% endfor %}
+       		</div>
+        	<div class="col-md-3">
+          		<h2>State</h2>
+          		{% for regional in state_list %}
+      				<div class="row">
+      					{{regional}}
+      				</div>    
+      			{% endfor %}
+        	</div>
+      	</div>
+      </div>
+</section>
+
+{% endblock %}

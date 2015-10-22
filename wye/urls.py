@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^profile/(?P<slug>[a-zA-Z0-9]+)/$',
         ProfileView.as_view(), name='profile-page'),
     url(r'^region/',
-        include('wye.regions.urls', namespace="workshops")),
+        include('wye.regions.urls', namespace="regions")),
     url(r'^$', HomePageView.as_view(),
         name='home-page'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)

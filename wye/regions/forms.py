@@ -7,4 +7,18 @@ class RegionalLeadForm(forms.ModelForm):
 
     class Meta:
         model = models.RegionalLead
-        fields = ('location', 'leads')
+        exclude = ()
+
+
+class LocationForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Location
+        exclude = ()
+
+
+class StateForm(forms.ModelForm):
+
+    class Meta:
+        model = models.State
+        exclude = ()
