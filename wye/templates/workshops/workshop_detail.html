@@ -26,8 +26,8 @@
                     </li>
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-xs-4"><strong>Instructor</strong></div>
-                            <div class="col-xs-8">{{ workshop.presenter }}</div>
+                            <div class="col-xs-4"><strong>Instructors</strong></div>
+                            <div class="col-xs-8">{{ workshop.get_presenter_list|join:", " }}</div>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -45,7 +45,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-4"><strong>Level</strong></div>
-                            <div class="col-xs-8">{{ workshop.workshop_level }}</div>
+                            <div class="col-xs-8">{{ workshop.get_workshop_level_display }}</div>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -63,7 +63,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-4"><strong>Status</strong></div>
-                            <div class="col-xs-8">{{ workshop.status }}</div>
+                            <div class="col-xs-8">{{ workshop.get_status_display }}</div>
                         </div>
                     </li>
                     <li class="list-group-item">

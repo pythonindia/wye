@@ -35,10 +35,10 @@
                                 {% for workshop in workshop_list %}
                                     <tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
                                         <td>{{ workshop.requester }}</td>
-                                        <td>{{ workshop.presenter }}</td>
+                                        <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
-                                        <td>{{ workshop.status }}</td>
+                                        <td>{{ workshop.get_status_display }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
