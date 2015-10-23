@@ -12,7 +12,6 @@
         <link href='//fonts.googleapis.com/css?family=EB+Garamond|Source+Sans+Pro|Mallanna' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <script src="{% static 'js/libs/jquery-2.1.4.min.js' %}"></script>
-        <script src="{% static 'js/libs/bootstrap.min.js' %}"></script>
         {% block extracss %}{% endblock %}
     </head>
     <body>
@@ -20,15 +19,17 @@
             <nav class="navbar no-space-bottom navbar-default fill-white" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="/">{{ site_title }}</a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" href="/"><img id="logo" src="{% static 'img/logo_python_express.png' %}" width="80" alt="{{ site_title }}"></a>
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/"><img id="logo" src="{% static 'img/logo_yellow.png' %}" width="80" alt="logo"></a></li>
-                            <li><a href="/">Wye</a></li>
                             <li><a href="/about/">About</a></li>
                             {% if user.is_authenticated %}
-                                <li><a href="/organisation">Organizations</a></li>
+                                <li><a href="/organisation">Organisations</a></li>
                                 <li><a href="/workshop">Workshops</a></li>
                             {% endif %}
                         </ul>
@@ -42,7 +43,7 @@
                                         </ul>
                                     </li>
                                 {% else %}
-                                    <li><a href="/accounts/login">Log In</a>
+                                    <li><a href="/accounts/login" class="nav-btn">Log In</a>
                                 {% endif %}
                             {%endblock loginindicator %}
                         </ul>
@@ -51,10 +52,8 @@
             </nav>
 
             {% block content_wrapper %}
-                {% block container_head %}
-                    {% block content_head %}
-                    {% endblock %}
-                {% endblock %}
+                {% block header %}{% endblock %}
+                {% block sub_header %}{% endblock %}
 
                 {% block container_body %}
                     <div class="container push-4-top">
@@ -74,5 +73,8 @@
             {% endblock %}
             </div>
         </footer>
+
+
+        <script src="{% static 'js/libs/bootstrap.min.js' %}"></script>
     </body>
 </html>

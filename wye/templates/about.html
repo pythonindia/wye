@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block title %}About | {{ block.super }}{% endblock %}
+
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">About</h1>
+    </div>
+{% endblock %}
+
 {% block content %}
-
-<p>We are the team of volunteers who wanted to teach python and create awareness about Python programming Language</p>
-
+    <p>We are the team of volunteers who wanted to teach python and create awareness about Python programming Language</p>
 {% endblock %}

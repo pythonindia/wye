@@ -1,43 +1,51 @@
 {% extends "base.html" %}
 
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Organisations</h1>
+    </div>
+{% endblock %}
 
 {% block content %}
-
-<section>
-<a href="{% url 'organisations:organisation_create'  %}" class="btn btn-primary btn-lg "> Add Organisation </a>
-</section>
-<section class="myorganisations">
-	<div class="push-4-bottom push-1-top">
-		<div class="row">
-        	<div class="col-sm-12">
-        		<p><u>My Organisations</u></p>
-        		<div class="row">
-					{% for org in org_created_list %}
-						<div class="col-sm-12">
-							<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
-							<div class="col-sm-3">{{org.location}}</div>
-							<div class="col-sm-3">{{org.get_organisation_type}}</div>
-						</div>
-					{% endfor %}
+	<section class="myorganisations">
+		<div class="push-4-bottom">
+			<div class="row">
+				<div class="col-sm-6">
+					<h3>My Organisations</h3>
+				</div>
+				<div class="col-sm-6 text-right">
+					<a href="{% url 'organisations:organisation_create' %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Organisation</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					{% if not org_created_list %}
+						<p class="gray sub"><em>You have not created organisations.</em></p>
+					{% else %}
+						{% for org in org_created_list %}
+								<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
+								<div class="col-sm-3">{{org.location}}</div>
+								<div class="col-sm-3">{{org.get_organisation_type}}</div>
+						{% endfor %}
+					{% endif %}
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
-<section class="organisations_working_for">
-	<div class="push-4-bottom push-1-top">
-		<p><u>Other organisation am member of </u></p>
-		<div class="row">
-				{% for org in org_belongs_list %}
-				<div class="col-sm-12">
-					<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
-					<div class="col-sm-3">{{org.location}}</div>
-					<div class="col-sm-3">{{org.get_organisation_type}}</div>
-					
+	</section>
+	{% if org_belongs_list %}
+		<section class="organisations_working_for">
+			<div class="push-4-bottom push-1-top">
+				<h3>Other organisations am member of</h3>
+				<div class="row">
+					<div class="col-sm-12">
+						{% for org in org_belongs_list %}
+							<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
+							<div class="col-sm-3">{{org.location}}</div>
+							<div class="col-sm-3">{{org.get_organisation_type}}</div>
+						{% endfor %}
+					</div>
 				</div>
-				{% endfor %}
-			
-		</div>
-	</div>
-</section>
+			</div>
+		</section>
+	{% endif %}
 {% endblock %}
