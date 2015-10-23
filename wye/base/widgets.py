@@ -20,7 +20,7 @@ class CalendarWidget(forms.TextInput):
                  });
             });
             </script>
-        '''  % {'name': name}
+        ''' % {'name': name}
         rendered_input = super(CalendarWidget, self).render(name, value, attrs)
         return mark_safe(rendered_input + render_str)
 
@@ -32,4 +32,3 @@ class CalendarWidget(forms.TextInput):
             'all': ('css/libs/datepicker.css',)
         }
         js = ('js/libs/bootstrap-datepicker.js',)
-
