@@ -4,5 +4,6 @@
 # For server.
 # -------------------------------
 uwsgi==2.0.*
+dj-database-url==0.3.*
 
 # this file in this path is required for python buildpack.
