@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+{{ form.media }}
 <form method="post" action="{% url 'workshops:workshop_create' %}">{% csrf_token %}
 {{form.errors}}
 {{form.as_p}}
