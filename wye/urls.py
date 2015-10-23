@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 
 from wye.base.views import HomePageView
-from wye.profiles.views import ProfileView
+from wye.profiles.views import ProfileView, UserDashboard
 
 
 urlpatterns = [
@@ -22,6 +22,7 @@ urlpatterns = [
         ProfileView.as_view(), name='profile-page'),
     url(r'^region/',
         include('wye.regions.urls', namespace="regions")),
+    url(r'^dashboard/$', UserDashboard.as_view(), name='dashboard'),
     url(r'^$', HomePageView.as_view(),
         name='home-page'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
