@@ -9,11 +9,11 @@
 {% block content %}
     <div class="push-6-bottom">
         <div class="row push-2-bottom">
-            <div class="col-sm-6 regular">
+            <div class="col-xs-6 regular">
                 <a href="{% url 'workshops:workshop_list' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Workshops</a>
             </div>
-            <div class="col-sm-6 text-right">
-                <a href="{% url 'workshops:workshop_detail' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Workshop</a>
+            <div class="col-xs-6 text-right">
+                <a href="{% url 'workshops:workshop_detail' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-eye"></i>&nbsp;&nbsp;View<span class="hidden-xs"> Workshop</span></a>
             </div>
         </div>
         <div class="row">

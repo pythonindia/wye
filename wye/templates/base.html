@@ -55,7 +55,9 @@
             </nav>
 
             {% block content_wrapper %}
-                {% block header %}{% endblock %}
+                <header role="banner">
+                    {% block header %}{% endblock %}
+                </header>
                 {% block sub_header %}{% endblock %}
 
                 {% block container_body %}
