@@ -32,7 +32,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
 class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
     model = Workshop
     context_object_name = "workshop"
-    template_name = 'workshops/workshop_list.html'
+    template_name = 'workshops/workshop_detail.html'
 
 
 class WorkshopCreate(views.LoginRequiredMixin, generic.CreateView):
