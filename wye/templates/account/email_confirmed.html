@@ -5,13 +5,18 @@
 
 {% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
 
-
 {% block content %}
-
-<h1>{% trans "Confirm E-mail Address" %}</h1>
-
-{% user_display confirmation.email_address.user as user_display %}
-        
-<p>{% blocktrans with confirmation.email_address.email as email %}You have confirmed that <a href="mailto:{{email}}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
-
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading text-center regular">{% trans "Confirm E-mail Address" %}</div>
+                    <div class="panel-body">
+                        {% user_display confirmation.email_address.user as user_display %}
+                        <p>{% blocktrans with confirmation.email_address.email as email %}You have confirmed that <a href="mailto:{{email}}" class="primary">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
