@@ -86,6 +86,10 @@ class Profile(models.Model):
             profile__usertype__display_name__in=user_type
         )
 
+    @property
+    def get_user_type(self):
+        return [x.slug for x in self.usertype.all()]
+
 
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
