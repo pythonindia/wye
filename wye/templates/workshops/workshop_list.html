@@ -8,24 +8,55 @@
 {% block content %}
     <div class="push-4-bottom">
         <div class="row">
-            <div class="col-sm-6">
-                <h3>My Workshops List</h3>
+            <div class="col-xs-6">
+                <h3 class="space-1q-top">My Workshops</h3>
             </div>
-            <div class="col-sm-6 text-right">
-                <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request for workshop</a>
+            <div class="col-xs-6 text-right">
+                <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request<span class="hidden-xs"> for workshop</span></a>
             </div>
         </div>
-        <div class="row">
+        <div class="row push-1">
             <div class="col-sm-12">
                 {% if not workshop_list %}
                     <p class="gray sub"><em>No workshops on your list.</em></p>
                 {% else %}
-                    {% for workshop in workshop_list %}
-                        <div><a href="{% url 'workshops:workshop_detail' workshop.pk %}" >{{ workshop }} </a></div>
-                    {% endfor %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-clickable sub">
+                            <thead>
+                                <tr>
+                                    <th>Organization</th>
+                                    <th>Presenter</th>
+                                    <th>Date</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for workshop in workshop_list %}
+                                    <tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
+                                        <td>{{ workshop.requester }}</td>
+                                        <td>{{ workshop.presenter }}</td>
+                                        <td>{{ workshop.expected_date }}</td>
+                                        <td>{{ workshop.location }}</td>
+                                        <td>{{ workshop.status }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 {% endif %}
             </div>
         </div>
         {#{{workshop}}#}
     </div>
+{% endblock %}
+{% block footer_scripts %}
+    <script>
+        'use strict';
+        $(function(){
+            $('.clickable-row').click(function() {
+                window.document.location = $(this).data('href');
+            });
+        });
+    </script>
 {% endblock %}
