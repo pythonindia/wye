@@ -17,7 +17,7 @@ class WorkshopEmailMixin(object):
         """
         Send email to org/group users.
         @param context: Is dict of data required by email template.
-        @exclude_emails: Is list of email to be excluded from 
+        @exclude_emails: Is list of email to be excluded from
         email update.
         """
 

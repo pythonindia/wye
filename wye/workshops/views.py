@@ -2,7 +2,6 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 
 from braces import views
-from wye.base.emailer import send_mail
 # from wye.organisations.models import Organisation
 
 from .forms import WorkshopForm
@@ -36,7 +35,7 @@ class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
 
 
 class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
-                    generic.CreateView):
+                     generic.CreateView):
     model = Workshop
     email_dir = 'email_messages/workshop/create_workshop/'
     form_class = WorkshopForm
@@ -110,4 +109,3 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         self.send_mail_to_presenter(user, context)
         context['presenter'] = False
         self.send_mail_to_group(context, exclude_emails=[user.email])
-
