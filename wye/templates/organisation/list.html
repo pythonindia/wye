@@ -10,14 +10,14 @@
 	<section class="myorganisations">
 		<div class="push-4-bottom">
 			<div class="row">
-				<div class="col-sm-6">
-					<h3>My Organisations</h3>
+				<div class="col-xs-6">
+					<h3 class="space-1q-top">My Organisations</h3>
 				</div>
-				<div class="col-sm-6 text-right">
-					<a href="{% url 'organisations:organisation_create' %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Organisation</a>
+				<div class="col-xs-6 text-right">
+					<a href="{% url 'organisations:organisation_create' %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add<span class="hidden-xs"> Organisation</span></a>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row push-1">
 				<div class="col-sm-12">
 					{% if not org_created_list %}
 						<p class="gray sub"><em>You have not created organisations.</em></p>
@@ -35,7 +35,7 @@
 	{% if org_belongs_list %}
 		<section class="organisations_working_for">
 			<div class="push-4-bottom push-1-top">
-				<h3>Other organisations am member of</h3>
+				<h3>Other organisations I am member of</h3>
 				<div class="row">
 					<div class="col-sm-12">
 						{% for org in org_belongs_list %}
