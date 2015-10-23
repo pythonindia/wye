@@ -31,7 +31,8 @@ class Command(BaseCommand):
         site.save()
 
         print('  Creating Superuser')
-        self.create_user(is_superuser=True, username='admin', email='admin@fossevents.in',
+        email = 'admin@pythonexpress.in'
+        self.create_user(is_superuser=True, username='admin', email=email,
                          is_active=True, is_staff=True, first_name='Admin')
 
         print('  Creating sample users')

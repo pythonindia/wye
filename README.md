@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye)
 
-wye is the platform to help organisations(Colleges/FOSS) connect to expereinced tutors which will benefit number of students to learn Python and real time use of Python in different domains. 
+wye is the platform to help organisations(Colleges/FOSS) connect to expereinced tutors which will benefit number of students to learn Python and real time use of Python in different domains.
 
 wye is pronounced as #Y
 
@@ -14,7 +14,7 @@ How to setup
  - Create a PostgreSQL 9.3 database
  - It is advised to install all the requirements inside virtualenv, use virtualenvwrapper to manage virtualenvs.
 
-``` 
+```
 cp settings/dev.sample.py settings/dev.py
 createdb wye
 pip install -r requirements/dev.txt
@@ -23,7 +23,11 @@ python manage.py sample_data
 python manage.py runserver
 ```
 
-Initial auth (admin / 123123)
+#### Login Details
+
+Email: admin@pythonexpress.in
+Password: 123123
+
 
 ### Making Frontend Changes
 
