@@ -10,8 +10,9 @@ class WorkshopAdmin(admin.ModelAdmin):
 		'no_of_participants')
 	fields = ('is_active', 'status')
 	search_fields = (
-		'requester',
-		'location')
+		'expected_date',
+		'workshop_level',
+		'status')
 	list_filter = ('is_active', 'status', 'workshop_level', 'location')
 
 admin.site.register(Workshop, WorkshopAdmin)

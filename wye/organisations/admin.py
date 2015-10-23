@@ -10,8 +10,7 @@ class OrganisationAdmin(admin.ModelAdmin):
 		'location')
 	search_fields = (
 		'organisation_type',
-		'name',
-		'location')
+		'name')
 	list_filter = (
 		'active',
 		'organisation_type',
