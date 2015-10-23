@@ -37,3 +37,7 @@ class RegionalLead(models.Model):
         db_table = 'regional_lead'
         verbose_name = 'RegionalLead'
         verbose_name_plural = 'RegionalLeads'
+
+    @property
+    def get_count_of_leads(self):
+        return self.leads.count()

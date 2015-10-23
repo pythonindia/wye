@@ -1,49 +1,51 @@
 {% extends "base.html" %}
 
+{% block title %}Regional | {{ block.super }}{% endblock %}
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Regional</h1>
+    </div>
+{% endblock %}
+
 
 {% block content %}
 
-<section>
-<a href="{% url 'regions:lead-create'  %}"" class="btn btn-primary btn-lg "> Add Regional Lead </a>
-<a href="{% url 'regions:state-create'  %}"" class="btn btn-primary btn-lg "> Add State </a>
-<a href="{% url 'regions:location-create'  %}"" class="btn btn-primary btn-lg "> Add Location </a>
-
-</section>
-
-<section>
-	<div class="container">
+<div class="col-sm-6 text-left">
+	<a href="{% url 'regions:lead-create'  %}" class="btn btn-theme-primary sub pad-1">
+	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add Regional Lead</a>
+	<h2>Regional Info</h2>
+	{% for regional in regional_list %}
+		<div class="row>">
+			<span>{{regional.location}}</span>
+			<span>{{regional.get_count_of_leads}}</span>
+			<a href="{% url 'regions:lead-update' regional.pk %}" class="btn btn-theme-primary sub pad-1">
+			edit
+			</a>
+		</div>
+	{% endfor %}
+</div>
+<div class="col-sm-3 text-left">
+	<a href="{% url 'regions:location-create'  %}" class="btn btn-theme-primary sub pad-1">
+	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add City/Place</a>
+	<h2>City/Place List</h2>
+	{% for location in location_list %}
 		<div class="row">
-			<div class="col-md-6">
-				<h2>Regional Info</h2>
-				{% for regional in regional_list %}
-					<div class="row">
-					<div class="col-md-2">
-						<div>{{regional}}</div>
-					</div>
-					<div class="col-md-2">
-						<div>{{regional}}</div>
-					</div>
-					</div>
-				{% endfor %}
-			</div>
-			<div class="col-md-3">
-				<h2>Location List</h2>
-				{% for regional in location_list %}
-					<div class="row">
-						{{regional}}
-					</div>    
-      			{% endfor %}
-       		</div>
-        	<div class="col-md-3">
-          		<h2>State</h2>
-          		{% for regional in state_list %}
-      				<div class="row">
-      					{{regional}}
-      				</div>    
-      			{% endfor %}
-        	</div>
-      	</div>
-      </div>
-</section>
+			{{location}}
+		</div>    
+	{% endfor %}
+</div>
+<div class="col-sm-3 text-left">
+	<a href="{% url 'regions:state-create'  %}" class="btn btn-theme-primary sub pad-1">
+	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add State</a>
+	<h2>State</h2>
+	{% for state in state_list %}
+	<div class="row">
+		{{state.id}} {{state.name}}
+	</div>    
+	{% endfor %}
+</div>
+
+
+
 
 {% endblock %}
