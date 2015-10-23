@@ -1,6 +1,8 @@
 # Import from base.txt
--r base.txt
+-r requirements/base.txt
 
 # For server.
 # -------------------------------
 uwsgi==2.0.*
+
+# this file in this path is required for python buildpack.
