@@ -4,7 +4,7 @@
   "repository": "https://github.com/pythonindia/wye/",
   "keywords": ["python", "django", "teaching", "colleges"],
   "scripts": {
-    "postdeploy": "python manage.py migrate"
+    "postdeploy": "pip install -r requirements/heroku.txt && python manage.py migrate"
   },
   "addons": [
       "heroku-postgresql"

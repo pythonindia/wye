@@ -1,0 +1,6 @@
+# Import from base.txt
+-r base.txt
+
+# For server.
+# -------------------------------
+uwsgi==2.0.*
