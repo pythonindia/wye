@@ -113,9 +113,9 @@ class Workshop(TimeAuditModel):
             'msg': message_map[action]
         }
 
-
     def get_presenter_list(self):
         return [user.get_full_name() for user in self.presenter.all()]
+
 
 class WorkshopRatingValues(TimeAuditModel):
     '''
