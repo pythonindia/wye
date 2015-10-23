@@ -30,3 +30,8 @@ p {
 .all-caps {
     text-transform: uppercase;
 }
+@media screen and (max-width: 768px) {
+    header[role="banner"] h1{
+        font-size: 1.5em;
+    }
+}

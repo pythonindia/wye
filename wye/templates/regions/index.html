@@ -3,49 +3,75 @@
 {% block title %}Regional | {{ block.super }}{% endblock %}
 {% block header %}
     <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">Regional</h1>
+        <h1 class="no-space">Regions</h1>
     </div>
 {% endblock %}
 
 
 {% block content %}
-
-<div class="col-sm-6 text-left">
-	<a href="{% url 'regions:lead-create'  %}" class="btn btn-theme-primary sub pad-1">
-	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add Regional Lead</a>
-	<h2>Regional Info</h2>
-	{% for regional in regional_list %}
-		<div class="row>">
-			<span>{{regional.location}}</span>
-			<span>{{regional.get_count_of_leads}}</span>
-			<a href="{% url 'regions:lead-update' regional.pk %}" class="btn btn-theme-primary sub pad-1">
-			edit
-			</a>
-		</div>
-	{% endfor %}
-</div>
-<div class="col-sm-3 text-left">
-	<a href="{% url 'regions:location-create'  %}" class="btn btn-theme-primary sub pad-1">
-	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add City/Place</a>
-	<h2>City/Place List</h2>
-	{% for location in location_list %}
+	<div class="col-sm-12 col-md-6">
 		<div class="row">
-			{{location}}
-		</div>    
-	{% endfor %}
-</div>
-<div class="col-sm-3 text-left">
-	<a href="{% url 'regions:state-create'  %}" class="btn btn-theme-primary sub pad-1">
-	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add State</a>
-	<h2>State</h2>
-	{% for state in state_list %}
-	<div class="row">
-		{{state.id}} {{state.name}}
-	</div>    
-	{% endfor %}
-</div>
-
-
-
-
+			<div class="col-xs-6">
+				<h3 class="space-1q-top">Regional Info</h3>
+			</div>
+			<div class="col-xs-6 text-right">
+				<a href="{% url 'regions:lead-create'  %}" class="btn btn-md btn-theme-primary sub pad-1">
+					<i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="hidden-xs">Add </span>Regional Lead
+				</a>
+			</div>
+		</div>
+		<ul class="list-silent sub push-1">
+			{% if not regional_list %}
+				<li class="tiny"><em>You don't have any regional leads listed.</em></li>
+			{% else %}
+				{% for regional in regional_list %}
+					<li>
+						<span>{{regional.location}}</span>
+						<span>{{regional.get_count_of_leads}}</span>
+						<a href="{% url 'regions:lead-update' regional.pk %}" class="btn btn-theme-primary sub pad-1">
+						edit
+						</a>
+					</li>
+				{% endfor %}
+			{% endif %}
+		</ul>
+	</div>
+	<div class="col-sm-6 col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<span class="regular">City/Place</span>
+				<a href="{% url 'regions:location-create'  %}" class="btn btn-xs btn-theme-primary tiny pad-1 flushright"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a>
+			</div>
+			<div class="panel-body">
+				<ul class="list-silent sub">
+					{% if not location_list %}
+						<li class="tiny"><em>No locations listed</em></li>
+					{% else %}
+						{% for location in location_list %}
+							<li>{{location}}</li>
+						{% endfor %}
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 col-md-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<span class="regular">State</span>
+				<a href="{% url 'regions:state-create'  %}" class="btn btn-xs btn-theme-primary tiny pad-1 flushright"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add</a>
+			</div>
+			<div class="panel-body">
+				<ul class="list-silent sub">
+					{% if not state_list %}
+						<li class="tiny"><em>No states listed</em></li>
+					{% else %}
+						{% for state in state_list %}
+							<li>{{state.id}} {{state.name}}</li>
+						{% endfor %}
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
 {% endblock %}

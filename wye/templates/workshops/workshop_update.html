@@ -7,7 +7,16 @@
 {% endblock %}
 
 {% block content %}
+{{ form.media }}
     <div class="push-6-bottom">
+        <div class="row push-2-bottom">
+            <div class="col-xs-6 regular">
+                <a href="{% url 'workshops:workshop_list' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Workshops</a>
+            </div>
+            <div class="col-xs-6 text-right">
+                <a href="{% url 'workshops:workshop_detail' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-eye"></i>&nbsp;&nbsp;View<span class="hidden-xs"> Workshop</span></a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
                 <form method="post" action="">{% csrf_token %}
@@ -18,4 +27,5 @@
             </div>
         </div>
     </div>
+
 {% endblock %}

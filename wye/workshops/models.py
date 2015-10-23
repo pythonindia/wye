@@ -48,7 +48,8 @@ class Workshop(TimeAuditModel):
     workshop_section = models.ForeignKey(WorkshopSections)
     is_active = models.BooleanField(default=True)
     status = models.PositiveSmallIntegerField(
-        choices=WorkshopStatus.CHOICES, verbose_name="Current Status")
+        choices=WorkshopStatus.CHOICES, verbose_name="Current Status",
+        default=WorkshopStatus.DRAFT)
 
     class Meta:
         db_table = 'workshops'
@@ -112,6 +113,9 @@ class Workshop(TimeAuditModel):
             'msg': message_map[action]
         }
 
+    def get_presenter_list(self):
+        return [user.get_full_name() for user in self.presenter.all()]
+
 
 class WorkshopRatingValues(TimeAuditModel):
     '''
@@ -124,7 +128,7 @@ class WorkshopRatingValues(TimeAuditModel):
         db_table = 'workshop_vote_value'
 
     def __str__(self):
-        return '{}-{}' % (self.value, self.name)
+        return '{}-{}'.format(self.value, self.name)
 
 
 class WorkshopVoting(TimeAuditModel):
@@ -138,9 +142,9 @@ class WorkshopVoting(TimeAuditModel):
         db_table = 'workshop_votes'
 
     def __str__(self):
-        return '{}-{}-{}' % (self.workshop,
-                             self.requester_rating,
-                             self.presenter_rating)
+        return '{}-{}-{}'.format(self.workshop,
+                                 self.requester_rating,
+                                 self.presenter_rating)
 
 
 class WorkshopFeedBack(TimeAuditModel):
@@ -155,6 +159,6 @@ class WorkshopFeedBack(TimeAuditModel):
         db_table = 'workshop_feedback'
 
     def __str__(self):
-        return '{}-{}-{}' % (self.workshop,
-                             self.requester_rating,
-                             self.presenter_rating)
+        return '{}-{}-{}'.format(self.workshop,
+                                 self.requester_rating,
+                                 self.presenter_rating)

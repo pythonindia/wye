@@ -55,7 +55,9 @@
             </nav>
 
             {% block content_wrapper %}
-                {% block header %}{% endblock %}
+                <header role="banner">
+                    {% block header %}{% endblock %}
+                </header>
                 {% block sub_header %}{% endblock %}
 
                 {% block container_body %}
@@ -77,7 +79,7 @@
             </div>
         </footer>
 
-
         <script src="{% static 'js/libs/bootstrap.min.js' %}"></script>
+        {% block footer_scripts %}{% endblock %}
     </body>
 </html>
