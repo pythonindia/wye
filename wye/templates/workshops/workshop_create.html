@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Create Workshop</h1>
+    </div>
+{% endblock %}
+
 {% block content %}
-{{ form.media }}
-<form method="post" action="{% url 'workshops:workshop_create' %}">{% csrf_token %}
-{{form.errors}}
-{{form.as_p}}
-<input type="submit" value="Create">
-</form>
+    {{ form.media }}
+    <div class="push-6-bottom">
+        <div class="row">
+            <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                <form method="post" action="{% url 'workshops:workshop_create' %}">{% csrf_token %}
+                    {{form.errors}}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-theme regular" value="Create">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

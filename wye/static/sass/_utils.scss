@@ -1,11 +1,11 @@
 .btn-theme-primary {
     background-color: $primary;
     border-color: $primary;
-    color: $dark;
+    color: white;
     &:hover {
         background-color: $primary-alt;
         border-color: $primary-alt;
-        color: $dark;
+        color: white;
     }
 }
 .btn-theme-secondary {
@@ -26,5 +26,25 @@
         background-color: $tertiary-alt;
         border-color: $tertiary-alt;
         color: white;
+    }
+}
+.btn-theme {
+    background-color: $theme;
+    border-color: $theme;
+    color: $dark;
+    &:hover {
+        background-color: $dark;
+        border-color: $dark;
+        color: white;
+    }
+}
+.btn-theme-dark {
+    background-color: $dark;
+    border-color: $dark;
+    color: white;
+    &:hover {
+        background-color: $theme;
+        border-color: $theme;
+        color: $dark;
     }
 }

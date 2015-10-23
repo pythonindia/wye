@@ -80,7 +80,7 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         """Send email to presenter and org users."""
 
         workshop = self.object
-        email_dir = 'workshops/email/assign_me/'
+        email_dir = 'email_messages/workshop/assign_me/'
         last_presenter = user
         # Collage POC and admin email
         poc_admin_user = Profile.get_user_with_type(

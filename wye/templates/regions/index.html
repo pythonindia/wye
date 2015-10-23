@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Regional | {{ block.super }}{% endblock %}
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Regional</h1>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="col-sm-6 text-left">
+	<a href="{% url 'regions:lead-create'  %}" class="btn btn-theme-primary sub pad-1">
+	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add Regional Lead</a>
+	<h2>Regional Info</h2>
+	{% for regional in regional_list %}
+		<div class="row>">
+			<span>{{regional.location}}</span>
+			<span>{{regional.get_count_of_leads}}</span>
+			<a href="{% url 'regions:lead-update' regional.pk %}" class="btn btn-theme-primary sub pad-1">
+			edit
+			</a>
+		</div>
+	{% endfor %}
+</div>
+<div class="col-sm-3 text-left">
+	<a href="{% url 'regions:location-create'  %}" class="btn btn-theme-primary sub pad-1">
+	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add City/Place</a>
+	<h2>City/Place List</h2>
+	{% for location in location_list %}
+		<div class="row">
+			{{location}}
+		</div>    
+	{% endfor %}
+</div>
+<div class="col-sm-3 text-left">
+	<a href="{% url 'regions:state-create'  %}" class="btn btn-theme-primary sub pad-1">
+	<i class="fa fa-plus"></i>&nbsp;&nbsp;Add State</a>
+	<h2>State</h2>
+	{% for state in state_list %}
+	<div class="row">
+		{{state.id}} {{state.name}}
+	</div>    
+	{% endfor %}
+</div>
+
+
+
+
+{% endblock %}

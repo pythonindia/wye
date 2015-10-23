@@ -1,8 +1,9 @@
-.fill-primary       { background-color: $primary; color: $dark; }
-.fill-secondary     { background-color: $secondary; }
-.fill-tertiary      { background-color: $tertiary; }
+.fill-primary       { background-color: $primary; color: white; }
+.fill-secondary     { background-color: $secondary; color: white; }
+.fill-tertiary      { background-color: $tertiary; color: white; }
+.fill-quaternary    { background-color: $quaternary; color: white; }
 .fill-white         { background-color: white; }
-.fill-banner        { background-color: $banner; color: white; }
+.fill-theme         { background-color: $theme; color: $dark; }
 
 .white      { color: white; }
 .gray       { color: $gray-text; }

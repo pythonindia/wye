@@ -1,5 +1,4 @@
 .navbar, .navbar-nav {
-    height: 54px;
     border-radius: 0;
     border: none;
 }
@@ -16,4 +15,42 @@
 }
 .btn {
     font-weight: 200;
+}
+
+@media screen and (min-width: 768px) {
+    .navbar-nav>li>a.nav-btn {
+        background: $primary;
+        color: #fff;
+        margin: 13px 0;
+        border-radius: 0.4em;
+        padding: 4px 15px;
+        &:hover {
+            background-color: $primary-alt;
+            color: white;
+        }
+    }
+}
+@media screen and (max-width: 768px) {
+    .navbar-default {
+        box-shadow: none;
+    }
+    .navbar-default .navbar-collapse {
+        background: white;
+        width: 20em;
+        right: 0;
+        float: right;
+        z-index: 10;
+        margin-right: 0;
+        text-align: right;
+        border-top-color: white;
+        a {
+            padding: 10px 2px;
+        }
+        ul {
+            margin: 0;
+        }
+    }
+    .navbar-nav .open .dropdown-menu>li>a {
+        text-align: right;
+    }
 }

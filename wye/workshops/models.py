@@ -3,7 +3,8 @@ from django.db import models
 
 from wye.base.constants import WorkshopStatus, WorkshopLevel, WorkshopAction
 from wye.base.models import TimeAuditModel
-from wye.organisations.models import Organisation, Location
+from wye.organisations.models import Organisation
+from wye.regions.models import Location
 
 from .decorators import validate_action_param
 

@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}Wye{% endblock %}</title>
+        <title>{% block title %}PythonExpress{% endblock %}</title>
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
         <link rel="stylesheet" href="{% static 'css/libs/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/app.css' %}">
@@ -19,16 +19,21 @@
             <nav class="navbar no-space-bottom navbar-default fill-white" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="/">{{ site_title }}</a>
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <a class="navbar-brand" href="/"><img id="logo" src="{% static 'img/logo_python_express.png' %}" width="80" alt="{{ site_title }}"></a>
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/"><img id="logo" src="{% static 'img/logo_yellow.png' %}" width="80" alt="logo"></a></li>
-                            <li><a href="/">Wye</a></li>
                             <li><a href="/about/">About</a></li>
                             {% if user.is_authenticated %}
-                                <li><a href="/organisation">Organizations</a></li>
+                                <li><a href="/organisation">Organisations</a></li>
                                 <li><a href="/workshop">Workshops</a></li>
+                                {% if user.is_staff %}
+                                	<li><a href="/region">Regions</a></li>
+                                {% endif %}
                             {% endif %}
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -41,7 +46,7 @@
                                         </ul>
                                     </li>
                                 {% else %}
-                                    <li><a href="/accounts/login">Log In</a>
+                                    <li><a href="/accounts/login" class="nav-btn">Log In</a>
                                 {% endif %}
                             {%endblock loginindicator %}
                         </ul>
@@ -50,10 +55,8 @@
             </nav>
 
             {% block content_wrapper %}
-                {% block container_head %}
-                    {% block content_head %}
-                    {% endblock %}
-                {% endblock %}
+                {% block header %}{% endblock %}
+                {% block sub_header %}{% endblock %}
 
                 {% block container_body %}
                     <div class="container push-4-top">
@@ -73,5 +76,8 @@
             {% endblock %}
             </div>
         </footer>
+
+
+        <script src="{% static 'js/libs/bootstrap.min.js' %}"></script>
     </body>
 </html>

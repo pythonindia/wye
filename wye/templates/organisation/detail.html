@@ -1,19 +1,24 @@
 {% extends "base.html" %}
+{% block title %}Organisation | {{ block.super }}{% endblock %}
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Organisations</h1>
+    </div>
+{% endblock %}
 
 {% block content %}
-<div>
-<div>{{object.name}}</div>
-<div>{{object.get_organisation_type}}</div>
-<div>{{object.description}}</div>
-<div>{{object.location}}</div>
-<div>
-	<ul>
-		{% for u in object.user.all %}
-			<li>{{u.first_name}} {{u.first_name}}  |  {{u.email}}</li>
-		{% endfor %}
-	</ul>
-</div>
-</div>
-<div>{{object.active}}</div>
-
+    <div class="push-4-bottom">
+        <h3>{{object.name}}</h3>
+        <div>{{object.get_organisation_type}}</div>
+        <div>{{object.description}}</div>
+        <div>{{object.location}}</div>
+        <div>
+        	<ul>
+        		{% for u in object.user.all %}
+        			<li>{{u.first_name}} {{u.first_name}}  |  {{u.email}}</li>
+        		{% endfor %}
+        	</ul>
+        </div>
+    </div>
+    <div>{{object.active}}</div>
 {% endblock %}

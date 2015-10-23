@@ -57,10 +57,10 @@ OUR_APPS = (
     'wye.profiles',
     'wye.organisations',
     'wye.workshops',
+    'wye.regions',
 )
 
 THIRD_PARTY_APPS = (
-    'autocomplete_light',
     'rest_framework',
     'allauth',
     'allauth.account',

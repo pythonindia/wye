@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% include 'autocomplete_light/static.html' %}
+
+{% block extracss %}
+<script src="{% static 'autocomplete.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'regions:location-create' %}">{% csrf_token %}
+{{form.errors}}
+{{form.as_p}}
+<input type="submit" value="Create">
+</form>
+{% endblock %}
