@@ -11,15 +11,15 @@
 {% block sub_header %}
     <div class="clearfix text-center">
         <div class="col-sm-4 fill-primary">
-            <div class="extralarge push-h-top push-1q-bottom">20</div>
+            <div class="extralarge push-h-top push-1q-bottom">{{ tutor_registered_count }}</div>
             <div class="regular push-3q-bottom">Tutors registered</div>
         </div>
         <div class="col-sm-4 fill-secondary">
-            <div class="extralarge push-h-top push-1q-bottom">10</div>
+            <div class="extralarge push-h-top push-1q-bottom">{{ organisation_registered_count }}</div>
             <div class="regular push-3q-bottom">Organisations registered</div>
         </div>
         <div class="col-sm-4 fill-tertiary">
-            <div class="extralarge push-h-top push-1q-bottom">25</div>
+            <div class="extralarge push-h-top push-1q-bottom">{{ completed_workshop_count }}</div>
             <div class="regular push-3q-bottom">Workshops completed</div>
         </div>
         <!-- <div class="col-sm-4 fill-quaternary">
