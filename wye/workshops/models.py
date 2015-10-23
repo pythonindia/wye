@@ -113,6 +113,7 @@ class Workshop(TimeAuditModel):
             'msg': message_map[action]
         }
 
+
     def get_presenter_list(self):
         return [user.get_full_name() for user in self.presenter.all()]
 
@@ -142,8 +143,8 @@ class WorkshopVoting(TimeAuditModel):
 
     def __str__(self):
         return '{}-{}-{}'.format(self.workshop,
-                             self.requester_rating,
-                             self.presenter_rating)
+                                 self.requester_rating,
+                                 self.presenter_rating)
 
 
 class WorkshopFeedBack(TimeAuditModel):
@@ -159,5 +160,5 @@ class WorkshopFeedBack(TimeAuditModel):
 
     def __str__(self):
         return '{}-{}-{}'.format(self.workshop,
-                             self.requester_rating,
-                             self.presenter_rating)
+                                 self.requester_rating,
+                                 self.presenter_rating)
