@@ -22,11 +22,26 @@
 					{% if not org_created_list %}
 						<p class="gray sub"><em>You have not created organisations.</em></p>
 					{% else %}
-						{% for org in org_created_list %}
-								<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
-								<div class="col-sm-3">{{org.location}}</div>
-								<div class="col-sm-3">{{org.get_organisation_type}}</div>
-						{% endfor %}
+						<div class="table-responsive">
+							<table class="table table-bordered table-clickable sub">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Location</th>
+										<th>Type</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for org in org_created_list %}
+										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+											<td>{{org.name }}</td>
+											<td>{{org.location}}</td>
+											<td>{{org.get_organisation_type}}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
 					{% endif %}
 				</div>
 			</div>
@@ -38,14 +53,40 @@
 				<h3>Other organisations I am member of</h3>
 				<div class="row">
 					<div class="col-sm-12">
-						{% for org in org_belongs_list %}
-							<div class="col-sm-3"><a href="{% url 'organisations:organisation_details' org.pk %}" >{{org.name }} </a></div>
-							<div class="col-sm-3">{{org.location}}</div>
-							<div class="col-sm-3">{{org.get_organisation_type}}</div>
-						{% endfor %}
+						<div class="table-responsive">
+							<table class="table table-bordered table-clickable sub">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Location</th>
+										<th>Type</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for org in org_belongs_list %}
+										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+											<td>{{org.name }}</td>
+											<td>{{org.location}}</td>
+											<td>{{org.get_organisation_type}}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 	{% endif %}
 {% endblock %}
+{% block footer_scripts %}
+    <script>
+        'use strict';
+        $(function(){
+            $('.clickable-row').click(function() {
+                window.document.location = $(this).data('href');
+            });
+        });
+    </script>
+{% endblock %}
+

@@ -18,17 +18,52 @@
             </div>
         </div>
 
-        <h3>{{object.name}}</h3>
-        <div>{{object.get_organisation_type}}</div>
-        <div>{{object.description}}</div>
-        <div>{{object.location}}</div>
-        <div>
-        	<ul>
-        		{% for u in object.user.all %}
-        			<li>{{u.first_name}} {{u.first_name}}  |  {{u.email}}</li>
-        		{% endfor %}
-        	</ul>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading legible bold">
+                        {{object.name}}
+                    </div>
+                    <ul class="list-group regular">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Organisation Type</strong></div>
+                                <div class="col-xs-8">{{object.get_organisation_type}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Description</strong></div>
+                                <div class="col-xs-8">{{object.description}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Location</strong></div>
+                                <div class="col-xs-8">{{object.location}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Active</strong></div>
+                                <div class="col-xs-8">{{object.active}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Users</strong></div>
+                                <div class="col-xs-8">
+                                    <ul class="list-silent">
+                                        {% for u in object.user.all %}
+                                            <li>{{u.first_name}} {{u.first_name}}  |  {{u.email}}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
-    <div>{{object.active}}</div>
 {% endblock %}
