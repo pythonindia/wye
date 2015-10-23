@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Workshop Details</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="push-4-bottom">
+        <div class="row push-1-bottom">
+            <div class="col-sm-6 regular">
+                <a href="{% url 'workshops:workshop_list' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Workshops</a>
+            </div>
+            <div class="col-sm-6 text-right">
+                <a href="{% url 'workshops:workshop_update' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Edit Workshop</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 regular">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Organiser</strong></div>
+                            <div class="col-xs-8">{{ workshop.requester }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Instructor</strong></div>
+                            <div class="col-xs-8">{{ workshop.presenter }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Date</strong></div>
+                            <div class="col-xs-8">{{ workshop.expected_date }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Venue</strong></div>
+                            <div class="col-xs-8">{{ workshop.location }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Level</strong></div>
+                            <div class="col-xs-8">{{ workshop.workshop_level }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Expected no. of praticipants</strong></div>
+                            <div class="col-xs-8">{{ workshop.no_of_participants }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Section</strong></div>
+                            <div class="col-xs-8">{{ workshop.workshop_section }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Status</strong></div>
+                            <div class="col-xs-8">{{ workshop.status }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Is Active</strong></div>
+                            <div class="col-xs-8">{{ workshop.is_active }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Description</strong></div>
+                            <div class="col-xs-8">{{ workshop.description }}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
