@@ -18,7 +18,7 @@ urlpatterns = [
         include('wye.organisations.urls', namespace="organisations")),
     url(r'^workshop/',
         include('wye.workshops.urls', namespace="workshops")),
-    url(r'^profile/(?P<slug>[a-zA-Z0-9]+)/$',
+    url(r'^profile/(?P<slug>[a-zA-Z0-9-]+)/$',
         ProfileView.as_view(), name='profile-page'),
     url(r'^region/',
         include('wye.regions.urls', namespace="regions")),
