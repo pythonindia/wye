@@ -53,12 +53,15 @@
                     </div>
                 </div>
             </nav>
-
             {% block content_wrapper %}
                 <header role="banner">
                     {% block header %}{% endblock %}
                 </header>
                 {% block sub_header %}{% endblock %}
+
+                {% block breadcrumbs %}
+                    <a href="{% url 'home-page' %}">Home</a>
+                {% endblock %}
 
                 {% block container_body %}
                     <div class="container push-4-top">
