@@ -26,7 +26,7 @@
 			{% else %}
 				{% for regional in regional_list %}
 					<li>
-						<span>{{regional.location}}</span>
+						<span>{{regional.location|truncatechars:25}}</span>
 						<span>{{regional.get_count_of_leads}}</span>
 						<a href="{% url 'regions:lead-update' regional.pk %}" class="btn btn-theme-primary sub pad-1">
 						edit
@@ -48,7 +48,7 @@
 						<li class="tiny"><em>No locations listed</em></li>
 					{% else %}
 						{% for location in location_list %}
-							<li>{{location}}</li>
+							<li>{{location|truncatechars:25}}</li>
 						{% endfor %}
 					{% endif %}
 				</ul>
@@ -67,7 +67,7 @@
 						<li class="tiny"><em>No states listed</em></li>
 					{% else %}
 						{% for state in state_list %}
-							<li>{{state.id}} {{state.name}}</li>
+							<li>{{state.id}} {{state.name|truncatechars:25}}</li>
 						{% endfor %}
 					{% endif %}
 				</ul>
