@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block breadcrumbs %}
+    <b>{{ block.super }}</b> » User Profile
+{% endblock %}
+
 {% block content %}
 <div>
 <div>Full Name: {{object.user.first_name}} {{object.user.last_name}}</div>

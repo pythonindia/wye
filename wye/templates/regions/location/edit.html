@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block breadcrumbs %}
+    <b>{{ block.super }}</b> » <a href="/region/"><b>Regions</b></a> » <a href="#"><b>{{ location.name }}</b></a> » Edit
+{% endblock %}
+
 {% block content %}
 <form method="post" action="">{% csrf_token %}
 {{form.errors}}
