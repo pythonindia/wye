@@ -3,7 +3,7 @@ from django.views import generic
 
 from braces import views
 # from wye.organisations.models import Organisation
-
+from wye.base.constants import WorkshopStatus
 from .forms import WorkshopForm
 from .models import Workshop
 from .mixins import WorkshopEmailMixin
@@ -20,9 +20,10 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         # organisation_list = Organisation.objects.filter(
         #                user=self.request.user)
         context['workshop_list'] = workshop_list
-        context['workshop_feedback_pending'] = []
-        context['workshop_in_queue'] = []
-        context['workshop_completed'] = []
+        context['workshop_feedback_pending'] = [] 
+        #assuming in queue is for workshops that don't have a presenter
+        context['workshop_in_queue'] = [] 
+        context['workshop_completed'] = Workshop.objects.filter(status=WorkshopStatus.COMPLETED)
         context['workshop_withdrawn'] = []
         context['user'] = self.request.user
         return context
