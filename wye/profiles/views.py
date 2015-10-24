@@ -31,7 +31,6 @@ class UserDashboard(ListView):
             if each_type == 'Tutor':
                 context['workshop_list_tutor'] = Workshop.objects.filter(
                     presenter=self.request.user, status=WorkshopStatus.REQUESTED)
-
             if each_type == 'Regional-Lead':
                 context['workshops_accepted'] = Workshop.objects.filter(
                     status=WorkshopStatus.ACCEPTED)
