@@ -14,7 +14,6 @@ class RegionalListView(views.LoginRequiredMixin, generic.ListView):
     template_name = 'regions/index.html'
 
     def dispatch(self, request, *args, **kwargs):
-        print("am here")
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
 
@@ -40,7 +39,6 @@ class StateCreateView(views.LoginRequiredMixin, generic.CreateView):
         print("am here")
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
-        print("before super")
         return super(StateCreateView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
