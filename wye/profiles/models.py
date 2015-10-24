@@ -90,6 +90,9 @@ class Profile(models.Model):
     def get_user_type(self):
         return [x.slug for x in self.usertype.all()]
 
+    @property
+    def get_interested_locations(self):
+        return [x.name for x in self.interested_locations.all()]
 
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
