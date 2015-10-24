@@ -29,5 +29,11 @@ class SignupForm(UserCreationForm):
                              required=True)
 
 
-class UserProfile(forms.ModelForm):
-    model = models.Profile
+class UserProfileForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = models.Profile
+        exclude = ('user', 'slug')

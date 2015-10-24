@@ -6,7 +6,6 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 
 from wye.base.views import HomePageView
-from wye.profiles.views import ProfileView, UserDashboard
 
 
 urlpatterns = [
@@ -20,11 +19,10 @@ urlpatterns = [
         include('wye.organisations.urls', namespace="organisations")),
     url(r'^workshop/',
         include('wye.workshops.urls', namespace="workshops")),
-    url(r'^profile/(?P<slug>[a-zA-Z0-9]+)/$',
-        ProfileView.as_view(), name='profile-page'),
+    url(r'^profile/',
+        include('wye.profiles.urls', namespace="profiles")),
     url(r'^region/',
         include('wye.regions.urls', namespace="regions")),
-    url(r'^dashboard/$', UserDashboard.as_view(), name='dashboard'),
     url(r'^$', HomePageView.as_view(),
         name='home-page'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)

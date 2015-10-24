@@ -1,13 +1,19 @@
-from django.views.generic import DetailView
+from django.views import generic
 from django.views.generic.list import ListView
+from django.core.urlresolvers import reverse_lazy
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
+
+from braces import views
 
 from . import models
+from .forms import UserProfileForm
 from wye.workshops.models import Workshop
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Organisation
 
 
-class ProfileView(DetailView):
+class ProfileView(generic.DetailView):
     model = models.Profile
     template_name = 'profile/index.html'
 
@@ -18,6 +24,25 @@ class ProfileView(DetailView):
         context = super(
             ProfileView, self).get_context_data(*args, **kwargs)
         return context
+
+
+class ProfileCreateView(views.LoginRequiredMixin, generic.CreateView):
+    model = models.Profile
+    template_name = 'profile/profile_create.html'
+    form_class = UserProfileForm
+    success_url = reverse_lazy('profiles:dashboard')
+
+    def post(self, request, *args, **kwargs):
+        form = UserProfileForm(data=request.POST)
+        if form.is_valid():
+            new_profile = form.save(commit=False)
+            new_profile.user = request.user
+            new_profile.slug = request.user.username
+            new_profile.save()
+            form.save_m2m()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            return render(request, self.template_name, {'form': form})
 
 
 class UserDashboard(ListView):
