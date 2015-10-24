@@ -14,8 +14,10 @@ class RegionalListView(views.LoginRequiredMixin, generic.ListView):
     template_name = 'regions/index.html'
 
     def dispatch(self, request, *args, **kwargs):
+        print("am here")
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
+
         return super(RegionalListView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
@@ -35,9 +37,11 @@ class StateCreateView(views.LoginRequiredMixin, generic.CreateView):
     template_name = 'regions/state/create.html'
 
     def dispatch(self, request, *args, **kwargs):
+        print("am here")
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalListView, self).dispatch(request, *args, **kwargs)
+        print("before super")
+        return super(StateCreateView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = forms.StateForm(data=request.POST)
@@ -59,7 +63,7 @@ class StateEditView(views.LoginRequiredMixin, generic.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalListView, self).dispatch(request, *args, **kwargs)
+        return super(StateEditView, self).dispatch(request, *args, **kwargs)
 
 
 class LocationCreateView(views.LoginRequiredMixin, generic.CreateView):
@@ -71,7 +75,7 @@ class LocationCreateView(views.LoginRequiredMixin, generic.CreateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalListView, self).dispatch(request, *args, **kwargs)
+        return super(LocationCreateView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = forms.LocationForm(data=request.POST)
@@ -93,7 +97,7 @@ class LocationUpdateView(views.LoginRequiredMixin, generic.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalListView, self).dispatch(request, *args, **kwargs)
+        return super(LocationUpdateView, self).dispatch(request, *args, **kwargs)
 
 
 class RegionalLeadCreateView(views.LoginRequiredMixin, generic.CreateView):
@@ -105,7 +109,7 @@ class RegionalLeadCreateView(views.LoginRequiredMixin, generic.CreateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalListView, self).dispatch(request, *args, **kwargs)
+        return super(RegionalLeadCreateView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = forms.RegionalLeadForm(data=request.POST)
@@ -128,4 +132,4 @@ class RegionalLeadUpdateView(views.LoginRequiredMixin, generic.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if not self.request.user.is_staff:
             return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalListView, self).dispatch(request, *args, **kwargs)
+        return super(RegionalLeadUpdateView, self).dispatch(request, *args, **kwargs)
