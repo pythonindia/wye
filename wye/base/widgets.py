@@ -9,9 +9,9 @@ class CalendarWidget(forms.TextInput):
     """
 
     def render(self, name, value, attrs=None):
-        if value is not None and value !=  "":
+        if value is not None and value != "":
             value = self.format_date(value)
-        
+
         render_str = '''
             <script type="text/javascript">
             $(function() {

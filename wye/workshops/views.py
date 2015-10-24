@@ -20,9 +20,8 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         # organisation_list = Organisation.objects.filter(
         #                user=self.request.user)
         context['workshop_list'] = workshop_list
-        context['workshop_feedback_pending'] = [] 
-        #assuming in queue is for workshops that don't have a presenter
-        context['workshop_in_queue'] = [] 
+        context['workshop_feedback_pending'] = []
+        context['workshop_in_queue'] = []
         context['workshop_completed'] = Workshop.objects.filter(status=WorkshopStatus.COMPLETED)
         context['workshop_withdrawn'] = []
         context['user'] = self.request.user
@@ -56,11 +55,11 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
         return response
 
 
-class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.UpdateView ):
+class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.UpdateView):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_update.html'
-    
+
     def get_success_url(self):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         self.success_url = reverse(

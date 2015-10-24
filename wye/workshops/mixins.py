@@ -1,19 +1,19 @@
 from wye.profiles.models import Profile
 from wye.base.emailer import send_mail
-from django.http import HttpResponseForbidden
 from .models import Workshop
 from django.core.exceptions import PermissionDenied
 
+
 class WorkshopAccessMixin(object):
+
     def dispatch(self, request, *args, **kwargs):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         workshop = Workshop.objects.get(id=pk)
-        if not workshop.requester in self.request.user.organisation_users.all()  :
+        if workshop.requester not in self.request.user.organisation_users.all():
             print(workshop.requester)
             print(self.request.user.organisation_users.all())
             raise PermissionDenied
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
-
 
 
 class WorkshopEmailMixin(object):
