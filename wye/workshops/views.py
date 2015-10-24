@@ -6,7 +6,7 @@ from braces import views
 from wye.base.constants import WorkshopStatus
 from .forms import WorkshopForm
 from .models import Workshop
-from .mixins import WorkshopEmailMixin
+from .mixins import WorkshopEmailMixin, WorkshopAccessMixin
 
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
@@ -56,11 +56,11 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
         return response
 
 
-class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
+class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.UpdateView ):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_update.html'
-
+    
     def get_success_url(self):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         self.success_url = reverse(
@@ -69,7 +69,7 @@ class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
 
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                           views.JSONResponseMixin, generic.UpdateView):
+                           views.JSONResponseMixin, WorkshopAccessMixin, generic.UpdateView):
     model = Workshop
 
     def post(self, request, *args, **kwargs):
