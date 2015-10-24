@@ -9,7 +9,7 @@ class CalendarWidget(forms.TextInput):
     """
 
     def render(self, name, value, attrs=None):
-        if value is not None:
+        if value is not None and value != "":
             value = self.format_date(value)
 
         render_str = '''
@@ -25,7 +25,9 @@ class CalendarWidget(forms.TextInput):
         return mark_safe(rendered_input + render_str)
 
     def format_date(self, date):
-        return date.strftime('%d/%m/%Y')
+        if type(date) != str:
+            return date.strftime('%d/%m/%Y')
+        return date
 
     class Media:
         css = {

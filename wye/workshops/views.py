@@ -3,10 +3,10 @@ from django.views import generic
 
 from braces import views
 # from wye.organisations.models import Organisation
-
+from wye.base.constants import WorkshopStatus
 from .forms import WorkshopForm
 from .models import Workshop
-from .mixins import WorkshopEmailMixin
+from .mixins import WorkshopEmailMixin, WorkshopAccessMixin
 
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
@@ -22,7 +22,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         context['workshop_list'] = workshop_list
         context['workshop_feedback_pending'] = []
         context['workshop_in_queue'] = []
-        context['workshop_completed'] = []
+        context['workshop_completed'] = Workshop.objects.filter(status=WorkshopStatus.COMPLETED)
         context['workshop_withdrawn'] = []
         context['user'] = self.request.user
         return context
@@ -55,7 +55,7 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
         return response
 
 
-class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
+class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.UpdateView):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_update.html'
@@ -68,7 +68,7 @@ class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
 
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                           views.JSONResponseMixin, generic.UpdateView):
+                           views.JSONResponseMixin, WorkshopAccessMixin, generic.UpdateView):
     model = Workshop
 
     def post(self, request, *args, **kwargs):
