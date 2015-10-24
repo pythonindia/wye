@@ -24,7 +24,7 @@ APP_DIR = join(BASE_DIR, 'wye')
 SECRET_KEY = '(7a-1a$5rsmii8grbapha!r4du4dmh1xnp0p8_(lnx_cx(p7+^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 

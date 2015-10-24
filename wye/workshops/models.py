@@ -130,6 +130,9 @@ class WorkshopRatingValues(TimeAuditModel):
     def __str__(self):
         return '{}-{}'.format(self.value, self.name)
 
+    def get_questions(cls):
+        return  cls.obejcts.values('name')
+
 
 class WorkshopVoting(TimeAuditModel):
     requester_rating = models.ForeignKey(

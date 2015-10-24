@@ -3,7 +3,8 @@ from django.conf import settings
 
 from wye.base.widgets import CalendarWidget
 
-from .models import Workshop
+from django.utils.text import slugify
+from .models import Workshop, WorkshopRatingValues
 
 
 class WorkshopForm(forms.ModelForm):
@@ -19,3 +20,12 @@ class WorkshopForm(forms.ModelForm):
         exclude = (
             'presenter', 'created_at', 'modified_at',
             'is_active')
+
+
+class WorkshopFeedback(forms.Form):
+    def __init__(self, *args, **kwargs):
+        questions = WorkshopRatingValues.get_questions()
+
+        for question in questions:
+            self.fields[slugify(question)] = forms.TextField()
+
