@@ -2,11 +2,10 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 
 from braces import views
-# from wye.organisations.models import Organisation
-from wye.base.constants import WorkshopStatus
+
 from .forms import WorkshopForm
-from .models import Workshop
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin
+from .models import Workshop
 
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
@@ -16,14 +15,8 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(
             WorkshopList, self).get_context_data(*args, **kwargs)
-        workshop_list = Workshop.objects.filter()
-        # organisation_list = Organisation.objects.filter(
-        #                user=self.request.user)
+        workshop_list = Workshop.objects.all()
         context['workshop_list'] = workshop_list
-        context['workshop_feedback_pending'] = []
-        context['workshop_in_queue'] = []
-        context['workshop_completed'] = Workshop.objects.filter(status=WorkshopStatus.COMPLETED)
-        context['workshop_withdrawn'] = []
         context['user'] = self.request.user
         return context
 
