@@ -29,8 +29,10 @@ class UserDashboard(ListView):
         user_profile = models.Profile.objects.get(user__id=self.request.user.id)
         for each_type in user_profile.get_user_type:
             if each_type == 'Tutor':
-                context['workshop_list_tutor'] = Workshop.objects.filter(
+                context['workshop_requested_tutor'] = Workshop.objects.filter(
                     presenter=self.request.user, status=WorkshopStatus.REQUESTED)
+                context['workshop_completed_tutor'] = Workshop.objects.filter(
+                    presenter=self.request.user, status=WorkshopStatus.COMPLETED)
             if each_type == 'Regional-Lead':
                 context['workshops_accepted_under_rl'] = Workshop.objects.filter(
                     status=WorkshopStatus.ACCEPTED)
@@ -55,5 +57,4 @@ class UserDashboard(ListView):
                     status=WorkshopStatus.ACCEPTED,
                     requester=Organisation.objects.filter(
                         created_by__id=self.request.user.id))
-
         return context

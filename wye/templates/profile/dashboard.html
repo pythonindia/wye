@@ -10,13 +10,13 @@
     <div class="push-4-bottom">
         <div class="row">
             <div class="col-xs-6">
-                <h3 class="space-1q-top">My Workshops</h3>
+                <h3 class="space-1q-top">Workshops Requested</h3>
             </div>
         </div>
         <div class="row push-1">
             <div class="col-sm-12">
-                {% if not workshop_list_tutor %}
-                    <p class="gray sub"><em>No workshops on your list.</em></p>
+                {% if not workshop_requested_tutor %}
+                    <p class="gray sub"><em>You haven't requested any workshop.</em></p>
                 {% else %}
                     <div class="table-responsive">
                         <table class="table table-bordered sub">
@@ -26,17 +26,15 @@
                                     <th>Presenter</th>
                                     <th>Date</th>
                                     <th>Location</th>
-                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for workshop in workshop_list_tutor %}
+                                {% for workshop in workshop_requested_tutor %}
                                     <tr>
                                         <td>{{ workshop.requester }}</td>
-                                        <td>{{ workshop.presenter }}</td>
+                                        <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
-                                        <td>{{ workshop.status }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -46,5 +44,45 @@
             </div>
         </div>
         {#{{workshop}}#}
+    </div>
+
+    <div class="push-2-top">
+        <div class="row">
+            <div class="col-xs-6">
+                <h3 class="space-1q-top">Workshops Completed</h3>
+            </div>
+        </div>
+        <div class="row push-1">
+            <div class="col-sm-12">
+                {% if not workshop_completed_tutor %}
+                    <p class="gray sub"><em>Your haven't taken any workshop.</em></p>
+                {% else %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered sub">
+                            <thead>
+                                <tr>
+                                    <th>Organization</th>
+                                    <th>Presenter</th>
+                                    <th>Date</th>
+                                    <th>Location</th>
+                                    <th>No of Participants</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for workshop in workshop_completed_tutor %}
+                                    <tr>
+                                        <td>{{ workshop.requester }}</td>
+                                        <td>{{ workshop.get_presenter_list|join:", " }}</td>
+                                        <td>{{ workshop.expected_date }}</td>
+                                        <td>{{ workshop.location }}</td>
+                                        <td>{{ workshop.no_of_participants }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}
