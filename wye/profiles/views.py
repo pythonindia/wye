@@ -32,9 +32,9 @@ class UserDashboard(ListView):
                 context['workshop_list_tutor'] = Workshop.objects.filter(
                     presenter=self.request.user, status=WorkshopStatus.REQUESTED)
             if each_type == 'Regional-Lead':
-                context['workshops_accepted'] = Workshop.objects.filter(
+                context['workshops_accepted_under_rl'] = Workshop.objects.filter(
                     status=WorkshopStatus.ACCEPTED)
-                context['workshops_pending'] = Workshop.objects.filter(
+                context['workshops_pending_under_rl'] = Workshop.objects.filter(
                     status=WorkshopStatus.REQUESTED)
                 context['interested_tutors'] = models.Profile.objects.filter(
                     usertype__slug='Tutor',
@@ -42,5 +42,18 @@ class UserDashboard(ListView):
                     user__id=self.request.user.id).count()
                 context['interested_locations'] = Organisation.objects.filter(
                     location__name__in=user_profile.get_interested_locations).count()
+            if each_type == 'College-POC':
+                context['organisation_users'] = models.Profile.objects.filter(
+                    user__id__in=Organisation.objects.filter(
+                        created_by__id=self.request.user.id).values_list(
+                        'user', flat=True))
+                context['workshop_requested_under_poc'] = Workshop.objects.filter(
+                    status=WorkshopStatus.REQUESTED,
+                    requester=Organisation.objects.filter(
+                        created_by__id=self.request.user.id))
+                context['workshops_accepted_under_poc'] = Workshop.objects.filter(
+                    status=WorkshopStatus.ACCEPTED,
+                    requester=Organisation.objects.filter(
+                        created_by__id=self.request.user.id))
 
         return context
