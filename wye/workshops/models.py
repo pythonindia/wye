@@ -160,5 +160,5 @@ class WorkshopFeedBack(TimeAuditModel):
 
     def __str__(self):
         return '{}-{}-{}'.format(self.workshop,
-                                 self.requester_rating,
-                                 self.presenter_rating)
+                                 self.requester_comment,
+                                 self.presenter_comment)
