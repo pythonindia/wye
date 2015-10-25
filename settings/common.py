@@ -55,6 +55,7 @@ OUR_APPS = (
     'wye.organisations',
     'wye.workshops',
     'wye.regions',
+    'wye.social',
 )
 
 THIRD_PARTY_APPS = (
