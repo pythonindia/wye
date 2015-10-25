@@ -2,11 +2,10 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
 
 from braces import views
-# from wye.organisations.models import Organisation
 
 from .forms import WorkshopForm, WorkshopFeedbackForm
+from .mixins import WorkshopEmailMixin, WorkshopAccessMixin
 from .models import Workshop
-from .mixins import WorkshopEmailMixin
 
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
@@ -16,14 +15,8 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(
             WorkshopList, self).get_context_data(*args, **kwargs)
-        workshop_list = Workshop.objects.filter()
-        # organisation_list = Organisation.objects.filter(
-        #                user=self.request.user)
+        workshop_list = Workshop.objects.all()
         context['workshop_list'] = workshop_list
-        context['workshop_feedback_pending'] = []
-        context['workshop_in_queue'] = []
-        context['workshop_completed'] = []
-        context['workshop_withdrawn'] = []
         context['user'] = self.request.user
         return context
 
@@ -55,7 +48,7 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
         return response
 
 
-class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
+class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.UpdateView):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_update.html'
@@ -68,7 +61,7 @@ class WorkshopUpdate(views.LoginRequiredMixin, generic.UpdateView):
 
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                           views.JSONResponseMixin, generic.UpdateView):
+                           views.JSONResponseMixin, WorkshopAccessMixin, generic.UpdateView):
     model = Workshop
 
     def post(self, request, *args, **kwargs):
@@ -87,7 +80,7 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         self.object = self.get_object()
         user = request.user
         response = self.object.assign_me(user, **kwargs)
-        
+
         if response['status']:
             self.send_mail(user, response['assigned'])
         return self.render_json_response(response)

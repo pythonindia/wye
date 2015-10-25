@@ -6,6 +6,10 @@
     </div>
 {% endblock %}
 
+{% block breadcrumbs %}
+    <b>{{ block.super }}</b> » <a href="/workshop"><b>Workshops</b></a> » Create Workshop
+{% endblock %}
+
 {% block content %}
     {{ form.media }}
     <div class="push-6-bottom">

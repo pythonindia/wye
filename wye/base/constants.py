@@ -31,6 +31,7 @@ class WorkshopStatus:
     _ACCEPTED = [3, "Workshop Accepted "]
     _DECLINED = [4, "Workshop Declined"]
     _COMPLETED = [5, "Workshop Completed"]
+    _FEEDBACK_PENDING = [5, "FeedBack Pending"]
     _HOLD = [6, "Workshop On Hold"]
 
 
