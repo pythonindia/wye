@@ -119,10 +119,9 @@ class WorkshopFeedBackCreate(views.LoginRequiredMixin, generic.CreateView):
         form = WorkshopFeedBackForm(data=request.POST)
         if form.is_valid():
             new_feedback = form.save(commit=False)
-            new_feedback.workshop =  Workshop.objects.get(pk=pk)
+            new_feedback.workshop = Workshop.objects.get(pk=pk)
             new_feedback.save()
             form.save_m2m()
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})
-
