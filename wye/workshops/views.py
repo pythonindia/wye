@@ -1,5 +1,7 @@
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
 
 from braces import views
 
@@ -7,6 +9,7 @@ from .forms import WorkshopForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
     WorkshopFeedBackMixin
 from .models import Workshop
+
 
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):

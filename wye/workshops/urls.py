@@ -3,7 +3,6 @@ from .views import WorkshopList, WorkshopDetail, \
     WorkshopCreate, WorkshopUpdate, WorkshopToggleActive, \
     WorkshopAssignMe, WorkshopFeedbackView
 
-
 urlpatterns = [
     url(r'^$', WorkshopList.as_view(), name="workshop_list"),
     url(r'^(?P<pk>\d+)/$', WorkshopDetail.as_view(), name="workshop_detail"),
