@@ -16,7 +16,7 @@ install:
 
 script:
 - flake8
-- py.test --cov --fail-on-template-vars --splinter-webdriver=phantomjs
+- py.test --cov --fail-on-template-vars --splinter-webdriver=phantomjs -v --tb=native
 
 after_script:
 - coveralls
