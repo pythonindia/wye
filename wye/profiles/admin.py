@@ -26,6 +26,5 @@ class UserTypeAdmin(admin.ModelAdmin):
         'active',
         'slug')
 
-
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(UserType, UserTypeAdmin)

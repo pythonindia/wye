@@ -9,7 +9,7 @@ from .forms import OrganisationForm
 from .models import Organisation
 
 
-class OrganisationList(generic.ListView):
+class OrganisationList(views.LoginRequiredMixin, generic.ListView):
     model = Organisation
     template_name = 'organisation/list.html'
 
@@ -17,13 +17,10 @@ class OrganisationList(generic.ListView):
         return Organisation.objects.filter(user=self.request.user)
 
     def get_context_data(self, *args, **kwargs):
-        context = super(
-            OrganisationList, self).get_context_data(*args, **kwargs)
+        context = super(OrganisationList, self).get_context_data(*args, **kwargs)
         context['organsation_list'] = self.get_queryset()
-        context['org_created_list'] = self.get_queryset().filter(
-            created_by=self.request.user)
-        context['org_belongs_list'] = self.get_queryset().exclude(
-            created_by=self.request.user)
+        context['org_created_list'] = self.get_queryset().filter(created_by=self.request.user)
+        context['org_belongs_list'] = self.get_queryset().exclude(created_by=self.request.user)
         context['user'] = self.request.user
         return context
 

@@ -1,6 +1,6 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-[![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye)
+[![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye) [![Coverage Status](https://coveralls.io/repos/pythonindia/wye/badge.svg?branch=master&service=github)](https://coveralls.io/github/pythonindia/wye?branch=master)
 
 wye is the platform to help organisations(Colleges/FOSS) connect to experienced tutors which will benefit number of students to learn Python and real time use of Python in different domains.
 
@@ -22,6 +22,16 @@ python manage.py migrate
 python manage.py sample_data
 python manage.py runserver
 ```
+
+## Testing
+
+It's highly encouraged that you write test for any new feature/bug fixes. Find all the existing test inside `tests/` folder. To run the test locally, run the following command:
+
+```
+py.test
+```
+
+Use `py.test --cov --cov-report=html`  to run the test with coverage report generated inside `htmlcov/` folder.
 
 #### Login Details
 
