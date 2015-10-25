@@ -29,11 +29,13 @@ class UserDashboard(ListView):
         user_profile = models.Profile.objects.get(user__id=self.request.user.id)
         for each_type in user_profile.get_user_type:
             if each_type == 'Tutor':
+                context['is_tutor'] = True
                 context['workshop_requested_tutor'] = Workshop.objects.filter(
                     presenter=self.request.user, status=WorkshopStatus.REQUESTED)
                 context['workshop_completed_tutor'] = Workshop.objects.filter(
                     presenter=self.request.user, status=WorkshopStatus.COMPLETED)
             if each_type == 'Regional-Lead':
+                context['is_regional_lead'] = True
                 context['workshops_accepted_under_rl'] = Workshop.objects.filter(
                     status=WorkshopStatus.ACCEPTED)
                 context['workshops_pending_under_rl'] = Workshop.objects.filter(
@@ -45,10 +47,11 @@ class UserDashboard(ListView):
                 context['interested_locations'] = Organisation.objects.filter(
                     location__name__in=user_profile.get_interested_locations).count()
             if each_type == 'College-POC':
+                context['is_college_poc'] = True
                 context['organisation_users'] = models.Profile.objects.filter(
                     user__id__in=Organisation.objects.filter(
                         created_by__id=self.request.user.id).values_list(
-                        'user', flat=True))
+                        'user', flat=True)).exclude(user=self.request.user)
                 context['workshop_requested_under_poc'] = Workshop.objects.filter(
                     status=WorkshopStatus.REQUESTED,
                     requester=Organisation.objects.filter(
@@ -57,4 +60,8 @@ class UserDashboard(ListView):
                     status=WorkshopStatus.ACCEPTED,
                     requester=Organisation.objects.filter(
                         created_by__id=self.request.user.id))
+            if each_type == 'Admin':
+                context['is_admin'] = True
+                context['workshops_by_status'] = Workshop.objects.all().order_by('status')
+                context['workshops_by_region'] = Workshop.objects.all().order_by('location')
         return context
