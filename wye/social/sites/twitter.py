@@ -23,7 +23,6 @@ def init_twitter(old_function):
 def send_tweet(context=None, twitter=None):
     if twitter:
         message = get_message(context)
-        print(message)
         try:
             twitter.update_status(status=message)
         except:
