@@ -2,6 +2,7 @@ from django.views import generic
 from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
 from braces import views
 

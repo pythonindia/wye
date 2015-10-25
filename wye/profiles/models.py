@@ -102,6 +102,7 @@ class Profile(models.Model):
 #     if created:
 #         token, created = Token.objects.get_or_create(user=instance)
 
+
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile, created = Profile.objects.get_or_create(user=instance)
