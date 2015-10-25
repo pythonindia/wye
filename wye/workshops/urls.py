@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import WorkshopList, WorkshopDetail, \
     WorkshopCreate, WorkshopUpdate, WorkshopToggleActive, \
-    WorkshopAssignMe
+    WorkshopAssignMe, WorkshopFeedBackCreate
 
 
 urlpatterns = [
@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/(?P<action>active|deactive)/$',
         WorkshopToggleActive.as_view(), name="workshop_toggle"),
     url(r'^(?P<pk>\d+)/(?P<action>opt-in|opt-out)/$',
-        WorkshopAssignMe.as_view(), name="workshop_assignme")
+        WorkshopAssignMe.as_view(), name="workshop_assignme"),
+    url(r'^feedback/(?P<pk>\d+)/$', WorkshopFeedBackCreate.as_view(), name="workshop_feedback"),
 ]

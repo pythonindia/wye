@@ -1,11 +1,13 @@
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views import generic
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
 
 from braces import views
 
-from .forms import WorkshopForm
+from .forms import WorkshopForm, WorkshopFeedBackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin
-from .models import Workshop
+from .models import Workshop, WorkshopFeedBack
 
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
@@ -102,3 +104,25 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         self.send_mail_to_presenter(user, context)
         context['presenter'] = False
         self.send_mail_to_group(context, exclude_emails=[user.email])
+
+
+class WorkshopFeedBackCreate(views.LoginRequiredMixin, generic.CreateView):
+    model = WorkshopFeedBack
+    form_class = WorkshopFeedBackForm
+    template_name = 'workshops/workshop_feedback.html'
+    # success_url = reverse_lazy('profiles:dashboard')
+    # this url is for now, as my previous commit is not merged yet
+    success_url = reverse_lazy('workshops:workshop_list')
+
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk', None)
+        form = WorkshopFeedBackForm(data=request.POST)
+        if form.is_valid():
+            new_feedback = form.save(commit=False)
+            new_feedback.workshop =  Workshop.objects.get(pk=pk)
+            new_feedback.save()
+            form.save_m2m()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            return render(request, self.template_name, {'form': form})
+
