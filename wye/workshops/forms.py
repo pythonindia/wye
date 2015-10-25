@@ -3,7 +3,7 @@ from django.conf import settings
 
 from wye.base.widgets import CalendarWidget
 
-from . import models
+from .models import Workshop, WorkshopFeedBack
 
 
 class WorkshopForm(forms.ModelForm):
@@ -15,7 +15,7 @@ class WorkshopForm(forms.ModelForm):
             input_formats=settings.ALLOWED_DATE_FORMAT)
 
     class Meta:
-        model = models.Workshop
+        model = Workshop
         exclude = (
             'presenter', 'created_at', 'modified_at',
             'is_active')
@@ -27,5 +27,5 @@ class WorkshopFeedBackForm(forms.ModelForm):
         super(WorkshopFeedBackForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        model = models.WorkshopFeedBack
+        model = WorkshopFeedBack
         exclude = ('workshop',)

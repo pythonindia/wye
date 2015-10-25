@@ -110,8 +110,6 @@ class WorkshopFeedBackCreate(views.LoginRequiredMixin, generic.CreateView):
     model = WorkshopFeedBack
     form_class = WorkshopFeedBackForm
     template_name = 'workshops/workshop_feedback.html'
-    # success_url = reverse_lazy('profiles:dashboard')
-    # this url is for now, as my previous commit is not merged yet
     success_url = reverse_lazy('workshops:workshop_list')
 
     def post(self, request, *args, **kwargs):
