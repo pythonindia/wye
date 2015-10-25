@@ -76,6 +76,7 @@
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
                                         <td>{{ workshop.no_of_participants }}</td>
+                                        <td><a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><span class="hidden-xs"> Submit</span> Feedback</a></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
