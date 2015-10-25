@@ -8,6 +8,8 @@ from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
     WorkshopFeedBackMixin
 from .models import Workshop
 
+from wye.social.sites.twitter import send_tweet
+
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     model = Workshop
@@ -40,11 +42,13 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
         response = super(WorkshopCreate, self).form_valid(form)
         workshop = self.object
         context = {
+            'workshop': workshop,
             'date': workshop.expected_date,
             'workshop_url': self.request.build_absolute_uri(reverse(
                 'workshops:workshop_detail', args=[workshop.pk]
             ))
         }
+        send_tweet(context)
         self.send_mail_to_group(context)
         return response
 
