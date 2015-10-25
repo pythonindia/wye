@@ -12,6 +12,7 @@ ipython==4.0.0
 pytest-django==2.9.*
 pytest-cov==2.2.*
 factory_boy==2.5.*
+pdbpp==0.8.*
 
 coverage==4.*
 flake8==2.4.*

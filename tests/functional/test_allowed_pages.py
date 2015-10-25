@@ -37,7 +37,8 @@ def test_public_pages(client):
         assert 'Log In' in str(response.content)
 
 
-def test_staff_pages(client):
+def test_staff_pages(client, settings):
+    settings.SITE_VARIABLES['site_name'] = 'My Test Website'
     normal_user = f.UserFactory(is_staff=False)
     staff_user = f.UserFactory(is_staff=True)
 
@@ -57,10 +58,12 @@ def test_staff_pages(client):
             response = client.get(page_url)
             assert response.status_code == 200, 'Failed for %s' % page_url
             assert normal_user.get_full_name() in str(response.content)
+            assert settings.SITE_VARIABLES['site_name'] in str(response.content)
             client.logout()
         else:
             client.login(normal_user)
             response = client.get(page_url)
             assert response.status_code == 200, 'Failed for %s' % page_url
             assert normal_user.get_full_name() in str(response.content)
+            assert settings.SITE_VARIABLES['site_name'] in str(response.content)
             client.logout()
