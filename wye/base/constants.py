@@ -54,6 +54,7 @@ class FeedbackType:
     _PRESENTER = [1, "Presenter"]
     _ORGANISATION = [2, "Organisation"]
 
+
 @choices
 class WorkshopRatings:
     _VERY_BAD = [-1, 'Very Bad']
@@ -61,6 +62,7 @@ class WorkshopRatings:
     _NEUTRAL = [0, 'Neutral']
     _GOOD = [1, 'Good']
     _VERY_GOOD = [2, 'Very Good']
+
 
 class WorkshopAction:
     ACTIVE = ('active', 'deactive')
