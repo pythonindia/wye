@@ -4,7 +4,8 @@ from django.views import generic
 from braces import views
 
 from .forms import WorkshopForm, WorkshopFeedbackForm
-from .mixins import WorkshopEmailMixin, WorkshopAccessMixin
+from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
+    WorkshopFeedBackMixin
 from .models import Workshop
 
 
@@ -105,8 +106,8 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         self.send_mail_to_group(context, exclude_emails=[user.email])
 
 
-class WorkshopFeedbackView(generic.FormView):
-    model = Workshop
+class WorkshopFeedbackView(views.LoginRequiredMixin, WorkshopFeedBackMixin,
+                           generic.FormView):
     form_class = WorkshopFeedbackForm
     template_name = "workshops/workshop_feedback.html"
     success_url = reverse_lazy('workshops:workshop_list')

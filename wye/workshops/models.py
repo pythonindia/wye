@@ -57,13 +57,13 @@ class Workshop(TimeAuditModel):
 
     def __str__(self):
         return '{}-{}'.format(self.requester, self.workshop_section)
-        
+
     def is_presenter(self, user):
         return self.presenter.filter(pk=user.pk).exists()
-        
+
     def is_organiser(self, user):
         return self.requester.user.filter(pk=user.pk).exists()
-        
+
     @validate_action_param(WorkshopAction.ACTIVE)
     def toggle_active(self, user, **kwargs):
         """
@@ -157,8 +157,7 @@ class WorkshopFeedBack(TimeAuditModel):
 
     def __str__(self):
         return '{}'.format(self.workshop)
-        
-    
+
     @classmethod
     def save_feedback(cls, user, workshop_id, **kwargs):
         workshop = Workshop.objects.get(pk=workshop_id)
@@ -166,17 +165,19 @@ class WorkshopFeedBack(TimeAuditModel):
         organiser = workshop.is_organiser(user)
         comment = kwargs.get('comment', '')
         del kwargs['comment']
-        
+
         if presenter:
             feedback_type = FeedbackType.PRESENTER
         elif organiser:
             feedback_type = FeedbackType.ORGANISATION
-        
-        workshop_feedback = cls.objects.create(workshop=workshop, comment=comment,
-            feedback_type=feedback_type)
-        
+
+        workshop_feedback = cls.objects.create(
+            workshop=workshop,
+            comment=comment,
+            feedback_type=feedback_type
+        )
         WorkshopVoting.save_rating(workshop_feedback, **kwargs)
-        
+
 
 class WorkshopVoting(TimeAuditModel):
     workshop_feedback = models.ForeignKey(
@@ -196,7 +197,8 @@ class WorkshopVoting(TimeAuditModel):
     @classmethod
     def save_rating(cls, workshop_feedback, **kwargs):
         object_list = [
-            cls(workshop_feedback=workshop_feedback, workshop_rating_id=int(k), rating=v)
+            cls(workshop_feedback=workshop_feedback,
+                workshop_rating_id=int(k), rating=v)
             for k, v in kwargs.iteritems()
         ]
 
