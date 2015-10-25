@@ -1,8 +1,7 @@
 from django.views import generic
 from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse_lazy
-from django.http.response import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 from braces import views
 
@@ -33,13 +32,12 @@ class ProfileCreateView(views.LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy('profiles:dashboard')
 
     def post(self, request, *args, **kwargs):
-        form = UserProfileForm(data=request.POST)
+        profile = models.Profile.objects.get(user=request.user)
+        form = UserProfileForm(data=request.POST, instance=profile)
         if form.is_valid():
-            new_profile = form.save(commit=False)
-            new_profile.user = request.user
-            new_profile.slug = request.user.username
-            new_profile.save()
-            form.save_m2m()
+            profile.slug = request.user.username
+            profile.save()
+            form.save()
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})
