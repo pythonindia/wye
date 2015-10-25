@@ -11,12 +11,12 @@ before_script:
 
 install:
 - pip install --upgrade pip
-- pip install python-coveralls
 - pip install -r requirements/dev.txt
+- pip install python-coveralls
 
 script:
 - flake8
-- py.test --cov --fail-on-template-vars
+- py.test --cov --fail-on-template-vars --splinter-webdriver=phantomjs
 
 after_script:
 - coveralls

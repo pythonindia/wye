@@ -40,6 +40,11 @@ def client():
 
 
 @pytest.fixture
+def base_url(live_server):
+    return live_server.url
+
+
+@pytest.fixture
 def outbox():
     from django.core import mail
 
