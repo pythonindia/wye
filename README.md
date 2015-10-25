@@ -31,7 +31,7 @@ It's highly encouraged that you write test for any new feature/bug fixes. Find a
 py.test
 ```
 
-Use `py.test --cov --cov-report=html`  to run the test with coverage report generated inside `htmlcov/` folder.
+You can invoke `py.test` with various commandline arguements, that can drastily improve your test writing/running experience. Read useful tip/tricks at [docs/testing.md].
 
 #### Login Details
 
@@ -66,6 +66,8 @@ Contributing
 [issue-list]: https://github.com/pythonindia/wye/issues/
 [new-issue]: https://github.com/pythonindia/wye/issues/new
 [guidelines]: https://github.com/pythonindia/wye/blob/master/CONTRIBUTING.md
+[docs/testing.md]: docs/testing.md
+
 # License
 
 This software is licensed under The MIT License(MIT). See the LICENSE file in the top distribution directory for the full license text.
