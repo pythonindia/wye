@@ -80,6 +80,10 @@ class UserDashboard(ListView):
                     status=WorkshopStatus.REQUESTED,
                     requester=Organisation.objects.filter(
                         created_by__id=self.request.user.id))
+                context['workshop_completed_under_poc'] = Workshop.objects.filter(
+                    status=WorkshopStatus.COMPLETED,
+                    request=Organisation.objects.filter(
+                        created_by__id=self.request.user.id))
                 context['workshops_accepted_under_poc'] = Workshop.objects.filter(
                     status=WorkshopStatus.ACCEPTED,
                     requester=Organisation.objects.filter(
