@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}PythonExpress{% endblock %}</title>
+        <title>{% block title %}{{ SITE_INFO.site_name }}{% endblock %}</title>
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
         <link rel="stylesheet" href="{% static 'css/libs/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/app.css' %}">
@@ -23,7 +23,7 @@
                             <span class="sr-only">Toggle navigation</span>
                             <i class="fa fa-bars"></i>
                         </button>
-                        <a class="navbar-brand" href="/"><img id="logo" src="{% static 'img/logo_python_express.png' %}" width="80" alt="{{ site_title }}"></a>
+                        <a class="navbar-brand" href="/"><img id="logo" src="{% static 'img/logo_python_express.png' %}" width="80" alt="{{ SITE_INFO.site_name }}"></a>
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
@@ -78,7 +78,7 @@
         <footer class="fill-white push-1">
             <div class="container text-center">
             {% block footer %}
-                <p class="tiny">&copy; 2014-2015 <a target="_blank" href="http://pssi.org.in/">Python Software Society of India</a></p>
+                <p class="tiny">{{ SITE_INFO.footer|safe }}</a></p>
             {% endblock %}
             </div>
         </footer>
