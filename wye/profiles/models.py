@@ -7,7 +7,7 @@ from wye.regions.models import Location
 from wye.workshops.models import Workshop
 from wye.workshops.models import WorkshopSections
 
-# from django.db.models.signals import post_save
+from django.db.models.signals import post_save
 # from django.dispatch import receiver
 # from rest_framework.authtoken.models import Token
 
@@ -40,6 +40,9 @@ class Profile(models.Model):
     usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
+
+    REQUIRED_FIELDS = ('user', )
+    USERNAME_FIELD = 'slug'
 
     class Meta:
         db_table = 'user_profile'
@@ -98,3 +101,11 @@ class Profile(models.Model):
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:
 #         token, created = Token.objects.get_or_create(user=instance)
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        profile, created = Profile.objects.get_or_create(user=instance)
+
+
+post_save.connect(create_user_profile, sender=User, dispatch_uid='create_user_profile')
