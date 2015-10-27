@@ -94,16 +94,8 @@ class Profile(models.Model):
         return [x.slug for x in self.usertype.all()]
 
     @property
-    def get_user_type_for_display(self):
-        return ', '.join(self.get_user_type)
-
-    @property
     def get_interested_locations(self):
         return [x.name for x in self.interested_locations.all()]
-
-    @property
-    def get_interested_locations_for_display(self):
-        return ', '.join(self.get_interested_locations)
 
 
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)

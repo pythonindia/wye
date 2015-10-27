@@ -22,8 +22,8 @@
                             {% for orguser in organisation_users %}
                                 <tr>
                                     <td>{{ orguser.user }}</td>
-                                    <td>{{ orguser.get_user_type_for_display }}</td>
-                                    <td>{{ orguser.get_interested_locations_for_display }}</td>
+                                    <td>{{ orguser.get_user_type|join:", " }}</td>
+                                    <td>{{ orguser.get_interested_locations|join:", " }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
