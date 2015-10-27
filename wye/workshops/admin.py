@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Workshop
+from .models import Workshop, WorkshopFeedBack
 
 
 class WorkshopAdmin(admin.ModelAdmin):
@@ -17,3 +17,9 @@ class WorkshopAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'status', 'workshop_level', 'location')
 
 admin.site.register(Workshop, WorkshopAdmin)
+
+
+class WorkshopFeedBackAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(WorkshopFeedBack, WorkshopFeedBackAdmin)

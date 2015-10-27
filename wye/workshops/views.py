@@ -3,8 +3,9 @@ from django.views import generic
 
 from braces import views
 
-from .forms import WorkshopForm
-from .mixins import WorkshopEmailMixin, WorkshopAccessMixin
+from .forms import WorkshopForm, WorkshopFeedbackForm
+from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
+    WorkshopFeedBackMixin
 from .models import Workshop
 
 
@@ -80,6 +81,7 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         self.object = self.get_object()
         user = request.user
         response = self.object.assign_me(user, **kwargs)
+
         if response['status']:
             self.send_mail(user, response['assigned'])
         return self.render_json_response(response)
@@ -102,3 +104,15 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
         self.send_mail_to_presenter(user, context)
         context['presenter'] = False
         self.send_mail_to_group(context, exclude_emails=[user.email])
+
+
+class WorkshopFeedbackView(views.LoginRequiredMixin, WorkshopFeedBackMixin,
+                           generic.FormView):
+    form_class = WorkshopFeedbackForm
+    template_name = "workshops/workshop_feedback.html"
+    success_url = reverse_lazy('workshops:workshop_list')
+
+    def form_valid(self, form):
+        workshop_id = self.kwargs.get('pk')
+        form.save(self.request.user, workshop_id)
+        return super(WorkshopFeedbackView, self).form_valid(form)

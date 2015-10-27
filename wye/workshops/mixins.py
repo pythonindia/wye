@@ -1,7 +1,11 @@
-from wye.profiles.models import Profile
-from wye.base.emailer import send_mail
-from .models import Workshop
+from django.http import Http404
 from django.core.exceptions import PermissionDenied
+
+from wye.base.constants import WorkshopStatus
+from wye.base.emailer import send_mail
+from wye.profiles.models import Profile
+
+from .models import Workshop
 
 
 class WorkshopAccessMixin(object):
@@ -10,10 +14,28 @@ class WorkshopAccessMixin(object):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         workshop = Workshop.objects.get(id=pk)
         if workshop.requester not in self.request.user.organisation_users.all():
-            print(workshop.requester)
-            print(self.request.user.organisation_users.all())
             raise PermissionDenied
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
+
+
+class WorkshopFeedBackMixin(object):
+    """
+    Restrict access to feedback url if
+    - Workshop is not completed
+    - If the user accessing the url is not presenter or
+      organiser
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        workshop = Workshop.objects.get(id=pk)
+        user = self.request.user
+
+        if workshop.status != WorkshopStatus.COMPLETED:
+            raise Http404
+        if not (workshop.is_presenter(user) and workshop.is_organiser(user)):
+            raise PermissionDenied
+        return super(WorkshopFeedBackMixin, self).dispatch(request, *args, **kwargs)
 
 
 class WorkshopEmailMixin(object):

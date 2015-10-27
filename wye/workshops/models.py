@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from wye.base.constants import WorkshopStatus, WorkshopLevel, WorkshopAction
+from wye.base.constants import WorkshopStatus, WorkshopLevel, WorkshopAction,\
+    FeedbackType
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
 from wye.regions.models import Location
@@ -56,6 +57,12 @@ class Workshop(TimeAuditModel):
 
     def __str__(self):
         return '{}-{}'.format(self.requester, self.workshop_section)
+
+    def is_presenter(self, user):
+        return self.presenter.filter(pk=user.pk).exists()
+
+    def is_organiser(self, user):
+        return self.requester.user.filter(pk=user.pk).exists()
 
     @validate_action_param(WorkshopAction.ACTIVE)
     def toggle_active(self, user, **kwargs):
@@ -121,44 +128,78 @@ class WorkshopRatingValues(TimeAuditModel):
     '''
     Requesting Rating values -2, -1, 0 , 1, 2
     '''
-    value = models.IntegerField()
+
     name = models.CharField(max_length=300)
 
     class Meta:
         db_table = 'workshop_vote_value'
 
     def __str__(self):
-        return '{}-{}'.format(self.value, self.name)
+        return '{}'.format(self.name)
 
-
-class WorkshopVoting(TimeAuditModel):
-    requester_rating = models.ForeignKey(
-        WorkshopRatingValues, related_name='requester_rating')
-    presenter_rating = models.ForeignKey(
-        WorkshopRatingValues, related_name='presenter_rating')
-    workshop = models.ForeignKey(Workshop)
-
-    class Meta:
-        db_table = 'workshop_votes'
-
-    def __str__(self):
-        return '{}-{}-{}'.format(self.workshop,
-                                 self.requester_rating,
-                                 self.presenter_rating)
+    @classmethod
+    def get_questions(cls):
+        return cls.objects.values('name', 'pk')
 
 
 class WorkshopFeedBack(TimeAuditModel):
     '''
     Requesting for Feedback from requester and Presenter
     '''
-    requester_comment = models.TextField()
-    presenter_comment = models.TextField()
+
     workshop = models.ForeignKey(Workshop)
+    comment = models.TextField()
+    feedback_type = models.PositiveSmallIntegerField(
+        choices=FeedbackType.CHOICES, verbose_name="User_type")
 
     class Meta:
         db_table = 'workshop_feedback'
 
     def __str__(self):
-        return '{}-{}-{}'.format(self.workshop,
-                                 self.requester_rating,
-                                 self.presenter_rating)
+        return '{}'.format(self.workshop)
+
+    @classmethod
+    def save_feedback(cls, user, workshop_id, **kwargs):
+        workshop = Workshop.objects.get(pk=workshop_id)
+        presenter = workshop.is_presenter(user)
+        organiser = workshop.is_organiser(user)
+        comment = kwargs.get('comment', '')
+        del kwargs['comment']
+
+        if presenter:
+            feedback_type = FeedbackType.PRESENTER
+        elif organiser:
+            feedback_type = FeedbackType.ORGANISATION
+
+        workshop_feedback = cls.objects.create(
+            workshop=workshop,
+            comment=comment,
+            feedback_type=feedback_type
+        )
+        WorkshopVoting.save_rating(workshop_feedback, **kwargs)
+
+
+class WorkshopVoting(TimeAuditModel):
+    workshop_feedback = models.ForeignKey(
+        WorkshopFeedBack, related_name='workshop_feedback')
+    workshop_rating = models.ForeignKey(
+        WorkshopRatingValues, related_name='workshop_rating')
+    rating = models.IntegerField()
+
+    class Meta:
+        db_table = 'workshop_votes'
+
+    def __str__(self):
+        return '{}-{}-{}'.format(self.workshop_feedback,
+                                 self.workshop_rating,
+                                 self.rating)
+
+    @classmethod
+    def save_rating(cls, workshop_feedback, **kwargs):
+        object_list = [
+            cls(workshop_feedback=workshop_feedback,
+                workshop_rating_id=int(k), rating=v)
+            for k, v in kwargs.iteritems()
+        ]
+
+        cls.objects.bulk_create(object_list)
