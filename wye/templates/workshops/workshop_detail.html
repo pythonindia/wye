@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/workshop"><b>Workshops</b></a> » {{ workshop.requester }}
+    <ol class="breadcrumb">
+        <li><b>{{ block.super }}</b></li>
+        <li><a href="/workshop"><b>Workshops</b></a></li>
+        <li class="active">{{ workshop.requester }}</li>
+    </ol>
 {% endblock %}
 
 {% block content %}

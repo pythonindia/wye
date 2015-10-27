@@ -8,7 +8,10 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-	<b>{{ block.super }}</b> » About
+    <ol class="breadcrumb">
+        <li><b>{{ block.super }}</b></li>
+        <li class="active">About</li>
+    </ol>
 {% endblock %}
 
 {% block content %}

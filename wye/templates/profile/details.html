@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <b><a href="{% url 'profiles:profile-page' profile.pk %}">{{ object.user.first_name }}</a></b> » Details
+    <ol class="breadcrumb">
+	    <li><b>{{ block.super }}</b></li>
+	    <li><a href="{% url 'profiles:profile-page' profile.pk %}"><b>{{ object.user.first_name }} {{ object.user.last_name }}</b></a></li>
+	    <li class="active">Details</li>
+    </ol>
 {% endblock %}
 
 {% block content %}

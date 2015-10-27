@@ -5,7 +5,10 @@
 {% block title %}{% trans "Signup" %}{% endblock %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » Signup
+    <ol class="breadcrumb">
+        <li><b>{{ block.super }}</b></li>
+        <li class="active">Signup</li>
+    </ol>
 {% endblock %}
 
 {% block content %}

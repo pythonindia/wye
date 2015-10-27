@@ -6,6 +6,13 @@
     </div>
 {% endblock %}
 
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><b>{{ block.super }}</b></li>
+        <li class="active">Dashboard</li>
+    </ol>
+{% endblock %}
+
 {% block content %}
     <div class="push-4-bottom">
         <div class="row">

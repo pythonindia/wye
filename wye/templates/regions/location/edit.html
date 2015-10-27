@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/region/"><b>Regions</b></a> » <a href="#"><b>{{ location.name }}</b></a> » Edit
+    <ol class="breadcrumb">
+	    <li><b>{{ block.super }}</b></li>
+	    <li><a href="/region/"><b>Regions</b></a></li>
+	    <li><a href="#"><b>{{ location.name }}</b></a></li>
+	    <li class="active">Edit</li>
+	</ol>
 {% endblock %}
 
 {% block content %}

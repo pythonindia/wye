@@ -7,7 +7,11 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/region/"><b>Regions</b></a> » Add Location
+    <ol class="breadcrumb">
+	    <li><b>{{ block.super }}</b></li>
+	    <li><a href="/region/"><b>Regions</b></a></li>
+	    <li class="active">Add Location</li>
+	</ol>
 {% endblock %}
 
 {% block content %}

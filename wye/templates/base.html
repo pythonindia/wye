@@ -61,7 +61,9 @@
                 {% block sub_header %}{% endblock %}
 
                 {% block breadcrumbs %}
-                    <a href="{% url 'home-page' %}">Home</a>
+                    <ol class="breadcrumb">
+                        <li><a href="{% url 'home-page' %}">Home</a></li>
+                    </ol>
                 {% endblock %}
 
                 {% block container_body %}

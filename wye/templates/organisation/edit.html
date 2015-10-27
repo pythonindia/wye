@@ -7,7 +7,12 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/organisation"><b>Organisations</b></a> » <a href="{% url 'organisations:organisation_details' organisation.pk %}"><b>{{ object.name }}</b></a> » Edit
+    <ol class="breadcrumb">
+        <li><b>{{ block.super }}</b></li>
+        <li><a href="/organisation"><b>Organisations</b></a></li>
+        <li><a href="{% url 'organisations:organisation_details' organisation.pk %}"><b>{{ object.name }}</b></a></li>
+        <li class="active">Edit</li>
+    </ol>
 {% endblock %}
 
 {% block content %}

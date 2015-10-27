@@ -7,7 +7,11 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/organisation"><b>Organisations</b></a> » {{ object.name }}
+    <ol class="breadcrumb">
+        <li><b>{{ block.super }}</b></li>
+        <li><a href="/organisation"><b>Organisations</b></a></li>
+        <li class="active">{{ object.name }}</li>
+    </ol>
 {% endblock %}
 
 {% block content %}

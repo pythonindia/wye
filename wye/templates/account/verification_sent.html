@@ -5,7 +5,10 @@
 {% block title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
 
 {% block breadcrumbs %}
-    <b>{{ block.super }}</b> » Verification Sent
+    <ol class="breadcrumb">
+        <li><b>{{ block.super }}</b></li>
+        <li class="active">Verification Sent</li>
+    </ol>
 {% endblock %}
 
 {% block content %}
