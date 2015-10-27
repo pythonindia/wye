@@ -1,3 +1,4 @@
+{% load workshop_display %}
 <div class="push-2-bottom">
     <div class="row">
         <div class="col-xs-6">
@@ -45,30 +46,7 @@
             {% if not workshop_requested_under_poc %}
                 <p class="gray sub"><em>There are no workshop requests</em></p>
             {% else %}
-                <div class="table-responsive">
-                    <table class="table table-bordered sub">
-                        <thead>
-                            <tr>
-                                <th>Organization</th>
-                                <th>Presenter</th>
-                                <th>Date</th>
-                                <th>Location</th>
-                                <th>Section</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for workshop in workshop_requested_under_poc %}
-                                <tr>
-                                    <td>{{ workshop.requester }}</td>
-                                    <td>{{ workshop.get_presenter_list|join:", " }}</td>
-                                    <td>{{ workshop.expected_date }}</td>
-                                    <td>{{ workshop.location }}</td>
-                                    <td>{{ workshop.workshop_section }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                {% show_workshops workshop_requested_under_poc %}
             {% endif %}
         </div>
     </div>
@@ -85,30 +63,7 @@
             {% if not workshops_accepted_under_poc %}
                 <p class="gray sub"><em>There are no workshops that have been accepted.</em></p>
             {% else %}
-                <div class="table-responsive">
-                    <table class="table table-bordered sub">
-                        <thead>
-                            <tr>
-                                <th>Organization</th>
-                                <th>Presenter</th>
-                                <th>Date</th>
-                                <th>Location</th>
-                                <th>Section</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for workshop in workshops_accepted_under_poc %}
-                                <tr>
-                                    <td>{{ workshop.requester }}</td>
-                                    <td>{{ workshop.get_presenter_list|join:", " }}</td>
-                                    <td>{{ workshop.expected_date }}</td>
-                                    <td>{{ workshop.location }}</td>
-                                    <td>{{ workshop.workshop_section }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                {% show_workshops workshops_accepted_under_poc %}
             {% endif %}
         </div>
     </div>
@@ -125,31 +80,7 @@
             {% if not workshop_completed_under_poc %}
                 <p class="gray sub"><em>There are no workshops that are completed.</em></p>
             {% else %}
-                <div class="table-responsive">
-                    <table class="table table-bordered sub">
-                        <thead>
-                            <tr>
-                                <th>Organization</th>
-                                <th>Presenter</th>
-                                <th>Date</th>
-                                <th>Location</th>
-                                <th>Section</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for workshop in workshop_completed_under_poc %}
-                                <tr>
-                                    <td>{{ workshop.requester }}</td>
-                                    <td>{{ workshop.get_presenter_list|join:", " }}</td>
-                                    <td>{{ workshop.expected_date }}</td>
-                                    <td>{{ workshop.location }}</td>
-                                    <td>{{ workshop.workshop_section }}</td>
-                                    <td><a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><span class="hidden-xs"> Submit</span> Feedback</a></td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                {% show_workshops workshop_completed_under_poc %}
             {% endif %}
         </div>
     </div>
