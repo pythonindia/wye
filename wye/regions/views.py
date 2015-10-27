@@ -1,24 +1,15 @@
-from django.http import HttpResponseForbidden
+
+from braces import views
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import generic
 
-from braces import views
-
-from . import forms
-from . import models
+from . import forms, models
 
 
-class RegionalListView(views.LoginRequiredMixin, generic.ListView):
+class RegionalListView(views.StaffuserRequiredMixin, generic.ListView):
     model = models.RegionalLead
     template_name = 'regions/index.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        print("am here")
-        if not self.request.user.is_staff:
-            return HttpResponseForbidden("Not Admin Member")
-
-        return super(RegionalListView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(
@@ -30,18 +21,11 @@ class RegionalListView(views.LoginRequiredMixin, generic.ListView):
         return context
 
 
-class StateCreateView(views.LoginRequiredMixin, generic.CreateView):
+class StateCreateView(views.StaffuserRequiredMixin, generic.CreateView):
     model = models.State
     form_class = forms.StateForm
     success_url = '/region/'
     template_name = 'regions/state/create.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        print("am here")
-        if not self.request.user.is_staff:
-            return HttpResponseForbidden("Not Admin Member")
-        print("before super")
-        return super(StateCreateView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = forms.StateForm(data=request.POST)
@@ -54,28 +38,18 @@ class StateCreateView(views.LoginRequiredMixin, generic.CreateView):
             return render(request, self.template_name, {'form': form})
 
 
-class StateEditView(views.LoginRequiredMixin, generic.UpdateView):
+class StateEditView(views.StaffuserRequiredMixin, generic.UpdateView):
     model = models.State
     form_class = forms.StateForm
     success_url = '/region/'
     template_name = 'regions/state/edit.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_staff:
-            return HttpResponseForbidden("Not Admin Member")
-        return super(StateEditView, self).dispatch(request, *args, **kwargs)
 
-
-class LocationCreateView(views.LoginRequiredMixin, generic.CreateView):
+class LocationCreateView(views.StaffuserRequiredMixin, generic.CreateView):
     model = models.Location
     form_class = forms.LocationForm
     success_url = '/region/'
     template_name = 'regions/location/create.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_staff:
-            return HttpResponseForbidden("Not Admin Member")
-        return super(LocationCreateView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = forms.LocationForm(data=request.POST)
@@ -88,28 +62,18 @@ class LocationCreateView(views.LoginRequiredMixin, generic.CreateView):
             return render(request, self.template_name, {'form': form})
 
 
-class LocationUpdateView(views.LoginRequiredMixin, generic.UpdateView):
+class LocationUpdateView(views.StaffuserRequiredMixin, generic.UpdateView):
     model = models.Location
     form_class = forms.LocationForm
     success_url = '/region/'
     template_name = 'regions/location/edit.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_staff:
-            return HttpResponseForbidden("Not Admin Member")
-        return super(LocationUpdateView, self).dispatch(request, *args, **kwargs)
 
-
-class RegionalLeadCreateView(views.LoginRequiredMixin, generic.CreateView):
+class RegionalLeadCreateView(views.StaffuserRequiredMixin, generic.CreateView):
     model = models.RegionalLead
     form_class = forms.RegionalLeadForm
     success_url = '/region/'
     template_name = 'regions/lead/create.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_staff:
-            return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalLeadCreateView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         form = forms.RegionalLeadForm(data=request.POST)
@@ -123,13 +87,8 @@ class RegionalLeadCreateView(views.LoginRequiredMixin, generic.CreateView):
             return render(request, self.template_name, {'form': form})
 
 
-class RegionalLeadUpdateView(views.LoginRequiredMixin, generic.UpdateView):
+class RegionalLeadUpdateView(views.StaffuserRequiredMixin, generic.UpdateView):
     model = models.RegionalLead
     form_class = forms.RegionalLeadForm
     success_url = '/region/'
     template_name = 'regions/lead/edit.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_staff:
-            return HttpResponseForbidden("Not Admin Member")
-        return super(RegionalLeadUpdateView, self).dispatch(request, *args, **kwargs)

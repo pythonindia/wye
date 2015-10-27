@@ -1,6 +1,6 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-[![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye)
+[![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye) [![Coverage Status](https://coveralls.io/repos/pythonindia/wye/badge.svg?branch=master&service=github)](https://coveralls.io/github/pythonindia/wye?branch=master)
 
 wye is the platform to help organisations(Colleges/FOSS) connect to experienced tutors which will benefit number of students to learn Python and real time use of Python in different domains.
 
@@ -22,6 +22,16 @@ python manage.py migrate
 python manage.py sample_data
 python manage.py runserver
 ```
+
+## Testing
+
+It's highly encouraged that you write test for any new feature/bug fixes. Find all the existing test inside `tests/` folder. To run the test locally, run the following command:
+
+```
+py.test
+```
+
+You can invoke `py.test` with various commandline arguements, that can drastily improve your test writing/running experience. Read useful tip/tricks at [docs/testing.md].
 
 #### Login Details
 
@@ -56,6 +66,8 @@ Contributing
 [issue-list]: https://github.com/pythonindia/wye/issues/
 [new-issue]: https://github.com/pythonindia/wye/issues/new
 [guidelines]: https://github.com/pythonindia/wye/blob/master/CONTRIBUTING.md
+[docs/testing.md]: docs/testing.md
+
 # License
 
 This software is licensed under The MIT License(MIT). See the LICENSE file in the top distribution directory for the full license text.

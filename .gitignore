@@ -6,7 +6,7 @@ __pycache__/
 *.so
 
 # pagedown static files
-/junction/assets/collected-static/*
+/wye/assets/collected-static/*
 
 # local settings
 dev.py
@@ -46,6 +46,9 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+
+# Splinter Screenshots
+tests.*
 
 # Translations
 *.mo

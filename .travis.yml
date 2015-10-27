@@ -1,7 +1,27 @@
 language: python
 sudo: false
+python:
+- '3.4'
+
+addons:
+  postgresql: "9.4"
+
+before_script:
+- psql -c "CREATE DATABASE wye" -U postgres
+
 install:
-  - pip install --upgrade pip
-  - pip install -r requirements/dev.txt
+- pip install --upgrade pip
+- pip install -r requirements/dev.txt
+- pip install python-coveralls
+
 script:
-  - flake8
+- flake8
+- py.test --cov --fail-on-template-vars --splinter-webdriver=phantomjs -v --tb=native
+
+after_script:
+- coveralls
+
+notifications:
+  email:
+    on_success: change  # [always|never|change]
+    on_failure: always  # [always|never|change]

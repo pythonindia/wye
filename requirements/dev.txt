@@ -5,4 +5,15 @@
 # -------------------------------------------------
 django-extensions==1.5.2
 ipython==4.0.0
-flake8==2.4.1
+
+
+# Testing
+# -------------------------------------------------
+pytest-django==2.9.*
+pytest-cov==2.2.*
+pytest-splinter==1.7.*
+factory_boy==2.5.*
+pdbpp==0.8.*
+
+coverage==4.*
+flake8==2.4.*

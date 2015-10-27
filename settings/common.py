@@ -31,15 +31,12 @@ ALLOWED_HOSTS = []
 SITE_ID = 1
 # Application definition
 
-SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
-
 # General project information
 # These are available in the template as SITE_INFO.<title>
 SITE_VARIABLES = {
     'site_name': os.environ.get('SITE_NAME', 'PythonExpress'),
     'site_description': '',
-    'site_url': SITE_URL,
-    'footer': 'Copyright &copy; 2015. Python Software Society of India.'
+    'footer': '&copy; 2014-2015 <a target="_blank" href="http://pssi.org.in/">Python Software Society of India</a>'
 }
 
 DEFAULT_APPS = (
@@ -99,6 +96,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.request',
+                'wye.base.context_processors.site_info',
             ],
         },
     },

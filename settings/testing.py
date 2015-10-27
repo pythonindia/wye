@@ -1,7 +1,8 @@
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+from .common import *  # noqa
 
 DEBUG = True
+
+SECRET_KEY = 'changeme!!'
 
 DATABASES = {
     'default': {
