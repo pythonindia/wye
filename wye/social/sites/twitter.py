@@ -2,25 +2,22 @@ from twython import Twython
 
 from wye.social.utils import get_message
 
-def init_twitter(old_function):
-    def new_function(context):
-        try:
-            twitter = Twython(
-                settings.TWITTER_CONSUMER_KEY,
-                settings.TWITTER_CONSUMER_SECRET,
-                settings.TWITTER_ACCESS_TOKEN,
-                settings.TWITTER_ACCESS_TOKEN_SECRET,
-            )
-        except:
-            # Log this error: Authentication Error.
-            twitter = None
+def init_twitter():
+    try:
+        twitter = Twython(
+            settings.TWITTER_CONSUMER_KEY,
+            settings.TWITTER_CONSUMER_SECRET,
+            settings.TWITTER_ACCESS_TOKEN,
+            settings.TWITTER_ACCESS_TOKEN_SECRET,
+        )
+    except:
+        # Log this error: Authentication Error.
+        twitter = None
 
-        old_function(context=context, twitter=twitter)
+    return twitter
 
-    return new_function
-
-@init_twitter
-def send_tweet(context=None, twitter=None):
+def send_tweet(context=None):
+    twitter = init_twitter()
     if twitter:
         message = get_message(context)
         try:
