@@ -1,15 +1,16 @@
-# from django.conf import settings
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+# from django.conf import settings
+# from django.dispatch import receiver
+# from rest_framework.authtoken.models import Token
+from django.utils.functional import cached_property
+from slugify import slugify
 
 from wye.base.constants import WorkshopStatus
 from wye.regions.models import Location
-from wye.workshops.models import Workshop
-from wye.workshops.models import WorkshopSections
-
-from django.db.models.signals import post_save
-# from django.dispatch import receiver
-# from rest_framework.authtoken.models import Token
+from wye.workshops.models import Workshop, WorkshopSections
 
 
 class UserType(models.Model):
@@ -34,8 +35,6 @@ class UserType(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
-    # the slug fields become the username and should be unique for each user
-    slug = models.CharField(max_length=100, unique=True)
     mobile = models.CharField(max_length=10)
     usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
@@ -51,6 +50,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.user, self.slug)
+
+    @cached_property
+    def slug(self):
+        return slugify(self.user.username, only_ascii=True)
 
     @property
     def get_workshop_details(self):

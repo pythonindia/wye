@@ -10,7 +10,6 @@ class ProfileAdmin(admin.ModelAdmin):
         'mobile')
     search_fields = ('slug',)
     list_filter = (
-        'slug',
         'interested_locations',
         'interested_sections')
 
