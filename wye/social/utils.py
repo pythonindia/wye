@@ -7,6 +7,7 @@ def get_message(context):
         # Other messages for non-workshop creation actions
         return None
 
+
 def construct_message(workshop, context):
     date = workshop.expected_date
     topic = workshop.workshop_section

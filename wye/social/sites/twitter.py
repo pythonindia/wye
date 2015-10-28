@@ -1,6 +1,9 @@
 from twython import Twython
 
+from django.conf import settings
+
 from wye.social.utils import get_message
+
 
 def init_twitter():
     try:
@@ -15,6 +18,7 @@ def init_twitter():
         twitter = None
 
     return twitter
+
 
 def send_tweet(context=None):
     twitter = init_twitter()
