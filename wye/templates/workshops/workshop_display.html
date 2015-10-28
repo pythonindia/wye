@@ -1,0 +1,24 @@
+<div class="table-responsive">
+    <table class="table table-bordered sub">
+        <thead>
+            <tr>
+                <th>Organization</th>
+                <th>Presenter</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Section</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for each_workshop in workshop %}
+                <tr>
+                    <td>{{ each_workshop.requester }}</td>
+                    <td>{{ each_workshop.get_presenter_list|join:", " }}</td>
+                    <td>{{ each_workshop.expected_date }}</td>
+                    <td>{{ each_workshop.location }}</td>
+                    <td>{{ each_workshop.workshop_section }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
