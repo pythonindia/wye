@@ -3,18 +3,31 @@
 {% include 'autocomplete_light/static.html' %}
 
 {% block extracss %}
-<script src="{% static 'autocomplete.js' %}"></script>
+    <script src="{% static 'autocomplete.js' %}"></script>
 {% endblock %}
 
-{% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/region/"><b>Regions</b></a> » Add State
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Add State</h1>
+    </div>
 {% endblock %}
 
 {% block content %}
-
-<form method="post" action="{% url 'regions:state-create' %}">{% csrf_token %}
-{{form.errors}}
-{{form.as_p}}
-<input type="submit" value="Create">
-</form>
+    <div class="push-6-bottom">
+        <div class="row push-2-bottom">
+            <div class="col-sm-12 regular">
+                <a href="{% url 'regions:regions-home-page' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;States list</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                <form method="post" action="{% url 'regions:state-create' %}">
+                    {% csrf_token %}
+                    {{form.errors}}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-theme regular" value="Create">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
