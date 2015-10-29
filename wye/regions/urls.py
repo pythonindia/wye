@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^location/create/$', views.LocationCreateView.as_view(),
         name="location-create"),
     url(r'^location/(?P<pk>\d+)/edit/$', views.LocationUpdateView.as_view(),
-        name="organisation_update"),
+        name="location-update"),
     url(r'^$', views.RegionalListView.as_view(), name="regions-home-page")
 
 ]
