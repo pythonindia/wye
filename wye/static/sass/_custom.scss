@@ -29,6 +29,10 @@
             color: white;
         }
     }
+    .navbar-default .navbar-nav>li>a.active {
+        border-bottom: 5px solid $theme;
+        padding-bottom: 10px;
+    }
 }
 @media screen and (max-width: 768px) {
     .navbar-default {
