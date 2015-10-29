@@ -1,11 +1,12 @@
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
 
-from wye.base.constants import WorkshopStatus
+from wye.base.constants import WorkshopStatus, FeedbackType
 from wye.base.emailer import send_mail
 from wye.profiles.models import Profile
 
-from .models import Workshop
+from .models import Workshop, WorkshopFeedBack
 
 
 class WorkshopAccessMixin(object):
@@ -36,6 +37,51 @@ class WorkshopFeedBackMixin(object):
         if not (workshop.is_presenter(user) and workshop.is_organiser(user)):
             raise PermissionDenied
         return super(WorkshopFeedBackMixin, self).dispatch(request, *args, **kwargs)
+
+
+class WorkshopRestrictMixin(object):
+    """
+    Mixin to restrict 
+        - For organisation to add workshop if no feedback is shared.
+        - For presenter to takeup workshop if no feedback is shared
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user = self.request.user
+        self.feedback_required = []
+        usertype = self.user.profile.usertype
+
+        if usertype.filter(display_name__icontains="tutor").exists():
+            self.validate_presenter_feedback()
+        elif usertype.filter(display_name__icontains="poc").exists():
+            self.validate_organisation_feedback()
+
+        if self.feedback_required:
+            return HttpResponse(", ".join(map(str, self.feedback_required)))
+
+        return super(WorkshopRestrictMixin, self).dispatch(request, *args, **kwargs)
+
+    def validate_presenter_feedback(self):
+        workshops = Workshop.objects.filter(
+            presenter=self.user, status=WorkshopStatus.COMPLETED)
+
+        for workshop in workshops:
+            feedback = WorkshopFeedBack.objects.filter(
+                workshop=workshop, feedback_type=FeedbackType.PRESENTER
+            ).count()
+            if feedback == 0:
+                feedback_required.append(w)
+
+    def validate_organisation_feedback():
+        workshops = Workshop.objects.filter(
+            presenter=user, status=WorkshopStatus.COMPLETED)
+
+        for workshop in workshops:
+            feedback = WorkshopFeedBack.objects.filter(
+                workshop=workshop, feedback_type=FeedbackType.ORGANISATION
+            ).count()
+            if feedback == 0:
+                feedback_required.append(w)
 
 
 class WorkshopEmailMixin(object):
