@@ -1,13 +1,5 @@
 {% extends "base.html" %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-	    <li><b>{{ block.super }}</b></li>
-	    <li><a href="{% url 'profiles:profile-page' profile.pk %}"><b>{{ object.user.first_name }} {{ object.user.last_name }}</b></a></li>
-	    <li class="active">Details</li>
-    </ol>
-{% endblock %}
-
 {% block content %}
 This page wil be called when user click on hyperlink on profile page
 

@@ -1,12 +1,5 @@
 {% extends "base.html" %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><b>{{ block.super }}</b></li>
-        <li class="active">{{ object.user.first_name }}  {{object.user.last_name}}</li>
-    </ol>
-{% endblock %}
-
 {% block content %}
 <div>
 <div>Full Name: {{object.user.first_name}} {{object.user.last_name}}</div>

@@ -1,14 +1,5 @@
 {% extends "base.html" %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-	    <li><b>{{ block.super }}</b></li>
-	    <li><a href="/region/"><b>Regions</b></a></li>
-	    <li><a href="#"><b>{{ location.name }}</b></a></li>
-	    <li class="active">Edit</li>
-	</ol>
-{% endblock %}
-
 {% block content %}
 <form method="post" action="">{% csrf_token %}
 {{form.errors}}

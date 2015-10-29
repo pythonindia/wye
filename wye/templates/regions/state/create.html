@@ -6,14 +6,6 @@
 <script src="{% static 'autocomplete.js' %}"></script>
 {% endblock %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-	    <li><b>{{ block.super }}</b></li>
-	    <li><a href="/region/"><b>Regions</b></a></li>
-	    <li class="active">Add State</li>
-	</ol>
-{% endblock %}
-
 {% block content %}
 
 <form method="post" action="{% url 'regions:state-create' %}">{% csrf_token %}

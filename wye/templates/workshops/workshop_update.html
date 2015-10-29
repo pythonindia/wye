@@ -6,15 +6,6 @@
     </div>
 {% endblock %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><b>{{ block.super }}</b></li>
-        <li><a href="/workshop"><b>Workshops</b></a></li>
-        <li><a href="{% url 'workshops:workshop_detail' workshop.pk %}"><b>{{ workshop.requester }}</b></a></li>
-        <li class="active">Edit</li>
-    </ol>
-{% endblock %}
-
 {% block content %}
 {{ form.media }}
     <div class="push-6-bottom">
