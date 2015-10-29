@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 
 from wye.base.constants import (
     FeedbackType,
@@ -141,7 +140,6 @@ class Workshop(TimeAuditModel):
                 topic, date, workshop_url)
 
         return message
-
 
 
 class WorkshopRatingValues(TimeAuditModel):
