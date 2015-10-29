@@ -29,6 +29,3 @@ def send_tweet(context=None):
         except:
             # Log this error: Status Update error.
             pass
-    else:
-        # Log this error: Authentication Error.
-        pass
