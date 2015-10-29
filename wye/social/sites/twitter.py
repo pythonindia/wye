@@ -21,9 +21,10 @@ def init_twitter():
 def send_tweet(context=None):
     twitter = init_twitter()
     if twitter:
-        message = get_message(context)
-        try:
-            twitter.update_status(status=message)
-        except:
-            # Log this error: Status Update error.
-            pass
+        workshop = context.get('workshop', None)
+        if workshop:
+            try:
+                twitter.update_status(status=workshop.get_tweet(context))
+            except:
+                # Log this error: Status Update error.
+                pass

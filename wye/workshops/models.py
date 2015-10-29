@@ -1,11 +1,16 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
-from wye.base.constants import WorkshopStatus, WorkshopLevel, WorkshopAction,\
-    FeedbackType
+from wye.base.constants import (
+    FeedbackType,
+    WorkshopAction,
+    WorkshopLevel,
+    WorkshopStatus,
+)
+from wye.regions.models import Location
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
-from wye.regions.models import Location
 
 from .decorators import validate_action_param
 
@@ -122,6 +127,21 @@ class Workshop(TimeAuditModel):
 
     def get_presenter_list(self):
         return [user.get_full_name() for user in self.presenter.all()]
+
+    def get_tweet(self, context):
+        workshop = self
+        date = workshop.expected_date
+        topic = workshop.workshop_section
+        organization = workshop.requester
+        workshop_url = context.get('workshop_url', None)
+        message = "{} workshop at {} on {} confirmed! Details at {}".format(
+            topic, organization, date, workshop_url)
+        if len(message) >= 140:
+            message = "{} workshop on {} confirmed! Details at {}".format(
+                topic, date, workshop_url)
+
+        return message
+
 
 
 class WorkshopRatingValues(TimeAuditModel):
