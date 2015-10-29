@@ -4,22 +4,24 @@
 
 {% block header %}
     <div class="fill-theme text-center push-8-bottom push-6-top pad-1-xs">
-        <h1 class="prose-type extralarge">PythonExpress brings<span class="primary">tutors</span>, <span class="secondary">organizations</span> and <span class="tertiary">students</span> together to spread the love of Python far and wide.</h1>
+        <div class="container">
+            <h1 class="prose-type extralarge">PythonExpress brings <span class="primary">tutors</span>, <span class="secondary">organizations</span> and <span class="tertiary">students</span> together <br>to spread the love of Python far and wide.</h1>
+        </div>
     </div>
 {% endblock %}
 
 {% block sub_header %}
     <div class="clearfix text-center">
         <div class="col-sm-4 fill-primary">
-            <div class="extralarge push-h-top push-1q-bottom">{{ tutor_registered_count }}</div>
+            <div class="huge push-h-top push-1q-bottom">{{ tutor_registered_count }}</div>
             <div class="regular push-3q-bottom">Tutors registered</div>
         </div>
         <div class="col-sm-4 fill-secondary">
-            <div class="extralarge push-h-top push-1q-bottom">{{ organisation_registered_count }}</div>
+            <div class="huge push-h-top push-1q-bottom">{{ organisation_registered_count }}</div>
             <div class="regular push-3q-bottom">Organizations registered</div>
         </div>
         <div class="col-sm-4 fill-tertiary">
-            <div class="extralarge push-h-top push-1q-bottom">{{ completed_workshop_count }}</div>
+            <div class="huge push-h-top push-1q-bottom">{{ completed_workshop_count }}</div>
             <div class="regular push-3q-bottom">Workshops completed</div>
         </div>
         <!-- <div class="col-sm-4 fill-quaternary">
