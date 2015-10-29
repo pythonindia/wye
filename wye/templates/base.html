@@ -34,6 +34,8 @@
                                 {% if user.is_staff %}
                                 	<li><a href="/region" class="{% if request.resolver_match.namespace == 'regions' %}active{% endif %}">Regions</a></li>
                                 {% endif %}
+                            {% else %}
+                                <li><a href="/workshops_info" class="{% if request.resolver_match.url_name == 'workshops_info' %}active{% endif %}">Workshops</a></li>
                             {% endif %}
                             <li><a href="/faq" class="{% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a></li>
                         </ul>
