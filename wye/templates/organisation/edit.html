@@ -6,10 +6,6 @@
     </div>
 {% endblock %}
 
-{% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/organisation"><b>Organisations</b></a> » <a href="{% url 'organisations:organisation_details' organisation.pk %}"><b>{{ object.name }}</b></a> » Edit
-{% endblock %}
-
 {% block content %}
     <div class="push-4-bottom">
         <div class="row push-2-bottom">
