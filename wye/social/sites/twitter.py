@@ -2,8 +2,6 @@ from twython import Twython
 
 from django.conf import settings
 
-from wye.social.utils import get_message
-
 
 def init_twitter():
     try:
