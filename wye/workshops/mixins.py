@@ -43,7 +43,7 @@ class WorkshopFeedBackMixin(object):
 
 class WorkshopRestrictMixin(object):
     """
-    Mixin to restrict 
+    Mixin to restrict
         - For organisation to add workshop if no feedback is shared.
         - For presenter to takeup workshop if no feedback is shared
     """
