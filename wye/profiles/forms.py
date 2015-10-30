@@ -23,8 +23,8 @@ class SignupForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
         }
     def save(self, user):
+        user.profile.mobile = self.cleaned_data['mobile']
         user.save()
-        models.Profile.objects.filter(user__id = user.id).update(mobile = self.cleaned_data['mobile'])
 
 class UserProfileForm(forms.ModelForm):
 
