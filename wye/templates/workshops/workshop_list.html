@@ -53,7 +53,15 @@
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
-                                        <td>{{ workshop.get_status_display }}</td>
+                                        {% ifequal workshop.get_status_display "FeedBack Pending" %}
+                                        <td>
+                                       <a href="{% url "workshops:workshop_feedback" workshop.pk %}" class="btn btn-theme-primary">Share Feedback</a>
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                {{ workshop.get_status_display }}
+                                            </td>
+                                        {% endifequal %}
                                     </tr>
                                 {% endfor %}
                             </tbody>
