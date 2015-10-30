@@ -1,6 +1,8 @@
 from django.http import Http404
+from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 
 from wye.base.constants import WorkshopStatus, FeedbackType
 from wye.base.emailer import send_mail
@@ -47,18 +49,19 @@ class WorkshopRestrictMixin(object):
     """
 
     def dispatch(self, request, *args, **kwargs):
-        self.user = self.request.user
+        self.user = request.user
         self.feedback_required = []
         usertype = self.user.profile.usertype
 
+        # check if user is tutor
         if usertype.filter(display_name__icontains="tutor").exists():
             self.validate_presenter_feedback()
         elif usertype.filter(display_name__icontains="poc").exists():
+            # if user is from organisation
             self.validate_organisation_feedback()
 
         if self.feedback_required:
-            return HttpResponse(", ".join(map(str, self.feedback_required)))
-
+            return self.return_response(request)
         return super(WorkshopRestrictMixin, self).dispatch(request, *args, **kwargs)
 
     def validate_presenter_feedback(self):
@@ -70,18 +73,29 @@ class WorkshopRestrictMixin(object):
                 workshop=workshop, feedback_type=FeedbackType.PRESENTER
             ).count()
             if feedback == 0:
-                feedback_required.append(w)
+                self.feedback_required.append(workshop)
 
-    def validate_organisation_feedback():
+    def validate_organisation_feedback(self):
         workshops = Workshop.objects.filter(
-            presenter=user, status=WorkshopStatus.COMPLETED)
+            presenter=self.user, status=WorkshopStatus.COMPLETED)
 
         for workshop in workshops:
             feedback = WorkshopFeedBack.objects.filter(
                 workshop=workshop, feedback_type=FeedbackType.ORGANISATION
             ).count()
             if feedback == 0:
-                feedback_required.append(w)
+                self.feedback_required.append(workshop)
+
+    def return_response(self, request):
+        msg = "Please complete the feeback for %s" % (
+            ", ".join(map(str, self.feedback_required)))
+
+        # return json for ajax request
+        if request.is_ajax():
+            return JsonResponse({"status": False, "msg": msg})
+
+        messages.error(request, msg)
+        return HttpResponseRedirect(reverse('workshops:workshop_list'))
 
 
 class WorkshopEmailMixin(object):
