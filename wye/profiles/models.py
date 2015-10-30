@@ -40,9 +40,6 @@ class Profile(models.Model):
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
 
-    REQUIRED_FIELDS = ('user', )
-    USERNAME_FIELD = 'slug'
-
     class Meta:
         db_table = 'user_profile'
         verbose_name = 'UserProfile'

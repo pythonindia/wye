@@ -36,8 +36,6 @@ class ProfileCreateView(views.LoginRequiredMixin, generic.CreateView):
         profile = models.Profile.objects.get(user=request.user)
         form = UserProfileForm(data=request.POST, instance=profile)
         if form.is_valid():
-            profile.slug = request.user.username
-            profile.save()
             form.save()
             return HttpResponseRedirect(self.success_url)
         else:
