@@ -17,6 +17,7 @@
             </div>
             <div class="col-xs-6 text-right">
                 <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request<span class="hidden-xs"> for workshop</span></a>
+                <a href="/workshops_info" class="btn btn-default sub"><i class="fa fa-info-circle"></i>&nbsp;more info</a>
             </div>
         </div>
         <div class="row push-1">
@@ -51,7 +52,6 @@
                 {% endif %}
             </div>
         </div>
-        {#{{workshop}}#}
     </div>
 {% endblock %}
 {% block footer_scripts %}

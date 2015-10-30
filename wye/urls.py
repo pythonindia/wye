@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^django-admin/', include(admin.site.urls)),
     url(r'^about/$', TemplateView.as_view(template_name='about.html',),
         name='about'),
+    url(r'^workshops_info/$', TemplateView.as_view(
+        template_name='workshops_info.html',),
+        name='workshops_info'),
     url(r'^faq/$', TemplateView.as_view(template_name='faq.html',),
         name='faq'),
     url(r'^organisation/',

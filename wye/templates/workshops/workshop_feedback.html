@@ -1,4 +1,4 @@
-{% extends "base.html" %}                                                             
+{% extends "base.html" %}
 
 {% block header %}
     <div class="fill-theme push-2 text-center">
@@ -7,8 +7,20 @@
 {% endblock %}
 
 {% block content %}
-<form method="post" action="">{% csrf_token %}
-{{form.as_p}}
-<input type="submit" value="submit">
-</form>
+    <div class="push-6-bottom">
+        <div class="row push-2-bottom">
+            <div class="col-sm-12 sub">
+                <a href="{% url 'workshops:workshop_detail' workshop.pk %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp; Workshop details</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-theme regular" value="submit">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -21,13 +21,17 @@
     .navbar-nav>li>a.nav-btn {
         background: $primary;
         color: #fff;
-        margin: 13px 0;
+        margin: 11px 0;
         border-radius: 0.4em;
         padding: 4px 15px;
         &:hover {
             background-color: $primary-alt;
             color: white;
         }
+    }
+    .navbar-default .navbar-nav>li>a.active {
+        border-bottom: 5px solid $primary;
+        padding-bottom: 10px;
     }
 }
 @media screen and (max-width: 768px) {
