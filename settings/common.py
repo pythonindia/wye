@@ -176,7 +176,7 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'wye.profiles.forms.SignupForm'
 
 EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 
-LOGIN_REDIRECT_URL = '/dashboard/'
+LOGIN_REDIRECT_URL = '/'
 
 # E-Mail Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

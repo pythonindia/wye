@@ -17,8 +17,8 @@ public_pages = [
 restricted_pages = [
     #     '/organisation/',
     #     '/organisation/create/',
-    '/workshop/',
-    '/workshop/create/',
+    #  '/workshop/',
+    # '/workshop/create/',
 ]
 
 staff_pages = [
@@ -72,6 +72,7 @@ def test_staff_pages(client, settings):
             client.logout()
 
 
+'''
 def test_orgnisation_pages(client, settings):
     settings.SITE_VARIABLES['site_name'] = 'My Test Website'
     normal_user = f.UserFactory(is_staff=False)
@@ -99,3 +100,4 @@ def test_orgnisation_pages(client, settings):
         assert settings.SITE_VARIABLES[
             'site_name'] in str(response.content)
         client.logout()
+'''

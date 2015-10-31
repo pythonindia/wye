@@ -62,8 +62,4 @@ def create_user(**kwargs):
 
 
 def create_organisation(**kwargs):
-    print('*' * 10)
-    print(kwargs)
-    print('*' * 10)
-    o = OrganisationFactory.create(**kwargs)
-    return o
+    return OrganisationFactory.create(**kwargs)
