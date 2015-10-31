@@ -1,11 +1,11 @@
-from braces import views
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views import generic
 
-from wye.base.emailer_html import send_email_to_id
+from braces import views
+from wye.base.emailer_html import send_email_to_id, send_email_to_list
 from wye.profiles.models import Profile
 
 from .forms import OrganisationForm
