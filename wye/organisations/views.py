@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.template import Context, loader
 from django.views import generic
 
 from braces import views
+from wye.base.emailer_html import send_email_to_list, send_email_to_id
 from wye.profiles.models import Profile
 
 from .forms import OrganisationForm
@@ -54,6 +55,18 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
+            email_context = Context({})
+            subject = "%s organisation for region %s is created" % (
+                form.instance.name, form.instance.location.name)
+            email_body = loader.get_template(
+                'email_messages/organisation/new.html').render(email_context)
+            text_body = loader.get_template(
+                'email_messages/organisation/new.txt').render(email_context)
+            send_email_to_id(
+                subject,
+                body=email_body,
+                email_id=request.user.email,
+                text_body=text_body)
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})
