@@ -54,13 +54,6 @@ class OrganisationFactory(Factory):
         lambda n: "organisation_role{}".format(n))
     organisation_type = factory.Iterator(dict(OrganisationType.CHOICES).keys())
     location = factory.SubFactory("tests.factories.LocationFactory")
-    #user = factory.SubFactory("tests.factories.UserFactory")
-#
-#     @factory.post_generation
-#     def user(self, create, extracted, **kwargs):
-#         u = UserFactory.create(**kwargs)
-#         self.user.add(u)
-#         self.save()
 
 
 def create_user(**kwargs):

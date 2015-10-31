@@ -42,7 +42,6 @@ def test_staff_pages(client, settings):
     settings.SITE_VARIABLES['site_name'] = 'My Test Website'
     normal_user = f.UserFactory(is_staff=False)
     staff_user = f.UserFactory(is_staff=True)
-    organisation = f.OrganisationFactory()
 
     for page_url in restricted_pages + staff_pages:
         response = client.get(page_url)

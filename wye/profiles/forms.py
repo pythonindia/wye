@@ -1,7 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import ugettext_lazy as _
+
 from . import models
 
 
@@ -11,10 +12,12 @@ class UserAuthenticationForm(AuthenticationForm):
                                widget=forms.PasswordInput,
                                required=True)
 
+
 class SignupForm(forms.ModelForm):
     mobile = forms.CharField(label=_("Mobile"), max_length=10,
-                                required=True,
-                                widget=forms.TextInput(attrs={'placeholder': 'Mobile Number'}))
+                             required=True,
+                             widget=forms.TextInput(attrs={'placeholder': 'Mobile Number'}))
+
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name']
@@ -22,9 +25,11 @@ class SignupForm(forms.ModelForm):
             'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
         }
+
     def save(self, user):
         user.profile.mobile = self.cleaned_data['mobile']
         user.save()
+
 
 class UserProfileForm(forms.ModelForm):
 
@@ -34,4 +39,3 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         exclude = ('user', 'slug')
-
