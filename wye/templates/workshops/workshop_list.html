@@ -10,17 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if messages %}
-        {% for message in messages %}
-            {% ifequal message.tags "error" %}
-            <div class="alert alert-danger" role="alert">
-            {%else%}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-            {% endifequal %}
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+ 
     <div class="push-4-bottom">
         <div class="row">
             <div class="col-xs-6">
