@@ -44,5 +44,5 @@ class EmailThread(threading.Thread):
     def run(self):
         try:
             self.email.send()
-        except Exception, e:
+        except Exception as e:
             print(e)
