@@ -62,11 +62,25 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
                 'email_messages/organisation/new.html').render(email_context)
             text_body = loader.get_template(
                 'email_messages/organisation/new.txt').render(email_context)
-            send_email_to_id(
-                subject,
-                body=email_body,
-                email_id=request.user.email,
-                text_body=text_body)
+            try:
+                send_email_to_id(
+                    subject,
+                    body=email_body,
+                    email_id=request.user.email,
+                    text_body=text_body)
+            except Exception as e:
+                print(e)
+            try:
+                regional_lead = Profile.objects.filter(
+                    interested_locations=form.instance.location,
+                    usertype__slug='lead').values_list('user__email', flat=True)
+                send_email_to_list(
+                    subject,
+                    body=email_body,
+                    users_list=regional_lead,
+                    text_body=text_body)
+            except Exception as e:
+                print(e)
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})
