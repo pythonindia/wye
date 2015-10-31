@@ -20,6 +20,7 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile_create')
+        return super(OrganisationList, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Organisation.objects.filter(user=self.request.user)

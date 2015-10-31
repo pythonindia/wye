@@ -4,9 +4,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from faker import Faker
 
+from faker import Faker
 from wye.organisations.models import Organisation
+from wye.profiles.models import UserType
 from wye.regions.models import Location, State
 from wye.workshops.models import WorkshopSections
 
@@ -47,6 +48,8 @@ class Command(BaseCommand):
 
         print('  Creating sample workshop sections')
         self.create_workshop_sections(counter=NUMBER_OF_WORKSHOP_SECTIONS)
+        print('  Creating sample User Type sections')
+        self.create_user_type(counter=NUMBER_OF_WORKSHOP_SECTIONS)
 
     def create_user(self, counter=None, **kwargs):
         params = {
@@ -78,6 +81,18 @@ class Command(BaseCommand):
                 name=self.fake.state())
             Location.objects.update_or_create(
                 name=self.fake.city(), state=state)
+
+    def create_user_type(self, counter=None):
+        user_type_tuple = [
+            ('tutor', 'Tutor'),
+            ('lead', 'Regional Lead'),
+            ('poc', 'College POC'),
+            ('admin', 'admin')]
+        for i in user_type_tuple:
+            obj, updated = UserType.objects.update_or_create(
+                slug=i[0])
+            obj.display_name = i[1]
+            obj.save()
 
     def create_organisations(self, counter=None):
         users = get_user_model().objects.all()

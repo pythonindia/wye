@@ -31,7 +31,7 @@ class ProfileCreateView(views.LoginRequiredMixin, generic.CreateView):
     model = models.Profile
     template_name = 'profile/profile_create.html'
     form_class = UserProfileForm
-    success_url = reverse_lazy('profiles:dashboard')
+    success_url = reverse_lazy('dashboard')
 
     def post(self, request, *args, **kwargs):
         profile = models.Profile.objects.get(user=request.user)
@@ -52,6 +52,7 @@ class UserDashboard(ListView):
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile_create')
+        return super(UserDashboard, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(UserDashboard, self).get_context_data(**kwargs)

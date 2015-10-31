@@ -21,6 +21,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile_create')
+        return super(WorkshopList, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(
