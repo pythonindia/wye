@@ -1,19 +1,26 @@
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.shortcuts import redirect
 from django.views import generic
 
 from braces import views
+from wye.profiles.models import Profile
+from wye.social.sites.twitter import send_tweet
 
 from .forms import WorkshopForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
     WorkshopFeedBackMixin, WorkshopRestrictMixin
 from .models import Workshop
 
-from wye.social.sites.twitter import send_tweet
-
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     model = Workshop
     template_name = 'workshops/workshop_list.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        user_profile = Profile.objects.get(
+            user__id=self.request.user.id)
+        if not user_profile.get_user_type:
+            return redirect('profiles:profile_create')
 
     def get_context_data(self, *args, **kwargs):
         context = super(
