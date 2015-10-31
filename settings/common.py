@@ -151,7 +151,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-AUTH_PROFILE_MODULE = 'profiles.Profile'
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 ALLOWED_DATE_FORMAT = (
