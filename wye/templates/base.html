@@ -27,15 +27,17 @@
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/about/">About</a></li>
+                            <li><a href="/about/" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
                             {% if user.is_authenticated %}
-                                <li><a href="/organisation">Organisations</a></li>
-                                <li><a href="/workshop">Workshops</a></li>
+                            <li><a href="/dashboard/" class="{% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+                                <li><a href="/organisation/" class="{% if request.resolver_match.namespace == 'organisations' %}active{% endif %}">Organisations</a></li>
+                                <li><a href="/workshop/" class="{% if request.resolver_match.namespace == 'workshops' %}active{% endif %}">Workshops</a></li>
                                 {% if user.is_staff %}
-                                	<li><a href="/region">Regions</a></li>
+                                	<li><a href="/region" class="{% if request.resolver_match.namespace == 'regions' %}active{% endif %}">Regions</a></li>
                                 {% endif %}
                             {% endif %}
-                            <li><a href="/faq">FAQ</a></li>
+                            <li><a href="/workshops_info" class="{% if request.resolver_match.url_name == 'workshops_info' %}active{% endif %}">Workshops Info</a></li>
+                            <li><a href="/faq" class="{% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             {%block loginindicator %}
@@ -61,7 +63,7 @@
                 {% block sub_header %}{% endblock %}
 
                 {% block container_body %}
-                    <div class="container push-4-top">
+                    <div class="container push-2-top">
                         {% block content_body %}
                             {% block content %}
                             {% endblock %}

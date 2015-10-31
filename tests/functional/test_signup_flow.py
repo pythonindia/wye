@@ -10,10 +10,12 @@ def test_signup_flow(base_url, browser, outbox):
     signup_btn.click()
 
     assert browser.is_element_present_by_text("Sign Up")
+    browser.fill('first_name', 'john')
+    browser.fill('last_name', 'miller')
+    browser.fill('mobile', '0987654321')
     browser.fill('username', 'john')
     browser.fill('email', 'john@example.com')
     browser.fill('password1', '123123')
-    browser.fill('password2', '123123')
     submit_btn = browser.find_by_css('button[type=submit]')[0]
     submit_btn.click()
 

@@ -14,6 +14,7 @@ pytest-cov==2.2.*
 pytest-splinter==1.7.*
 factory_boy==2.5.*
 pdbpp==0.8.*
+fancycompleter==0.4
 
 coverage==4.*
 flake8==2.4.*

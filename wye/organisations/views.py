@@ -1,9 +1,11 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import generic
 
 from braces import views
+from wye.profiles.models import Profile
 
 from .forms import OrganisationForm
 from .models import Organisation
@@ -13,14 +15,24 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
     model = Organisation
     template_name = 'organisation/list.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        user_profile = Profile.objects.get(
+            user__id=self.request.user.id)
+        if not user_profile.get_user_type:
+            return redirect('profiles:profile_create')
+        return super(OrganisationList, self).dispatch(request, *args, **kwargs)
+
     def get_queryset(self):
         return Organisation.objects.filter(user=self.request.user)
 
     def get_context_data(self, *args, **kwargs):
-        context = super(OrganisationList, self).get_context_data(*args, **kwargs)
+        context = super(OrganisationList, self).get_context_data(
+            *args, **kwargs)
         context['organsation_list'] = self.get_queryset()
-        context['org_created_list'] = self.get_queryset().filter(created_by=self.request.user)
-        context['org_belongs_list'] = self.get_queryset().exclude(created_by=self.request.user)
+        context['org_created_list'] = self.get_queryset().filter(
+            created_by=self.request.user)
+        context['org_belongs_list'] = self.get_queryset().exclude(
+            created_by=self.request.user)
         context['user'] = self.request.user
         return context
 

@@ -1,0 +1,34 @@
+{% load workshop_display %}
+<div class="push-2-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Workshops that you have requested</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshop_requested_tutor %}
+                <p class="gray sub"><em>You haven't requested any workshop.</em></p>
+            {% else %}
+                {% show_workshops workshop_requested_tutor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-4-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Workshops that you have completed</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshop_completed_tutor %}
+                <p class="gray sub"><em>Your haven't taken any workshop.</em></p>
+            {% else %}
+                {% show_workshops workshop_completed_tutor %}
+            {% endif %}
+        </div>
+    </div>
+</div>

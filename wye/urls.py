@@ -6,13 +6,18 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 
 from wye.base.views import HomePageView
-
+from wye.profiles.views import UserDashboard
 
 urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^django-admin/', include(admin.site.urls)),
+    url(r'^dashboard/$', UserDashboard.as_view(),
+        name="dashboard"),
     url(r'^about/$', TemplateView.as_view(template_name='about.html',),
         name='about'),
+    url(r'^workshops_info/$', TemplateView.as_view(
+        template_name='workshops_info.html',),
+        name='workshops_info'),
     url(r'^faq/$', TemplateView.as_view(template_name='faq.html',),
         name='faq'),
     url(r'^organisation/',

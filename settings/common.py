@@ -55,6 +55,7 @@ OUR_APPS = (
     'wye.organisations',
     'wye.workshops',
     'wye.regions',
+    'wye.social',
 )
 
 THIRD_PARTY_APPS = (
@@ -151,7 +152,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-AUTH_PROFILE_MODULE = 'profiles.Profile'
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 ALLOWED_DATE_FORMAT = (
@@ -171,6 +171,8 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[{}] ".format(SITE_VARIABLES['site_name'])
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
+ACCOUNT_SIGNUP_FORM_CLASS = 'wye.profiles.forms.SignupForm'
 
 EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 
@@ -184,3 +186,11 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', ''),
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = SITE_VARIABLES['site_name'] + ' <noreply@pssi.org.in>'
+
+# Social media keys
+
+# Twitter
+TWITTER_CONSUMER_KEY = os.environ.get("TWITTER_CONSUMER_KEY", "")
+TWITTER_CONSUMER_SECRET = os.environ.get("TWITTER_CONSUMER_SECRET", "")
+TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN", "")
+TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", "")

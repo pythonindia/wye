@@ -1,17 +1,27 @@
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.shortcuts import redirect
 from django.views import generic
 
 from braces import views
+from wye.profiles.models import Profile
+from wye.social.sites.twitter import send_tweet
 
 from .forms import WorkshopForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
-    WorkshopFeedBackMixin
+    WorkshopFeedBackMixin, WorkshopRestrictMixin
 from .models import Workshop
 
 
 class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     model = Workshop
     template_name = 'workshops/workshop_list.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        user_profile = Profile.objects.get(
+            user__id=self.request.user.id)
+        if not user_profile.get_user_type:
+            return redirect('profiles:profile_create')
+        return super(WorkshopList, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(
@@ -28,8 +38,8 @@ class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
     template_name = 'workshops/workshop_detail.html'
 
 
-class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
-                     generic.CreateView):
+class WorkshopCreate(views.LoginRequiredMixin, WorkshopRestrictMixin,
+                     WorkshopEmailMixin, generic.CreateView):
     model = Workshop
     email_dir = 'email_messages/workshop/create_workshop/'
     form_class = WorkshopForm
@@ -40,16 +50,19 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
         response = super(WorkshopCreate, self).form_valid(form)
         workshop = self.object
         context = {
+            'workshop': workshop,
             'date': workshop.expected_date,
             'workshop_url': self.request.build_absolute_uri(reverse(
                 'workshops:workshop_detail', args=[workshop.pk]
             ))
         }
+        send_tweet(context)
         self.send_mail_to_group(context)
         return response
 
 
-class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.UpdateView):
+class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
+                     generic.UpdateView):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_update.html'
@@ -62,7 +75,8 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.Upda
 
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                           views.JSONResponseMixin, WorkshopAccessMixin, generic.UpdateView):
+                           views.JSONResponseMixin, WorkshopAccessMixin,
+                           generic.UpdateView):
     model = Workshop
 
     def post(self, request, *args, **kwargs):
@@ -72,8 +86,8 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
 
 
 class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                       views.JSONResponseMixin, WorkshopEmailMixin,
-                       generic.UpdateView):
+                       WorkshopRestrictMixin, views.JSONResponseMixin,
+                       WorkshopEmailMixin, generic.UpdateView):
     model = Workshop
     email_dir = 'email_messages/workshop/assign_me/'
 
