@@ -41,7 +41,7 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     model = Organisation
     form_class = OrganisationForm
     template_name = 'organisation/create.html'
-    success_url = reverse_lazy('home-page')
+    success_url = reverse_lazy('organisations:organisation_list')
 
     def get_queryset(self):
         return Organisation.objects.filter(user=self.request.user)
@@ -49,12 +49,25 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     def post(self, request, *args, **kwargs):
         form = OrganisationForm(data=request.POST)
         if form.is_valid():
-            form.modified_by = request.user
-            form.created_by = request.user
+            form.instance.modified_by = request.user
+            form.instance.created_by = request.user
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
-            # send email on new organisation created
+            context = {
+            'presenter': True,
+            'assigned': assigned,
+            'date': workshop.expected_date,
+            'presenter_name': user.username,
+            'workshop_organization': workshop.requester,
+            'workshop_url': self.request.build_absolute_uri(reverse(
+                'workshops:workshop_detail', args=[workshop.pk]
+            ))
+        }
+        # email to presenter and group
+        self.send_mail_to_presenter(user, context)
+        context['presenter'] = False
+        self.send_mail_to_group(context, exclude_emails=[user.email])
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})
@@ -63,7 +76,7 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
 class OrganisationDetail(views.LoginRequiredMixin, generic.DetailView):
     model = Organisation
     template_name = 'organisation/detail.html'
-    success_url = reverse_lazy('home-page')
+    success_url = reverse_lazy('organisations:organisation_list')
 
     def get_queryset(self):
         return Organisation.objects.filter(user=self.request.user, id=self.kwargs['pk'])
@@ -73,7 +86,7 @@ class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
     model = Organisation
     form_class = OrganisationForm
     template_name = 'organisation/edit.html'
-    success_url = reverse_lazy('home-page')
+    success_url = reverse_lazy('organisations:organisation_list')
 
     def get_object(self, queryset=None):
         return Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])
