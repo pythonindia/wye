@@ -29,6 +29,7 @@
                         <ul class="nav navbar-nav">
                             <li><a href="/about/" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
                             {% if user.is_authenticated %}
+                            <li><a href="/dashboard/" class="{% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}">Dashboard</a></li>
                                 <li><a href="/organisation/" class="{% if request.resolver_match.namespace == 'organisations' %}active{% endif %}">Organisations</a></li>
                                 <li><a href="/workshop/" class="{% if request.resolver_match.namespace == 'workshops' %}active{% endif %}">Workshops</a></li>
                                 {% if user.is_staff %}
