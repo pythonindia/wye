@@ -1,0 +1,88 @@
+{% load workshop_display %}
+<div class="push-2-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Users in your organisation</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not organisation_users %}
+                <p class="gray sub"><em>There are no users.</em></p>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-bordered sub">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Usertype</th>
+                                <th>Location</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for orguser in organisation_users %}
+                                <tr>
+                                    <td>{{ orguser.user }}</td>
+                                    <td>{{ orguser.get_user_type|join:", " }}</td>
+                                    <td>{{ orguser.get_interested_locations|join:", " }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-2-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Workshops Requested</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshop_requested_under_poc %}
+                <p class="gray sub"><em>There are no workshop requests</em></p>
+            {% else %}
+                {% show_workshops workshop_requested_under_poc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-4-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Workshops Accepted</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshops_accepted_under_poc %}
+                <p class="gray sub"><em>There are no workshops that have been accepted.</em></p>
+            {% else %}
+                {% show_workshops workshops_accepted_under_poc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-4-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Workshops Completed</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshop_completed_under_poc %}
+                <p class="gray sub"><em>There are no workshops that are completed.</em></p>
+            {% else %}
+                {% show_workshops workshop_completed_under_poc %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+

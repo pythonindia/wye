@@ -1,0 +1,113 @@
+<div class="push-2-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Tutors who expressed interest</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not interested_tutors %}
+                <p class="gray sub"><em>There are no tutors who have expressed interest to conduct workshop.</em></p>
+            {% else %}
+                <p class="gray sub"><em>{{interested_tutors}} tutors who have expressed interest to conduct workshop.</em></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-2-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Organisation who expressed interest</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not interested_locations %}
+                <p class="gray sub"><em>There are no organisation who have expressed interest to conduct workshop.</em></p>
+            {% else %}
+                <p class="gray sub"><em>{{interested_locations}} organisation who have expressed interest to conduct workshop.</em></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-2-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Workshops Accepted</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshops_accepted_under_rl %}
+                <p class="gray sub"><em>There are no workshop accepted</em></p>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-bordered sub">
+                        <thead>
+                            <tr>
+                                <th>Organization</th>
+                                <th>Presenter</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Section</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for workshop in workshops_accepted_under_rl %}
+                                <tr>
+                                    <td>{{ workshop.requester }}</td>
+                                    <td>{{ workshop.get_presenter_list|join:", " }}</td>
+                                    <td>{{ workshop.expected_date }}</td>
+                                    <td>{{ workshop.location }}</td>
+                                    <td>{{ workshop.workshop_section }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-4-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Workshops Pending</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshops_pending_under_rl %}
+                <p class="gray sub"><em>There are no pending workshops.</em></p>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-bordered sub">
+                        <thead>
+                            <tr>
+                                <th>Organization</th>
+                                <th>Presenter</th>
+                                <th>Date</th>
+                                <th>Location</th>
+                                <th>Section</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for workshop in workshops_pending_under_rl %}
+                                <tr>
+                                    <td>{{ workshop.requester }}</td>
+                                    <td>{{ workshop.get_presenter_list|join:", " }}</td>
+                                    <td>{{ workshop.expected_date }}</td>
+                                    <td>{{ workshop.location }}</td>
+                                    <td>{{ workshop.workshop_section }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
