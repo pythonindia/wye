@@ -1,0 +1,34 @@
+{% load workshop_display %}
+<div class="push-2-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Status wise Workshops</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshops_by_status %}
+                <p class="gray sub"><em>There are no workshops to display</em></p>
+            {% else %}
+                {% show_workshops workshops_by_status %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="push-4-bottom">
+    <div class="row">
+        <div class="col-xs-6">
+            <h3 class="space-1q-top">Location wise Workshops</h3>
+        </div>
+    </div>
+    <div class="row push-1">
+        <div class="col-sm-12">
+            {% if not workshops_by_region %}
+                <p class="gray sub"><em>There are no workshops to display.</em></p>
+            {% else %}
+                {% show_workshops workshops_by_region %}
+            {% endif %}
+        </div>
+    </div>
+</div>

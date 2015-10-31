@@ -7,82 +7,21 @@
 {% endblock %}
 
 {% block content %}
-    <div class="push-4-bottom">
-        <div class="row">
-            <div class="col-xs-6">
-                <h3 class="space-1q-top">Workshops Requested</h3>
-            </div>
-        </div>
-        <div class="row push-1">
-            <div class="col-sm-12">
-                {% if not workshop_requested_tutor %}
-                    <p class="gray sub"><em>You haven't requested any workshop.</em></p>
-                {% else %}
-                    <div class="table-responsive">
-                        <table class="table table-bordered sub">
-                            <thead>
-                                <tr>
-                                    <th>Organization</th>
-                                    <th>Presenter</th>
-                                    <th>Date</th>
-                                    <th>Location</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for workshop in workshop_requested_tutor %}
-                                    <tr>
-                                        <td>{{ workshop.requester }}</td>
-                                        <td>{{ workshop.get_presenter_list|join:", " }}</td>
-                                        <td>{{ workshop.expected_date }}</td>
-                                        <td>{{ workshop.location }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-        {#{{workshop}}#}
-    </div>
 
-    <div class="push-2-top">
-        <div class="row">
-            <div class="col-xs-6">
-                <h3 class="space-1q-top">Workshops Completed</h3>
-            </div>
-        </div>
-        <div class="row push-1">
-            <div class="col-sm-12">
-                {% if not workshop_completed_tutor %}
-                    <p class="gray sub"><em>Your haven't taken any workshop.</em></p>
-                {% else %}
-                    <div class="table-responsive">
-                        <table class="table table-bordered sub">
-                            <thead>
-                                <tr>
-                                    <th>Organization</th>
-                                    <th>Presenter</th>
-                                    <th>Date</th>
-                                    <th>Location</th>
-                                    <th>No of Participants</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for workshop in workshop_completed_tutor %}
-                                    <tr>
-                                        <td>{{ workshop.requester }}</td>
-                                        <td>{{ workshop.get_presenter_list|join:", " }}</td>
-                                        <td>{{ workshop.expected_date }}</td>
-                                        <td>{{ workshop.location }}</td>
-                                        <td>{{ workshop.no_of_participants }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    {% if is_admin %}
+        {% include "profile/admin_dashboard.html" %}
+    {% endif %}
+
+    {% if is_regional_lead %}
+        {% include "profile/regional_lead_dashboard.html" %}
+    {% endif %}
+
+    {% if is_college_poc %}
+        {% include "profile/college_poc_dashboard.html" %}
+    {% endif %}
+
+    {% if is_tutor %}
+        {% include "profile/tutor_dashboard.html" %}
+    {% endif %}
+
 {% endblock %}
