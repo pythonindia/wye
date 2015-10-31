@@ -1,16 +1,17 @@
-
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save
-# from django.conf import settings
-# from django.dispatch import receiver
-# from rest_framework.authtoken.models import Token
-from django.utils.functional import cached_property
-from slugify import slugify
+from dateutil.rrule import rrule, MONTHLY
+import json
 
 from wye.base.constants import WorkshopStatus
 from wye.regions.models import Location
 from wye.workshops.models import Workshop, WorkshopSections
+
+from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from rest_framework.authtoken.models import Token
+from django.utils.functional import cached_property
+from slugify import slugify
 
 
 class UserType(models.Model):
@@ -30,15 +31,23 @@ class UserType(models.Model):
         ordering = ('-id',)
 
     def __str__(self):
-        return '{} - {}'.format(self.slug, self.display_name)
+        return '{}'.format(self.display_name)
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
-    mobile = models.CharField(max_length=10)
+    mobile = models.CharField(max_length=10, blank=False, null=True)
     usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
+    location = models.ForeignKey(Location, related_name="user_location", null=True)
+    github = models.URLField(null=True, blank=True)
+    facebook = models.URLField(null=True, blank=True)
+    googleplus = models.URLField(null=True, blank=True)
+    linkedin = models.URLField(null=True, blank=True)
+    twitter = models.URLField(null=True, blank=True)
+    slideshare = models.URLField(null=True, blank=True)
+    picture = models.ImageField(upload_to='images/', default='images/newuser.png')
 
     class Meta:
         db_table = 'user_profile'
@@ -77,7 +86,8 @@ class Profile(models.Model):
 
     @property
     def get_avg_workshop_rating(self):
-        pass
+        # TODO: Complete!
+        return 0
 
     @staticmethod
     def get_user_with_type(user_type=None):
@@ -96,6 +106,37 @@ class Profile(models.Model):
     @property
     def get_interested_locations(self):
         return [x.name for x in self.interested_locations.all()]
+
+    @property
+    def get_graph_data(self):
+        sections = WorkshopSections.objects.all()
+        workshops = Workshop.objects.filter(
+            presenter=self.user,
+            status=WorkshopStatus.COMPLETED
+        )
+        if workshops:
+            max_workshop_date = workshops.aggregate(models.Max('expected_date'))['expected_date__max']
+            min_workshop_date = workshops.aggregate(models.Min('expected_date'))['expected_date__min']
+            data = []
+            if max_workshop_date and min_workshop_date:
+                dates = [dt for dt in rrule(MONTHLY, dtstart=min_workshop_date, until=max_workshop_date)]
+                if dates:
+                    for section in sections:
+                        values = []
+                        for d in dates:
+                            y = workshops.filter(
+                                expected_date__year=d.year,
+                                expected_date__month=d.month,
+                                workshop_section=section.pk).count()
+                            values.append({'x': "{}-{}".format(d.year, d.month), 'y': y})
+                        data.append({'key': section.name, 'values': values})
+                    return json.dumps(data)
+                else:
+                    return []
+            else:
+                return []
+        else:
+            return []
 
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):

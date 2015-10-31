@@ -4,13 +4,149 @@
     <b>{{ block.super }}</b> » User Profile
 {% endblock %}
 
+{% load static from staticfiles %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'css/libs/nv.d3.min.css' %}">
+{% endblock %}
+
+{% block graphscript %}
+<script src="{% static 'js/libs/d3.min.js' %}"></script>
+<script src="{% static 'js/libs/nv.d3.min.js' %}"></script>
+<script>
+    nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    var data = JSON.parse('{{object.get_graph_data | safe}}');
+    chart.xAxis.tickFormat(function(d) {
+      return d3.time.format('%b-%y')(new Date(d))
+    });
+    chart.yAxis.tickFormat(d3.format(',.1f'));
+    d3.select('#chart svg')
+      .datum(data)
+      .transition()
+      .duration(500)
+      .call(chart);
+    nv.utils.windowResize(chart.update);
+    return chart;
+  });
+</script>
+{% endblock %}
+
 {% block content %}
-<div>
-<div>Full Name: {{object.user.first_name}} {{object.user.last_name}}</div>
-<div>No of workshop completed: {{object.get_workshop_count}}</div>
-<div>No of workshop upcoming: </div>
-<div>No of Students : {{object.get_total_no_of_participants}}</div>
-<div>Last Workshop Date: {{object.get_last_workshop_date}}</div>
-<div>Tutors Avg rating: {{object.get_avg_workshop_rating}}</div>
+
+{% if request.user.pk == object.pk %}
+<div class="row">
+  <div class="col-md-offset-10 col-md-2">
+      <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-primary">Edit <i class="fa fa-pencil-square-o"></i></a>
+  </div>
+</div>
+{% endif %}
+
+<div class="row">
+  <div class="col-md-2">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <img class="img-circle user_image_profile" src="/media/{{object.user.profile.picture}}"/>
+          </div>
+          <div class="col-xs-12">
+            <h3>{{object.user.get_full_name}}</h3>
+          </div>
+          <div class="col-xs-12">
+            <a href=""><i class="fa fa-map-marker"></i> {{object.user.profile.location.name}}</span></a>
+          </div>
+          <div class="col-xs-12">
+            <a href="mail:{{object.user.email}}"><i class="fa fa-envelope"></i> {{object.user.email}}</span></a>
+          </div>
+          <div class="col-xs-12">
+            <a href="tel:{{object.user.mobile}}"><i class="fa fa-phone-square"></i> {{object.user.profile.mobile}}</span></a>
+          </div>
+          <div class="col-xs-12">
+            <h4 class="text-center">Links</h4>
+          </div>
+          <div class="col-xs-12">
+            <h3>
+              {% if object.user.profile.github %}
+              <a href="{{object.user.profile.github}}"><i class="fa fa-github-square"></i></a>
+              {% endif %}
+              {% if object.user.profile.bitbucket %}
+              <a href="{{object.user.profile.bitbucket}}"><i class="fa fa-bitbucket-square"></i></a>
+              {% endif %}
+              {% if object.user.profile.facebook %}
+              <a href="{{object.user.profile.facebook}}"><i class="fa fa-facebook-square"></i></a>
+              {% endif %}
+              {% if object.user.profile.googleplus %}
+              <a href="{{object.user.profile.googleplus}}"><i class="fa fa-google-plus-square"></i></a>
+              {% endif %}
+              {% if object.user.profile.linkedin %}
+              <a href="{{object.user.profile.linkedin}}"><i class="fa fa-linkedin-square"></i></a>
+              {% endif %}
+              {% if object.user.profile.twitter %}
+              <a href="{{object.user.profile.twitter}}"><i class="fa fa-twitter-square"></i></a>
+              {% endif %}
+              {% if object.user.profile.stackoverflow %}
+              <a href="{{object.user.profile.stackoverflow}}"><i class="fa fa-stack-overflow"></i></a>
+              {% endif %}
+              {% if object.user.profile.slideshare %}
+              <a href="{{object.user.profile.slideshare}}"><i class="fa fa-slideshare"></i></a>
+              {% endif %}
+              {% if object.user.profile.reddit %}
+              <a href="{{object.user.profile.reddit}}"><i class="fa fa-reddit-square"></i></a>
+              {% endif %}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Graph <i class="fa fa-bar-chart"></i></span></h3>
+          </div>
+          <div class="panel-body">
+            <div id="chart">
+              <svg></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Activity <i class="fa fa-rocket"></i></h3>
+          </div>
+          <div class="panel-body">
+            <div class="row text-center">
+              <div class="col-md-4">
+                <h4>Average Rating</h4>
+                <h3>
+                  <i class="fa fa-star"></i>
+                  {{object.get_avg_workshop_rating}}<small>/5</small>
+                </h3>
+              </div>
+              <div class="col-md-4">
+                <h4>Total Workshops</h4>
+                <h3>
+                  <i class="fa fa-graduation-cap"></i>
+                  {{object.get_workshop_completed_count}}
+                </h3>
+              </div>
+              <div class="col-md-4">
+                <h4>Upcoming Workshops</h4>
+                <h3>
+                  <i class="fa fa-clock-o"></i>
+                  {{object.get_workshop_upcoming_count}}
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
