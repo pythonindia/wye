@@ -54,20 +54,6 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
-            context = {
-            'presenter': True,
-            'assigned': assigned,
-            'date': workshop.expected_date,
-            'presenter_name': user.username,
-            'workshop_organization': workshop.requester,
-            'workshop_url': self.request.build_absolute_uri(reverse(
-                'workshops:workshop_detail', args=[workshop.pk]
-            ))
-        }
-        # email to presenter and group
-        self.send_mail_to_presenter(user, context)
-        context['presenter'] = False
-        self.send_mail_to_group(context, exclude_emails=[user.email])
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})
