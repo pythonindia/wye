@@ -5,7 +5,7 @@ from braces import views
 
 from .forms import WorkshopForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
-    WorkshopFeedBackMixin
+    WorkshopFeedBackMixin, WorkshopRestrictMixin
 from .models import Workshop
 
 
@@ -28,8 +28,8 @@ class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
     template_name = 'workshops/workshop_detail.html'
 
 
-class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
-                     generic.CreateView):
+class WorkshopCreate(views.LoginRequiredMixin, WorkshopRestrictMixin,
+                     WorkshopEmailMixin, generic.CreateView):
     model = Workshop
     email_dir = 'email_messages/workshop/create_workshop/'
     form_class = WorkshopForm
@@ -49,7 +49,8 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopEmailMixin,
         return response
 
 
-class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.UpdateView):
+class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
+                     generic.UpdateView):
     model = Workshop
     form_class = WorkshopForm
     template_name = 'workshops/workshop_update.html'
@@ -62,7 +63,8 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin, generic.Upda
 
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                           views.JSONResponseMixin, WorkshopAccessMixin, generic.UpdateView):
+                           views.JSONResponseMixin, WorkshopAccessMixin,
+                           generic.UpdateView):
     model = Workshop
 
     def post(self, request, *args, **kwargs):
@@ -72,8 +74,8 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
 
 
 class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                       views.JSONResponseMixin, WorkshopEmailMixin,
-                       generic.UpdateView):
+                       WorkshopRestrictMixin, views.JSONResponseMixin,
+                       WorkshopEmailMixin, generic.UpdateView):
     model = Workshop
     email_dir = 'email_messages/workshop/assign_me/'
 

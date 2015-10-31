@@ -10,6 +10,17 @@
 {% endblock %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            {% ifequal message.tags "error" %}
+            <div class="alert alert-danger" role="alert">
+            {%else%}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+            {% endifequal %}
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="push-4-bottom">
         <div class="row">
             <div class="col-xs-6">
@@ -43,7 +54,15 @@
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
-                                        <td>{{ workshop.get_status_display }}</td>
+                                        {% ifequal workshop.get_status_display "FeedBack Pending" %}
+                                        <td>
+                                       <a href="{% url "workshops:workshop_feedback" workshop.pk %}" class="btn btn-theme-primary">Share Feedback</a>
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                {{ workshop.get_status_display }}
+                                            </td>
+                                        {% endifequal %}
                                     </tr>
                                 {% endfor %}
                             </tbody>
