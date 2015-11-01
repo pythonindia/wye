@@ -47,8 +47,8 @@
                                         <td>{{ workshop.location }}</td>
                                         <td>{{ workshop.get_status_display }}</td>
                                         <td><a href="" class="btn btn-theme-primary">Hold</a></td>
-                                        <td><a href="" class="btn btn-theme-primary">Accept</a></td>
-                                        <td><a href="" class="btn btn-theme-primary">Reject</a></td>
+                                        <td><a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_in' %}" class="btn btn-theme-primary">Accept</a></td>
+                                        <td><a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_out' %}"  class="btn btn-theme-primary">Reject</a></td>
                                         {% ifequal workshop.get_status_display "FeedBack Pending" %}
                                         	<td>
                                         		<a href="{% url "workshops:workshop_feedback" workshop.pk %}" class="btn btn-theme-primary">Share Feedback</a>
