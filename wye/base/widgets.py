@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.utils.safestring import mark_safe
 
@@ -15,6 +17,7 @@ class CalendarWidget(forms.TextInput):
         render_str = '''
             <script type="text/javascript">
             $(function() {
+                $.noConflict(true);
                 $("#id_%(name)s").datepicker({
                     format: 'dd/mm/yyyy'
                  });
@@ -25,7 +28,7 @@ class CalendarWidget(forms.TextInput):
         return mark_safe(rendered_input + render_str)
 
     def format_date(self, date):
-        if type(date) != str:
+        if type(date) == datetime.date:
             return date.strftime('%d/%m/%Y')
         return date
 
@@ -33,4 +36,4 @@ class CalendarWidget(forms.TextInput):
         css = {
             'all': ('css/libs/datepicker.css',)
         }
-        js = ('js/libs/bootstrap-datepicker.js',)
+        js = ('js/libs/jquery-2.1.4.min.js', 'js/libs/bootstrap-datepicker.js',)

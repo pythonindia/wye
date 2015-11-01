@@ -25,7 +25,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-12 text-center push-2-top">
-                            <img class="img-circle" src="/media/{{object.user.profile.picture}}"/>
+                            <img class="img-circle" src="/media/{{object.picture}}"/>
                             <h3 class="push-1q-top">{{object.user.get_full_name}}</h3>
                         </div>
                     </div>
@@ -33,22 +33,26 @@
                 </div>
                 <ul class="list-group sub">
                     <li class="list-group-item">
-                        <span class="wrap-word"><i class="fa fa-map-marker fa-width"></i>{{object.user.profile.location.name}}</span>
+                        <span class="wrap-word"><i class="fa fa-map-marker fa-width"></i>{{object.location.name}}</span>
                     </li>
-                    <a class="list-group-item" href="mailto:{{object.user.email}}" title="{{object.user.email}}">
-                        <span class="wrap-word"><i class="fa fa-envelope-o fa-width"></i>{{object.user.email}}</span>
-                    </a>
-                    <a class="list-group-item" href="tel:{{object.user.mobile}}" title="{{object.user.profile.mobile}}">
-                        <span class="wrap-word"><i class="fa fa-phone fa-width"></i>{{object.user.profile.mobile}}</span>
-                    </a>
+                    {% if object.is_email_visible %}
+                        <a class="list-group-item" href="mailto:{{object.user.email}}" title="{{object.user.email}}">
+                            <span class="wrap-word"><i class="fa fa-envelope-o fa-width"></i>{{object.user.email}}</span>
+                        </a>
+                    {%endif %}
+                    {% if object.is_mobile_visible %}
+                        <a class="list-group-item" href="tel:{{object.mobile}}" title="{{object.mobile}}">
+                            <span class="wrap-word"><i class="fa fa-phone fa-width"></i>{{object.mobile}}</span>
+                        </a>
+                    {% endif %}
                     <li class="list-group-item text-center">
                         <div class="regular social-icons">
                             {% if object.user.profile.github %}
                                 <a href="{{object.user.profile.github}}" title="Github" target="_blank" class="github"><i class="fa fa-github-square"></i></a>
                             {% endif %}
-                            {% if object.user.profile.bitbucket %}
+                            <!-- {% if object.user.profile.bitbucket %}
                                 <a href="{{object.user.profile.bitbucket}}" title="Bitbucket" target="_blank" class="bitbucket"><i class="fa fa-bitbucket-square"></i></a>
-                            {% endif %}
+                            {% endif %} -->
                             {% if object.user.profile.facebook %}
                                 <a href="{{object.user.profile.facebook}}" title="Facebook" target="_blank" class="facebook"><i class="fa fa-facebook-square"></i></a>
                             {% endif %}
@@ -61,18 +65,17 @@
                             {% if object.user.profile.twitter %}
                                 <a href="{{object.user.profile.twitter}}" title="Twitter" target="_blank" class="twitter"><i class="fa fa-twitter-square"></i></a>
                             {% endif %}
-                            {% if object.user.profile.stackoverflow %}
+                            <!-- {% if object.user.profile.stackoverflow %}
                                 <a href="{{object.user.profile.stackoverflow}}" title="Stackoverflow" target="_blank" class="stackoverflow"><i class="fa fa-stack-overflow"></i></a>
-                            {% endif %}
+                            {% endif %} -->
                             {% if object.user.profile.slideshare %}
                                 <a href="{{object.user.profile.slideshare}}" title="Slideshare" target="_blank" class="slideshare"><i class="fa fa-slideshare"></i></a>
                             {% endif %}
-                            {% if object.user.profile.reddit %}
+                            <!-- {% if object.user.profile.reddit %}
                                 <a href="{{object.user.profile.reddit}}" title="Reddit" target="_blank" class="reddit"><i class="fa fa-reddit-square"></i></a>
-                            {% endif %}
+                            {% endif %} -->
                         </div>
                     </li>
-
                     {% if request.user.pk == object.pk %}
                         <li class="list-group-item">
                             <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</a>

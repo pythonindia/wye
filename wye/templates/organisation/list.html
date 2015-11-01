@@ -40,7 +40,7 @@
 										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
 											<td>{{org.name }}</td>
 											<td>{{org.location}}</td>
-											<td>{{org.get_organisation_type}}</td>
+											<td>{{org.get_organisation_type_display}}</td>
 										</tr>
 									{% endfor %}
 								</tbody>
