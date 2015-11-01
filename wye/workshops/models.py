@@ -54,7 +54,7 @@ class Workshop(TimeAuditModel):
     is_active = models.BooleanField(default=True)
     status = models.PositiveSmallIntegerField(
         choices=WorkshopStatus.CHOICES, verbose_name="Current Status",
-        default=WorkshopStatus.DRAFT)
+        default=WorkshopStatus.REQUESTED)
 
     class Meta:
         db_table = 'workshops'
@@ -63,10 +63,11 @@ class Workshop(TimeAuditModel):
         return '{}-{}'.format(self.requester, self.workshop_section)
 
     def is_presenter(self, user):
-        return self.presenter.filter(pk=user.pk).exists()
+        return not self.presenter.filter(pk=user.pk).exists()
 
     def is_organiser(self, user):
-        return self.requester.user.filter(pk=user.pk).exists()
+        return self.requester.user.filter(
+            pk=user.pk, requester__active=True).exists()
 
     @validate_action_param(WorkshopAction.ACTIVE)
     def toggle_active(self, user, **kwargs):

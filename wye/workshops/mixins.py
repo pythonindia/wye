@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from wye.base.constants import WorkshopStatus, FeedbackType
 from wye.base.emailer import send_mail
 from wye.profiles.models import Profile
-
+from wye.organisations.models import Organisation
 from .models import Workshop, WorkshopFeedBack
 
 
@@ -16,7 +16,9 @@ class WorkshopAccessMixin(object):
     def dispatch(self, request, *args, **kwargs):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         workshop = Workshop.objects.get(id=pk)
-        if workshop.requester not in self.request.user.organisation_users.all():
+
+        if not (Profile.is_organiser(request.user) and
+            Organisation.get_user_organisation(request.user) is not None):
             raise PermissionDenied
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
 
@@ -54,11 +56,14 @@ class WorkshopRestrictMixin(object):
         usertype = self.user.profile.usertype
 
         # check if user is tutor
-        if usertype.filter(display_name__icontains="tutor").exists():
+        if Profile.is_presenter(self.user):
             self.validate_presenter_feedback()
-        elif usertype.filter(display_name__icontains="poc").exists():
+        elif (Profile.is_organiser(self.user) and
+            Organisation.get_user_organisation(self.user) is not None):
             # if user is from organisation
             self.validate_organisation_feedback()
+        else:
+            raise PermissionDenied
 
         if self.feedback_required:
             return self.return_response(request)

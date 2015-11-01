@@ -9,18 +9,28 @@ from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack
 
 
 class WorkshopForm(forms.ModelForm):
-
+    requester = forms.CharField()
     def __init__(self, *args, **kwargs):
         super(WorkshopForm, self).__init__(*args, **kwargs)
         self.fields['expected_date'] = forms.DateField(
             widget=CalendarWidget,
             input_formats=settings.ALLOWED_DATE_FORMAT)
+        self.fields['requester'].widget = forms.TextInput()
+        self.fields['requester'].widget.attrs['readonly'] = True
+        self.fields['location'].required = False
+        self.fields['location'].widget = forms.HiddenInput()
+
+    def clean_requester(self):
+        return self.initial['organisation']
+
+    def clean_location(self):
+        return self.initial['organisation'].location
 
     class Meta:
         model = Workshop
         exclude = (
             'presenter', 'created_at', 'modified_at',
-            'is_active')
+            'is_active', 'status',)
 
 
 class WorkshopFeedbackForm(forms.Form):

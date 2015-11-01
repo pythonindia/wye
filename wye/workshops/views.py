@@ -5,6 +5,7 @@ from django.views import generic
 from braces import views
 from wye.profiles.models import Profile
 from wye.social.sites.twitter import send_tweet
+from wye.organisations.models import Organisation
 
 from .forms import WorkshopForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
@@ -60,6 +61,15 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopRestrictMixin,
         self.send_mail_to_group(context)
         return response
 
+    def get_initial(self):
+        organisation = Organisation.get_user_organisation(self.request.user)
+        organisation_name = organisation.name
+
+        return {
+            "requester": organisation_name,
+            "organisation": organisation
+            }
+
 
 class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
                      generic.UpdateView):
@@ -72,6 +82,14 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
         self.success_url = reverse(
             "workshops:workshop_update", args=[pk])
         return super(WorkshopUpdate, self).get_success_url()
+
+    def get_initial(self):
+        organisation = Organisation.get_user_organisation(self.request.user)
+        organisation_name = organisation.name
+        return {
+            "requester": organisation_name,
+            "organisation": organisation
+        }
 
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,

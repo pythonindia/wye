@@ -20,6 +20,14 @@ class Organisation(AuditModel):
     def get_organisation_type(self):
         return OrganisationType.CHOICES[self.organisation_type][1]
 
+    @classmethod
+    def get_user_organisation(cls, user):
+        try:
+            organisation = cls.objects.get(user=user, active=True)
+        except cls.DoesNotExist:
+            organisation = None
+        return organisation
+
     class Meta:
         db_table = 'organisations'
 
