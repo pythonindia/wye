@@ -66,11 +66,12 @@
                             {% endif %}
                         </div>
                     </li>
-                    <li class="list-group-item">
-                        {% if request.user.pk == object.pk %}
+
+                    {% if request.user.pk == object.pk %}
+                        <li class="list-group-item">
                             <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</a>
-                        {% endif %}
-                    </li>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
