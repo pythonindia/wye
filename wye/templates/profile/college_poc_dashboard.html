@@ -2,29 +2,35 @@
 <div class="push-2-bottom">
     <div class="row">
         <div class="col-xs-6">
-            <h3 class="space-1q-top">Users in your organisation</h3>
+            <h3 class="space-1q-top">My organisations</h3>
         </div>
     </div>
     <div class="row push-1">
         <div class="col-sm-12">
-            {% if not organisation_users %}
-                <p class="gray sub"><em>There are no users.</em></p>
+            {% if not users_organisation %}
+                <p class="gray sub"><em>You are not part of any organisation.</em></p>
             {% else %}
                 <div class="table-responsive">
                     <table class="table table-bordered sub">
                         <thead>
                             <tr>
-                                <th>Username</th>
-                                <th>Usertype</th>
+                                <th>Organisation</th>
+                                <th>Role</th>
                                 <th>Location</th>
+                                <th>Users</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for orguser in organisation_users %}
+                            {% for organisation in users_organisation %}
                                 <tr>
-                                    <td>{{ orguser.user }}</td>
-                                    <td>{{ orguser.get_user_type|join:", " }}</td>
-                                    <td>{{ orguser.get_interested_locations|join:", " }}</td>
+                                    <td>{{ organisation.name }}</td>
+                                    <td>{{ organisation.organisation_role}}</td>
+                                    <td>{{organisation.location}}</td>
+                                    <td>
+                                    	{% for users in  organisation.get_organisation_user_list.all %}
+                                    		{{users.first_name}}
+                                    	{% endfor %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
