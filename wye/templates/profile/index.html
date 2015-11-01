@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
-{% block breadcrumbs %}
-    <b>{{ block.super }}</b> » User Profile
+{% block header %}
+    <div class="push-2-top text-center">
+        <h1 class="no-space">Profile</h1>
+    </div>
 {% endblock %}
 
 {% load static from staticfiles %}
@@ -35,38 +37,21 @@
 {% endblock %}
 
 {% block content %}
-
-    {% if request.user.pk == object.pk %}
-        <div class="row">
-            <div class="col-md-offset-10 col-md-2">
-                <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-primary">Edit <i class="fa fa-pencil-square-o"></i></a>
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="row">
-        <div class="col-md-2">
-            <div class="panel panel-default">
+    <div class="row push-6-bottom">
+        <div class="col-md-3 col-sm-4 col-xs-12">
+            <div class="panel panel-default profile-card">
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-xs-12">
-                            <img class="img-circle user_image_profile" src="/media/{{object.user.profile.picture}}"/>
-                        </div>
-                        <div class="col-xs-12">
+                            <img class="img-circle contain-width" src="/media/{{object.user.profile.picture}}"/>
                             <h3>{{object.user.get_full_name}}</h3>
+                            <div><a href=""><i class="fa fa-map-marker"></i> {{object.user.profile.location.name}}</a></div>
+                            <div><a href="mail:{{object.user.email}}"><i class="fa fa-envelope-o"></i> {{object.user.email}}</a></div>
+                            <div><a href="tel:{{object.user.mobile}}"><i class="fa fa-phone"></i> {{object.user.profile.mobile}}</a></div>
                         </div>
-                        <div class="col-xs-12">
-                            <a href=""><i class="fa fa-map-marker"></i> {{object.user.profile.location.name}}</span></a>
-                        </div>
-                        <div class="col-xs-12">
-                            <a href="mail:{{object.user.email}}"><i class="fa fa-envelope"></i> {{object.user.email}}</span></a>
-                        </div>
-                        <div class="col-xs-12">
-                            <a href="tel:{{object.user.mobile}}"><i class="fa fa-phone-square"></i> {{object.user.profile.mobile}}</span></a>
-                        </div>
-                        <div class="col-xs-12">
+                        <!-- <div class="col-xs-12">
                             <h4 class="text-center">Links</h4>
-                        </div>
+                        </div> -->
                         <div class="col-xs-12">
                             <h3>
                                 {% if object.user.profile.github %}
@@ -99,15 +84,18 @@
                             </h3>
                         </div>
                     </div>
+                    {% if request.user.pk == object.pk %}
+                        <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Edit</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9 col-sm-8 col-xs-12">
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Graph <i class="fa fa-bar-chart"></i></span></h3>
+                            <h3 class="panel-title"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp;Graph</h3>
                         </div>
                         <div class="panel-body">
                             <div id="chart">
@@ -119,7 +107,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Activity <i class="fa fa-rocket"></i></h3>
+                            <h3 class="panel-title"><i class="fa fa-rocket"></i>&nbsp;&nbsp;Activity</h3>
                         </div>
                         <div class="panel-body">
                             <div class="row text-center">

@@ -45,11 +45,11 @@
                                     </li>
                                     <li class="dropdown">
                                        <a href="#" class="user-dropdown dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <img class="img-circle user_image" src="/media/{{user.profile.picture}}" />&nbsp;&nbsp;<span>{{request.user.get_full_name}}</span>&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+                                            <img class="img-circle user_image" src="/media/{{user.profile.picture}}" /><span class="pad-3q">{{request.user.get_full_name}}</span><i class="fa fa-caret-down"></i>
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="user_dropdown">
-                                          <li><a href="{% url 'profiles:profile-page' slug=user.username %}"><i class="fa fa-user"></i> Profile</a></li>
-                                          <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> Logout</a></li>
+                                          <li><a href="{% url 'profiles:profile-page' slug=user.username %}"><i class="fa fa-user pad-3q-right"></i>Profile</a></li>
+                                          <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off pad-3q-right"></i> Logout</a></li>
                                         </ul>
                                     </li>
                                 {% else %}
