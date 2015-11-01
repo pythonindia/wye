@@ -48,20 +48,24 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-xs-12">
-            <img class="img-circle user_image_profile" src="/media/{{object.user.profile.picture}}"/>
+            <img class="img-circle user_image_profile" src="/media/{{object.picture}}"/>
           </div>
           <div class="col-xs-12">
             <h3>{{object.user.get_full_name}}</h3>
           </div>
           <div class="col-xs-12">
-            <a href=""><i class="fa fa-map-marker"></i> {{object.user.profile.location.name}}</span></a>
+            <a href=""><i class="fa fa-map-marker"></i> {{object.location.name}}</span></a>
           </div>
+          {% if object.is_email_visible %}
           <div class="col-xs-12">
             <a href="mail:{{object.user.email}}"><i class="fa fa-envelope"></i> {{object.user.email}}</span></a>
           </div>
+          {% endif %}
+          {% if object.is_mobile_visible %}
           <div class="col-xs-12">
-            <a href="tel:{{object.user.mobile}}"><i class="fa fa-phone-square"></i> {{object.user.profile.mobile}}</span></a>
+            <a href="tel:{{object.mobile}}"><i class="fa fa-phone-square"></i> {{object.mobile}}</span></a>
           </div>
+          {% endif %}
           <div class="col-xs-12">
             <h4 class="text-center">Links</h4>
           </div>
@@ -69,9 +73,6 @@
             <h3>
               {% if object.user.profile.github %}
               <a href="{{object.user.profile.github}}"><i class="fa fa-github-square"></i></a>
-              {% endif %}
-              {% if object.user.profile.bitbucket %}
-              <a href="{{object.user.profile.bitbucket}}"><i class="fa fa-bitbucket-square"></i></a>
               {% endif %}
               {% if object.user.profile.facebook %}
               <a href="{{object.user.profile.facebook}}"><i class="fa fa-facebook-square"></i></a>
@@ -85,14 +86,8 @@
               {% if object.user.profile.twitter %}
               <a href="{{object.user.profile.twitter}}"><i class="fa fa-twitter-square"></i></a>
               {% endif %}
-              {% if object.user.profile.stackoverflow %}
-              <a href="{{object.user.profile.stackoverflow}}"><i class="fa fa-stack-overflow"></i></a>
-              {% endif %}
               {% if object.user.profile.slideshare %}
               <a href="{{object.user.profile.slideshare}}"><i class="fa fa-slideshare"></i></a>
-              {% endif %}
-              {% if object.user.profile.reddit %}
-              <a href="{{object.user.profile.reddit}}"><i class="fa fa-reddit-square"></i></a>
               {% endif %}
             </h3>
           </div>

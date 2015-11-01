@@ -37,6 +37,8 @@ class UserType(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
     mobile = models.CharField(max_length=10, blank=False, null=True)
+    is_mobile_visible = models.BooleanField(default=True)
+    is_email_visible = models.BooleanField(default=True)
     usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
