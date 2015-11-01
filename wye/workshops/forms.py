@@ -10,6 +10,7 @@ from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack
 
 class WorkshopForm(forms.ModelForm):
     requester = forms.CharField()
+
     def __init__(self, *args, **kwargs):
         super(WorkshopForm, self).__init__(*args, **kwargs)
         self.fields['expected_date'] = forms.DateField(

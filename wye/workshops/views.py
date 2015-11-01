@@ -68,7 +68,7 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopRestrictMixin,
         return {
             "requester": organisation_name,
             "organisation": organisation
-            }
+        }
 
 
 class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,

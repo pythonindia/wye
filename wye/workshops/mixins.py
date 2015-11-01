@@ -18,7 +18,8 @@ class WorkshopAccessMixin(object):
         workshop = Workshop.objects.get(id=pk)
 
         if not (Profile.is_organiser(request.user) and
-            Organisation.get_user_organisation(request.user) is not None):
+                Organisation.get_user_organisation(request.user) is not None and
+                request.user in workshop.requester.user.all()):
             raise PermissionDenied
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
 
@@ -53,13 +54,12 @@ class WorkshopRestrictMixin(object):
     def dispatch(self, request, *args, **kwargs):
         self.user = request.user
         self.feedback_required = []
-        usertype = self.user.profile.usertype
 
         # check if user is tutor
         if Profile.is_presenter(self.user):
             self.validate_presenter_feedback()
         elif (Profile.is_organiser(self.user) and
-            Organisation.get_user_organisation(self.user) is not None):
+                Organisation.get_user_organisation(self.user) is not None):
             # if user is from organisation
             self.validate_organisation_feedback()
         else:
