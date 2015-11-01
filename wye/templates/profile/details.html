@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <b><a href="{% url 'profiles:profile-page' profile.pk %}">{{ object.user.first_name }}</a></b> » Details
-{% endblock %}
-
 {% block content %}
 This page wil be called when user click on hyperlink on profile page
 

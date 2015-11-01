@@ -6,10 +6,6 @@
     </div>
 {% endblock %}
 
-{% block breadcrumbs %}
-    <b>{{ block.super }}</b> » <a href="/workshop"><b>Workshops</b></a> » <a href="{% url 'workshops:workshop_detail' workshop.pk %}"><b>{{ workshop.requester }}</b></a> » Edit
-{% endblock %}
-
 {% block content %}
 {{ form.media }}
     <div class="push-6-bottom">
