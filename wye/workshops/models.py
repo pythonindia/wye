@@ -66,8 +66,7 @@ class Workshop(TimeAuditModel):
         return self.presenter.filter(pk=user.pk).exists()
 
     def is_organiser(self, user):
-        return self.requester.user.filter(
-            pk=user.pk, requester__active=True).exists()
+        return self.requester.user.filter(pk=user.pk).exists()
 
     @validate_action_param(WorkshopAction.ACTIVE)
     def toggle_active(self, user, **kwargs):
