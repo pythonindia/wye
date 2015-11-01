@@ -6,17 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if messages %}
-        {% for message in messages %}
-            {% ifequal message.tags "error" %}
-            <div class="alert alert-danger" role="alert">
-            {%else%}
-            <div class="alert alert-{{ message.tags }}" role="alert">
-            {% endifequal %}
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+ 
     <div class="push-4-bottom">
         <div class="row">
             <div class="col-xs-6">
@@ -41,6 +31,7 @@
                                     <th>Date</th>
                                     <th>Location</th>
                                     <th>Status</th>
+                                    <th colspan="3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,13 +41,13 @@
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
+                                        <td>{{ workshop.get_status_display }}</td>
+                                        <td><a href="" class="btn btn-theme-primary">Hold</a></td>
+                                        <td><a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_in' %}" class="btn btn-theme-primary">Accept</a></td>
+                                        <td><a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_out' %}"  class="btn btn-theme-primary">Reject</a></td>
                                         {% ifequal workshop.get_status_display "FeedBack Pending" %}
-                                        <td>
-                                       <a href="{% url "workshops:workshop_feedback" workshop.pk %}" class="btn btn-theme-primary">Share Feedback</a>
-                                            </td>
-                                        {% else %}
-                                            <td>
-                                                {{ workshop.get_status_display }}
+                                        	<td>
+                                        		<a href="{% url "workshops:workshop_feedback" workshop.pk %}" class="btn btn-theme-primary">Share Feedback</a>
                                             </td>
                                         {% endifequal %}
                                     </tr>

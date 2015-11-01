@@ -11,8 +11,8 @@
         <link rel="stylesheet" href="{% static 'css/app.css' %}">
         <link href='//fonts.googleapis.com/css?family=EB+Garamond|Source+Sans+Pro|Mallanna' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-        <script src="{% static 'js/libs/jquery-2.1.4.min.js' %}"></script>
-        {% block extracss %}{% endblock %}
+        <link rel="stylesheet" href="{% static 'styles.css' %}">
+        {% block extracss %} {% endblock %}
     </head>
     <body>
         <div class="wrapper">
@@ -42,14 +42,21 @@
                         <ul class="nav navbar-nav navbar-right">
                             {%block loginindicator %}
                                 {% if user.is_authenticated %}
+                                    <li>
+                                      <img class="img-circle user_image" src="/media/{{user.profile.picture}}"></img>
+                                    </li>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.first_name}} {{user.last_name}} <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="auth" id="logout" href="/accounts/logout">Logout</a></li>
+                                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                         {{request.user.get_full_name}} <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="user_dropdown">
+                                          <li><a href="{% url 'profiles:profile-page' slug=user.username %}"><i class="fa fa-user"></i> Profile</a></li>
+                                          <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off"></i> Logout</a></li>
                                         </ul>
                                     </li>
                                 {% else %}
-                                    <li><a href="/accounts/login" class="nav-btn">Log In</a>
+                                <li><a href="{% url 'account_login' %}">Log In</a>
+                                <li><a href="{% url 'account_signup' %}">Sign Up</a>
                                 {% endif %}
                             {%endblock loginindicator %}
                         </ul>
@@ -80,8 +87,9 @@
             {% endblock %}
             </div>
         </footer>
-
+        <script src="{% static 'js/libs/jquery-2.1.4.min.js' %}"></script>
         <script src="{% static 'js/libs/bootstrap.min.js' %}"></script>
-        {% block footer_scripts %}{% endblock %}
+        {% block graphscript %}{% endblock %}
+                {% block footer_scripts %}{% endblock %}
     </body>
 </html>

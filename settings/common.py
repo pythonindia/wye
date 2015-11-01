@@ -14,6 +14,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 from os.path import join
 
+ADMINS = (
+    ('Vijay', 'vnbang2003@gmail.com'),
+)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_DIR = join(BASE_DIR, 'wye')
 
@@ -141,6 +144,10 @@ STATICFILES_DIRS = (
     os.path.join(APP_DIR, 'static'),
 )
 
+# Media
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(APP_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
@@ -166,20 +173,18 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATIONA = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[{}] ".format(SITE_VARIABLES['site_name'])
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
-ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
 ACCOUNT_SIGNUP_FORM_CLASS = 'wye.profiles.forms.SignupForm'
 
 EMAIL_SUBJECT_PREFIX = ACCOUNT_EMAIL_SUBJECT_PREFIX
 
-LOGIN_REDIRECT_URL = '/'
-
 # E-Mail Settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.com'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', ''),
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', ''),

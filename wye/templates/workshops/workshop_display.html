@@ -12,7 +12,7 @@
         <tbody>
             {% for each_workshop in workshop %}
                 <tr>
-                    <td>{{ each_workshop.requester }}</td>
+                    <td>{{ each_workshop.requester.name }}</td>
                     <td>{{ each_workshop.get_presenter_list|join:", " }}</td>
                     <td>{{ each_workshop.expected_date }}</td>
                     <td>{{ each_workshop.location }}</td>

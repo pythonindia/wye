@@ -1,11 +1,9 @@
-from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from django.shortcuts import render
-from django.views import generic
+from django.views.generic import UpdateView, DetailView
 from django.views.generic.list import ListView
 
-from braces import views
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Organisation
 from wye.workshops.models import Workshop
@@ -14,33 +12,17 @@ from . import models
 from .forms import UserProfileForm
 
 
-class ProfileView(generic.DetailView):
+class ProfileView(DetailView):
     model = models.Profile
     template_name = 'profile/index.html'
+    slug_field = 'user__username'
 
     def get_context_data(self, *args, **kwargs):
         slug = self.kwargs['slug']
-        self.object = models.Profile.objects.get(
-            user__username=slug)
+        self.object = self.model.objects.get(user__username=slug)
         context = super(
             ProfileView, self).get_context_data(*args, **kwargs)
         return context
-
-
-class ProfileCreateView(views.LoginRequiredMixin, generic.CreateView):
-    model = models.Profile
-    template_name = 'profile/profile_create.html'
-    form_class = UserProfileForm
-    success_url = reverse_lazy('dashboard')
-
-    def post(self, request, *args, **kwargs):
-        profile = models.Profile.objects.get(user=request.user)
-        form = UserProfileForm(data=request.POST, instance=profile)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(self.success_url)
-        else:
-            return render(request, self.template_name, {'form': form})
 
 
 class UserDashboard(ListView):
@@ -58,44 +40,60 @@ class UserDashboard(ListView):
         context = super(UserDashboard, self).get_context_data(**kwargs)
         user_profile = models.Profile.objects.get(
             user__id=self.request.user.id)
-
+        workshop_all_list = Workshop.objects.all()
+        my_organisation_list = Organisation.objects.filter(
+            user=self.request.user)
+        print(user_profile.get_user_type)
         for each_type in user_profile.get_user_type:
-            if each_type == 'Tutor':
+            if each_type == 'tutor':
                 context['is_tutor'] = True
-                context['workshop_requested_tutor'] = Workshop.objects.filter(
+                context['workshop_requested_tutor'] = workshop_all_list.filter(
                     presenter=self.request.user, status=WorkshopStatus.REQUESTED)
-                context['workshop_completed_tutor'] = Workshop.objects.filter(
+                context['workshop_completed_tutor'] = workshop_all_list.filter(
                     presenter=self.request.user, status=WorkshopStatus.COMPLETED)
-            if each_type == 'Regional-Lead':
+            if each_type == 'lead':
                 context['is_regional_lead'] = True
-                context['workshops_accepted_under_rl'] = Workshop.objects.filter(
+                context['workshops_accepted_under_rl'] = workshop_all_list.filter(
                     status=WorkshopStatus.ACCEPTED)
-                context['workshops_pending_under_rl'] = Workshop.objects.filter(
+                context['workshops_pending_under_rl'] = workshop_all_list.filter(
                     status=WorkshopStatus.REQUESTED)
                 context['interested_tutors'] = models.Profile.objects.filter(
-                    usertype__slug='Tutor',
+                    usertype__slug='tutor',
                     interested_locations__name__in=user_profile.get_interested_locations).exclude(
                     user__id=self.request.user.id).count()
                 context['interested_locations'] = Organisation.objects.filter(
                     location__name__in=user_profile.get_interested_locations).count()
-            if each_type == 'College-POC':
+            if each_type == 'poc':
                 context['is_college_poc'] = True
-                context['organisation_users'] = models.Profile.objects.filter(
-                    user__id__in=Organisation.objects.filter(
-                        created_by__id=self.request.user.id).values_list(
-                        'user', flat=True)).exclude(user=self.request.user)
-                context['workshop_requested_under_poc'] = Workshop.objects.filter(
-                    status=WorkshopStatus.REQUESTED,
-                    requester=Organisation.objects.filter(
-                        created_by__id=self.request.user.id))
-                context['workshops_accepted_under_poc'] = Workshop.objects.filter(
+                context['users_organisation'] = my_organisation_list
+                context['workshop_requested_under_poc'] = workshop_all_list.filter(
+                    requester__id__in=my_organisation_list.values_list('id', flat=True))
+                context['workshops_accepted_under_poc'] = workshop_all_list.filter(
                     status=WorkshopStatus.ACCEPTED,
-                    requester=Organisation.objects.filter(
-                        created_by__id=self.request.user.id))
-            if each_type == 'Admin':
+                    requester__id__in=my_organisation_list.values_list('id', flat=True))
+            if each_type == 'admin':
                 context['is_admin'] = True
-                context['workshops_by_status'] = Workshop.objects.all().order_by(
+                context['workshops_by_status'] = workshop_all_list.order_by(
                     'status')
-                context['workshops_by_region'] = Workshop.objects.all().order_by(
+                context['workshops_by_region'] = workshop_all_list.order_by(
                     'location')
         return context
+
+
+class ProfileEditView(UpdateView):
+    model = models.Profile
+    template_name = 'profile/update.html'
+    form_class = UserProfileForm
+    slug_field = 'user__username'
+
+    def form_valid(self, form):
+        return super(ProfileEditView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('profiles:profile-page', kwargs={'slug': self.object.slug})
+
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.pk == self.get_object().pk:
+            return super(ProfileEditView, self).dispatch(*args, **kwargs)
+        else:
+            raise PermissionDenied

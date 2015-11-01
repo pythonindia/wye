@@ -83,3 +83,11 @@ node_modules/
 
 #Sourcemap files
 *.map
+
+# VIM
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~

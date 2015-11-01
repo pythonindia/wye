@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.template import Context, loader
 from django.views import generic
 
 from braces import views
+from wye.base.emailer_html import send_email_to_id, send_email_to_list
 from wye.profiles.models import Profile
 
 from .forms import OrganisationForm
@@ -41,7 +42,7 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     model = Organisation
     form_class = OrganisationForm
     template_name = 'organisation/create.html'
-    success_url = reverse_lazy('home-page')
+    success_url = reverse_lazy('organisations:organisation_list')
 
     def get_queryset(self):
         return Organisation.objects.filter(user=self.request.user)
@@ -49,12 +50,37 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     def post(self, request, *args, **kwargs):
         form = OrganisationForm(data=request.POST)
         if form.is_valid():
-            form.modified_by = request.user
-            form.created_by = request.user
+            form.instance.modified_by = request.user
+            form.instance.created_by = request.user
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
-            # send email on new organisation created
+            email_context = Context({})
+            subject = "%s organisation for region %s is created" % (
+                form.instance.name, form.instance.location.name)
+            email_body = loader.get_template(
+                'email_messages/organisation/new.html').render(email_context)
+            text_body = loader.get_template(
+                'email_messages/organisation/new.txt').render(email_context)
+            try:
+                send_email_to_id(
+                    subject,
+                    body=email_body,
+                    email_id=request.user.email,
+                    text_body=text_body)
+            except Exception as e:
+                print(e)
+            try:
+                regional_lead = Profile.objects.filter(
+                    interested_locations=form.instance.location,
+                    usertype__slug='lead').values_list('user__email', flat=True)
+                send_email_to_list(
+                    subject,
+                    body=email_body,
+                    users_list=regional_lead,
+                    text_body=text_body)
+            except Exception as e:
+                print(e)
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})
@@ -63,7 +89,7 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
 class OrganisationDetail(views.LoginRequiredMixin, generic.DetailView):
     model = Organisation
     template_name = 'organisation/detail.html'
-    success_url = reverse_lazy('home-page')
+    success_url = reverse_lazy('organisations:organisation_list')
 
     def get_queryset(self):
         return Organisation.objects.filter(user=self.request.user, id=self.kwargs['pk'])
@@ -73,7 +99,7 @@ class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
     model = Organisation
     form_class = OrganisationForm
     template_name = 'organisation/edit.html'
-    success_url = reverse_lazy('home-page')
+    success_url = reverse_lazy('organisations:organisation_list')
 
     def get_object(self, queryset=None):
         return Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])

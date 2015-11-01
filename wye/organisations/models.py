@@ -16,13 +16,13 @@ class Organisation(AuditModel):
     user = models.ManyToManyField(User, related_name='organisation_users')
     active = models.BooleanField(default=True)
 
-    @property
-    def get_organisation_type(self):
-        return OrganisationType.CHOICES[self.organisation_type][1]
-
     class Meta:
         db_table = 'organisations'
 
     def __str__(self):
         return '{}-{}-{}'.format(self.name,
                                  self.organisation_type, self.location)
+
+    @property
+    def get_organisation_user_list(self):
+        return self.user.all()
