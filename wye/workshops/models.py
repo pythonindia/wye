@@ -63,7 +63,7 @@ class Workshop(TimeAuditModel):
         return '{}-{}'.format(self.requester, self.workshop_section)
 
     def is_presenter(self, user):
-        return not self.presenter.filter(pk=user.pk).exists()
+        return self.presenter.filter(pk=user.pk).exists()
 
     def is_organiser(self, user):
         return self.requester.user.filter(
