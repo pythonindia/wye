@@ -140,6 +140,14 @@ class Profile(models.Model):
         else:
             return []
 
+    @classmethod
+    def is_presenter(cls, user):
+        return user.profile.usertype.filter(slug__iexact="tutor").exists()
+
+    @classmethod
+    def is_organiser(cls, user):
+        return user.profile.usertype.filter(slug__icontains="poc").exists()
+
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:
