@@ -48,8 +48,14 @@ p a {
     height: 30px;
     width: 30px;
 }
+.fa-width {
+    width: 1.5em;
+    text-align: center;
+    margin-right: 0.3em;
+    display: inline-block;
+}
 .profile-card {
-    i.fa {
+    .social-icons .fa {
         width: 1.1em;
         text-align: center;
         margin-right: 0.3em;

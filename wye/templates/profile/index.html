@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block header %}
-    <div class="fill-light push-2 text-center">
+    <div class="fill-theme push-2 text-center">
         <h1 class="no-space">My profile</h1>
     </div>
 {% endblock %}
@@ -22,24 +22,21 @@
                             <img class="img-circle" src="/media/{{object.user.profile.picture}}"/>
                             <h3 class="push-1q-top">{{object.user.get_full_name}}</h3>
                         </div>
-                        <!-- <div class="col-xs-12">
-                            <h4 class="text-center">Links</h4>
-                        </div> -->
                     </div>
 
                 </div>
                 <ul class="list-group sub">
                     <li class="list-group-item">
-                        <span class="wrap-word"><i class="fa fa-map-marker"></i>{{object.user.profile.location.name}}</span>
+                        <span class="wrap-word"><i class="fa fa-map-marker fa-width"></i>{{object.user.profile.location.name}}</span>
                     </li>
                     <a class="list-group-item" href="mailto:{{object.user.email}}" title="{{object.user.email}}">
-                        <span class="wrap-word"><i class="fa fa-envelope-o"></i>{{object.user.email}}</span>
+                        <span class="wrap-word"><i class="fa fa-envelope-o fa-width"></i>{{object.user.email}}</span>
                     </a>
                     <a class="list-group-item" href="tel:{{object.user.mobile}}" title="{{object.user.profile.mobile}}">
-                        <span class="wrap-word"><i class="fa fa-phone"></i>{{object.user.profile.mobile}}</span>
+                        <span class="wrap-word"><i class="fa fa-phone fa-width"></i>{{object.user.profile.mobile}}</span>
                     </a>
                     <li class="list-group-item text-center">
-                        <div class="regular">
+                        <div class="regular social-icons">
                             {% if object.user.profile.github %}
                                 <a href="{{object.user.profile.github}}" title="Github" target="_blank" class="github"><i class="fa fa-github-square"></i></a>
                             {% endif %}
@@ -71,7 +68,7 @@
                     </li>
                     <li class="list-group-item">
                         {% if request.user.pk == object.pk %}
-                            <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme sub"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</a>
+                            <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</a>
                         {% endif %}
                     </li>
                 </ul>

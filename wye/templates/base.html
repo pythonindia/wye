@@ -28,7 +28,6 @@
                         <ul class="nav navbar-nav">
                             <li><a href="/about/" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
                             {% if user.is_authenticated %}
-                            <li><a href="/dashboard/" class="{% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}">Dashboard</a></li>
                                 <li><a href="/organisation/" class="{% if request.resolver_match.namespace == 'organisations' %}active{% endif %}">Organisations</a></li>
                                 <li><a href="/workshop/" class="{% if request.resolver_match.namespace == 'workshops' %}active{% endif %}">Workshops</a></li>
                                 {% if user.is_staff %}
@@ -39,7 +38,7 @@
                             <li><a href="/faq" class="{% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            {%block loginindicator %}
+                            {% block loginindicator %}
                                 {% if user.is_authenticated %}
                                     <li>
                                     </li>
@@ -47,9 +46,10 @@
                                        <a href="#" class="user-dropdown dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                             <img class="img-circle user_image" src="/media/{{user.profile.picture}}" /><span class="pad-3q">{{request.user.get_full_name}}</span><i class="fa fa-caret-down"></i>
                                         </a>
-                                        <ul class="dropdown-menu" aria-labelledby="user_dropdown">
-                                          <li><a href="{% url 'profiles:profile-page' slug=user.username %}"><i class="fa fa-user pad-3q-right"></i>Profile</a></li>
-                                          <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off pad-3q-right"></i> Logout</a></li>
+                                        <ul class="dropdown-menu sub" aria-labelledby="user_dropdown">
+                                            <li><a href="/dashboard/" class="{% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}"><i class="fa fa-dashboard fa-width"></i>Dashboard</a></li>
+                                            <li><a href="{% url 'profiles:profile-page' slug=user.username %}"><i class="fa fa-user fa-width"></i>Profile</a></li>
+                                            <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off fa-width"></i>Logout</a></li>
                                         </ul>
                                     </li>
                                 {% else %}
