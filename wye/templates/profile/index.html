@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block header %}
-    <div class="push-2-top text-center">
-        <h1 class="no-space">Profile</h1>
+    <div class="fill-light push-2 text-center">
+        <h1 class="no-space">My profile</h1>
     </div>
 {% endblock %}
 
@@ -12,85 +12,72 @@
     <link rel="stylesheet" href="{% static 'css/libs/nv.d3.min.css' %}">
 {% endblock %}
 
-{% block graphscript %}
-    <script src="{% static 'js/libs/d3.min.js' %}"></script>
-    <script src="{% static 'js/libs/nv.d3.min.js' %}"></script>
-    <script>
-        'use strict';
-        var nv;
-        nv.addGraph(function() {
-        var chart = nv.models.multiBarChart();
-        var data = JSON.parse('{{object.get_graph_data | safe}}');
-        chart.xAxis.tickFormat(function(d) {
-            return d3.time.format('%b-%y')(new Date(d))
-        });
-        chart.yAxis.tickFormat(d3.format(',.1f'));
-        d3.select('#chart svg')
-            .datum(data)
-            .transition()
-            .duration(500)
-            .call(chart);
-            nv.utils.windowResize(chart.update);
-            return chart;
-        });
-    </script>
-{% endblock %}
-
 {% block content %}
     <div class="row push-6-bottom">
-        <div class="col-md-3 col-sm-4 col-xs-12">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
             <div class="panel panel-default profile-card">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <img class="img-circle contain-width" src="/media/{{object.user.profile.picture}}"/>
-                            <h3>{{object.user.get_full_name}}</h3>
-                            <div><a href=""><i class="fa fa-map-marker"></i> {{object.user.profile.location.name}}</a></div>
-                            <div><a href="mailto:{{object.user.email}}"><i class="fa fa-envelope-o"></i> {{object.user.email}}</a></div>
-                            <div><a href="tel:{{object.user.mobile}}"><i class="fa fa-phone"></i> {{object.user.profile.mobile}}</a></div>
+                        <div class="col-xs-12 text-center push-2-top">
+                            <img class="img-circle" src="/media/{{object.user.profile.picture}}"/>
+                            <h3 class="push-1q-top">{{object.user.get_full_name}}</h3>
                         </div>
                         <!-- <div class="col-xs-12">
                             <h4 class="text-center">Links</h4>
                         </div> -->
-                        <div class="col-xs-12">
-                            <h3>
-                                {% if object.user.profile.github %}
-                                    <a href="{{object.user.profile.github}}"><i class="fa fa-github-square"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.bitbucket %}
-                                    <a href="{{object.user.profile.bitbucket}}"><i class="fa fa-bitbucket-square"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.facebook %}
-                                    <a href="{{object.user.profile.facebook}}"><i class="fa fa-facebook-square"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.googleplus %}
-                                    <a href="{{object.user.profile.googleplus}}"><i class="fa fa-google-plus-square"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.linkedin %}
-                                    <a href="{{object.user.profile.linkedin}}"><i class="fa fa-linkedin-square"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.twitter %}
-                                    <a href="{{object.user.profile.twitter}}"><i class="fa fa-twitter-square"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.stackoverflow %}
-                                    <a href="{{object.user.profile.stackoverflow}}"><i class="fa fa-stack-overflow"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.slideshare %}
-                                    <a href="{{object.user.profile.slideshare}}"><i class="fa fa-slideshare"></i></a>
-                                {% endif %}
-                                {% if object.user.profile.reddit %}
-                                    <a href="{{object.user.profile.reddit}}"><i class="fa fa-reddit-square"></i></a>
-                                {% endif %}
-                            </h3>
-                        </div>
                     </div>
-                    {% if request.user.pk == object.pk %}
-                        <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;Edit</a>
-                    {% endif %}
+
                 </div>
+                <ul class="list-group sub">
+                    <li class="list-group-item">
+                        <span class="wrap-word"><i class="fa fa-map-marker"></i>{{object.user.profile.location.name}}</span>
+                    </li>
+                    <a class="list-group-item" href="mailto:{{object.user.email}}" title="{{object.user.email}}">
+                        <span class="wrap-word"><i class="fa fa-envelope-o"></i>{{object.user.email}}</span>
+                    </a>
+                    <a class="list-group-item" href="tel:{{object.user.mobile}}" title="{{object.user.profile.mobile}}">
+                        <span class="wrap-word"><i class="fa fa-phone"></i>{{object.user.profile.mobile}}</span>
+                    </a>
+                    <li class="list-group-item text-center">
+                        <div class="regular">
+                            {% if object.user.profile.github %}
+                                <a href="{{object.user.profile.github}}" title="Github" target="_blank" class="github"><i class="fa fa-github-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.bitbucket %}
+                                <a href="{{object.user.profile.bitbucket}}" title="Bitbucket" target="_blank" class="bitbucket"><i class="fa fa-bitbucket-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.facebook %}
+                                <a href="{{object.user.profile.facebook}}" title="Facebook" target="_blank" class="facebook"><i class="fa fa-facebook-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.googleplus %}
+                                <a href="{{object.user.profile.googleplus}}" title="Google Plus" target="_blank" class="googleplus"><i class="fa fa-google-plus-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.linkedin %}
+                                <a href="{{object.user.profile.linkedin}}" title="LinkedIn" target="_blank" class="linkedin"><i class="fa fa-linkedin-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.twitter %}
+                                <a href="{{object.user.profile.twitter}}" title="Twitter" target="_blank" class="twitter"><i class="fa fa-twitter-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.stackoverflow %}
+                                <a href="{{object.user.profile.stackoverflow}}" title="Stackoverflow" target="_blank" class="stackoverflow"><i class="fa fa-stack-overflow"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.slideshare %}
+                                <a href="{{object.user.profile.slideshare}}" title="Slideshare" target="_blank" class="slideshare"><i class="fa fa-slideshare"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.reddit %}
+                                <a href="{{object.user.profile.reddit}}" title="Reddit" target="_blank" class="reddit"><i class="fa fa-reddit-square"></i></a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        {% if request.user.pk == object.pk %}
+                            <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme sub"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</a>
+                        {% endif %}
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="col-md-9 col-sm-8 col-xs-12">
+        <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
@@ -139,4 +126,28 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block footer_scripts %}
+    <script src="{% static 'js/libs/d3.min.js' %}"></script>
+    <script src="{% static 'js/libs/nv.d3.min.js' %}"></script>
+    <script>
+        'use strict';
+        var nv;
+        nv.addGraph(function() {
+        var chart = nv.models.multiBarChart();
+        var data = JSON.parse('{{object.get_graph_data | safe}}');
+        chart.xAxis.tickFormat(function(d) {
+            return d3.time.format('%b-%y')(new Date(d))
+        });
+        chart.yAxis.tickFormat(d3.format(',.1f'));
+        d3.select('#chart svg')
+            .datum(data)
+            .transition()
+            .duration(500)
+            .call(chart);
+            nv.utils.windowResize(chart.update);
+            return chart;
+        });
+    </script>
 {% endblock %}

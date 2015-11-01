@@ -51,5 +51,28 @@ p a {
 .profile-card {
     i.fa {
         width: 1.1em;
+        text-align: center;
+        margin-right: 0.3em;
+    }
+    .img-circle {
+        max-width: 12.5em;
+        max-height: 12.5em;
+        margin: auto;
+        border: 0.5em solid $light;
+    }
+    .wrap-word {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
+    }
+}
+@media screen and (max-width: 768px) {
+    .profile-card {
+        text-align: center;
+        .img-circle {
+            max-width: 150px;
+            max-height: 150px;
+        }
     }
 }
