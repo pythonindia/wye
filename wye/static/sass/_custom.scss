@@ -33,6 +33,13 @@
         border-bottom: 5px solid $primary;
         padding-bottom: 10px;
     }
+    .navbar-nav>li>a.user-dropdown {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        span, i {
+            vertical-align: middle;
+        }
+    }
 }
 @media screen and (max-width: 768px) {
     .navbar-default {
