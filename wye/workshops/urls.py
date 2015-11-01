@@ -12,7 +12,7 @@ urlpatterns = [
         WorkshopUpdate.as_view(), name="workshop_update"),
     url(r'^(?P<pk>\d+)/(?P<action>active|deactive)/$',
         WorkshopToggleActive.as_view(), name="workshop_toggle"),
-    url(r'^(?P<pk>\d+)/(?P<action>opt-in|opt-out)/$',
+    url(r'^(?P<pk>\d+)/(?P<action>opt_in|opt_out)/$',
         WorkshopAssignMe.as_view(), name="workshop_assignme"),
     url(r'^(?P<pk>\d+)/feedback/$',
         WorkshopFeedbackView.as_view(), name="workshop_feedback")

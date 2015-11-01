@@ -34,3 +34,7 @@ class Organisation(AuditModel):
     def __str__(self):
         return '{}-{}-{}'.format(self.name,
                                  self.organisation_type, self.location)
+
+    @property
+    def get_organisation_user_list(self):
+        return self.user.all()

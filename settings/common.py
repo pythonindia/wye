@@ -14,6 +14,9 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 from os.path import join
 
+ADMINS = (
+    ('Vijay', 'vnbang2003@gmail.com'),
+)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_DIR = join(BASE_DIR, 'wye')
 
