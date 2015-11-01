@@ -2,7 +2,13 @@
 
 {% block header %}
     <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">My profile</h1>
+        <h1 class="no-space">
+            {% if request.user.pk == object.pk %}
+                My Profile
+            {% else %}
+                {{object.user.get_full_name}}
+            {% endif %}
+        </h1>
     </div>
 {% endblock %}
 
