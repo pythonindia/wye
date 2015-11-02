@@ -39,7 +39,7 @@ class SignupForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
 
     usertype = forms.ModelMultipleChoiceField(
-        queryset=models.UserType.objects.exclude(slug='admin'))
+        queryset=models.UserType.objects.exclude(slug__in=['admin', 'poc']))
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
