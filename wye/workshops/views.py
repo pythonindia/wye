@@ -61,17 +61,10 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopRestrictMixin,
         self.send_mail_to_group(context)
         return response
 
-    def get_initial(self):
-        organisation = Organisation.get_user_organisation(self.request.user)
-        organisation_name = organisation.name
-
-        return {
-            "requester": organisation_name,
-            "organisation": organisation
-        }
-
-    def get_form(self, form_class):
-        return form_class(self.request, self.request.POST)
+    def get_form_kwargs(self):
+        kwargs = super(WorkshopCreate, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
@@ -86,19 +79,9 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
             "workshops:workshop_update", args=[pk])
         return super(WorkshopUpdate, self).get_success_url()
 
-  #  def get_form(self):
-   #     form = super(WorkshopUpdate, self).get_form()
-   #     form.base_fields['requester'].initial = self.object.requester.name
-    #    return form
-
-    #def get_form(self, form_class):
-    #    return form_class(self.request, self.request.POST)
     def get_initial(self):
-    #    organisation = Organisation.get_user_organisation(self.request.user)
-    #    organisation_name = organisation.name
         return {
             "requester": self.object.requester.name,
-    #        "organisation": organisation
         }
 
 
@@ -118,6 +101,7 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
                        WorkshopEmailMixin, generic.UpdateView):
     model = Workshop
     email_dir = 'email_messages/workshop/assign_me/'
+    allow_presenter = True
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

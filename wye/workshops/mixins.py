@@ -8,18 +8,25 @@ from wye.base.constants import WorkshopStatus, FeedbackType
 from wye.base.emailer import send_mail
 from wye.profiles.models import Profile
 from wye.organisations.models import Organisation
+from wye.regions.models import RegionalLead
+
 from .models import Workshop, WorkshopFeedBack
 
 
 class WorkshopAccessMixin(object):
 
     def dispatch(self, request, *args, **kwargs):
+        user = request.user
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         workshop = Workshop.objects.get(id=pk)
 
-        if not (Profile.is_organiser(request.user) and
-                Organisation.list_user_organisations(request.user).exists() and
-                request.user in workshop.requester.user.all()):
+        is_admin = Profile.is_admin(user)
+        is_lead = (Profile.is_regional_lead(user) and
+                   RegionalLead.is_regional_lead(user, workshop.location))
+        is_presenter = (Profile.is_organiser(user) and
+                        user in workshop.requester.user.all())
+
+        if not (is_admin or is_lead or is_presenter):
             raise PermissionDenied
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
 
@@ -39,7 +46,7 @@ class WorkshopFeedBackMixin(object):
 
         if workshop.status != WorkshopStatus.COMPLETED:
             raise Http404
-        if not (workshop.is_presenter(user) and workshop.is_organiser(user)):
+        if not (workshop.is_presenter(user) or workshop.is_organiser(user)):
             raise PermissionDenied
         return super(WorkshopFeedBackMixin, self).dispatch(request, *args, **kwargs)
 
@@ -51,17 +58,22 @@ class WorkshopRestrictMixin(object):
         - For presenter to takeup workshop if no feedback is shared
     """
 
+    allow_presenter = False
+
     def dispatch(self, request, *args, **kwargs):
         self.user = request.user
         self.feedback_required = []
 
         # check if user is tutor
-        if Profile.is_presenter(self.user):
+        if Profile.is_presenter(self.user) and self.allow_presenter:
             self.validate_presenter_feedback()
         elif (Profile.is_organiser(self.user) and
                 Organisation.list_user_organisations(self.user).exists()):
             # if user is from organisation
             self.validate_organisation_feedback()
+        elif (Profile.is_regional_lead(self.user) or
+            Profile.is_admin(self.user)):
+            pass # don't restrict lead and admin
         else:
             raise PermissionDenied
 
@@ -82,7 +94,7 @@ class WorkshopRestrictMixin(object):
 
     def validate_organisation_feedback(self):
         workshops = Workshop.objects.filter(
-            presenter=self.user, status=WorkshopStatus.COMPLETED)
+            requester__user=self.user, status=WorkshopStatus.COMPLETED)
 
         for workshop in workshops:
             feedback = WorkshopFeedBack.objects.filter(

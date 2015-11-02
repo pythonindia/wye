@@ -5,27 +5,37 @@ from django.utils.text import slugify
 from wye.base.widgets import CalendarWidget
 from wye.base.constants import WorkshopRatings
 from wye.organisations.models import Organisation
+from wye.profiles.models import Profile
 
 from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack
 
 
 class WorkshopForm(forms.ModelForm):
 
-    def __init__(self, request, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
         super(WorkshopForm, self).__init__(*args, **kwargs)
         self.fields['expected_date'] = forms.DateField(
             widget=CalendarWidget,
             input_formats=settings.ALLOWED_DATE_FORMAT)
-        self.fields['requester'].queryset = Organisation.list_user_organisations(request.user)
+        self.fields['requester'].queryset = self.get_organisations(user)
         self.fields['location'].required = False
         self.fields['location'].widget = forms.HiddenInput()
 
-    #def clean_requester(self):
-    #    return self.initial['organisation']
-
     def clean_location(self):
+        if "requester" not in self.cleaned_data:
+            return ""
+
         organisation = self.cleaned_data['requester']
         return organisation.location
+
+    def get_organisations(self, user):
+        if Profile.is_admin(user):
+            return Organisation.objects.all()
+        elif Profile.is_regional_lead(user):
+            return Organisation.objects.filter(location=user.profile.location)
+        else:
+            return Organisation.list_user_organisations(user)
 
     class Meta:
         model = Workshop
@@ -42,7 +52,7 @@ class WorkshopEditForm(forms.ModelForm):
         super(WorkshopEditForm, self).__init__(*args, **kwargs)
         self.fields['expected_date'] = forms.DateField(
             widget=CalendarWidget,
-            input_formats=settings.ALLOWED_DATE_FORMAT) 
+            input_formats=settings.ALLOWED_DATE_FORMAT)
         self.fields['requester'].widget = forms.TextInput()
         self.fields['requester'].widget.attrs['readonly'] = True
 
