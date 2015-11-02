@@ -3,8 +3,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
-from wye.workshops.models import WorkshopSections
-from wye.regions.models import Location
 from . import models
 
 
@@ -23,13 +21,6 @@ class SignupForm(forms.ModelForm):
             attrs={'placeholder': 'Mobile'}
         )
     )
-    usertype = forms.ModelMultipleChoiceField(
-        queryset=models.UserType.objects.exclude(slug='admin'))
-    location = forms.ModelChoiceField(queryset=Location.objects.all())
-    interested_locations = forms.ModelMultipleChoiceField(
-        queryset=Location.objects.all())
-    interested_sections = forms.ModelMultipleChoiceField(
-        queryset=WorkshopSections.objects.all())
 
     class Meta:
         model = get_user_model()
@@ -42,12 +33,7 @@ class SignupForm(forms.ModelForm):
     def signup(self, request, user):
         profile = user.profile
         profile.mobile = self.cleaned_data['mobile']
-        profile.location = self.cleaned_data['location']
-        profile.usertype = self.cleaned_data['usertype']
-        profile.interested_locations = self.cleaned_data['interested_locations']
-        profile.interested_sections = self.cleaned_data['interested_sections']
         profile.save()
-        user.save()
 
 
 class UserProfileForm(forms.ModelForm):

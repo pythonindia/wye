@@ -33,7 +33,7 @@ class UserDashboard(ListView):
         user_profile = models.Profile.objects.get(
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
-            return redirect('profiles:profile_create')
+            return redirect('profiles:profile-edit', slug=request.user.username)
         return super(UserDashboard, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
