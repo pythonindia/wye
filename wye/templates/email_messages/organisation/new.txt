@@ -1,0 +1,9 @@
+Hey {{full_name}},
+
+Thank you for registering your organization on PythonExpress. We are extremely excited to have you onboard! Now that you have your profile ready (link-to-profile), why not go ahead and announce your first workshop (link-to-create-workshop)? As soon as you do that, we'll notify the regional heads and potential teachers about it.
+
+If you have any questions, do visit our FAQ page (link-to-faq-page). If that doesn't answer your question, feel free to drop a line to contact@pythonexpress.in and we'll get back to you.
+
+May the love of Python spread far and wide!
+Warmly,
+The PythonExpress team

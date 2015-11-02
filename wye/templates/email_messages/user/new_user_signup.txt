@@ -1,0 +1,18 @@
+{% if user.is_presenter %}
+
+Welcome to the PythonExpress family, oh {{ full_name }}! Wandering Python pedagogues make this community strong and we are only too happy to have you here. Now that you have your profile setup (link-to-user-profile), why not take a look at the workshops that await your kind attention? Check them out here: (link-to-list-of-registered-workshops).
+
+{% else %}
+
+Hey {{ full_name }},
+
+Glad to have you as a part of the PythonExpress family! If you'd like to register your organization in order host workshops, please do go ahead do so here: (link-to-creating-organization). Otherwise if you have Python skills yourself, why not register yourself as a tutor and visit a few colleges? Sounds intriguing? Register as a tutor here: (link-to-registering-as-a-tutor).
+
+(% endif %}
+
+In case you have any questions, please do visit our FAQ page (link-to-FAQ-page). If that doesn't answer you, then feel free to drop us a line at contact@pythonexpress.in and we'll get back to you.
+
+May the love of Python spread far and wide!
+
+Warmly,
+The PythonExpress team.
