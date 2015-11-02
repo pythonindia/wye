@@ -1,6 +1,6 @@
 {% if user.is_presenter %}
 
-Welcome to the PythonExpress family, oh {{ full_name }}! Wandering Python pedagogues make this community strong and we are only too happy to have you here. Now that you have your profile setup (link-to-profile), why not take a look at the workshops that await your kind attention? Check them out here: (link-to-list-of-registered-workshops).
+Welcome to the PythonExpress family, oh {{ full_name }}! Wandering Python pedagogues make this community strong and we are only too happy to have you here. Now that you have your profile setup (link-to-user-profile), why not take a look at the workshops that await your kind attention? Check them out here: (link-to-list-of-registered-workshops).
 
 {% else %}
 

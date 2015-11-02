@@ -1,6 +1,6 @@
 Hey {{full_name}},
 
-You've added {{ new_member_name }} to your organization. {{ new_member_name }} can now access your organization dashboard and manage workshops. Visit your profile (link-to-profile) to view or update your organization details.
+You've added {{ new_member_name }} to your organization. {{ new_member_name }} can now access your organization dashboard and manage workshops. Visit your profile (link-to-organization-list-page) to view or update your organization details.
 
 If you have any questions, do visit our FAQ page (link-to-FAQ-page). If that doesn't answer your question, feel free to drop a line to contact@pythonexpress.in and we'll get back to you.
 
