@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Location, State
+from .models import Location, State, RegionalLead
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -20,3 +20,4 @@ class StateAdmin(admin.ModelAdmin):
 
 admin.site.register(Location, LocationAdmin)
 admin.site.register(State, StateAdmin)
+admin.site.register(RegionalLead)

@@ -29,6 +29,7 @@
 	                        <table class="table table-bordered table-clickable sub">
 	                            <thead>
 	                                <tr>
+	                                	<th>State</th>
 	                                    <th>Location</th>
 	                                    <th>Number of Leads</th>
 	                                    <!-- <th>Leads</th> -->
@@ -37,7 +38,8 @@
 	                            <tbody>
 	                                {% for regional in regional_list %}
 	                                    <tr class="clickable-row" data-href="{% url 'regions:lead-update' regional.pk %}">
-	                                        <td>{{regional.location}}, {{regional.location.state}}</td>
+	                                        <td>{{regional.location.state}}</td>
+	                                        <td>{{regional.location}}</td>
 	                                        <td>{{regional.get_count_of_leads}}</td>
 	                                        <!-- <td>{{regional.leads}}</td> -->
 	                                    </tr>

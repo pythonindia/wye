@@ -8,11 +8,12 @@ from wye.regions.models import Location
 
 class Organisation(AuditModel):
     organisation_type = models.PositiveSmallIntegerField(
-        choices=OrganisationType.CHOICES, verbose_name="Organisation Type")
+        choices=OrganisationType.CHOICES, verbose_name="organisation type")
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
     location = models.ForeignKey(Location)
-    organisation_role = models.CharField(max_length=300)
+    organisation_role = models.CharField(
+        max_length=300, verbose_name="Your position in organisation")
     user = models.ManyToManyField(User, related_name='organisation_users')
     active = models.BooleanField(default=True)
 
