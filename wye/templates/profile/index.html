@@ -1,147 +1,160 @@
 {% extends "base.html" %}
 
-{% block breadcrumbs %}
-    <b>{{ block.super }}</b> » User Profile
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">
+            {% if request.user.pk == object.pk %}
+                My Profile
+            {% else %}
+                {{object.user.get_full_name}}
+            {% endif %}
+        </h1>
+    </div>
 {% endblock %}
 
 {% load static from staticfiles %}
 
 {% block extracss %}
-<link rel="stylesheet" href="{% static 'css/libs/nv.d3.min.css' %}">
-{% endblock %}
-
-{% block graphscript %}
-<script src="{% static 'js/libs/d3.min.js' %}"></script>
-<script src="{% static 'js/libs/nv.d3.min.js' %}"></script>
-<script>
-    nv.addGraph(function() {
-    var chart = nv.models.multiBarChart();
-    var data = JSON.parse('{{object.get_graph_data | safe}}');
-    chart.xAxis.tickFormat(function(d) {
-      return d3.time.format('%b-%y')(new Date(d))
-    });
-    chart.yAxis.tickFormat(d3.format(',.1f'));
-    d3.select('#chart svg')
-      .datum(data)
-      .transition()
-      .duration(500)
-      .call(chart);
-    nv.utils.windowResize(chart.update);
-    return chart;
-  });
-</script>
+    <link rel="stylesheet" href="{% static 'css/libs/nv.d3.min.css' %}">
 {% endblock %}
 
 {% block content %}
+    <div class="row push-6-bottom">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <div class="panel panel-default profile-card">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12 text-center push-2-top">
+                            <img class="img-circle" src="/media/{{object.picture}}"/>
+                            <h3 class="push-1q-top">{{object.user.get_full_name}}</h3>
+                        </div>
+                    </div>
 
-{% if request.user.pk == object.pk %}
-<div class="row">
-  <div class="col-md-offset-10 col-md-2">
-      <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-primary">Edit <i class="fa fa-pencil-square-o"></i></a>
-  </div>
-</div>
-{% endif %}
+                </div>
+                <ul class="list-group sub">
+                    <li class="list-group-item">
+                        <span class="wrap-word"><i class="fa fa-map-marker fa-width"></i>{{object.location.name}}</span>
+                    </li>
+                    {% if object.is_email_visible %}
+                        <a class="list-group-item" href="mailto:{{object.user.email}}" title="{{object.user.email}}">
+                            <span class="wrap-word"><i class="fa fa-envelope-o fa-width"></i>{{object.user.email}}</span>
+                        </a>
+                    {%endif %}
+                    {% if object.is_mobile_visible %}
+                        <a class="list-group-item" href="tel:{{object.mobile}}" title="{{object.mobile}}">
+                            <span class="wrap-word"><i class="fa fa-phone fa-width"></i>{{object.mobile}}</span>
+                        </a>
+                    {% endif %}
+                    <li class="list-group-item text-center">
+                        <div class="regular social-icons">
+                            {% if object.user.profile.github %}
+                                <a href="{{object.user.profile.github}}" title="Github" target="_blank" class="github"><i class="fa fa-github-square"></i></a>
+                            {% endif %}
+                            <!-- {% if object.user.profile.bitbucket %}
+                                <a href="{{object.user.profile.bitbucket}}" title="Bitbucket" target="_blank" class="bitbucket"><i class="fa fa-bitbucket-square"></i></a>
+                            {% endif %} -->
+                            {% if object.user.profile.facebook %}
+                                <a href="{{object.user.profile.facebook}}" title="Facebook" target="_blank" class="facebook"><i class="fa fa-facebook-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.googleplus %}
+                                <a href="{{object.user.profile.googleplus}}" title="Google Plus" target="_blank" class="googleplus"><i class="fa fa-google-plus-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.linkedin %}
+                                <a href="{{object.user.profile.linkedin}}" title="LinkedIn" target="_blank" class="linkedin"><i class="fa fa-linkedin-square"></i></a>
+                            {% endif %}
+                            {% if object.user.profile.twitter %}
+                                <a href="{{object.user.profile.twitter}}" title="Twitter" target="_blank" class="twitter"><i class="fa fa-twitter-square"></i></a>
+                            {% endif %}
+                            <!-- {% if object.user.profile.stackoverflow %}
+                                <a href="{{object.user.profile.stackoverflow}}" title="Stackoverflow" target="_blank" class="stackoverflow"><i class="fa fa-stack-overflow"></i></a>
+                            {% endif %} -->
+                            {% if object.user.profile.slideshare %}
+                                <a href="{{object.user.profile.slideshare}}" title="Slideshare" target="_blank" class="slideshare"><i class="fa fa-slideshare"></i></a>
+                            {% endif %}
+                            <!-- {% if object.user.profile.reddit %}
+                                <a href="{{object.user.profile.reddit}}" title="Reddit" target="_blank" class="reddit"><i class="fa fa-reddit-square"></i></a>
+                            {% endif %} -->
+                        </div>
+                    </li>
+                    {% if request.user.pk == object.pk %}
+                        <li class="list-group-item">
+                            <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp;Graph</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="chart">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-rocket"></i>&nbsp;&nbsp;Activity</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <h4>Average Rating</h4>
+                                    <h3>
+                                        <i class="fa fa-star"></i>
+                                        {{object.get_avg_workshop_rating}}<small>/5</small>
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h4>Total Workshops</h4>
+                                    <h3>
+                                        <i class="fa fa-graduation-cap"></i>
+                                        {{object.get_workshop_completed_count}}
+                                    </h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <h4>Upcoming Workshops</h4>
+                                    <h3>
+                                        <i class="fa fa-clock-o"></i>
+                                        {{object.get_workshop_upcoming_count}}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
-<div class="row">
-  <div class="col-md-2">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-xs-12">
-            <img class="img-circle user_image_profile" src="/media/{{object.picture}}"/>
-          </div>
-          <div class="col-xs-12">
-            <h3>{{object.user.get_full_name}}</h3>
-          </div>
-          <div class="col-xs-12">
-            <a href=""><i class="fa fa-map-marker"></i> {{object.location.name}}</span></a>
-          </div>
-          {% if object.is_email_visible %}
-          <div class="col-xs-12">
-            <a href="mail:{{object.user.email}}"><i class="fa fa-envelope"></i> {{object.user.email}}</span></a>
-          </div>
-          {% endif %}
-          {% if object.is_mobile_visible %}
-          <div class="col-xs-12">
-            <a href="tel:{{object.mobile}}"><i class="fa fa-phone-square"></i> {{object.mobile}}</span></a>
-          </div>
-          {% endif %}
-          <div class="col-xs-12">
-            <h4 class="text-center">Links</h4>
-          </div>
-          <div class="col-xs-12">
-            <h3>
-              {% if object.user.profile.github %}
-              <a href="{{object.user.profile.github}}"><i class="fa fa-github-square"></i></a>
-              {% endif %}
-              {% if object.user.profile.facebook %}
-              <a href="{{object.user.profile.facebook}}"><i class="fa fa-facebook-square"></i></a>
-              {% endif %}
-              {% if object.user.profile.googleplus %}
-              <a href="{{object.user.profile.googleplus}}"><i class="fa fa-google-plus-square"></i></a>
-              {% endif %}
-              {% if object.user.profile.linkedin %}
-              <a href="{{object.user.profile.linkedin}}"><i class="fa fa-linkedin-square"></i></a>
-              {% endif %}
-              {% if object.user.profile.twitter %}
-              <a href="{{object.user.profile.twitter}}"><i class="fa fa-twitter-square"></i></a>
-              {% endif %}
-              {% if object.user.profile.slideshare %}
-              <a href="{{object.user.profile.slideshare}}"><i class="fa fa-slideshare"></i></a>
-              {% endif %}
-            </h3>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-10">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Graph <i class="fa fa-bar-chart"></i></span></h3>
-          </div>
-          <div class="panel-body">
-            <div id="chart">
-              <svg></svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">Activity <i class="fa fa-rocket"></i></h3>
-          </div>
-          <div class="panel-body">
-            <div class="row text-center">
-              <div class="col-md-4">
-                <h4>Average Rating</h4>
-                <h3>
-                  <i class="fa fa-star"></i>
-                  {{object.get_avg_workshop_rating}}<small>/5</small>
-                </h3>
-              </div>
-              <div class="col-md-4">
-                <h4>Total Workshops</h4>
-                <h3>
-                  <i class="fa fa-graduation-cap"></i>
-                  {{object.get_workshop_completed_count}}
-                </h3>
-              </div>
-              <div class="col-md-4">
-                <h4>Upcoming Workshops</h4>
-                <h3>
-                  <i class="fa fa-clock-o"></i>
-                  {{object.get_workshop_upcoming_count}}
-                </h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+{% block footer_scripts %}
+    <script src="{% static 'js/libs/d3.min.js' %}"></script>
+    <script src="{% static 'js/libs/nv.d3.min.js' %}"></script>
+    <script>
+        'use strict';
+        var nv;
+        nv.addGraph(function() {
+        var chart = nv.models.multiBarChart();
+        var data = JSON.parse('{{object.get_graph_data | safe}}');
+        chart.xAxis.tickFormat(function(d) {
+            return d3.time.format('%b-%y')(new Date(d))
+        });
+        chart.yAxis.tickFormat(d3.format(',.1f'));
+        d3.select('#chart svg')
+            .datum(data)
+            .transition()
+            .duration(500)
+            .call(chart);
+            nv.utils.windowResize(chart.update);
+            return chart;
+        });
+    </script>
 {% endblock %}
