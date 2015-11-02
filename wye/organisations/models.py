@@ -28,6 +28,10 @@ class Organisation(AuditModel):
             organisation = None
         return organisation
 
+    @classmethod
+    def list_user_organisations(cls, user):
+        return cls.objects.filter(user=user, active=True)
+
     class Meta:
         db_table = 'organisations'
 
