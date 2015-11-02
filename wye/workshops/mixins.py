@@ -72,8 +72,8 @@ class WorkshopRestrictMixin(object):
             # if user is from organisation
             self.validate_organisation_feedback()
         elif (Profile.is_regional_lead(self.user) or
-            Profile.is_admin(self.user)):
-            pass # don't restrict lead and admin
+                Profile.is_admin(self.user)):
+            pass  # don't restrict lead and admin
         else:
             raise PermissionDenied
 
@@ -112,7 +112,6 @@ class WorkshopRestrictMixin(object):
             return JsonResponse({"status": False, "msg": msg})
 
         messages.error(request, msg)
-        print msg
         return HttpResponseRedirect(reverse('workshops:workshop_list'))
 
 
