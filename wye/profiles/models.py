@@ -37,6 +37,8 @@ class UserType(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
     mobile = models.CharField(max_length=10, blank=False, null=True)
+    is_mobile_visible = models.BooleanField(default=True)
+    is_email_visible = models.BooleanField(default=True)
     usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
@@ -137,6 +139,14 @@ class Profile(models.Model):
                 return []
         else:
             return []
+
+    @classmethod
+    def is_presenter(cls, user):
+        return user.profile.usertype.filter(slug__iexact="tutor").exists()
+
+    @classmethod
+    def is_organiser(cls, user):
+        return user.profile.usertype.filter(slug__icontains="poc").exists()
 
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):

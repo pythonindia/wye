@@ -54,7 +54,7 @@ class Workshop(TimeAuditModel):
     is_active = models.BooleanField(default=True)
     status = models.PositiveSmallIntegerField(
         choices=WorkshopStatus.CHOICES, verbose_name="Current Status",
-        default=WorkshopStatus.DRAFT)
+        default=WorkshopStatus.REQUESTED)
 
     class Meta:
         db_table = 'workshops'
