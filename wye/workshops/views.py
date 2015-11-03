@@ -5,7 +5,6 @@ from django.views import generic
 from braces import views
 from wye.profiles.models import Profile
 from wye.social.sites.twitter import send_tweet
-from wye.organisations.models import Organisation
 
 from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \

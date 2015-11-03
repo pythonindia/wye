@@ -39,7 +39,12 @@ SITE_ID = 1
 SITE_VARIABLES = {
     'site_name': os.environ.get('SITE_NAME', 'PythonExpress'),
     'site_description': '',
-    'footer': '&copy; 2014-2015 <a target="_blank" href="http://pssi.org.in/">Python Software Society of India</a>'
+    'footer': (
+        '&copy; 2014-2015 <a target="_blank" href="http://pssi.org.in/">Python Software Society of India</a><br>'
+        '<a target="_blank" href="pythonexpress@pssi.org.in"><i class="fa fa-envelope"></i> Mailing List </a>'
+        '&nbsp;&nbsp;'
+        '<a target="_blank" href="https://github.com/pythonindia/wye"><i class="fa fa-github"></i> Github</a>'
+    )
 }
 
 DEFAULT_APPS = (
