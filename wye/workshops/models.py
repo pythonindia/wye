@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 from wye.base.constants import (
     FeedbackType,
@@ -7,9 +7,9 @@ from wye.base.constants import (
     WorkshopLevel,
     WorkshopStatus,
 )
-from wye.regions.models import Location
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
+from wye.regions.models import Location
 
 from .decorators import validate_action_param
 
@@ -25,8 +25,6 @@ from .decorators import validate_action_param
 #
 #     def __str__(self):
 #         return '{}'.format(self.name)
-
-
 class WorkshopSections(TimeAuditModel):
     '''
     python2, Python3, Django, Flask, Gaming
@@ -140,6 +138,38 @@ class Workshop(TimeAuditModel):
                 topic, date, workshop_url)
 
         return message
+
+    @property
+    def show_draft_button(self):
+        if self.status in [WorkshopStatus.REQUESTED,
+                           WorkshopStatus.ACCEPTED,
+                           WorkshopStatus.DECLINED]:
+            return True
+        return False
+
+    @property
+    def show_requested_button(self):
+        if self.status == WorkshopStatus.DRAFT:
+            return True
+        return False
+
+    @property
+    def show_accepted_button(self):
+        if self.status == WorkshopStatus.REQUESTED:
+            return True
+        return False
+
+    @property
+    def show_feedback_button(self):
+        if self.status == WorkshopStatus.COMPLETED:
+            return True
+        return False
+
+    @property
+    def show_decline_button(self):
+        if self.status == WorkshopStatus.ACCEPTED:
+            return True
+        return False
 
 
 class WorkshopRatingValues(TimeAuditModel):

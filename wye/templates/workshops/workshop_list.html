@@ -31,26 +31,32 @@
                                     <th>Date</th>
                                     <th>Location</th>
                                     <th>Status</th>
-                                    <th colspan="3">Action</th>
-                                    <th>Feedback</th>
+                                    <th>Action</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for workshop in workshop_list %}
-                                    <tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
+                                	<tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
                                         <td>{{ workshop.requester }}</td>
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
                                         <td>{{ workshop.get_status_display }}</td>
-                                        <td><a href="" class="btn btn-warning">Hold</a></td>
-                                        <td><a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_in' %}" class="btn btn-success">Accept</a></td>
-                                        <td><a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_out' %}"  class="btn btn-danger">Reject</a></td>
-                                        {% ifequal workshop.get_status_display "FeedBack Pending" %}
-                                        	<td>
-                                        		<a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
-                                            </td>
-                                        {% endifequal %}
+                                        <td>
+                                        {% if workshop.show_draft_button %}
+                                        <a href="" class="btn btn-warning">Hold</a>
+                                        {% endif %}
+                                        {% if workshop.show_requested_button %}
+                                        <a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_in' %}" class="btn btn-success">Accept</a>
+                                        {% endif %}
+                                        {% if workshop.show_decline_button %}
+                                        <a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_out' %}"  class="btn btn-danger">Reject</a>
+                                        {% endif %}
+                                        {% if workshop.show_feedback_button %}
+                                        	<a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
+                                        {% endif %}
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
