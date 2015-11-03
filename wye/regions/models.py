@@ -44,3 +44,8 @@ class RegionalLead(models.Model):
     @property
     def get_count_of_leads(self):
         return self.leads.count()
+
+    @classmethod
+    def is_regional_lead(cls, user, location):
+        return cls.objects.filter(
+            leads=user, location=location).exists()

@@ -154,6 +154,13 @@ class Profile(models.Model):
     def is_organiser(cls, user):
         return user.profile.usertype.filter(slug__icontains="poc").exists()
 
+    @classmethod
+    def is_regional_lead(cls, user):
+        return user.profile.usertype.filter(slug__iexact="lead").exists()
+
+    @classmethod
+    def is_admin(cls, user):
+        return user.profile.usertype.filter(slug__iexact="admin").exists()
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:
