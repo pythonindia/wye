@@ -1,19 +1,19 @@
-from django.contrib.auth.models import User
-from django.db import models
-from dateutil.rrule import rrule, MONTHLY
 import json
 
+from django.contrib.auth.models import User
+from django.db import models
+from django.db.models.signals import post_save
+from django.utils.functional import cached_property
+
+from dateutil.rrule import rrule, MONTHLY
+from slugify import slugify
 from wye.base.constants import WorkshopStatus
 from wye.regions.models import Location
 from wye.workshops.models import Workshop, WorkshopSections
 
-from django.db.models.signals import post_save
+
 # from django.dispatch import receiver
 # from rest_framework.authtoken.models import Token
-from django.utils.functional import cached_property
-from slugify import slugify
-
-
 class UserType(models.Model):
     '''
     USER_TYPE = ['Tutor', 'Regional Lead', 'College POC','admin']
@@ -37,19 +37,21 @@ class UserType(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
     mobile = models.CharField(max_length=10, blank=False, null=True)
-    is_mobile_visible = models.BooleanField(default=True)
-    is_email_visible = models.BooleanField(default=True)
+    is_mobile_visible = models.BooleanField(default=False)
+    is_email_visible = models.BooleanField(default=False)
     usertype = models.ManyToManyField(UserType)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
-    location = models.ForeignKey(Location, related_name="user_location", null=True)
+    location = models.ForeignKey(
+        Location, related_name="user_location", null=True)
     github = models.URLField(null=True, blank=True)
     facebook = models.URLField(null=True, blank=True)
     googleplus = models.URLField(null=True, blank=True)
     linkedin = models.URLField(null=True, blank=True)
     twitter = models.URLField(null=True, blank=True)
     slideshare = models.URLField(null=True, blank=True)
-    picture = models.ImageField(upload_to='images/', default='images/newuser.png')
+    picture = models.ImageField(
+        upload_to='images/', default='images/newuser.png')
 
     class Meta:
         db_table = 'user_profile'
@@ -117,11 +119,14 @@ class Profile(models.Model):
             status=WorkshopStatus.COMPLETED
         )
         if workshops:
-            max_workshop_date = workshops.aggregate(models.Max('expected_date'))['expected_date__max']
-            min_workshop_date = workshops.aggregate(models.Min('expected_date'))['expected_date__min']
+            max_workshop_date = workshops.aggregate(
+                models.Max('expected_date'))['expected_date__max']
+            min_workshop_date = workshops.aggregate(
+                models.Min('expected_date'))['expected_date__min']
             data = []
             if max_workshop_date and min_workshop_date:
-                dates = [dt for dt in rrule(MONTHLY, dtstart=min_workshop_date, until=max_workshop_date)]
+                dates = [dt for dt in rrule(
+                    MONTHLY, dtstart=min_workshop_date, until=max_workshop_date)]
                 if dates:
                     for section in sections:
                         values = []
@@ -130,7 +135,8 @@ class Profile(models.Model):
                                 expected_date__year=d.year,
                                 expected_date__month=d.month,
                                 workshop_section=section.pk).count()
-                            values.append({'x': "{}-{}".format(d.year, d.month), 'y': y})
+                            values.append(
+                                {'x': "{}-{}".format(d.year, d.month), 'y': y})
                         data.append({'key': section.name, 'values': values})
                     return json.dumps(data)
                 else:
@@ -148,6 +154,13 @@ class Profile(models.Model):
     def is_organiser(cls, user):
         return user.profile.usertype.filter(slug__icontains="poc").exists()
 
+    @classmethod
+    def is_regional_lead(cls, user):
+        return user.profile.usertype.filter(slug__iexact="lead").exists()
+
+    @classmethod
+    def is_admin(cls, user):
+        return user.profile.usertype.filter(slug__iexact="admin").exists()
 # @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 # def create_auth_token(sender, instance=None, created=False, **kwargs):
 #     if created:
@@ -159,4 +172,5 @@ def create_user_profile(sender, instance, created, **kwargs):
         profile, created = Profile.objects.get_or_create(user=instance)
 
 
-post_save.connect(create_user_profile, sender=User, dispatch_uid='create_user_profile')
+post_save.connect(
+    create_user_profile, sender=User, dispatch_uid='create_user_profile')

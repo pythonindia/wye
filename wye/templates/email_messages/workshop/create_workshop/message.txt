@@ -1,7 +1,9 @@
 Hello folks!
      
-     Just giving you a heads up. New Workshop request have been added, tentative date  for workshop is {{ date }}. Please visit the url below for more information.
-     {{ workshop_url }}
+Your organization's {{ workshop_topic }} workshop request on {{ date }} has been successfully added! We shall be notifying all the regional leads and potential instructors soon. Meanwhile, do visit the url below for more information.
+{{ workshop_url }}
+
+May the love of Python spread far and wide!
 
 Warmly,
 The PythonExpress team.

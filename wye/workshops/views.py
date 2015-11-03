@@ -7,7 +7,7 @@ from wye.profiles.models import Profile
 from wye.social.sites.twitter import send_tweet
 from wye.organisations.models import Organisation
 
-from .forms import WorkshopForm, WorkshopFeedbackForm
+from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
     WorkshopFeedBackMixin, WorkshopRestrictMixin
 from .models import Workshop
@@ -61,20 +61,16 @@ class WorkshopCreate(views.LoginRequiredMixin, WorkshopRestrictMixin,
         self.send_mail_to_group(context)
         return response
 
-    def get_initial(self):
-        organisation = Organisation.get_user_organisation(self.request.user)
-        organisation_name = organisation.name
-
-        return {
-            "requester": organisation_name,
-            "organisation": organisation
-        }
+    def get_form_kwargs(self):
+        kwargs = super(WorkshopCreate, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
                      generic.UpdateView):
     model = Workshop
-    form_class = WorkshopForm
+    form_class = WorkshopEditForm
     template_name = 'workshops/workshop_update.html'
 
     def get_success_url(self):
@@ -84,11 +80,8 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
         return super(WorkshopUpdate, self).get_success_url()
 
     def get_initial(self):
-        organisation = Organisation.get_user_organisation(self.request.user)
-        organisation_name = organisation.name
         return {
-            "requester": organisation_name,
-            "organisation": organisation
+            "requester": self.object.requester.name,
         }
 
 
@@ -108,6 +101,7 @@ class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
                        WorkshopEmailMixin, generic.UpdateView):
     model = Workshop
     email_dir = 'email_messages/workshop/assign_me/'
+    allow_presenter = True
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -148,3 +142,9 @@ class WorkshopFeedbackView(views.LoginRequiredMixin, WorkshopFeedBackMixin,
         workshop_id = self.kwargs.get('pk')
         form.save(self.request.user, workshop_id)
         return super(WorkshopFeedbackView, self).form_valid(form)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(WorkshopFeedbackView, self).get_context_data(
+            *args, **kwargs)
+        context['workshop'] = Workshop.objects.get(pk=self.kwargs.get('pk'))
+        return context

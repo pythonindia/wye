@@ -160,7 +160,7 @@ REST_FRAMEWORK = {
 }
 
 LOGIN_URL = '/accounts/login'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URLNAME = 'dashboard'
 ALLOWED_DATE_FORMAT = (
     '%d-%m-%Y', '%d/%m/%Y',
     '%d/%m/%y')

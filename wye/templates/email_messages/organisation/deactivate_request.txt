@@ -1,0 +1,6 @@
+Hey {{full_name}},
+
+Thank you so much for being a part of the PythonExpress initiative. We're really sorry to see you go. If there is anything that we can do to help you or in case you would like to let us know of any grievances, please feel free to drop us a line at contact@pythonexpress.in. We would like to hear from you.
+
+Warmly,
+The PythonExpress team
