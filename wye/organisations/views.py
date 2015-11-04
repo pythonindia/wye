@@ -55,7 +55,12 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
-            email_context = Context({})
+            email_context = Context({
+                'full_name': '%s %s' % (request.user.first_name,
+                                        request.user.last_name),
+                'org_id': form.instance.id,
+
+            })
             subject = "%s organisation for region %s is created" % (
                 form.instance.name, form.instance.location.name)
             email_body = loader.get_template(
@@ -63,6 +68,7 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             text_body = loader.get_template(
                 'email_messages/organisation/new.txt').render(email_context)
             try:
+
                 send_email_to_id(
                     subject,
                     body=email_body,
