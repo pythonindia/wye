@@ -1,6 +1,7 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 [![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye) [![Coverage Status](https://coveralls.io/repos/pythonindia/wye/badge.svg?branch=master&service=github)](https://coveralls.io/github/pythonindia/wye?branch=master)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/wye_chat_room?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 wye is the platform to help organisations(Colleges/FOSS) connect to experienced tutors which will benefit number of students to learn Python and real time use of Python in different domains.
 
