@@ -95,20 +95,20 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
         return self.render_json_response(response)
 
 
-class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
-                       WorkshopRestrictMixin, views.JSONResponseMixin,
-                       WorkshopEmailMixin, generic.UpdateView):
+class WorkshopAction(views.CsrfExemptMixin, views.LoginRequiredMixin,
+                     views.JSONResponseMixin, WorkshopEmailMixin,
+                     generic.UpdateView):
+
     model = Workshop
     email_dir = 'email_messages/workshop/assign_me/'
-    allow_presenter = True
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        user = request.user
-        response = self.object.assign_me(user, **kwargs)
+        response = self.object.manage_action(request.user, **kwargs)
 
-        if response['status']:
-            self.send_mail(user, response['assigned'])
+        if response['status'] and response.get('notify') is not None:
+            self.send_mail(request.user, response['assigned'])
+            del response['notify']
         return self.render_json_response(response)
 
     def send_mail(self, user, assigned):
