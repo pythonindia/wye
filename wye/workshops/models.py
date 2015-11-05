@@ -104,7 +104,7 @@ class Workshop(TimeAuditModel):
             'status': True,
             'msg': 'Workshop successfully updated.'}
 
-    #@validate_action_param(WorkshopAction.ASSIGNME)
+    # @validate_action_param(WorkshopAction.ASSIGNME)
     @validate_assignme_action
     def assign_me(self, user, **kwargs):
         """
