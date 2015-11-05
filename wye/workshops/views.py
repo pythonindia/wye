@@ -96,7 +96,18 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
         return self.render_json_response(response)
 
 
-class WorkshopAssignMe(views.LoginRequiredMixin, views.CsrfExemptMixin,
+class WorkshopAction(views.CsrfExemptMixin, views.LoginRequiredMixin,
+                     views.JSONResponseMixin, generic.UpdateView):
+
+    model = Workshop
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        response = self.object.manage_action(request.user, **kwargs)
+        return self.render_json_response(response)
+
+
+class WorkshopAssignMe(views.CsrfExemptMixin, views.LoginRequiredMixin,
                        WorkshopRestrictMixin, views.JSONResponseMixin,
                        WorkshopEmailMixin, generic.UpdateView):
     model = Workshop

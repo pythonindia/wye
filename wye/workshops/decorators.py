@@ -1,3 +1,6 @@
+from wye.base.constants import WorkshopStatus
+
+
 def validate_action_param(action_map):
     def wrapper(func):
         def inner(self, user, **kwargs):
@@ -16,3 +19,23 @@ def validate_action_param(action_map):
             return func(self, user, **kwargs)
         return inner
     return wrapper
+
+
+def validate_assignme_action(func):
+    def inner(self, user, **kwargs):
+        # if workshop completed don't accept
+        # presenter.
+        if self.status == WorkshopStatus.HOLD:
+            return {
+                'status': False,
+                'msg': 'Not accepting presenter as \
+                workshop is on hold.'
+            }
+        elif self.status == WorkshopStatus.COMPLETED:
+            return {
+                'status': False,
+                'msg': 'Sorry, but it would seem that this \
+                workshop is already completed and hence \
+                won\'t be able to accept a presenter.'}
+        return func(self, user, **kwargs)
+    return inner
