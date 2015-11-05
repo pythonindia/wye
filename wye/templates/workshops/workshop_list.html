@@ -93,7 +93,11 @@
             });                                         
         });
         $(".ws-hold").bind('click', function() {
-            $.post($(this).attr('data-url'));                                         
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });
         });
     });
     </script>

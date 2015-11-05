@@ -147,7 +147,8 @@ class Workshop(TimeAuditModel):
         return {
             'status': True,
             'assigned': assigned[action],
-            'msg': message_map[action]
+            'msg': message_map[action],
+            'notify': True
         }
 
     def get_presenter_list(self):
