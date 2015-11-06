@@ -11,7 +11,7 @@ from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
 from wye.regions.models import Location
 
-from .decorators import validate_action_param
+from .decorators import validate_action_param, validate_assignme_action
 
 
 # class WorkshopLevel(TimeAuditModel):
@@ -66,6 +66,30 @@ class Workshop(TimeAuditModel):
     def is_organiser(self, user):
         return self.requester.user.filter(pk=user.pk).exists()
 
+    def manage_action(self, user, **kwargs):
+        actions = {
+            'accept': ("opt-in", self.assign_me),
+            'reject': ("opt-out", self.assign_me),
+            'hold': (WorkshopStatus.HOLD, self.set_status),
+            'assign': ""
+        }
+        if kwargs.get('action') not in actions:
+            return {
+                'status': False,
+                'msg': 'Action not allowed'
+            }
+
+        action, func = actions.get(kwargs.get('action'))
+        kwargs["action"] = action
+        return func(user, **kwargs)
+
+    def set_status(self, user, **kwargs):
+        self.status = kwargs.get('action')
+        self.save()
+        return {
+            'status': True,
+            'msg': 'Workshop successfully updated.'}
+
     @validate_action_param(WorkshopAction.ACTIVE)
     def toggle_active(self, user, **kwargs):
         """
@@ -80,20 +104,12 @@ class Workshop(TimeAuditModel):
             'status': True,
             'msg': 'Workshop successfully updated.'}
 
-    @validate_action_param(WorkshopAction.ASSIGNME)
+    # @validate_action_param(WorkshopAction.ASSIGNME)
+    @validate_assignme_action
     def assign_me(self, user, **kwargs):
         """
         Method to assign workshop by presenter self.
         """
-
-        # if workshop completed don't accept
-        # presenter.
-        if self.status == WorkshopStatus.COMPLETED:
-            return {
-                'status': False,
-                'msg': 'Sorry, but it would seem that this \
-                        workshop is already completed and hence \
-                        won\'t be able to accept a presenter.'}
 
         action_map = {
             'opt-in': self.presenter.add,
@@ -109,6 +125,11 @@ class Workshop(TimeAuditModel):
         }
         action = kwargs.get('action')
         if assigned[action] and self.presenter.filter(pk=user.pk).exists():
+            # This save has been added as fail safe
+            # once the logic is consolidated may be
+            # it can be removed
+            self.status = WorkshopStatus.ACCEPTED
+            self.save()
             return {
                 'status': False,
                 'msg': 'Workshop has already been assigned.'
@@ -116,10 +137,18 @@ class Workshop(TimeAuditModel):
 
         func = action_map.get(action)
         func(user)
+
+        if self.presenter.count() > 0:
+            self.status = WorkshopStatus.ACCEPTED
+        else:
+            self.status = WorkshopStatus.DECLINED
+        self.save()
+
         return {
             'status': True,
             'assigned': assigned[action],
-            'msg': message_map[action]
+            'msg': message_map[action],
+            'notify': True
         }
 
     def get_presenter_list(self):
@@ -149,7 +178,7 @@ class Workshop(TimeAuditModel):
 
     @property
     def show_requested_button(self):
-        if self.status == WorkshopStatus.DRAFT:
+        if self.status == WorkshopStatus.REQUESTED:
             return True
         return False
 

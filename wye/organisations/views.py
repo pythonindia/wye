@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -55,14 +56,24 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
-            email_context = Context({})
+            host = '{}://{}'.format(settings.SITE_PROTOCOL,
+                                    request.META['HTTP_HOST'])
+            email_context = Context({
+                'full_name': '%s %s' % (request.user.first_name,
+                                        request.user.last_name),
+                'org_id': form.instance.id,
+                'host': host
+
+            })
             subject = "%s organisation for region %s is created" % (
                 form.instance.name, form.instance.location.name)
             email_body = loader.get_template(
                 'email_messages/organisation/new.html').render(email_context)
             text_body = loader.get_template(
                 'email_messages/organisation/new.txt').render(email_context)
+
             try:
+
                 send_email_to_id(
                     subject,
                     body=email_body,
@@ -116,7 +127,6 @@ class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
                 self.object.modified_by = request.user
                 self.object.active = False
                 self.object.save()
-                # send email on new organisation created
             return HttpResponseRedirect(self.success_url)
         else:
             return render(request, self.template_name, {'form': form})

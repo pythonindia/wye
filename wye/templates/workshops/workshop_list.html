@@ -45,13 +45,13 @@
                                         <td>{{ workshop.get_status_display }}</td>
                                         <td>
                                         {% if workshop.show_draft_button %}
-                                        <a href="" class="btn btn-warning">Hold</a>
+                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
                                         {% endif %}
                                         {% if workshop.show_requested_button %}
-                                        <a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_in' %}" class="btn btn-success">Accept</a>
+                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
                                         {% endif %}
                                         {% if workshop.show_decline_button %}
-                                        <a href="{% url "workshops:workshop_assignme" workshop.pk 'opt_out' %}"  class="btn btn-danger">Reject</a>
+                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
                                         {% endif %}
                                         {% if workshop.show_feedback_button %}
                                         	<a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
@@ -71,9 +71,34 @@
     <script>
         'use strict';
         $(function(){
-            $('.clickable-row').click(function() {
-                window.document.location = $(this).data('href');
+            $('.clickable-row td:nth-child(-n + 5)').click(function() { 
+               window.document.location = $(this).parent().attr('data-href');
+            });
+
+        $(".ws-accept").bind('click', function(){
+            $.post($(this).attr('data-url'), {}, function (data) {
+
+                if (data['status']) {
+                    window.location.reload();
+                } else {
+                    alert(data['msg']);
+                }
             });
         });
+        $(".ws-reject").bind('click', function() {
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });                                         
+        });
+        $(".ws-hold").bind('click', function() {
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });
+        });
+    });
     </script>
 {% endblock %}
