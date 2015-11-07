@@ -35,7 +35,11 @@
 								</thead>
 								<tbody>
 									{% for org in org_created_list %}
+									{% if is_tutor %}
 										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+									{% else %}
+										<tr>
+									{% endif %}
 											<td>{{org.name }}</td>
 											<td>{{org.location}}</td>
 											<td>{{org.get_organisation_type_display}}</td>

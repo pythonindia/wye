@@ -39,7 +39,11 @@
                             </thead>
                             <tbody>
                                 {% for workshop in workshop_list %}
+                                	{% if is_tutor %}
                                 	<tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
+                                	{% else %}
+									<tr>
+									{% endif %}
                                         <td>{{ workshop.requester.name }}</td>
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
