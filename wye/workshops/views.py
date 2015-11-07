@@ -39,9 +39,8 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
                     user=self.request.user).get_interested_locations))
         elif Profile.is_regional_lead(self.request.user):
             regions = RegionalLead.objects.filter(user=self.request.user)
-            [x.id for x in regions]
             workshop_list = workshop_list.filter(
-                location__id__in=[x.id for x in regions])
+                location__id__in=[x.location.id for x in regions])
         context['workshop_list'] = workshop_list
         context['user'] = self.request.user
         context['is_not_tutor'] = True if Profile.is_regional_lead(

@@ -73,7 +73,38 @@
 										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
 											<td>{{org.name }}</td>
 											<td>{{org.location}}</td>
-											<td>{{org.get_organisation_type}}</td>
+											<td>{{org.get_organisation_type_display}}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	{% endif %}
+	{% if regional_org_list %}
+		<section class="organisations_working_for">
+			<div class="push-4-bottom push-1-top">
+				<h3>Regional Organisations</h3>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="table-responsive">
+							<table class="table table-bordered table-clickable sub">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Location</th>
+										<th>Type</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for org in regional_org_list %}
+										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+											<td>{{org.name }}</td>
+											<td>{{org.location}}</td>
+											<td>{{org.get_organisation_type_display}}</td>
 										</tr>
 									{% endfor %}
 								</tbody>
