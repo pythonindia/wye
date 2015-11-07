@@ -29,6 +29,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         workshop_list = Workshop.objects.all()
         context['workshop_list'] = workshop_list
         context['user'] = self.request.user
+        context['is_tutor'] = Profile.is_presenter(self.request.user)
         return context
 
 

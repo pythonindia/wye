@@ -10,12 +10,14 @@
     <div class="push-4-bottom">
         <div class="row">
             <div class="col-xs-6">
-                <h3 class="space-1q-top">My Workshops</h3>
+                <h3 class="space-1q-top">{% if is_tutor %}My {% endif %}Workshops</h3>
             </div>
+            {% if is_tutor %}
             <div class="col-xs-6 text-right">
                 <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request<span class="hidden-xs"> for workshop</span></a>
                 <!-- <a href="/workshops_info" class="btn btn-default sub"><i class="fa fa-info-circle"></i>&nbsp;more info</a> -->
             </div>
+            {% endif %}
         </div>
         <div class="row push-1">
             <div class="col-sm-12">
@@ -38,7 +40,7 @@
                             <tbody>
                                 {% for workshop in workshop_list %}
                                 	<tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
-                                        <td>{{ workshop.requester }}</td>
+                                        <td>{{ workshop.requester.name }}</td>
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>

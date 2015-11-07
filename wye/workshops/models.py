@@ -178,7 +178,7 @@ class Workshop(TimeAuditModel):
 
     @property
     def show_requested_button(self):
-        if self.status == WorkshopStatus.REQUESTED:
+        if self.status == WorkshopStatus.DRAFT:
             return True
         return False
 
