@@ -14,6 +14,6 @@ urlpatterns = [
         WorkshopToggleActive.as_view(), name="workshop_toggle"),
     url(r'^(?P<pk>\d+)/(?P<action>accept|reject|hold)/$',
         WorkshopAction.as_view(), name="workshop_action"),
-    url(r'^(?P<pk>\d+)/feedback/$',
+    url(r'^feedback/(?P<pk>\d+)/$',
         WorkshopFeedbackView.as_view(), name="workshop_feedback")
 ]

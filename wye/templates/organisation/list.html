@@ -11,9 +11,9 @@
 		<div class="push-4-bottom">
 			<div class="row">
 				<div class="col-xs-6">
-					<h3 class="space-1q-top">{% if is_tutor %}My {% endif %}Organisations</h3>
+					<h3 class="space-1q-top">{% if is_not_tutor %}My {% endif %}Organisations</h3>
 				</div>
-				{% if is_tutor %}
+				{% if is_not_tutor %}
 				<div class="col-xs-6 text-right">
 					<a href="{% url 'organisations:organisation_create' %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add<span class="hidden-xs"> Organisation</span></a>
 				</div>
@@ -35,7 +35,7 @@
 								</thead>
 								<tbody>
 									{% for org in org_created_list %}
-									{% if is_tutor %}
+									{% if is_not_tutor %}
 										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
 									{% else %}
 										<tr>

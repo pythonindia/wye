@@ -1,9 +1,11 @@
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.db.models import Q
 from django.shortcuts import redirect
 from django.views import generic
 
 from braces import views
 from wye.profiles.models import Profile
+from wye.regions.models import RegionalLead
 from wye.social.sites.twitter import send_tweet
 
 from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
@@ -27,9 +29,23 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         context = super(
             WorkshopList, self).get_context_data(*args, **kwargs)
         workshop_list = Workshop.objects.all()
+        if Profile.is_organiser(self.request.user):
+            workshop_list = workshop_list.filter(
+                requester__user=self.request.user)
+        elif Profile.is_presenter(self.request.user):
+            workshop_list = workshop_list.filter(
+                Q(presenter=self.request.user) | Q
+                (requester__location__name__in=Profile.objects.get(
+                    user=self.request.user).get_interested_locations))
+        elif Profile.is_regional_lead(self.request.user):
+            regions = RegionalLead.objects.filter(user=self.request.user)
+            [x.id for x in regions]
+            workshop_list = workshop_list.filter(
+                location__id__in=[x.id for x in regions])
         context['workshop_list'] = workshop_list
         context['user'] = self.request.user
-        context['is_tutor'] = Profile.is_presenter(self.request.user)
+        context['is_not_tutor'] = True if Profile.is_regional_lead(
+            self.request.user) else not Profile.is_presenter(self.request.user)
         return context
 
 

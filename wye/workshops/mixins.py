@@ -154,7 +154,7 @@ class WorkshopEmailMixin(object):
         region_interested_member = Profile.objects.filter(
             interested_locations=self.object.requester.location,
             usertype__slug='tutor'
-        ).values_list('email', flat=True)
+        ).values_list('user__email', flat=True)
 
         all_email = []
         all_email.extend(org_user_emails)

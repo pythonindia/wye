@@ -36,7 +36,8 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
         context['org_belongs_list'] = self.get_queryset().exclude(
             created_by=self.request.user)
         context['user'] = self.request.user
-        context['is_tutor'] = Profile.is_presenter(self.request.user)
+        context['is_not_tutor'] = True if Profile.is_regional_lead(
+            self.request.user) else not Profile.is_presenter(self.request.user)
         return context
 
 
