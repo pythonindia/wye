@@ -157,38 +157,6 @@ class Workshop(TimeAuditModel):
 
         return message
 
-    @property
-    def show_draft_button(self):
-        if self.status in [WorkshopStatus.REQUESTED,
-                           WorkshopStatus.ACCEPTED,
-                           WorkshopStatus.DECLINED]:
-            return True
-        return False
-
-    @property
-    def show_requested_button(self):
-        if self.status == WorkshopStatus.DRAFT:
-            return True
-        return False
-
-    @property
-    def show_accepted_button(self):
-        if self.status == WorkshopStatus.REQUESTED:
-            return True
-        return False
-
-    @property
-    def show_feedback_button(self):
-        if self.status == WorkshopStatus.COMPLETED:
-            return True
-        return False
-
-    @property
-    def show_decline_button(self):
-        if self.status == WorkshopStatus.ACCEPTED:
-            return True
-        return False
-
 
 class WorkshopRatingValues(TimeAuditModel):
     '''
