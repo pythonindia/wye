@@ -2,8 +2,8 @@ from django import forms
 from django.conf import settings
 from django.utils.text import slugify
 
-from wye.base.widgets import CalendarWidget
 from wye.base.constants import WorkshopRatings
+from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 
@@ -90,5 +90,5 @@ class WorkshopFeedbackForm(forms.Form):
         self.fields["comment"] = forms.CharField(widget=forms.Textarea)
 
     def save(self, user, workshop_id):
-        data = {k.split("-")[-1]: v for k, v in self.cleaned_data.iteritems()}
+        data = {k.split("-")[-1]: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)

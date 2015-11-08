@@ -1,5 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
+
+from wye.profiles.models import UserType
+
 from . import models
 
 
@@ -20,6 +23,12 @@ class RegionalLeadForm(forms.ModelForm):
                     "User %s doesn't belong to region %s" % (u, location))
         if error_message:
             raise ValidationError(error_message)
+
+    def save(self, force_insert=False, force_update=False, commit=True):
+        m = super(RegionalLeadForm, self).save(commit=False)
+        for u in self.cleaned_data['leads']:
+            u.profile.usertype.add(UserType.objects.get(slug='lead'))
+        return m
 
 
 class LocationForm(forms.ModelForm):
