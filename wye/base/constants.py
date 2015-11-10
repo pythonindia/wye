@@ -67,3 +67,11 @@ class WorkshopRatings:
 class WorkshopAction:
     ACTIVE = ('active', 'deactive')
     ASSIGNME = ('opt-in', 'opt-out')
+
+
+@choices
+class ContactFeedbackType:
+    _WORKSHOP = [1, "Workshop"]
+    _ACCOUNT = [2, "Account"]
+    _ORGANISATION = [3, "Organisation"]
+    _OTHERS = [4, "Others"]
