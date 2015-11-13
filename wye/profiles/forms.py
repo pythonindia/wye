@@ -19,8 +19,19 @@ class UserAuthenticationForm(AuthenticationForm):
 
 
 class SignupForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(SignupForm, self).__init__(*args, **kwargs)
+        try:
+            self.fields['email'].label = "E-mail*"
+            self.fields['username'].label = "Username*"
+            self.fields['password1'].label = "Password*"
+            self.fields['password2'].label = "Password (again)*"
+        except:
+            pass
+    
     mobile = forms.CharField(
-        label=_("Mobile"),
+        label=_("Mobile*"),
         max_length=10,
         widget=forms.TextInput(
             attrs={'placeholder': 'Mobile'}
