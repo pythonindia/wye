@@ -13,6 +13,11 @@ try:
 except ImportError:
     pass
 
+try:
+    from .prod import *  # noqa
+except ImportError:
+    pass
+
 # heroku
 if 'DYNO' in os.environ:
     from .heroku import *  # noqa
