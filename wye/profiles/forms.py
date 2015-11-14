@@ -4,6 +4,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
+from simplemathcaptcha.fields import MathCaptchaField
+
 from wye.base.constants import ContactFeedbackType
 
 from . import models
@@ -62,6 +64,7 @@ class ContactUsForm(forms.Form):
         label='Comments*', required=True, widget=forms.Textarea)
     contact_number = forms.CharField(
         label='Your contact number', required=False)
+    captcha = MathCaptchaField()
 
     def clean_contact_number(self):
         contact_number = self.cleaned_data['contact_number']

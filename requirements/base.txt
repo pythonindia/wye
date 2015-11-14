@@ -39,3 +39,7 @@ Pillow==3.0.0
 # Dateutils
 #-----------------------------------------
 python-dateutil==2.4.2
+
+# Captcha
+#-----------------------------------------
+django-simple-math-captcha==1.0.7
