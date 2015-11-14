@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import FormView
 from django.template import Context, loader
 
-from wye.base.emailer_html import send_email_to_list
+from wye.base.emailer_html import send_email_to_list, send_email_to_id
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Organisation
 from wye.workshops.models import Workshop
@@ -122,15 +122,28 @@ class ContactFormView(FormView):
             'email_messages/contactus/message.txt').render(email_context)
         email_body = loader.get_template(
             'email_messages/contactus/message.html').render(email_context)
+        user_subject = '[PythonExpress] Feedback Received'
+        user_text_body = loader.get_template(
+            'email_messages/contactus/message_user.txt').render(email_context)
+        user_email_body = loader.get_template(
+            'email_messages/contactus/message_user.html').render(email_context)
 
         try:
             regional_lead = models.Profile.objects.filter(
-                usertype__slug='lead').values_list('user__email', flat=True)
+                usertype__slug__in=['lead', 'admin']).values_list('user__email', flat=True)
             send_email_to_list(
                 subject,
                 users_list=regional_lead,
                 body=email_body,
                 text_body=text_body)
+        except Exception as e:
+            print(e)
+        try:
+            send_email_to_id(
+                user_subject,
+                body=user_email_body,
+                email_id=form.cleaned_data['email'],
+                text_body=user_text_body)
         except Exception as e:
             print(e)
 
