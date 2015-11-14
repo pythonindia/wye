@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">{% if form %}Contact Us{% else %}Thank You {% endif %}</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="push-6-bottom">
+        <div class="row">
+            <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                {% if form %}
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{form.errors}}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-theme regular" value="Create">
+                </form>
+                {% else %}
+                    Your response has been recorded. We will get in touch with you shortly.
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

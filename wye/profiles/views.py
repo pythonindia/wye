@@ -3,13 +3,16 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic import UpdateView, DetailView
 from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
+from django.template import Context, loader
 
+from wye.base.emailer_html import send_email_to_list, send_email_to_id
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Organisation
 from wye.workshops.models import Workshop
 
 from . import models
-from .forms import UserProfileForm
+from .forms import UserProfileForm, ContactUsForm
 
 
 class ProfileView(DetailView):
@@ -97,3 +100,51 @@ class ProfileEditView(UpdateView):
             return super(ProfileEditView, self).dispatch(*args, **kwargs)
         else:
             raise PermissionDenied
+
+
+class ContactFormView(FormView):
+    form_class = ContactUsForm
+    template_name = 'contact.html'
+    success_url = '/thankyou'
+
+    def form_valid(self, form):
+
+        email_context = Context({
+            'contact_name': form.cleaned_data['name'],
+            'contact_email': form.cleaned_data['email'],
+            'comments': form.cleaned_data['comments'],
+            'conatct_number': form.cleaned_data['contact_number'],
+            'feedback_type': form.cleaned_data['feedback_type']
+            })
+
+        subject = "PythonExpress Feedback by %s" % (form.cleaned_data['name'])
+        text_body = loader.get_template(
+            'email_messages/contactus/message.txt').render(email_context)
+        email_body = loader.get_template(
+            'email_messages/contactus/message.html').render(email_context)
+        user_subject = '[PythonExpress] Feedback Received'
+        user_text_body = loader.get_template(
+            'email_messages/contactus/message_user.txt').render(email_context)
+        user_email_body = loader.get_template(
+            'email_messages/contactus/message_user.html').render(email_context)
+
+        try:
+            regional_lead = models.Profile.objects.filter(
+                usertype__slug__in=['lead', 'admin']).values_list('user__email', flat=True)
+            send_email_to_list(
+                subject,
+                users_list=regional_lead,
+                body=email_body,
+                text_body=text_body)
+        except Exception as e:
+            print(e)
+        try:
+            send_email_to_id(
+                user_subject,
+                body=user_email_body,
+                email_id=form.cleaned_data['email'],
+                text_body=user_text_body)
+        except Exception as e:
+            print(e)
+
+        return super(ContactFormView, self).form_valid(form)
