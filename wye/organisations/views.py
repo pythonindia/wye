@@ -42,10 +42,14 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
         elif Profile.is_presenter(self.request.user):
             pass
         context['user'] = self.request.user
-        context['is_not_tutor'] = True if (Profile.is_regional_lead(
-            self.request.user) or Profile.is_organiser(
-            self.request.user)) else not Profile.is_presenter(
-            self.request.user)
+        # need to improve the part
+        context['is_not_tutor'] = False
+        # as user can be tutor and regional lead hence we need to verify like
+        # this
+        if (Profile.is_regional_lead(self.request.user) or
+                Profile.is_organiser(self.request.user) or
+                Profile.is_admin(self.request.user)):
+            context['is_not_tutor'] = True
         return context
 
 
