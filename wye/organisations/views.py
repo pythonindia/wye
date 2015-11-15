@@ -30,23 +30,22 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(OrganisationList, self).get_context_data(
             *args, **kwargs)
-        print(Profile.is_regional_lead(self.request.user))
         if Profile.is_organiser(self.request.user):
             context['org_created_list'] = self.get_queryset().filter(
                 created_by=self.request.user)
             context['org_belongs_list'] = self.get_queryset().exclude(
                 created_by=self.request.user)
         elif Profile.is_regional_lead(self.request.user):
-            print("AM here")
             regions = RegionalLead.objects.filter(leads=self.request.user)
-            print([x.location.id for x in regions])
             context['regional_org_list'] = self.get_queryset().filter(
                 location__id__in=[x.location.id for x in regions])
         elif Profile.is_presenter(self.request.user):
             pass
         context['user'] = self.request.user
-        context['is_not_tutor'] = True if Profile.is_regional_lead(
-            self.request.user) else not Profile.is_presenter(self.request.user)
+        context['is_not_tutor'] = True if (Profile.is_regional_lead(
+            self.request.user) or Profile.is_organiser(
+            self.request.user)) else not Profile.is_presenter(
+            self.request.user)
         return context
 
 

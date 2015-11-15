@@ -43,8 +43,10 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
                 location__id__in=[x.location.id for x in regions])
         context['workshop_list'] = workshop_list
         context['user'] = self.request.user
-        context['is_not_tutor'] = True if Profile.is_regional_lead(
-            self.request.user) else not Profile.is_presenter(self.request.user)
+        context['is_not_tutor'] = True if (Profile.is_regional_lead(
+            self.request.user) or Profile.is_organiser(
+            self.request.user)) else not Profile.is_presenter(
+            self.request.user)
         return context
 
 
