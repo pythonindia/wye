@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import Workshop, WorkshopFeedBack
+#from .models import Workshop, WorkshopFeedBack, WorkshopSections
+from . import models
 
 
 class WorkshopAdmin(admin.ModelAdmin):
-    list_per_page = 10
+    list_per_page = 50
     list_display = (
         'requester',
         'location',
@@ -16,10 +17,14 @@ class WorkshopAdmin(admin.ModelAdmin):
         'status')
     list_filter = ('is_active', 'status', 'workshop_level', 'location')
 
-admin.site.register(Workshop, WorkshopAdmin)
+admin.site.register(models.Workshop, WorkshopAdmin)
 
 
 class WorkshopFeedBackAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(WorkshopFeedBack, WorkshopFeedBackAdmin)
+admin.site.register(models.WorkshopFeedBack, WorkshopFeedBackAdmin)
+
+admin.site.register(models.WorkshopSections)
+admin.site.register(models.WorkshopRatingValues)
+admin.site.register(models.WorkshopVoting)
