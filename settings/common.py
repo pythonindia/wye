@@ -44,6 +44,8 @@ SITE_VARIABLES = {
         '<a target="_blank" href="http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress"><i class="fa fa-envelope"></i> Mailing List </a>'
         '&nbsp;&nbsp;'
         '<a target="_blank" href="https://github.com/pythonindia/wye"><i class="fa fa-github"></i> Github</a>'
+        '&nbsp;&nbsp;'
+        '<a target="_blank" href="https://twitter.com/pythonexpress/"><i class="fa fa-twitter"></i>Twitter</a>'
     )
 }
 
