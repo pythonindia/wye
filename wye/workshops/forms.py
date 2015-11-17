@@ -1,6 +1,9 @@
+import datetime
+
 from django import forms
 from django.conf import settings
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 
 from wye.base.constants import WorkshopRatings
 from wye.base.widgets import CalendarWidget
@@ -36,6 +39,13 @@ class WorkshopForm(forms.ModelForm):
             return Organisation.objects.filter(location=user.profile.location)
         else:
             return Organisation.list_user_organisations(user)
+
+    def clean_expected_date(self):
+        date = self.cleaned_data['expected_date']
+        if not (date > datetime.date.today() + datetime.timedelta(days=14)):
+            raise ValidationError('Expected date has to be atleast 2 weeks ahead from now')
+        else:
+            return date
 
     class Meta:
         model = Workshop
