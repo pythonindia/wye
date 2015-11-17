@@ -40,12 +40,17 @@ SITE_VARIABLES = {
     'site_name': os.environ.get('SITE_NAME', 'PythonExpress'),
     'site_description': '',
     'footer': (
-        '&copy; 2014-2015 <a target="_blank" href="http://pssi.org.in/">Python Software Society of India</a><br>'
-        '<a target="_blank" href="http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress"><i class="fa fa-envelope"></i> Mailing List </a>'
+        '&copy; 2014-2015 <a target="_blank" href="http://pssi.org.in/">'
+        'Python Software Society of India</a><br>'
+        '<a target="_blank" '
+        'href="http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress">'
+        '<i class="fa fa-envelope"></i> Mailing List </a>'
         '&nbsp;&nbsp;'
-        '<a target="_blank" href="https://github.com/pythonindia/wye"><i class="fa fa-github"></i> Github</a>'
+        '<a target="_blank" href="https://github.com/pythonindia/wye">'
+        '<i class="fa fa-github"></i> Github</a>'
         '&nbsp;&nbsp;'
-        '<a target="_blank" href="https://twitter.com/pythonexpress/"><i class="fa fa-twitter"></i>Twitter</a>'
+        '<a target="_blank" href="https://twitter.com/pythonexpress/">'
+        '<i class="fa fa-twitter"></i>Twitter</a>'
     )
 }
 
