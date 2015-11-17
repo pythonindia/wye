@@ -16,7 +16,8 @@ def test_forgot_password_flow(base_url, browser, outbox):
     assert 'Password Reset' in browser.title
     browser.fill('email', 'no-existent-email@email.com')
     browser.find_by_css('[type=submit]')[0].click()
-    assert browser.is_text_present('The e-mail address is not assigned to any user account')
+    assert browser.is_text_present(
+        'The e-mail address is not assigned to any user account')
     assert len(outbox) == 0
 
     # Now, enter a valid email
@@ -34,7 +35,8 @@ def test_forgot_password_flow(base_url, browser, outbox):
     browser.fill('password1', 'mynewpassword')
     browser.fill('password2', 'mynewpassword_wrong')
     browser.find_by_css('[type=submit]')[0].click()
-    assert browser.is_text_present('You must type the same password each time.')
+    assert browser.is_text_present(
+        'You must type the same password each time.')
     browser.fill('password1', 'mynewpassword')
     browser.fill('password2', 'mynewpassword')
     browser.find_by_css('[type=submit]')[0].click()

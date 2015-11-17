@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 # Third Party Stuff
+import datetime
+
 from django.conf import settings
 
 import factory
-from wye.base.constants import OrganisationType
+from wye.base.constants import OrganisationType, WorkshopLevel, WorkshopStatus
 
 
 class Factory(factory.DjangoModelFactory):
@@ -13,6 +15,12 @@ class Factory(factory.DjangoModelFactory):
         strategy = factory.CREATE_STRATEGY
         model = None
         abstract = True
+
+
+class UserTypeFactory(Factory):
+
+    class Meta:
+        model = 'profiles.UserType'
 
 
 class UserFactory(Factory):
@@ -56,6 +64,33 @@ class OrganisationFactory(Factory):
     location = factory.SubFactory("tests.factories.LocationFactory")
 
 
+class WorkshopSectionFactory(Factory):
+
+    class Meta:
+        model = 'workshops.WorkshopSections'
+
+
+class WorkshopFactory(Factory):
+
+    class Meta:
+        model = "workshops.Workshop"
+
+    description = factory.Sequence(
+        lambda n: "Workshop_Description{}".format(n))
+    no_of_participants = 20
+    requester = factory.SubFactory("tests.factories.OrganisationFactory")
+    location = factory.SubFactory("tests.factories.LocationFactory")
+    workshop_level = factory.Iterator(dict(WorkshopLevel.CHOICES).keys())
+    workshop_section = factory.SubFactory(
+        "tests.factories.WorkshopSectionFactory")
+    status = factory.Iterator(dict(WorkshopStatus.CHOICES).keys())
+    expected_date = datetime.datetime.now()
+
+
+def create_usertype(**kwargs):
+    return UserTypeFactory.create(**kwargs)
+
+
 def create_user(**kwargs):
     "Create an user along with their dependencies"
     return UserFactory.create(**kwargs)
@@ -63,3 +98,7 @@ def create_user(**kwargs):
 
 def create_organisation(**kwargs):
     return OrganisationFactory.create(**kwargs)
+
+
+def create_workshop(**kwargs):
+    return WorkshopFactory.create(**kwargs)
