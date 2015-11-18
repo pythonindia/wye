@@ -34,7 +34,8 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
             context['org_created_list'] = self.get_queryset().filter(
                 created_by=self.request.user)
             context['org_belongs_list'] = self.get_queryset().exclude(
-                created_by=self.request.user)
+                created_by=self.request.user).filter(
+                user=self.request.user)
         elif Profile.is_regional_lead(self.request.user):
             regions = RegionalLead.objects.filter(leads=self.request.user)
             context['regional_org_list'] = self.get_queryset().filter(
