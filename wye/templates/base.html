@@ -45,7 +45,7 @@
                                     </li>
                                     <li class="dropdown">
                                        <a href="#" class="user-dropdown dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                            <img class="img-circle user_image" src="{{ MEDIA_URL }}{{user.profile.picture}}" /><span class="pad-3q">{{request.user.get_full_name}}</span><i class="fa fa-caret-down"></i>
+                                            <img class="img-circle user_image" src="/media/{{user.profile.picture}}" /><span class="pad-3q">{{request.user.get_full_name}}</span><i class="fa fa-caret-down"></i>
                                         </a>
                                         <ul class="dropdown-menu sub" aria-labelledby="user_dropdown">
                                             <li><a href="/dashboard/" class="{% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}"><i class="fa fa-dashboard fa-width"></i>Dashboard</a></li>
