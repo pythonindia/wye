@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 from wye.base.constants import (
@@ -28,7 +29,8 @@ class WorkshopSections(TimeAuditModel):
 
 
 class Workshop(TimeAuditModel):
-    no_of_participants = models.PositiveIntegerField()
+    no_of_participants = models.PositiveIntegerField(
+        validators=[MaxValueValidator(1000)])
     expected_date = models.DateField()
     description = models.TextField()
     requester = models.ForeignKey(
