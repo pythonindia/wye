@@ -25,23 +25,23 @@ def test_profile_flow(base_url, browser, outbox):
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
 
-    poc_type = f.create_usertype(slug='dummy', display_name='College POC')
-#    tutor_type = f.create_usertype(slug='dummy1', display_name='Tutor')
-    section1 = f.create_workshop_section(name='section1')
-#    section2 = f.create_workshop_section(name='section2')
-    location1 = f.create_locaiton(name='location1')
-#    location2 = f.create_locaiton(name='location2')
-    url = base_url + '/profile/{}/'.format(user.username)
-    browser.visit(url)
-    profile_edit_link = browser.find_by_text('Edit')[0]
-    assert profile_edit_link
-    profile_edit_link.click()
-
-    url = base_url + '/profile/{}/edit'.format(user.username)
-    browser.visit(url)
-    browser.fill('mobile', "1234567890")
-    browser.select('usertype', poc_type.id)
-    browser.select('interested_sections', section1.id)
-    browser.select('interested_locations', location1.id)
-    browser.select('location', location1.id)
-    browser.find_by_css('[type=submit]')[0].click()
+#     poc_type = f.create_usertype(slug='dummy', display_name='College POC')
+# #    tutor_type = f.create_usertype(slug='dummy1', display_name='Tutor')
+#     section1 = f.create_workshop_section(name='section1')
+# #    section2 = f.create_workshop_section(name='section2')
+#     location1 = f.create_locaiton(name='location1')
+# #    location2 = f.create_locaiton(name='location2')
+#     url = base_url + '/profile/{}/'.format(user.username)
+#     browser.visit(url)
+#     profile_edit_link = browser.find_by_text('Edit')[0]
+#     assert profile_edit_link
+#     profile_edit_link.click()
+#
+#     url = base_url + '/profile/{}/edit'.format(user.username)
+#     browser.visit(url)
+#     browser.fill('mobile', "1234567890")
+#     browser.select('usertype', poc_type.id)
+#     browser.select('interested_sections', section1.id)
+#     browser.select('interested_locations', location1.id)
+#     browser.select('location', location1.id)
+#     browser.find_by_css('[type=submit]')[0].click()
