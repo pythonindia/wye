@@ -23,7 +23,6 @@ def test_organisation_flow(base_url, browser, outbox):
     user.profile.usertype.add(poc_type)
     user.save()
     location1 = f.create_locaiton(name='location1')
-    location2 = f.create_locaiton(name='location2')
 
     url = base_url + '/organisation/'
     browser.fill('login', user.email)
@@ -36,7 +35,7 @@ def test_organisation_flow(base_url, browser, outbox):
     browser.select('organisation_type', 1)
     browser.fill('name', 'Org1')
     browser.fill('description', 'Description')
-    browser.select('location', 1)
+    browser.select('location', location1.id)
     browser.fill('organisation_role', 'Role1')
     browser.find_by_css('[type=submit]')[0].click()
     # browser.find_by_css('[clickable-row]')[0].click()
