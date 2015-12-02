@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import Http404
+from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect, JsonResponse
 
 from wye.base.constants import WorkshopStatus, FeedbackType
@@ -19,15 +20,13 @@ class WorkshopAccessMixin(object):
         user = request.user
         pk = self.kwargs.get(self.pk_url_kwarg, None)
         workshop = Workshop.objects.get(id=pk)
-
         is_admin = Profile.is_admin(user)
         is_lead = (Profile.is_regional_lead(user) and
                    RegionalLead.is_regional_lead(user, workshop.location))
         is_presenter = (Profile.is_organiser(user) and
                         user in workshop.requester.user.all())
-
         if not (is_admin or is_lead or is_presenter):
-            raise PermissionDenied
+            return HttpResponseForbidden("Not sufficent permission")
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
 
 

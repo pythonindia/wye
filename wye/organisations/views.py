@@ -18,7 +18,7 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
     template_name = 'organisation/list.html'
 
     def dispatch(self, request, *args, **kwargs):
-        user_profile = Profile.objects.get(
+        user_profile, created = Profile.objects.get_or_create(
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile-edit', slug=request.user.username)

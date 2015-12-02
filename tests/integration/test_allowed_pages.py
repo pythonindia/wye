@@ -94,14 +94,14 @@ def test_orgnisation_pages(client, settings):
 
 def test_workshop_pages(client, settings):
     settings.SITE_VARIABLES['site_name'] = 'My Test Website'
-    normal_user = f.UserFactory(is_staff=False)
+    poc_user = f.UserFactory(is_staff=False)
     poc_type = f.create_usertype(slug='poc', display_name='poc')
-    normal_user.profile.usertype.add(poc_type)
+    poc_user.profile.usertype.add(poc_type)
     org = f.create_organisation()
-    org.user.add(normal_user)
+    org.user.add(poc_user)
     org.save()
-    workshop = f.create_workshop()
-    workshop.presenter.add(normal_user)
+    workshop = f.create_workshop(requester=org)
+    workshop.presenter.add(poc_user)
     workshop.save()
 
     url_list = [
@@ -111,10 +111,10 @@ def test_workshop_pages(client, settings):
     ]
 
     for page_url in url_list:
-        client.login(normal_user)
+        client.login(poc_user)
         response = client.get(page_url)
         assert response.status_code == 200, 'Failed for %s' % page_url
-        assert normal_user.get_full_name() in str(response.content)
+        assert poc_user.get_full_name() in str(response.content)
         assert settings.SITE_VARIABLES[
             'site_name'] in str(response.content)
         client.logout()

@@ -78,7 +78,7 @@
                     </li>
                     {% if request.user.pk == object.pk %}
                         <li class="list-group-item">
-                            <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub"><i class="fa fa-pencil-square-o"></i>&nbsp;Edit</a>
+                            <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub">Edit</a>
                         </li>
                     {% endif %}
                 </ul>

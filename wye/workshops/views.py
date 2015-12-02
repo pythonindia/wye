@@ -1,6 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
 from django.views import generic
 
 from braces import views
@@ -18,8 +20,9 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     model = Workshop
     template_name = 'workshops/workshop_list.html'
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        user_profile = Profile.objects.get(
+        user_profile, created = Profile.objects.get_or_create(
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile-edit', slug=request.user.username)
@@ -35,12 +38,14 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         elif Profile.is_presenter(self.request.user):
             workshop_list = workshop_list.filter(
                 Q(presenter=self.request.user) | Q
-                (requester__location__name__in=Profile.objects.get(
-                    user=self.request.user).get_interested_locations))
+                (requester__location__id__in=[
+                    x.id for x in
+                    self.request.user.profile.interested_locations.all()]))
         elif Profile.is_regional_lead(self.request.user):
             regions = RegionalLead.objects.filter(user=self.request.user)
             workshop_list = workshop_list.filter(
                 location__id__in=[x.location.id for x in regions])
+
         context['workshop_list'] = workshop_list
         context['user'] = self.request.user
         # need to improve the part
@@ -96,8 +101,7 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
 
     def get_success_url(self):
         pk = self.kwargs.get(self.pk_url_kwarg, None)
-        self.success_url = reverse(
-            "workshops:workshop_update", args=[pk])
+        self.success_url = reverse("workshops:workshop_list")
         return super(WorkshopUpdate, self).get_success_url()
 
     def get_initial(self):
@@ -110,6 +114,7 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
                            views.JSONResponseMixin, WorkshopAccessMixin,
                            generic.UpdateView):
     model = Workshop
+    fields = ('is_active', 'id')
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -153,7 +158,7 @@ class WorkshopAction(views.CsrfExemptMixin, views.LoginRequiredMixin,
         self.send_mail_to_group(context, exclude_emails=[user.email])
 
 
-class WorkshopFeedbackView(views.LoginRequiredMixin, WorkshopFeedBackMixin,
+class WorkshopFeedbackView(views.LoginRequiredMixin,
                            generic.FormView):
     form_class = WorkshopFeedbackForm
     template_name = "workshops/workshop_feedback.html"

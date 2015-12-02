@@ -37,10 +37,10 @@ register.filter(show_accepted_button)
 
 
 def show_feedback_button(workshop, user):
-    if (workshop.status == WorkshopStatus.COMPLETED
-            and (user in workshop.requester.user.all()
-                 or user in workshop.presenter.all())
-            and datetime.now().date() > workshop.expected_date):
+    if ((workshop.status == WorkshopStatus.COMPLETED or
+         datetime.now().date() > workshop.expected_date) or
+        (user in workshop.requester.user.all() or
+         user in workshop.presenter.all())):
 
         return True
     return False

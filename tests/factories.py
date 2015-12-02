@@ -87,6 +87,13 @@ class WorkshopFactory(Factory):
     expected_date = datetime.datetime.now()
 
 
+class WorkshopRatingValuesFactory(Factory):
+
+    class Meta:
+        model = "workshops.WorkshopRatingValues"
+    name = factory.Sequence(lambda n: "Rating{}".format(n))
+
+
 def create_usertype(**kwargs):
     return UserTypeFactory.create(**kwargs)
 
@@ -102,3 +109,15 @@ def create_organisation(**kwargs):
 
 def create_workshop(**kwargs):
     return WorkshopFactory.create(**kwargs)
+
+
+def create_workshop_rating(**kwargs):
+    return WorkshopRatingValuesFactory.create(**kwargs)
+
+
+def create_workshop_section(**kwargs):
+    return WorkshopSectionFactory.create(**kwargs)
+
+
+def create_locaiton(**kwargs):
+    return LocationFactory.create(**kwargs)
