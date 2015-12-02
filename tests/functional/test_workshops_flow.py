@@ -61,13 +61,13 @@ def test_workshop_flow(base_url, browser, outbox):
     user.profile.usertype.remove(tutor_type)
     user.profile.usertype.add(poc_type)
     user.save()
-    hold_workshop_link = browser.find_by_text('Hold')[0]
-    assert hold_workshop_link
-    hold_workshop_link.click()
-
-    publish_workshop_link = browser.find_by_text('Publish/Request')[0]
-    assert publish_workshop_link
-    publish_workshop_link.click()
+#     hold_workshop_link = browser.find_by_text('Hold')[0]
+#     assert hold_workshop_link
+#     # hold_workshop_link.click()
+#
+#     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
+#     assert publish_workshop_link
+#     publish_workshop_link.click()
 
     workshop.expected_date = datetime.now() + timedelta(days=-20)
     workshop.save()
