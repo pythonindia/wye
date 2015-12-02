@@ -1,5 +1,8 @@
-import pytest
 import re
+
+import pytest
+
+from .. import factories as f
 
 pytestmark = pytest.mark.django_db
 
@@ -51,3 +54,24 @@ def test_signup_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     assert browser.is_text_present("Edit Profile")
+
+    poc_type = f.create_usertype(slug='dummy', display_name='College POC')
+    section1 = f.create_workshop_section(name='section1')
+    location1 = f.create_locaiton(name='location1')
+
+    url = base_url + '/profile/randomnessprevails/edit'
+    browser.visit(url)
+
+    browser.select('usertype', poc_type.id)
+    browser.select('interested_sections', section1.id)
+    browser.select('interested_locations', location1.id)
+    browser.select('location', location1.id)
+    browser.find_by_css('[type=submit]')[0].click()
+
+    assert browser.is_text_present('My Profile')
+    assert browser.is_text_present('Graph')
+
+    # Logging Out
+    url = base_url + '/accounts/logout/'
+    browser.visit(url)
+    assert 'Home | PythonExpress' in browser.title
