@@ -30,9 +30,6 @@ def test_profile_flow(base_url, browser, outbox):
     location1 = f.create_locaiton(name='location1')
     url = base_url + '/profile/{}/'.format(user.username)
     browser.visit(url)
-#     profile_edit_link = browser.find_by_text('Edit')[0]
-#     assert profile_edit_link
-#     profile_edit_link.click()
 
     url = base_url + '/profile/{}/edit'.format(user.username)
     browser.visit(url)
