@@ -46,10 +46,3 @@ def test_organisation_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     browser.find_by_text('Org1')[0].click()
     browser.find_by_text('Delete')[0].click()
-
-    #assert len(outbox) == 1
-#     print(outbox[0].body)
-#     print(outbox[1].body)
-#     print(outbox[2].body)
-    # print(mail.body)
-    # url = base_url + '/organisation/{}'.format()

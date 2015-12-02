@@ -12,7 +12,7 @@ from wye.social.sites.twitter import send_tweet
 
 from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
-    WorkshopFeedBackMixin, WorkshopRestrictMixin
+    WorkshopRestrictMixin
 from .models import Workshop
 
 
@@ -100,7 +100,7 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
     template_name = 'workshops/workshop_update.html'
 
     def get_success_url(self):
-        pk = self.kwargs.get(self.pk_url_kwarg, None)
+        # pk = self.kwargs.get(self.pk_url_kwarg, None)
         self.success_url = reverse("workshops:workshop_list")
         return super(WorkshopUpdate, self).get_success_url()
 

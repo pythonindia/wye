@@ -31,7 +31,7 @@ def test_profile_flow(base_url, browser, outbox):
 #    section2 = f.create_workshop_section(name='section2')
     location1 = f.create_locaiton(name='location1')
 #    location2 = f.create_locaiton(name='location2')
-    url = base_url + '/profile/{}/'.format(user.username),
+    url = base_url + '/profile/{}/'.format(user.username)
     browser.visit(url)
     profile_edit_link = browser.find_by_text('Edit')[0]
     assert profile_edit_link

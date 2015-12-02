@@ -37,7 +37,7 @@ def test_workshop_flow(base_url, browser, outbox):
     workshop.status = WorkshopStatus.REQUESTED
     workshop.location = org.location
     workshop.save()
-    url = base_url + '/workshop/update/{}/'.format(workshop.id),
+    url = base_url + '/workshop/update/{}/'.format(workshop.id)
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
