@@ -59,7 +59,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         return context
 
 
-class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
+class WorkshopDetail(generic.DetailView):
     model = Workshop
     context_object_name = "workshop"
     template_name = 'workshops/workshop_detail.html'
