@@ -13,7 +13,6 @@
                 {% if form %}
                 <form method="post" action="">
                     {% csrf_token %}
-                    {{form.errors}}
                     {{form.as_p}}
                     <input type="submit" class="btn btn-theme regular" value="Create">
                 </form>

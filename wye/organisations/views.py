@@ -18,7 +18,7 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
     template_name = 'organisation/list.html'
 
     def dispatch(self, request, *args, **kwargs):
-        user_profile = Profile.objects.get(
+        user_profile, created = Profile.objects.get_or_create(
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile-edit', slug=request.user.username)
@@ -34,7 +34,8 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
             context['org_created_list'] = self.get_queryset().filter(
                 created_by=self.request.user)
             context['org_belongs_list'] = self.get_queryset().exclude(
-                created_by=self.request.user)
+                created_by=self.request.user).filter(
+                user=self.request.user)
         elif Profile.is_regional_lead(self.request.user):
             regions = RegionalLead.objects.filter(leads=self.request.user)
             context['regional_org_list'] = self.get_queryset().filter(
