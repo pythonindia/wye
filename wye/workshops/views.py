@@ -42,7 +42,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
                     x.id for x in
                     self.request.user.profile.interested_locations.all()]))
         elif Profile.is_regional_lead(self.request.user):
-            regions = RegionalLead.objects.filter(user=self.request.user)
+            regions = RegionalLead.objects.filter(leads=self.request.user)
             workshop_list = workshop_list.filter(
                 location__id__in=[x.location.id for x in regions])
 
