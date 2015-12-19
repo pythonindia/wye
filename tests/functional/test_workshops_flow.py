@@ -65,9 +65,9 @@ def test_workshop_flow(base_url, browser, outbox):
     assert hold_workshop_link
     hold_workshop_link.click()
 
-    publish_workshop_link = browser.find_by_text('Publish/Request')[0]
-    assert publish_workshop_link
-    publish_workshop_link.click()
+#     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
+#     assert publish_workshop_link
+#     publish_workshop_link.click()
 
     workshop.expected_date = datetime.now() + timedelta(days=-20)
     workshop.save()
