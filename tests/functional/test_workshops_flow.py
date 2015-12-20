@@ -71,6 +71,10 @@ def test_workshop_flow(base_url, browser, outbox):
 
     workshop.expected_date = datetime.now() + timedelta(days=-20)
     workshop.save()
+
+    url = base_url + '/workshop/'
+    browser.visit(url)
+
     f.create_workshop_rating()
     publish_workshop_link = browser.find_by_text('Share Feedback')[0]
     assert publish_workshop_link
