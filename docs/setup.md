@@ -37,6 +37,7 @@ Follow this guide to setup your development machine.
     nano settings/dev.py
     ```
     For new postgresql user(people who are new to it.)
+    
     USER: "postgres"
     PASSWORD: ""
 
