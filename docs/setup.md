@@ -38,9 +38,9 @@ Follow this guide to setup your development machine.
     ```
     For new postgresql user(people who are new to it.)
     
-    ###USER: "postgres"
+    USER: "postgres"
     
-    ###PASSWORD: ""
+    PASSWORD: ""
 
 7. Create an empty postgres database and run database migration.
 
