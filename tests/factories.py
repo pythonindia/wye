@@ -50,6 +50,14 @@ class LocationFactory(Factory):
     state = factory.SubFactory("tests.factories.StateFactory")
 
 
+class ProfileFactory(Factory):
+
+    class Meta:
+        model = "regions.Location"
+    user = factory.SubFactory("tests.factories.UserFactory", profile=None)
+    location = factory.SubFactory("tests.factories.LocationFactory")
+
+
 class OrganisationFactory(Factory):
 
     class Meta:
@@ -105,6 +113,10 @@ def create_user(**kwargs):
 
 def create_organisation(**kwargs):
     return OrganisationFactory.create(**kwargs)
+
+
+def create_profile(**kwargs):
+    return ProfileFactory.create(**kwargs)
 
 
 def create_workshop(**kwargs):
