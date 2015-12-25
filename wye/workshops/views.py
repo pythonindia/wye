@@ -31,7 +31,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(
             WorkshopList, self).get_context_data(*args, **kwargs)
-        workshop_list = Workshop.objects.all()
+        workshop_list = Workshop.objects.all().order_by('-expected_date')
         if Profile.is_organiser(self.request.user):
             workshop_list = workshop_list.filter(
                 requester__user=self.request.user)
@@ -59,7 +59,7 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
         return context
 
 
-class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
+class WorkshopDetail(generic.DetailView):
     model = Workshop
     context_object_name = "workshop"
     template_name = 'workshops/workshop_detail.html'

@@ -63,18 +63,22 @@ def test_workshop_flow(base_url, browser, outbox):
     user.save()
 #     hold_workshop_link = browser.find_by_text('Hold')[0]
 #     assert hold_workshop_link
-#     # hold_workshop_link.click()
-#
+#     hold_workshop_link.click()
+
 #     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
 #     assert publish_workshop_link
 #     publish_workshop_link.click()
 
     workshop.expected_date = datetime.now() + timedelta(days=-20)
     workshop.save()
+
+    url = base_url + '/workshop/'
+    browser.visit(url)
+
     f.create_workshop_rating()
-#     publish_workshop_link = browser.find_by_text('Share Feedback')[0]
-#     assert publish_workshop_link
-#     publish_workshop_link.click()
+    publish_workshop_link = browser.find_by_text('Share Feedback')[0]
+    assert publish_workshop_link
+    publish_workshop_link.click()
     url = base_url + '/workshop/feedback/{}'.format(workshop.id)
     browser.visit(url)
     browser.check('rating0-1')

@@ -8,7 +8,7 @@ class ProfileAdmin(admin.ModelAdmin):
         'user',
         'slug',
         'mobile')
-    search_fields = ('slug',)
+    search_fields = ('user__username', 'mobile')
     list_filter = (
         'interested_locations',
         'interested_sections')
