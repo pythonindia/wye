@@ -27,7 +27,7 @@ class RegionalLeadForm(forms.ModelForm):
             raise ValidationError(error_message)
 
     def save(self, force_insert=False, force_update=False, commit=True):
-        m = super(RegionalLeadForm, self).save(commit=False)
+        m = super(RegionalLeadForm, self).save()
         for u in self.cleaned_data['leads']:
             u.profile.usertype.add(UserType.objects.get(slug='lead'))
         return m
