@@ -115,7 +115,7 @@ class ContactFormView(FormView):
             'comments': form.cleaned_data['comments'],
             'conatct_number': form.cleaned_data['contact_number'],
             'feedback_type': form.cleaned_data['feedback_type']
-            })
+        })
 
         subject = "PythonExpress Feedback by %s" % (form.cleaned_data['name'])
         text_body = loader.get_template(

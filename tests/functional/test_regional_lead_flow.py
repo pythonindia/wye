@@ -1,6 +1,6 @@
-import pdb
 import re
 from .. import factories as f
+
 
 def test_regional_lead_flow(base_url, browser, outbox):
     user = f.create_user(is_staff=True)
@@ -20,10 +20,10 @@ def test_regional_lead_flow(base_url, browser, outbox):
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
 
-    lead_type = f.create_usertype(slug='lead', display_name='Regional Lead')
+    f.create_usertype(slug='lead', display_name='Regional Lead')
 
     location1 = f.create_locaiton()
-    user.profile.location =  location1
+    user.profile.location = location1
     user.profile.save()
 
     url = base_url + '/region/'
