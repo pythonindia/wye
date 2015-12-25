@@ -29,7 +29,7 @@ class SignupForm(forms.ModelForm):
             self.fields['password2'].label = "Password (again)*"
         except:
             pass
-    
+
     mobile = forms.CharField(
         label=_("Mobile*"),
         max_length=10,
