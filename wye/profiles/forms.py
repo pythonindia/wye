@@ -37,7 +37,20 @@ class SignupForm(forms.ModelForm):
             attrs={'placeholder': 'Mobile'}
         )
     )
+    def clean_mobile(self):
+        mobile = self.cleaned_data['mobile']
+        error_message = []
+        if mobile:
+            if not mobile.isdigit():
+                error_message.append(
+                    'Contact Number should consist of only digits')
+            if not len(mobile) in [10, 11]:
+                error_message.append(
+                    "Contact Number should be consist of either 10 or 11 digits")
 
+        if error_message:
+            raise ValidationError(error_message)
+        return mobile
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name']
