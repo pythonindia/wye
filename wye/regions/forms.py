@@ -13,19 +13,21 @@ class RegionalLeadForm(forms.ModelForm):
         exclude = ()
 
     def clean(self):
-        location = self.cleaned_data['location']
         error_message = []
-        for u in self.cleaned_data['leads']:
-            if not u.profile:
-                error_message.append('Profile for user %s not found' % (u))
-            elif u.profile.location != location:
-                error_message.append(
-                    "User %s doesn't belong to region %s" % (u, location))
+        if (self.cleaned_data.get('location', '') and
+                self.cleaned_data.get('leads', '')):
+            location = self.cleaned_data['location']
+            for u in self.cleaned_data['leads']:
+                if not u.profile:
+                    error_message.append('Profile for user %s not found' % (u))
+                elif u.profile.location != location:
+                    error_message.append(
+                        "User %s doesn't belong to region %s" % (u, location))
         if error_message:
             raise ValidationError(error_message)
 
     def save(self, force_insert=False, force_update=False, commit=True):
-        m = super(RegionalLeadForm, self).save(commit=False)
+        m = super(RegionalLeadForm, self).save()
         for u in self.cleaned_data['leads']:
             u.profile.usertype.add(UserType.objects.get(slug='lead'))
         return m
