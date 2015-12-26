@@ -63,6 +63,8 @@ def test_workshop_flow(base_url, browser, outbox):
     user.save()
 
 #   checking to move the requested workshop in hold state
+    url = base_url + '/workshop/'
+    browser.visit(url)
     hold_workshop_link = browser.find_by_text('Hold')[0]
     assert hold_workshop_link
     hold_workshop_link.click()
