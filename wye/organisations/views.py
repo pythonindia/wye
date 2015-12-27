@@ -40,8 +40,6 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
             regions = RegionalLead.objects.filter(leads=self.request.user)
             context['regional_org_list'] = self.get_queryset().filter(
                 location__id__in=[x.location.id for x in regions])
-#         elif Profile.is_presenter(self.request.user):
-#             pass
         context['user'] = self.request.user
         # need to improve the part
         context['is_not_tutor'] = False
@@ -59,9 +57,6 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     form_class = OrganisationForm
     template_name = 'organisation/create.html'
     success_url = reverse_lazy('organisations:organisation_list')
-
-#     def get_queryset(self):
-#         return Organisation.objects.filter(user=self.request.user)
 
     def post(self, request, *args, **kwargs):
         form = OrganisationForm(data=request.POST)
