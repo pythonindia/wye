@@ -17,8 +17,8 @@ def login(browser, url, user, password):
     browser.fill('login', user.email)
     browser.fill('password', password)
     browser.find_by_css('[type=submit]')[0].click()
-    
-    
+
+
 def login_and_confirm(browser, url, outbox, user, password):
     global outbox_len
     outbox_len = outbox_len + 1

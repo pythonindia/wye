@@ -15,9 +15,9 @@ def test_workshop_list(base_url, browser, outbox):
     - Check workshop listing for user with usertype poc
     - Check workshop listing for user with usertype tutor
     - Check workshop listing for user with usertype lead
-    - Check workshop listing for user with no usertype 
+    - Check workshop listing for user with no usertype
     """
-    
+
     # Create usertypes
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
@@ -26,7 +26,7 @@ def test_workshop_list(base_url, browser, outbox):
     # Testcase with usertyep poc
     user = base.create_user(password)
     url = base_url + '/workshop/'
-    base.login_and_confirm(browser, url, outbox, user, password)   
+    base.login_and_confirm(browser, url, outbox, user, password)
     user.profile.usertype.add(poc_type)
     user.save()
 
@@ -47,51 +47,50 @@ def test_workshop_list(base_url, browser, outbox):
     base.login(browser, url, user, password)
     data_check = browser.find_by_text(org.name)
     assert data_check
-   
+
     # Testcase for usertype tutor
-    browser.visit(base_url + "/accounts/logout")    
+    browser.visit(base_url + "/accounts/logout")
     user = base.create_user(password)
     url = base_url + '/workshop/'
-    base.login_and_confirm(browser, url, outbox, user, password)    
+    base.login_and_confirm(browser, url, outbox, user, password)
     user.profile.usertype.add(tutor_type)
     user.save()
-    
+
     url = base_url + '/workshop/'
     base.login(browser, url, user, password)
-    # User not associate with workshop 
+    # User not associate with workshop
     data_check = browser.find_by_text(org.name)
     assert [] == data_check
-    
-    # User associated with workshop 
+
+    # User associated with workshop
     workshop.presenter.add(user)
     browser.visit(url)
     data_check = browser.find_by_text(org.name)
     assert data_check
-    
+
     # Testcase for lead
     browser.visit(base_url + "/accounts/logout")
     user = base.create_user(password)
     url = base_url + '/workshop/'
     base.login_and_confirm(browser, url, outbox, user, password)
-    
+
     user.profile.usertype.add(regional_lead_type)
     user.save()
     lead = RegionalLead.objects.create(location=org.location)
     lead.leads.add(user)
-    
+
     url = base_url + '/workshop/'
     base.login(browser, url, user, password)
     data_check = browser.find_by_text(org.name)
     assert data_check
-    
+
     # Testcase for user with no usertype
     browser.visit(base_url + "/accounts/logout")
     user = base.create_user(password)
     url = base_url + '/workshop/'
     base.login_and_confirm(browser, url, outbox, user, password)
-    
+
     url = base_url + '/workshop/'
     base.login(browser, url, user, password)
     data_check = browser.find_by_text(org.name)
     assert [] == data_check
-
