@@ -61,6 +61,10 @@ class UserProfileForm(forms.ModelForm):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         try:
             self.fields['mobile'].label = "Mobile*"
+            self.fields['usertype'].label = "Usertype*"
+            self.fields['interested_sections'].label = "Interested Sections*"
+            self.fields['interested_locations'].label = "Interested Locations*"
+            self.fields['location'].label = "Location*"
         except:
             pass
 
