@@ -59,6 +59,10 @@ class UserProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
+        try:
+            self.fields['mobile'].label = "Mobile*"
+        except:
+            pass
 
     class Meta:
         model = models.Profile
