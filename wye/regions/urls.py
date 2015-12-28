@@ -6,7 +6,7 @@ urlpatterns = [
         name="lead-create"),
     url(r'^lead/(?P<pk>\d+)/edit/$', views.RegionalLeadUpdateView.as_view(),
         name="lead-update"),
-
+    url(r'^lead/get_leads/(?P<l_id>\w+)/$', views.RegionalLeadCreateView.get_leads, name='get_leads'),
     url(r'^state/create/$', views.StateCreateView.as_view(),
         name="state-create"),
     url(r'^state/(?P<pk>\d+)/edit/$', views.StateEditView.as_view(),

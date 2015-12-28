@@ -1,22 +1,22 @@
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from django.views.generic import UpdateView, DetailView
-from django.views.generic.list import ListView
-from django.views.generic.edit import FormView
 from django.template import Context, loader
+from django.views.generic import UpdateView, DetailView
+from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 
-from wye.base.emailer_html import send_email_to_list, send_email_to_id
 from wye.base.constants import WorkshopStatus
+from wye.base.emailer_html import send_email_to_list, send_email_to_id
 from wye.organisations.models import Organisation
+from wye.profiles.models import Profile
 from wye.workshops.models import Workshop
 
-from . import models
 from .forms import UserProfileForm, ContactUsForm
 
 
 class ProfileView(DetailView):
-    model = models.Profile
+    model = Profile
     template_name = 'profile/index.html'
     slug_field = 'user__username'
 
@@ -29,11 +29,11 @@ class ProfileView(DetailView):
 
 
 class UserDashboard(ListView):
-    model = models.Profile
+    model = Profile
     template_name = 'profile/dashboard.html'
 
     def dispatch(self, request, *args, **kwargs):
-        user_profile = models.Profile.objects.get(
+        user_profile = Profile.objects.get(
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile-edit', slug=request.user.username)
@@ -41,50 +41,55 @@ class UserDashboard(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDashboard, self).get_context_data(**kwargs)
-        user_profile = models.Profile.objects.get(
-            user__id=self.request.user.id)
-        workshop_all_list = Workshop.objects.all()
-        my_organisation_list = Organisation.objects.filter(
-            user=self.request.user)
-        print(user_profile.get_user_type)
+        user_profile = Profile.objects.get(user=self.request.user)
+        workshop_all = Workshop.objects.all()
+        accept_workshops = workshop_all.filter(
+            status=WorkshopStatus.ACCEPTED)
+        requested_workshops = workshop_all.filter(
+            status=WorkshopStatus.REQUESTED)
+        organisation_all = Organisation.objects.all()
         for each_type in user_profile.get_user_type:
             if each_type == 'tutor':
                 context['is_tutor'] = True
-                context['workshop_requested_tutor'] = workshop_all_list.filter(
-                    presenter=self.request.user, status=WorkshopStatus.REQUESTED)
-                context['workshop_completed_tutor'] = workshop_all_list.filter(
-                    presenter=self.request.user, status=WorkshopStatus.COMPLETED)
+                context['workshop_requested_tutor'] = accept_workshops.filter(
+                    presenter=self.request.user)
+                context['workshop_completed_tutor'] = requested_workshops.filter(
+                    presenter=self.request.user)
             if each_type == 'lead':
                 context['is_regional_lead'] = True
-                context['workshops_accepted_under_rl'] = workshop_all_list.filter(
-                    status=WorkshopStatus.ACCEPTED)
-                context['workshops_pending_under_rl'] = workshop_all_list.filter(
-                    status=WorkshopStatus.REQUESTED)
-                context['interested_tutors'] = models.Profile.objects.filter(
+                context['workshops_accepted_under_rl'] = accept_workshops
+                context['workshops_pending_under_rl'] = requested_workshops
+                context['interested_tutors'] = Profile.objects.filter(
                     usertype__slug='tutor',
                     interested_locations__name__in=user_profile.get_interested_locations).exclude(
-                    user__id=self.request.user.id).count()
-                context['interested_locations'] = Organisation.objects.filter(
+                    user=self.request.user).count()
+                context['interested_locations'] = organisation_all.filter(
                     location__name__in=user_profile.get_interested_locations).count()
+
             if each_type == 'poc':
                 context['is_college_poc'] = True
-                context['users_organisation'] = my_organisation_list
-                context['workshop_requested_under_poc'] = workshop_all_list.filter(
-                    requester__id__in=my_organisation_list.values_list('id', flat=True))
-                context['workshops_accepted_under_poc'] = workshop_all_list.filter(
+                context['users_organisation'] = organisation_all.filter(
+                    user=self.request.user)
+                context['workshop_requested_under_poc'] = workshop_all.filter(
+                    requester__id__in=organisation_all.values_list(
+                        'id', flat=True))
+                context['workshops_accepted_under_poc'] = workshop_all.filter(
                     status=WorkshopStatus.ACCEPTED,
-                    requester__id__in=my_organisation_list.values_list('id', flat=True))
+                    requester__id__in=organisation_all.values_list(
+                        'id', flat=True))
+
             if each_type == 'admin':
                 context['is_admin'] = True
-                context['workshops_by_status'] = workshop_all_list.order_by(
+                context['workshops_by_status'] = workshop_all.order_by(
                     'status')
-                context['workshops_by_region'] = workshop_all_list.order_by(
+                context['workshops_by_region'] = workshop_all.order_by(
                     'location')
+
         return context
 
 
 class ProfileEditView(UpdateView):
-    model = models.Profile
+    model = Profile
     template_name = 'profile/update.html'
     form_class = UserProfileForm
     slug_field = 'user__username'
@@ -115,7 +120,7 @@ class ContactFormView(FormView):
             'comments': form.cleaned_data['comments'],
             'conatct_number': form.cleaned_data['contact_number'],
             'feedback_type': form.cleaned_data['feedback_type']
-            })
+        })
 
         subject = "PythonExpress Feedback by %s" % (form.cleaned_data['name'])
         text_body = loader.get_template(
@@ -129,16 +134,15 @@ class ContactFormView(FormView):
             'email_messages/contactus/message_user.html').render(email_context)
 
         try:
-            regional_lead = models.Profile.objects.filter(
-                usertype__slug__in=['lead', 'admin']).values_list('user__email', flat=True)
+            regional_lead = Profile.objects.filter(
+                usertype__slug__in=['lead', 'admin']).values_list(
+                'user__email', flat=True)
             send_email_to_list(
                 subject,
                 users_list=regional_lead,
                 body=email_body,
                 text_body=text_body)
-        except Exception as e:
-            print(e)
-        try:
+
             send_email_to_id(
                 user_subject,
                 body=user_email_body,
