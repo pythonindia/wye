@@ -29,11 +29,10 @@ class UserType(models.Model):
         verbose_name = 'UserType'
         verbose_name_plural = 'UserTypes'
         ordering = ('-id',)
-        
 
     def __str__(self):
         return '{}'.format(self.display_name)
-    
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
@@ -41,7 +40,7 @@ class Profile(models.Model):
     is_mobile_visible = models.BooleanField(default=False)
     is_email_visible = models.BooleanField(default=False)
     usertype = models.ManyToManyField(UserType)
-    interested_sections = models.ManyToManyField(WorkshopSections)
+    interesteds_ections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
     location = models.ForeignKey(
         Location, related_name="user_location", null=True)

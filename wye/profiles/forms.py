@@ -47,15 +47,13 @@ class SignupForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-
-    usertype = forms.ModelMultipleChoiceField(label="Usertype",
-        queryset=models.UserType.objects.exclude(slug__in=['admin', 'lead']))
+    queryset = models.UserType.objects.exclude(slug__in=['admin', 'lead'])
+    usertype = forms.ModelMultipleChoiceField(
+        label="Usertype", queryset=queryset)
 
     def __init__(self, *args, **kwargs):
-        super(UserProfileForm, self).__init__(*args, **kwargs)      
+        super(UserProfileForm, self).__init__(*args, **kwargs)
         mandatory_field(self)
-
-        
 
     class Meta:
         model = models.Profile
@@ -89,8 +87,7 @@ class ContactUsForm(forms.Form):
             raise ValidationError(error_message)
         return contact_number
 
-def mandatory_field(self):
-    for k,v in self.fields.items():
-        if (v.__dict__['required'] == True):
-            v.__dict__['label'] = str(v.__dict__['label'])+"*"
 
+def mandatory_field(self):
+    for v in filter(lambda x: x.required, self.fields.values()):
+        v.label = v.label + "*"
