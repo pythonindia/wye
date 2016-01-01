@@ -59,7 +59,7 @@ def test_signup_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
-    #intrested_location chechk
+    #intrested_location check
     url = base_url + '/profile/'+user.username+'/edit'
     browser.visit(url)
     browser.fill('mobile','1234567890')
@@ -69,7 +69,7 @@ def test_signup_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
-    #intrested location chechk
+    #intrested location check
     url = base_url + '/profile/'+user.username+'/edit'
     browser.visit(url)
     browser.fill('mobile','')
@@ -79,7 +79,7 @@ def test_signup_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
-    #location chechk
+    #location check
     url = base_url + '/profile/'+user.username+'/edit'
     browser.visit(url)
     browser.fill('mobile','')
