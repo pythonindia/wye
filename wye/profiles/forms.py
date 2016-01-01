@@ -90,4 +90,4 @@ class ContactUsForm(forms.Form):
 
 def mandatory_field(self):
     for v in filter(lambda x: x.required, self.fields.values()):
-        v.label = v.label + "*"
+        v.label = str(v.label) + "*"
