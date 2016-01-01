@@ -29,10 +29,11 @@ class UserType(models.Model):
         verbose_name = 'UserType'
         verbose_name_plural = 'UserTypes'
         ordering = ('-id',)
+        
 
     def __str__(self):
         return '{}'.format(self.display_name)
-
+    
 
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
