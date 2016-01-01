@@ -40,7 +40,7 @@ class Profile(models.Model):
     is_mobile_visible = models.BooleanField(default=False)
     is_email_visible = models.BooleanField(default=False)
     usertype = models.ManyToManyField(UserType)
-    interesteds_ections = models.ManyToManyField(WorkshopSections)
+    interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
     location = models.ForeignKey(
         Location, related_name="user_location", null=True)
