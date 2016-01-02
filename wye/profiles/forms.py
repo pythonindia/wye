@@ -32,6 +32,20 @@ class SignupForm(forms.ModelForm):
         )
     )
 
+    def clean_mobile(self):
+        mobile = self.cleaned_data['mobile']
+        error_message = []
+        if not mobile.isdigit():
+            error_message.append(
+                "Contact Number should only consist digits")
+        if not len(mobile) == 10:
+            error_message.append(
+                "Contact Number should be of 10 digits")
+
+        if error_message:
+            raise ValidationError(error_message)
+        return mobile
+
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name']
@@ -75,13 +89,12 @@ class ContactUsForm(forms.Form):
     def clean_contact_number(self):
         contact_number = self.cleaned_data['contact_number']
         error_message = []
-        if contact_number:
-            if not contact_number.isdigit():
-                error_message.append(
-                    'Contact Number should consist of only digits')
-            if not len(contact_number) in [10, 11]:
-                error_message.append(
-                    "Contact Number should be consist of either 10 or 11 digits")
+        if not contact_number.isdigit():
+            error_message.append(
+                "Contact Number should only consist digits")
+        if not len(contact_number) == 10:
+            error_message.append(
+                "Contact Number should be of 10 digits")
 
         if error_message:
             raise ValidationError(error_message)
