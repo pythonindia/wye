@@ -37,6 +37,7 @@ class SignupForm(forms.ModelForm):
             attrs={'placeholder': 'Mobile'}
         )
     )
+
     def clean_mobile(self):
         mobile = self.cleaned_data['mobile']
         error_message = []
@@ -50,6 +51,7 @@ class SignupForm(forms.ModelForm):
         if error_message:
             raise ValidationError(error_message)
         return mobile
+
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name']
