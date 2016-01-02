@@ -22,16 +22,10 @@ class SignupForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
-        try:
-            self.fields['email'].label = "E-mail*"
-            self.fields['username'].label = "Username*"
-            self.fields['password1'].label = "Password*"
-            self.fields['password2'].label = "Password (again)*"
-        except:
-            pass
+        mandatory_field(self)
 
     mobile = forms.CharField(
-        label=_("Mobile*"),
+        label=_("Mobile"),
         max_length=10,
         widget=forms.TextInput(
             attrs={'placeholder': 'Mobile'}
@@ -53,12 +47,13 @@ class SignupForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-
+    queryset = models.UserType.objects.exclude(slug__in=['admin', 'lead'])
     usertype = forms.ModelMultipleChoiceField(
-        queryset=models.UserType.objects.exclude(slug__in=['admin', 'lead']))
+        label="Usertype", queryset=queryset)
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
+        mandatory_field(self)
 
     class Meta:
         model = models.Profile
@@ -91,3 +86,8 @@ class ContactUsForm(forms.Form):
         if error_message:
             raise ValidationError(error_message)
         return contact_number
+
+
+def mandatory_field(self):
+    for v in filter(lambda x: x.required, self.fields.values()):
+        v.label = str(v.label) + "*"
