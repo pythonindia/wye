@@ -42,7 +42,7 @@ class RegionalLeadForm(forms.ModelForm):
                 lead.usertype.remove(UserType.objects.get(slug='lead'))
                 lead.save()
 
-        #Add currently selected leads
+        # Add currently selected leads
         for u in self.cleaned_data['leads']:
             u.profile.usertype.add(UserType.objects.get(slug='lead'))
         return m

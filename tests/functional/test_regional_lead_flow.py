@@ -33,7 +33,6 @@ def test_regional_lead_flow(base_url, browser, outbox):
     user2.profile.location = location1
     user2.profile.save()
 
-
     url = base_url + '/region/'
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -46,7 +45,7 @@ def test_regional_lead_flow(base_url, browser, outbox):
     browser.select('leads', user.id)
     browser.find_by_css('[type=submit]')[0].click()
 
-    regional_lead=f.create_regional_lead()
+    regional_lead = f.create_regional_lead()
     regional_lead.location = location1
     regional_lead.leads = [user.id]
     regional_lead.save()

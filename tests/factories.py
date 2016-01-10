@@ -67,7 +67,7 @@ class OrganisationFactory(Factory):
 class RegionalLeadFactory(Factory):
     class Meta:
         model = "regions.RegionalLead"
-    
+
     location = factory.SubFactory("tests.factories.LocationFactory")
 
 
