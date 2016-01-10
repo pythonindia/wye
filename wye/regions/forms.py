@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from wye.profiles.models import UserType
+from wye.profiles.models import UserType, Profile
 
 from . import models
 
@@ -28,6 +28,21 @@ class RegionalLeadForm(forms.ModelForm):
 
     def save(self, force_insert=False, force_update=False, commit=True):
         m = super(RegionalLeadForm, self).save()
+
+        # Removing old leads which are not selected currently
+        current_region = self.instance.location.id
+        lead_users = Profile.objects.filter(usertype=UserType.objects.get(slug='lead'))
+        current_region_leads = lead_users.filter(location=current_region)
+        current_leads = self.instance.leads.values()
+        current_lead_names = []
+        for lead in current_leads:
+            current_lead_names.append(lead['username'])
+        for lead in current_region_leads:
+            if lead.user.username not in current_lead_names:
+                lead.usertype.remove(UserType.objects.get(slug='lead'))
+                lead.save()
+
+        #Add currently selected leads
         for u in self.cleaned_data['leads']:
             u.profile.usertype.add(UserType.objects.get(slug='lead'))
         return m
