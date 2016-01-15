@@ -31,14 +31,12 @@ class RegionalLeadForm(forms.ModelForm):
 
         # Removing old leads which are not selected currently
         current_region = self.instance.location.id
-        lead_users = Profile.objects.filter(usertype=UserType.objects.get(slug='lead'))
-        current_region_leads = lead_users.filter(location=current_region)
-        current_leads = self.instance.leads.values()
-        current_lead_names = []
-        for lead in current_leads:
-            current_lead_names.append(lead['username'])
-        for lead in current_region_leads:
-            if lead.user.username not in current_lead_names:
+        lead_users = Profile.objects.filter(
+            usertype=UserType.objects.get(slug='lead'),
+            location=current_region)
+        current_leads = self.instance.leads.values_list('id', flat=True)
+        for lead in lead_users:
+            if lead.user_id not in current_leads:
                 lead.usertype.remove(UserType.objects.get(slug='lead'))
                 lead.save()
 
