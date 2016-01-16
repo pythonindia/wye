@@ -54,7 +54,7 @@
                                         <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
                                         {% endif %}
                                         {% if workshop|show_requested_button:user %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Publish/Request</a>
+                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold">Publish/Request</a>
                                         {% endif %}
                                         {% if workshop|show_accepted_button:user %}
                                         <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
