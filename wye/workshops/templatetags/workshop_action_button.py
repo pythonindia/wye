@@ -9,8 +9,8 @@ register = template.Library()
 def show_draft_button(workshop, user):
     if (workshop.status in [WorkshopStatus.REQUESTED,
                             WorkshopStatus.ACCEPTED,
-                            WorkshopStatus.DECLINED]
-            and user in workshop.requester.user.all()):
+                            WorkshopStatus.DECLINED] and
+            user in workshop.requester.user.all()):
         return True
     return False
 
@@ -18,8 +18,8 @@ register.filter(show_draft_button)
 
 
 def show_requested_button(workshop, user):
-    if (workshop.status == WorkshopStatus.HOLD
-            and user in workshop.requester.user.all()):
+    if (workshop.status == WorkshopStatus.HOLD and
+            user in workshop.requester.user.all()):
 
         return True
     return False
@@ -49,8 +49,8 @@ register.filter(show_feedback_button)
 
 
 def show_decline_button(workshop, user):
-    if (workshop.status == WorkshopStatus.ACCEPTED
-            and user in workshop.presenter.all()):
+    if (workshop.status == WorkshopStatus.ACCEPTED and
+            user in workshop.presenter.all()):
 
         return True
     return False
