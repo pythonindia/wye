@@ -80,7 +80,7 @@
         $(".org-delete").bind('click', function() {
             $.post($(this).attr('data-url'), {}, function(data) {
                 if (data["status"]) {
-                    window.location.reload();
+                	window.location = '/organisation/';
                 }
             });
         });

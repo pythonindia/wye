@@ -27,18 +27,19 @@ class Organisation(AuditModel):
 
     def toggle_active(self, logged_user, **kwargs):
         """
-        Helper method to toggle is_active for the model.
+        Helper method to toggle active flag for the model.
         """
 
         action_map = {'active': True, 'deactive': False}
         action = kwargs.get('action')
         # check if user is only poc for the organisation
         self.user.remove(logged_user)
-        if not self.user:
+        if not self.user.count():
             # if there are no more poc for this organisation disable it
             # else Organisation will be active
-            self.is_active = action_map.get(action)
-        self.save()
+            self.active = action_map.get(action)
+            self.save()
+
         return {
             'status': True,
             'msg': 'Organisation disabled'}

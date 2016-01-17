@@ -128,6 +128,10 @@ class OrganisationDeactive(views.CsrfExemptMixin,
     model = Organisation
     fields = ('active', 'id')
 
+    def get_object(self, queryset=None):
+        return Organisation.objects.get(user=self.request.user,
+                                        id=self.kwargs['pk'])
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         response = self.object.toggle_active(request.user, **kwargs)
