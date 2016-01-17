@@ -54,9 +54,9 @@ def test_workshop_flow(base_url, browser, outbox):
     assert accept_workshop_link
     accept_workshop_link.click()
 
-    reject_workshop_link = browser.find_by_text('Reject')[0]
-    assert reject_workshop_link
-    reject_workshop_link.click()
+#     reject_workshop_link = browser.find_by_text('Reject')[0]
+#     assert reject_workshop_link
+#     reject_workshop_link.click()
 
     user.profile.usertype.remove(tutor_type)
     user.profile.usertype.add(poc_type)
