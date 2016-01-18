@@ -23,10 +23,10 @@ class WorkshopAccessMixin(object):
         is_admin = Profile.is_admin(user)
         is_lead = (Profile.is_regional_lead(user) and
                    RegionalLead.is_regional_lead(user, workshop.location))
-        is_presenter = (Profile.is_organiser(user) and
+        is_organiser = (Profile.is_organiser(user) and
                         user in workshop.requester.user.all())
 
-        if not (is_admin or is_lead or is_presenter):
+        if not (is_admin or is_lead or is_organiser):
             raise PermissionDenied
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
 
