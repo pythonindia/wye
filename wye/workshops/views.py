@@ -1,14 +1,18 @@
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.db.models import Q
 from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
 from django.views import generic
 
 from braces import views
 from wye.profiles.models import Profile
+from wye.regions.models import RegionalLead
 from wye.social.sites.twitter import send_tweet
 
 from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
 from .mixins import WorkshopEmailMixin, WorkshopAccessMixin, \
-    WorkshopFeedBackMixin, WorkshopRestrictMixin
+    WorkshopRestrictMixin
 from .models import Workshop
 
 
@@ -16,23 +20,46 @@ class WorkshopList(views.LoginRequiredMixin, generic.ListView):
     model = Workshop
     template_name = 'workshops/workshop_list.html'
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        user_profile = Profile.objects.get(
+        user_profile, created = Profile.objects.get_or_create(
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
-            return redirect('profiles:profile_create')
+            return redirect('profiles:profile-edit', slug=request.user.username)
         return super(WorkshopList, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(
             WorkshopList, self).get_context_data(*args, **kwargs)
-        workshop_list = Workshop.objects.all()
+        workshop_list = Workshop.objects.all().order_by('-expected_date')
+        if Profile.is_organiser(self.request.user):
+            workshop_list = workshop_list.filter(
+                requester__user=self.request.user)
+        elif Profile.is_presenter(self.request.user):
+            workshop_list = workshop_list.filter(
+                Q(presenter=self.request.user) | Q
+                (requester__location__id__in=[
+                    x.id for x in
+                    self.request.user.profile.interested_locations.all()]))
+        elif Profile.is_regional_lead(self.request.user):
+            regions = RegionalLead.objects.filter(leads=self.request.user)
+            workshop_list = workshop_list.filter(
+                location__id__in=[x.location.id for x in regions])
+
         context['workshop_list'] = workshop_list
         context['user'] = self.request.user
+        # need to improve the part
+        context['is_not_tutor'] = False
+        # as user can be tutor and regional lead hence we need to verify like
+        # this
+        if (Profile.is_regional_lead(self.request.user) or
+                Profile.is_organiser(self.request.user) or
+                Profile.is_admin(self.request.user)):
+            context['is_not_tutor'] = True
         return context
 
 
-class WorkshopDetail(views.LoginRequiredMixin, generic.DetailView):
+class WorkshopDetail(generic.DetailView):
     model = Workshop
     context_object_name = "workshop"
     template_name = 'workshops/workshop_detail.html'
@@ -73,9 +100,8 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
     template_name = 'workshops/workshop_update.html'
 
     def get_success_url(self):
-        pk = self.kwargs.get(self.pk_url_kwarg, None)
-        self.success_url = reverse(
-            "workshops:workshop_update", args=[pk])
+        # pk = self.kwargs.get(self.pk_url_kwarg, None)
+        self.success_url = reverse("workshops:workshop_list")
         return super(WorkshopUpdate, self).get_success_url()
 
     def get_initial(self):
@@ -93,6 +119,7 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
                            views.JSONResponseMixin, WorkshopAccessMixin,
                            generic.UpdateView):
     model = Workshop
+    fields = ('is_active', 'id')
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -136,7 +163,7 @@ class WorkshopAction(views.CsrfExemptMixin, views.LoginRequiredMixin,
         self.send_mail_to_group(context, exclude_emails=[user.email])
 
 
-class WorkshopFeedbackView(views.LoginRequiredMixin, WorkshopFeedBackMixin,
+class WorkshopFeedbackView(views.LoginRequiredMixin,
                            generic.FormView):
     form_class = WorkshopFeedbackForm
     template_name = "workshops/workshop_feedback.html"

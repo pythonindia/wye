@@ -1,10 +1,13 @@
+import datetime
+
 from django import forms
 from django.conf import settings
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
-from wye.base.widgets import CalendarWidget
 from wye.base.constants import WorkshopRatings
+from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead
@@ -38,6 +41,13 @@ class WorkshopForm(forms.ModelForm):
             return Organisation.objects.filter(location=user.profile.location)
         else:
             return Organisation.list_user_organisations(user)
+
+    def clean_expected_date(self):
+        date = self.cleaned_data['expected_date']
+        if not (date > datetime.date.today() + datetime.timedelta(days=14)):
+            raise ValidationError('Workshop request has to future date and atleast 2 weeks ahead of today')
+        else:
+            return date
 
     class Meta:
         model = Workshop
@@ -98,5 +108,5 @@ class WorkshopFeedbackForm(forms.Form):
         self.fields["comment"] = forms.CharField(widget=forms.Textarea)
 
     def save(self, user, workshop_id):
-        data = {k.split("-")[-1]: v for k, v in self.cleaned_data.iteritems()}
+        data = {k.split("-")[-1]: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)

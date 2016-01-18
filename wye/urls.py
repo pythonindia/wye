@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 
 from wye.base.views import HomePageView
-from wye.profiles.views import UserDashboard
+from wye.profiles.views import UserDashboard, ContactFormView
 
 urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
@@ -15,6 +15,10 @@ urlpatterns = [
         name="dashboard"),
     url(r'^about/$', TemplateView.as_view(template_name='about.html',),
         name='about'),
+    url(r'^contact/$', ContactFormView.as_view(),
+        name='contact'),
+    url(r'^thankyou/$', TemplateView.as_view(template_name='contact.html'),
+        name='thankyou'),
     url(r'^workshops_info/$', TemplateView.as_view(
         template_name='workshops_info.html',),
         name='workshops_info'),

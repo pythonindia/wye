@@ -17,21 +17,32 @@ class Organisation(AuditModel):
     user = models.ManyToManyField(User, related_name='organisation_users')
     active = models.BooleanField(default=True)
 
-    @property
-    def get_organisation_type(self):
-        return OrganisationType.CHOICES[self.organisation_type][1]
-
-    @classmethod
-    def get_user_organisation(cls, user):
-        try:
-            organisation = cls.objects.get(user=user, active=True)
-        except cls.DoesNotExist:
-            organisation = None
-        return organisation
-
     @classmethod
     def list_user_organisations(cls, user):
         return cls.objects.filter(user=user, active=True)
+
+    @property
+    def get_organisation_user_list(self):
+        return self.user.all()
+
+    def toggle_active(self, logged_user, **kwargs):
+        """
+        Helper method to toggle active flag for the model.
+        """
+
+        action_map = {'active': True, 'deactive': False}
+        action = kwargs.get('action')
+        # check if user is only poc for the organisation
+        self.user.remove(logged_user)
+        if not self.user.count():
+            # if there are no more poc for this organisation disable it
+            # else Organisation will be active
+            self.active = action_map.get(action)
+            self.save()
+
+        return {
+            'status': True,
+            'msg': 'Organisation disabled'}
 
     class Meta:
         db_table = 'organisations'
@@ -39,7 +50,3 @@ class Organisation(AuditModel):
     def __str__(self):
         return '{}-{}-{}'.format(self.name,
                                  self.organisation_type, self.location)
-
-    @property
-    def get_organisation_user_list(self):
-        return self.user.all()

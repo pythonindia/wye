@@ -11,11 +11,13 @@
 		<div class="push-4-bottom">
 			<div class="row">
 				<div class="col-xs-6">
-					<h3 class="space-1q-top">My Organisations</h3>
+					<h3 class="space-1q-top">{% if is_not_tutor %}My {% endif %}Organisations</h3>
 				</div>
+				{% if is_not_tutor %}
 				<div class="col-xs-6 text-right">
-					<a href="{% url 'organisations:organisation_create' %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add<span class="hidden-xs"> Organisation</span></a>
+					<a href="{% url 'organisations:organisation_create' %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="hidden-xs">Add Organisation</span></a>
 				</div>
+				{% endif %}
 			</div>
 			<div class="row push-1">
 				<div class="col-sm-12">
@@ -33,7 +35,11 @@
 								</thead>
 								<tbody>
 									{% for org in org_created_list %}
+									{% if is_not_tutor %}
 										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+									{% else %}
+										<tr>
+									{% endif %}
 											<td>{{org.name }}</td>
 											<td>{{org.location}}</td>
 											<td>{{org.get_organisation_type_display}}</td>
@@ -67,7 +73,38 @@
 										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
 											<td>{{org.name }}</td>
 											<td>{{org.location}}</td>
-											<td>{{org.get_organisation_type}}</td>
+											<td>{{org.get_organisation_type_display}}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	{% endif %}
+	{% if regional_org_list %}
+		<section class="organisations_working_for">
+			<div class="push-4-bottom push-1-top">
+				<h3>Regional Organisations</h3>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="table-responsive">
+							<table class="table table-bordered table-clickable sub">
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Location</th>
+										<th>Type</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for org in regional_org_list %}
+										<tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+											<td>{{org.name }}</td>
+											<td>{{org.location}}</td>
+											<td>{{org.get_organisation_type_display}}</td>
 										</tr>
 									{% endfor %}
 								</tbody>

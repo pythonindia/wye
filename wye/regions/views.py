@@ -1,9 +1,11 @@
-
+import json
 from braces import views
+from django.http.response import HttpResponse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import generic
 
+from wye.profiles.models import Profile
 from . import forms, models
 
 
@@ -75,16 +77,27 @@ class RegionalLeadCreateView(views.StaffuserRequiredMixin, generic.CreateView):
     success_url = '/region/'
     template_name = 'regions/lead/create.html'
 
-    def post(self, request, *args, **kwargs):
-        form = forms.RegionalLeadForm(data=request.POST)
-        if form.is_valid():
-            form.modified_by = request.user
-            form.created_by = request.user
-            form.instance.save()
+    def get_leads(request, l_id):
+        leads = Profile.objects.filter(location=l_id)
+        lead_choices = []
+        for lead in leads:
+            lead_choices.append((lead.user.id, lead.user.username))
 
-            return HttpResponseRedirect(self.success_url)
-        else:
-            return render(request, self.template_name, {'form': form})
+        return HttpResponse(json.dumps(lead_choices))
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST' and request.is_ajax:
+                form = forms.RegionalLeadForm(data=request.POST)
+                lead_choices = request.POST.get('leads')
+                form.fields['leads'].choices = (lead_choices, lead_choices)
+
+                if form.is_valid():
+                    form.modified_by = request.user
+                    form.created_by = request.user
+                    form.save()
+                    return HttpResponseRedirect(self.success_url)
+                else:
+                    return render(request, self.template_name, {'form': form})
 
 
 class RegionalLeadUpdateView(views.StaffuserRequiredMixin, generic.UpdateView):

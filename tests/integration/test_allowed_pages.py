@@ -14,12 +14,6 @@ public_pages = [
     '/accounts/password/reset/',
 ]
 
-restricted_pages = [
-    #     '/organisation/',
-    #     '/organisation/create/',
-    #  '/workshop/',
-    # '/workshop/create/',
-]
 
 staff_pages = [
     '/region/',
@@ -43,7 +37,7 @@ def test_staff_pages(client, settings):
     normal_user = f.UserFactory(is_staff=False)
     staff_user = f.UserFactory(is_staff=True)
 
-    for page_url in restricted_pages + staff_pages:
+    for page_url in staff_pages:
         response = client.get(page_url)
         assert response.status_code == 302, 'Failed for %s' % page_url
         assert '/accounts/login?next=%s' % page_url in response['Location']
@@ -72,10 +66,11 @@ def test_staff_pages(client, settings):
             client.logout()
 
 
-'''
 def test_orgnisation_pages(client, settings):
     settings.SITE_VARIABLES['site_name'] = 'My Test Website'
     normal_user = f.UserFactory(is_staff=False)
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    normal_user.profile.usertype.add(poc_type)
     org = f.create_organisation()
     org.user.add(normal_user)
     org.save()
@@ -85,14 +80,9 @@ def test_orgnisation_pages(client, settings):
         '/organisation/create/',
         '/organisation/{}/'.format(org.id),
         '/organisation/{}/edit/'.format(org.id),
-        '/organisation/{}/deactive/'.format(org.id)
     ]
 
     for page_url in url_list:
-        response = client.get(page_url)
-        assert response.status_code == 302, 'Failed for %s' % page_url
-        assert '/accounts/login?next=%s' % page_url in response['Location']
-
         client.login(normal_user)
         response = client.get(page_url)
         assert response.status_code == 200, 'Failed for %s' % page_url
@@ -100,4 +90,31 @@ def test_orgnisation_pages(client, settings):
         assert settings.SITE_VARIABLES[
             'site_name'] in str(response.content)
         client.logout()
-'''
+
+
+def test_workshop_pages(client, settings):
+    settings.SITE_VARIABLES['site_name'] = 'My Test Website'
+    poc_user = f.UserFactory(is_staff=False)
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    poc_user.profile.usertype.add(poc_type)
+    org = f.create_organisation()
+    org.user.add(poc_user)
+    org.save()
+    workshop = f.create_workshop(requester=org)
+    workshop.presenter.add(poc_user)
+    workshop.save()
+
+    url_list = [
+        '/workshop/',
+        '/workshop/create/',
+        '/workshop/{}/'.format(workshop.id),
+    ]
+
+    for page_url in url_list:
+        client.login(poc_user)
+        response = client.get(page_url)
+        assert response.status_code == 200, 'Failed for %s' % page_url
+        assert poc_user.get_full_name() in str(response.content)
+        assert settings.SITE_VARIABLES[
+            'site_name'] in str(response.content)
+        client.logout()

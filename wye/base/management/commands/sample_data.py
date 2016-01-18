@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand
 from django.db import transaction
-
+from allauth.account.models import EmailAddress
 from datetime import date
 from faker import Faker
 
@@ -70,6 +70,9 @@ class Command(BaseCommand):
         # Sample Workshops
         self.stdout.write('  Creating Sample Workshop')
         self.create_sample_workshops(user)
+        user_email = EmailAddress.objects.create(
+                        email=user.email, user=user, verified=True)
+        user_email.save()
 
     def create_user(self, counter=None, **kwargs):
         params = {
@@ -92,7 +95,6 @@ class Command(BaseCommand):
             self.stdout.write("SuperUser created with username: {username} and password: {password}".format(
                 username=params['username'], password=password)
             )
-
         return user
 
     def create_locations(self, counter=None):

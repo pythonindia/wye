@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load workshop_action_button %}
 {% block header %}
     <div class="fill-theme push-2 text-center">
         <h1 class="no-space">Workshops</h1>
@@ -10,12 +11,13 @@
     <div class="push-4-bottom">
         <div class="row">
             <div class="col-xs-6">
-                <h3 class="space-1q-top">My Workshops</h3>
+                <h3 class="space-1q-top">{% if is_not_tutor %}My {% endif %}Workshops</h3>
             </div>
+            {% if is_not_tutor %}
             <div class="col-xs-6 text-right">
-                <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request<span class="hidden-xs"> for workshop</span></a>
-                <!-- <a href="/workshops_info" class="btn btn-default sub"><i class="fa fa-info-circle"></i>&nbsp;more info</a> -->
+                <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request for workshop</a>
             </div>
+            {% endif %}
         </div>
         <div class="row push-1">
             <div class="col-sm-12">
@@ -37,23 +39,30 @@
                             </thead>
                             <tbody>
                                 {% for workshop in workshop_list %}
+                                	{% if is_not_tutor %}
                                 	<tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
-                                        <td>{{ workshop.requester }}</td>
+                                	{% else %}
+									<tr>
+									{% endif %}
+                                        <td>{{ workshop.requester.name }}</td>
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
                                         <td>{{ workshop.get_status_display }}</td>
                                         <td>
-                                        {% if workshop.show_draft_button %}
+                                        {% if workshop|show_draft_button:user  %}
                                         <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
                                         {% endif %}
-                                        {% if workshop.show_requested_button %}
+                                        {% if workshop|show_requested_button:user %}
+                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold">Publish/Request</a>
+                                        {% endif %}
+                                        {% if workshop|show_accepted_button:user %}
                                         <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
                                         {% endif %}
-                                        {% if workshop.show_decline_button %}
+                                        {% if workshop|show_decline_button:user %}
                                         <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
                                         {% endif %}
-                                        {% if workshop.show_feedback_button %}
+                                        {% if workshop|show_feedback_button:user %}
                                         	<a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
                                         {% endif %}
                                         </td>
