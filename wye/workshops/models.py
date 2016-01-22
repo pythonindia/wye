@@ -44,15 +44,15 @@ class Workshop(TimeAuditModel):
     status = models.PositiveSmallIntegerField(
         choices=WorkshopStatus.CHOICES, verbose_name="Current Status",
         default=WorkshopStatus.REQUESTED)
-    
+ 
     class Meta:
         db_table = 'workshops'
-    
+
     @property
     def get_weekday(self):
         workshop_day = self.expected_date.weekday()
-        return '(%s)' %calendar.day_name[workshop_day]
-    
+        return calendar.day_name[workshop_day]
+
     def __str__(self):
         return '{}-{}'.format(self.requester, self.workshop_section)
 
