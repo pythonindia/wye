@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.db import models
-
+import calendar
 from wye.base.constants import (
     FeedbackType,
     WorkshopAction,
@@ -47,6 +47,11 @@ class Workshop(TimeAuditModel):
 
     class Meta:
         db_table = 'workshops'
+
+    @property
+    def get_weekday(self):
+        workshop_day = self.expected_date.weekday()
+        return calendar.day_name[workshop_day]
 
     def __str__(self):
         return '{}-{}'.format(self.requester, self.workshop_section)
