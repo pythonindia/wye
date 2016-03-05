@@ -32,6 +32,8 @@
                                     <th>Presenter</th>
                                     <th>Date</th>
                                     <th>Location</th>
+                                    <th>Section</th>
+                                    <th>Level</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                     
@@ -48,6 +50,8 @@
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
                                         <td>{{ workshop.location }}</td>
+                                        <td>{{ workshop.workshop_section.name }}</td>
+                                        <td>{{ workshop.get_workshop_level_display }}</td>
                                         <td>{{ workshop.get_status_display }}</td>
                                         <td>
                                         {% if workshop|show_draft_button:user  %}

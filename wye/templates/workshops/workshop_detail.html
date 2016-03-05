@@ -35,7 +35,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-4"><strong>Date</strong></div>
-                            <div class="col-xs-8">{{ workshop.expected_date }}</div>
+                            <div class="col-xs-8">{{ workshop.expected_date|date:'l,  M. d Y'  }}</div>
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -68,12 +68,12 @@
                             <div class="col-xs-8">{{ workshop.get_status_display }}</div>
                         </div>
                     </li>
-                    <li class="list-group-item">
+                    <!-- <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-4"><strong>Is Active</strong></div>
                             <div class="col-xs-8">{{ workshop.is_active }}</div>
                         </div>
-                    </li>
+                    </li> -->
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-4"><strong>Description</strong></div>
