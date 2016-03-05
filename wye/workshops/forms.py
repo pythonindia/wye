@@ -3,12 +3,14 @@ import datetime
 from django import forms
 from django.conf import settings
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from wye.base.constants import WorkshopRatings
 from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
+from wye.regions.models import RegionalLead
 
 from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack
 
@@ -57,14 +59,20 @@ class WorkshopForm(forms.ModelForm):
 class WorkshopEditForm(forms.ModelForm):
     requester = forms.CharField()
 
-    def __init__(self, *args, **kwargs):
-
+    def __init__(self, request, *args, **kwargs):
         super(WorkshopEditForm, self).__init__(*args, **kwargs)
         self.fields['expected_date'] = forms.DateField(
             widget=CalendarWidget,
             input_formats=settings.ALLOWED_DATE_FORMAT)
         self.fields['requester'].widget = forms.TextInput()
         self.fields['requester'].widget.attrs['readonly'] = True
+        if RegionalLead.is_regional_lead(
+                request.user, self.instance.location):
+            self.fields['presenter'].queryset = User.objects.filter(
+                profile__usertype__slug="tutor"
+            )
+        else:
+            del self.fields['presenter']
 
     def clean_requester(self):
         return self.instance.requester
@@ -72,8 +80,8 @@ class WorkshopEditForm(forms.ModelForm):
     class Meta:
         model = Workshop
         exclude = (
-            'presenter', 'created_at', 'modified_at',
-            'is_active', 'status', 'location')
+            'created_at', 'modified_at', 'is_active',
+            'status', 'location')
 
 
 class WorkshopFeedbackForm(forms.Form):

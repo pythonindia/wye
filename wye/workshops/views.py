@@ -109,6 +109,11 @@ class WorkshopUpdate(views.LoginRequiredMixin, WorkshopAccessMixin,
             "requester": self.object.requester.name,
         }
 
+    def get_form_kwargs(self):
+        kwargs = super(WorkshopUpdate, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
 
 class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
                            views.JSONResponseMixin, WorkshopAccessMixin,
