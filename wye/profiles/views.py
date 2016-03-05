@@ -23,19 +23,6 @@ def profile_view(request, slug):
     return render(request, 'profile/index.html', {'object': p})
 
 
-# class ProfileView(DetailView):
-#     model = Profile
-#     template_name = 'profile/index.html'
-#     slug_field = 'user__username'
-#
-#     def get_context_data(self, *args, **kwargs):
-#         slug = self.kwargs['slug']
-#         self.object = self.model.objects.get(user__username=slug)
-#         context = super(
-#             ProfileView, self).get_context_data(*args, **kwargs)
-#         return context
-
-
 class UserDashboard(ListView):
     model = Profile
     template_name = 'profile/dashboard.html'
