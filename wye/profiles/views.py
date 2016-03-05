@@ -1,6 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views.generic import UpdateView, DetailView
 from django.views.generic.edit import FormView
@@ -15,17 +15,25 @@ from wye.workshops.models import Workshop
 from .forms import UserProfileForm, ContactUsForm
 
 
-class ProfileView(DetailView):
-    model = Profile
-    template_name = 'profile/index.html'
-    slug_field = 'user__username'
+def profile_view(request, slug):
+    try:
+        p = Profile.objects.get(user__username=slug)
+    except Profile.DoesNotExist:
+        return render(request, 'error.html', {"message": "Profile does not exist"})
+    return render(request, 'profile/index.html', {'object': p})
 
-    def get_context_data(self, *args, **kwargs):
-        slug = self.kwargs['slug']
-        self.object = self.model.objects.get(user__username=slug)
-        context = super(
-            ProfileView, self).get_context_data(*args, **kwargs)
-        return context
+
+# class ProfileView(DetailView):
+#     model = Profile
+#     template_name = 'profile/index.html'
+#     slug_field = 'user__username'
+#
+#     def get_context_data(self, *args, **kwargs):
+#         slug = self.kwargs['slug']
+#         self.object = self.model.objects.get(user__username=slug)
+#         context = super(
+#             ProfileView, self).get_context_data(*args, **kwargs)
+#         return context
 
 
 class UserDashboard(ListView):
