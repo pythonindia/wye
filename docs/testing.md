@@ -10,7 +10,7 @@
 ## Run tests partially
 
 ```shell
-py.test tests/unit # Will only the tests inside tests/unit foler
+py.test tests/unit # Will only the tests inside tests/unit folder
 py.test tests/unit/tests/app_model.py # Will only test inside app_model.py
 ```
 
