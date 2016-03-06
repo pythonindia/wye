@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
 import os
 from os.path import join
+
 
 ADMINS = (
     ('Vijay', 'vnbang2003@gmail.com'),
@@ -40,7 +42,7 @@ SITE_VARIABLES = {
     'site_name': os.environ.get('SITE_NAME', 'PythonExpress'),
     'site_description': '',
     'footer': (
-        '&copy; 2014-2015 <a target="_blank" href="http://pssi.org.in/">'
+        '&copy; 2014-{} <a target="_blank" href="http://pssi.org.in/">'
         'Python Software Society of India</a><br>'
         '<a target="_blank" '
         'href="http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress">'
@@ -50,7 +52,8 @@ SITE_VARIABLES = {
         '<i class="fa fa-github"></i> Github</a>'
         '&nbsp;&nbsp;'
         '<a target="_blank" href="https://twitter.com/pythonexpress/">'
-        '<i class="fa fa-twitter"></i>Twitter</a>'
+        '<i class="fa fa-twitter"></i>Twitter</a>'.format(
+            datetime.datetime.today().strftime('%Y'))
     )
 }
 
