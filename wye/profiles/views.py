@@ -146,8 +146,6 @@ def contact(request):
             except Exception as e:
                 print(e)
             return HttpResponseRedirect('/thankyou')
-        else:
-            form = ContactUsForm(request.POST)
     else:
         form = ContactUsForm()
     return render(request, 'contact.html', {'form': form})
