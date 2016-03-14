@@ -1,18 +1,20 @@
+# -*- coding: utf-8 -*-
+
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 from django.template import Context, loader
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from wye.base.constants import WorkshopStatus
-from wye.base.emailer_html import send_email_to_list, send_email_to_id
+from wye.base.emailer_html import send_email_to_id, send_email_to_list
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.workshops.models import Workshop
 
-from .forms import UserProfileForm, ContactUsForm
+from .forms import ContactUsForm, UserProfileForm
 
 
 def profile_view(request, slug):
