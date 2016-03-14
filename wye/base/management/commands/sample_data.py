@@ -71,7 +71,7 @@ class Command(BaseCommand):
         self.stdout.write('  Creating Sample Workshop')
         self.create_sample_workshops(user)
         user_email = EmailAddress.objects.create(
-                        email=user.email, user=user, verified=True)
+            email=user.email, user=user, verified=True)
         user_email.save()
 
     def create_user(self, counter=None, **kwargs):

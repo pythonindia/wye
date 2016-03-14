@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views.generic import UpdateView
-from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 
 from wye.base.constants import WorkshopStatus
