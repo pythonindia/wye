@@ -13,15 +13,23 @@ def workshop_reminder():
     for workshop in workshops:
         if workshop.is_active:
             presenter_email = list()
+            requester_email = list()
+
+            # getting all requesters email
+            requesters = workshop.requester.user.all()
+            for requester in requesters:
+                requester_email.append(requester.email)
+
             # getting all presenters email
             presenters = workshop.presenter.all()
             for presenter in presenters:
                 presenter_email.append(presenter.email)
 
+            recipents = presenter_email + requester_email
             # modify message according to need
             message = "Hi, you have workshop scheduled for {workshop_date}."
             email = EmailMessage("[Workshop] Gentle Reminder",
                                  message,
                                  os.environ.get('EMAIL_HOST_USER', ''),
-                                 presenter_email)
+                                 recipents)
             email.send()
