@@ -11,16 +11,17 @@ def workshop_reminder():
     workshop_date = datetime.date.today() + datetime.timedelta(days=7)
     workshops = Workshop.objects.filter(expected_date=workshop_date)
     for workshop in workshops:
-        presenter_email = list()
-        # getting all presenters email
-        presenters = workshop.presenter.all()
-        for presenter in presenters:
-            presenter_email.append(presenter.email)
+        if workshop.is_active:
+            presenter_email = list()
+            # getting all presenters email
+            presenters = workshop.presenter.all()
+            for presenter in presenters:
+                presenter_email.append(presenter.email)
 
-        # modify message according to need
-        message = "Hi, you have workshop scheduled for {workshop_date}."
-        email = EmailMessage("[Workshop] Gentle Reminder",
-                             message,
-                             os.environ.get('EMAIL_HOST_USER', ''),
-                             presenter_email)
-        email.send()
+            # modify message according to need
+            message = "Hi, you have workshop scheduled for {workshop_date}."
+            email = EmailMessage("[Workshop] Gentle Reminder",
+                                 message,
+                                 os.environ.get('EMAIL_HOST_USER', ''),
+                                 presenter_email)
+            email.send()
