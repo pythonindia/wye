@@ -63,7 +63,10 @@
                                         {% if workshop|show_accepted_button:user %}
                                         <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
                                         {% endif %}
-                                        {% if workshop|show_decline_button:user %}
+					{% if workshop|show_decline_button:user %}
+					<a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
+                                        {% endif %}
+					{% if workshop|show_reject_button:user %}
                                         <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
                                         {% endif %}
                                         {% if workshop|show_feedback_button:user %}
@@ -106,6 +109,13 @@
             });                                         
         });
         $(".ws-hold").bind('click', function() {
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });
+        });
+	$(".ws-decline").bind('click', function() {
             $.post($(this).attr('data-url'), {}, function(data) {
                 if (data["status"]) {
                     window.location.reload();
