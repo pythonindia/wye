@@ -78,6 +78,12 @@ def test_workshop_flow(base_url, browser, outbox):
     hold_workshop_link = browser.find_by_text('Hold')[0]
     assert hold_workshop_link
 
+#   checking declined state
+    decline_workshop_link = browser.find_by_text('Decline')[0]
+    decline_workshop_link.click()
+    workshop.status = WorkshopStatus.REQUESTED
+    workshop.save()
+
     workshop.expected_date = datetime.now() + timedelta(days=-20)
     workshop.save()
 

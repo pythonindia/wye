@@ -61,6 +61,7 @@ class Workshop(TimeAuditModel):
         actions = {
             'accept': ("opt-in", self.assign_me),
             'reject': ("opt-out", self.assign_me),
+            'decline': (WorkshopStatus.DECLINED, self.set_status),
             'publish': (WorkshopStatus.REQUESTED, self.set_status),
             'hold': (WorkshopStatus.HOLD, self.set_status),
             'assign': ""
@@ -133,7 +134,7 @@ class Workshop(TimeAuditModel):
         if self.presenter.count() > 0:
             self.status = WorkshopStatus.ACCEPTED
         else:
-            self.status = WorkshopStatus.DECLINED
+            self.status = WorkshopStatus.REQUESTED
         self.save()
 
         return {
