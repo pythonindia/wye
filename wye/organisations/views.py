@@ -144,7 +144,7 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
         """
         uuid_str = str(uuid.uuid4())
         username = email.split("@")[0]
-        uuid_str = uuid_str[:30-len(username)]
+        uuid_str = uuid_str[:30 - len(username)]
         return username + uuid_str
 
     def get_token(self, user, **kwargs):
@@ -172,7 +172,7 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
                                         request.user.last_name),
                 'org_name': org.name,
                 'host': host
-                }
+            }
 
             if existing_user:
                 # add user to organisation
@@ -187,7 +187,7 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
 
                 # send mail to user being added
                 subject = "You are added in %s organisation" % (
-                                org.location.name)
+                    org.location.name)
                 email_body = loader.get_template(
                     'email_messages/organisation/to_new_member_existing.html').render(
                         email_context)
@@ -227,7 +227,7 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
 
                 # set the meta
                 subject = "[Python Express]:You are added in %s organisation" % (
-                                org.location.name)
+                    org.location.name)
                 email_body = loader.get_template(
                     'email_messages/organisation/to_new_member.html').render(email_context)
                 text_body = loader.get_template(
@@ -286,10 +286,10 @@ def activate_view(request, user_id, token):
     try:
         user = User.objects.get(id=user_id, is_active=False)
     except(User.DoesNotExist):
-        raise Http404(_("Your URL may have expired."))
+        raise Http404("Your URL may have expired.")
 
     if not PasswordResetTokenGenerator().check_token(user, token):
-        raise Http404(_("Your URL may have expired."))
+        raise Http404("Your URL may have expired.")
 
     form = UserRegistrationForm(data=request.POST or None, instance=user)
     if form.is_valid():
