@@ -64,6 +64,13 @@ class OrganisationFactory(Factory):
     location = factory.SubFactory("tests.factories.LocationFactory")
 
 
+class RegionalLeadFactory(Factory):
+    class Meta:
+        model = "regions.RegionalLead"
+
+    location = factory.SubFactory("tests.factories.LocationFactory")
+
+
 class WorkshopSectionFactory(Factory):
 
     class Meta:
@@ -105,6 +112,10 @@ def create_user(**kwargs):
 
 def create_organisation(**kwargs):
     return OrganisationFactory.create(**kwargs)
+
+
+def create_regional_lead(**kwargs):
+    return RegionalLeadFactory.create(**kwargs)
 
 
 def create_workshop(**kwargs):

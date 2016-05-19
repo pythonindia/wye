@@ -22,7 +22,7 @@ def test_signup_flow(base_url, browser, outbox):
 
     browser.fill('first_name', 'random')
     browser.fill('last_name', 'person')
-    browser.fill('mobile', '0812739812')
+    browser.fill('mobile', '0812739120')
     browser.fill('username', 'randomnessprevails')
     browser.fill('email', 'random@a.com')
     browser.fill('password1', 'secretpassword')

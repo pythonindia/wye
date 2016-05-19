@@ -9,7 +9,6 @@ class WorkshopAdmin(admin.ModelAdmin):
         'location',
         'workshop_section',
         'no_of_participants')
-    fields = ('is_active', 'status')
     search_fields = (
         'expected_date',
         'workshop_level',

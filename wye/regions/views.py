@@ -77,13 +77,11 @@ class RegionalLeadCreateView(views.StaffuserRequiredMixin, generic.CreateView):
     success_url = '/region/'
     template_name = 'regions/lead/create.html'
 
-    def get_leads(request, l_id):
-        leads = Profile.objects.filter(location=l_id)
-        lead_choices = []
-        for lead in leads:
-            lead_choices.append((lead.user.id, lead.user.username))
-
-        return HttpResponse(json.dumps(lead_choices))
+    def get_leads(self, request, l_id):
+        lead_choices = Profile.objects.filter(
+            location=l_id
+        ).values_list('user__id', 'user__username')
+        return HttpResponse(json.dumps(list(lead_choices)))
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.is_ajax:

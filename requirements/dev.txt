@@ -18,3 +18,9 @@ fancycompleter==0.4
 
 coverage==4.*
 flake8==2.4.*
+
+# Celery
+# --------------------------------------------------
+celery==3.1.23
+django-celery==3.1.17
+redis==2.10.5

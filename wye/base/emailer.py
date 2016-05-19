@@ -4,6 +4,11 @@ from django.core import mail
 from django.template.loader import render_to_string
 
 
+def to_str(context, template_file, template_dir=None):
+    return render_to_string(
+        os.path.join(template_dir, template_file), context).strip()
+
+
 def send_mail(to, context, template_dir=None):
     """
     Utility to send mail.
@@ -14,12 +19,12 @@ def send_mail(to, context, template_dir=None):
         email exists. such as subject.txt, message.txt etc.
     """
 
-    to_str = lambda x: render_to_string(os.path.join(template_dir, x),
-                                        context).strip()
-    subject = to_str('subject.txt')
+#     to_str = lambda x: render_to_string(
+#         os.path.join(template_dir, x), context).strip()
+    subject = to_str(context, 'subject.txt', template_dir)
     from_email = settings.DEFAULT_FROM_EMAIL
-    text_message = to_str('message.txt')
-    html_message = to_str('message.html')
+    text_message = to_str(context, 'message.txt', template_dir)
+    html_message = to_str(context, 'message.html', template_dir)
     recipient_list = to
     return mail.send_mail(subject, text_message, from_email,
                           recipient_list, html_message=html_message)

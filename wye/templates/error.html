@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Error | {{ block.super }}{% endblock %}
+
+{% block header %}
+    <!-- <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Error mes</h1>
+    </div> -->
+{% endblock %}
+
+{% block content %}
+    <div class="push-6-bottom">
+        <p> {{message}}</p>
+        
+    </div>
+{% endblock %}

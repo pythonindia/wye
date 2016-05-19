@@ -1,7 +1,7 @@
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 [![Build Status](https://travis-ci.org/pythonindia/wye.svg)](https://travis-ci.org/pythonindia/wye) [![Coverage Status](https://coveralls.io/repos/pythonindia/wye/badge.svg?branch=master&service=github)](https://coveralls.io/github/pythonindia/wye?branch=master)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/wye_chat_room?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/pythonindia/wye_chat?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pythonindia/wye/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pythonindia/wye/?branch=master)
 [![Code Health](https://landscape.io/github/pythonindia/wye/master/landscape.svg?style=flat)](https://landscape.io/github/pythonindia/wye/master)
 
@@ -34,7 +34,7 @@ It's highly encouraged that you write test for any new feature/bug fixes. Find a
 py.test
 ```
 
-You can invoke `py.test` with various commandline arguements, that can drastily improve your test writing/running experience. Read useful tip/tricks at [docs/testing.md].
+You can invoke `py.test` with various command line arguments, that can drastically improve your test writing/running experience. Read useful tip/tricks at [docs/testing.md].
 
 #### Login Details
 
