@@ -176,8 +176,8 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
 
             if existing_user:
                 # add user to organisation
-                user = User.objects.get(username=existing_user)
-                org.user.add(user.id)
+                user = User.objects.get(id=existing_user)
+                org.user.add(user)
                 org.save()
 
                 # set email user's name in context
