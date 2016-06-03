@@ -31,9 +31,7 @@ class OrganisationMemberAddForm(forms.ModelForm):
                    'location', 'organisation_role',
                    'active', 'created_by', 'modified_by')
 
-    users = User.objects.values_list('id', 'username')
-    user_choices = [('', '----------')] + [(id, username) for (id, username) in users]
-    existing_user = forms.ChoiceField(user_choices, required=False)
+    existing_user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
     new_user = forms.EmailField(label='Invite New User', required=False)
 
 

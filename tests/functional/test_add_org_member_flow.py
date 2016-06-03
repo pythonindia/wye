@@ -135,72 +135,72 @@ def test_add_new_member_flow(base_url, browser, outbox):
     assert 'Home | PythonExpress' in browser.title
 
 
-# def test_add_existing_member_flow(base_url, browser, outbox):
-#     # -------------------------------------- creating new user ------------------------------------
-#     user = f.create_user()
-#     user.set_password('123123')
-#     user.save()
-#     url = base_url + '/accounts/login/'
-#     browser.visit(url)
-#     browser.fill('login', user.email)
-#     browser.fill('password', '123123')
-#     browser.find_by_css('[type=submit]')[0].click()
-#     assert len(outbox) == 1
-#     mail = outbox[0]
-#     confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
-#     assert confirm_link
-#     browser.visit(confirm_link[0])
-#     assert browser.title, "Confirm E-mail Address"
-#     browser.find_by_css('[type=submit]')[0].click()
-#
-#     # -------------------------------------- add user type ----------------------------------------
-#     poc_type = f.create_usertype(slug='poc', display_name='poc')
-#     user.profile.usertype.add(poc_type)
-#     user.save()
-#
-#     # location
-#     location1 = f.create_locaiton(name='location1')
-#
-#     # -------------------------------------- creating organisation --------------------------------
-#     url = base_url + '/organisation/'
-#     browser.fill('login', user.email)
-#     browser.fill('password', '123123')
-#     browser.find_by_css('[type=submit]')[0].click()
-#     browser.visit(url)
-#     org_create_link = browser.find_by_text('Add Organisation')[0]
-#     assert org_create_link
-#     org_create_link.click()
-#     browser.select('organisation_type', 1)
-#     browser.fill('name', 'Org1')
-#     browser.fill('description', 'Description')
-#     browser.select('location', location1.id)
-#     browser.fill('organisation_role', 'Role1')
-#     browser.find_by_css('[type=submit]')[0].click()
-#
-#     org = f.create_organisation(location=location1)
-#     org.user.add(user)
-#     org.save()
-#
-#     # -------------------------------------- Adding member ----------------------------------------
-#
-#     # create user
-#     user2 = f.create_user()
-#     user2.set_password('123123')
-#     user2.save()
-#     user2.profile.usertype.add(poc_type)
-#     user2.save()
-#
-#     # add to org
-#     browser.find_by_text('Org1')[0].click()
-#     browser.find_by_text('Add Users')[0].click()
-#     browser.select_by_text('existing_user', user.username)
-#     browser.find_by_css('[type=submit]')[0].click()
-#     org.user.add(user)
-#     org.save()
-#
-#     # check user was added
-#     browser.find_by_text('Org1')[0].click()
-#     user_list = browser.find_by_css('.list-silent')
-#     assert 'user@example.com' in user_list[0].text
-#
-#     assert 'Home | PythonExpress' in browser.title
+def test_add_existing_member_flow(base_url, browser, outbox):
+    # -------------------------------------- creating new user ------------------------------------
+    user = f.create_user()
+    user.set_password('123123')
+    user.save()
+    url = base_url + '/accounts/login/'
+    browser.visit(url)
+    browser.fill('login', user.email)
+    browser.fill('password', '123123')
+    browser.find_by_css('[type=submit]')[0].click()
+    assert len(outbox) == 1
+    mail = outbox[0]
+    confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
+    assert confirm_link
+    browser.visit(confirm_link[0])
+    assert browser.title, "Confirm E-mail Address"
+    browser.find_by_css('[type=submit]')[0].click()
+
+    # -------------------------------------- add user type ----------------------------------------
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    user.profile.usertype.add(poc_type)
+    user.save()
+
+    # location
+    location1 = f.create_locaiton(name='location1')
+
+    # -------------------------------------- creating organisation --------------------------------
+    url = base_url + '/organisation/'
+    browser.fill('login', user.email)
+    browser.fill('password', '123123')
+    browser.find_by_css('[type=submit]')[0].click()
+    browser.visit(url)
+    org_create_link = browser.find_by_text('Add Organisation')[0]
+    assert org_create_link
+    org_create_link.click()
+    browser.select('organisation_type', 1)
+    browser.fill('name', 'Org1')
+    browser.fill('description', 'Description')
+    browser.select('location', location1.id)
+    browser.fill('organisation_role', 'Role1')
+    browser.find_by_css('[type=submit]')[0].click()
+
+    org = f.create_organisation(location=location1)
+    org.user.add(user)
+    org.save()
+
+    # -------------------------------------- Adding member ----------------------------------------
+
+    # create user
+    user2 = f.create_user(is_active=True)
+    user2.set_password('123123')
+    user2.save()
+    user2.profile.usertype.add(poc_type)
+    user2.save()
+
+    # add to org
+    browser.find_by_text('Org1')[0].click()
+    browser.find_by_text('Add Users')[0].click()
+    browser.select_by_text('existing_user', user2.username)
+    browser.find_by_css('[type=submit]')[0].click()
+    org.user.add(user2)
+    org.save()
+
+    # check user was added
+    browser.find_by_text('Org1')[0].click()
+    user_list = browser.find_by_css('.list-silent')
+    assert user2.email in user_list[0].text
+
+    assert 'Organisation | PythonExpress' in browser.title
