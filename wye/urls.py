@@ -7,6 +7,7 @@ from django.views.generic.base import TemplateView
 
 from wye.base.views import HomePageView
 from wye.profiles.views import UserDashboard, contact
+from wye.organisations.views import activate_view
 
 urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
@@ -32,6 +33,8 @@ urlpatterns = [
         include('wye.profiles.urls', namespace="profiles")),
     url(r'^region/',
         include('wye.regions.urls', namespace="regions")),
+    url(r'^invitation/(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
+        view=activate_view, name="invitation_register"),
     url(r'^$', HomePageView.as_view(),
         name='home-page'),
 ] + static(

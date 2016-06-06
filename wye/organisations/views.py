@@ -1,16 +1,25 @@
+import uuid
+
 from django.conf import settings
+from django.conf.urls import patterns, url
 from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.http import Http404
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views import generic
 
+
 from braces import views
 from wye.base.emailer_html import send_email_to_id, send_email_to_list
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead
-from .forms import OrganisationForm
-from .models import Organisation
+from .forms import (
+    OrganisationForm, OrganisationMemberAddForm,
+    UserRegistrationForm
+)
+from .models import Organisation, User
 
 
 class OrganisationList(views.LoginRequiredMixin, generic.ListView):
@@ -119,6 +128,181 @@ class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self, queryset=None):
         return Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])
+
+
+class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
+    model = Organisation
+    form_class = OrganisationMemberAddForm
+    template_name = 'organisation/member-add.html'
+    success_url = reverse_lazy('organisations:organisation_list')
+
+    def get_username(self, email):
+        """
+        Returns a UUID-based 'random' and unique username.
+
+        This is required data for user models with a username field.
+        """
+        uuid_str = str(uuid.uuid4())
+        username = email.split("@")[0]
+        uuid_str = uuid_str[:30 - len(username)]
+        return username + uuid_str
+
+    def get_token(self, user, **kwargs):
+        """Returns a unique token for the given user"""
+        return PasswordResetTokenGenerator().make_token(user)
+
+    def get_urls(self):
+        return patterns('',
+                        url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
+                            view=self.activate_view, name="invitation_register")
+                        )
+
+    def post(self, request, *args, **kwargs):
+        form = OrganisationMemberAddForm(data=request.POST)
+        if form.is_valid():
+            existing_user = form.cleaned_data['existing_user']
+            new_user = form.cleaned_data['new_user']
+
+            org = Organisation.objects.get(id=self.kwargs['pk'])
+            host = '{}://{}'.format(settings.SITE_PROTOCOL,
+                                    request.META['HTTP_HOST'])
+
+            context = {
+                'full_name': '%s %s' % (request.user.first_name,
+                                        request.user.last_name),
+                'org_name': org.name,
+                'host': host
+            }
+
+            if existing_user:
+                # add user to organisation
+                user = existing_user
+                org.user.add(user)
+                org.save()
+
+                # set email user's name in context
+                context['new_member_name'] = '%s %s' % (user.first_name,
+                                                        user.last_name)
+                email_context = Context(context)
+
+                # send mail to user being added
+                subject = "You are added in %s organisation" % (
+                    org.location.name)
+                email_body = loader.get_template(
+                    'email_messages/organisation/to_new_member_existing.html').render(
+                        email_context)
+                text_body = loader.get_template(
+                    'email_messages/organisation/to_new_member_existing.txt').render(email_context)
+
+                send_email_to_id(subject,
+                                 body=email_body,
+                                 email_id=user.email,
+                                 text_body=text_body)
+
+            elif new_user:
+                # generate a random password
+                random_password = User.objects.make_random_password()
+
+                # create a user with the email from form
+                user = User(username=self.get_username(new_user),
+                            email=new_user,
+                            password=random_password)
+
+                # user is inactive initialy
+                user.is_active = False
+                user.save()
+
+                # add the user to organisation
+                org.user.add(user.id)
+                org.save()
+
+                # set the email context, the token will be used to generate a unique varification
+                # link
+                token = self.get_token(user)
+
+                context['new_member_name'] = '%s' % (user.email)
+                context['token'] = token
+                context['user'] = user
+                email_context = Context(context)
+
+                # set the meta
+                subject = "[Python Express]:You are added in %s organisation" % (
+                    org.location.name)
+                email_body = loader.get_template(
+                    'email_messages/organisation/to_new_member.html').render(email_context)
+                text_body = loader.get_template(
+                    'email_messages/organisation/to_new_member.txt').render(email_context)
+
+                # send the mail to new user
+                send_email_to_id(subject,
+                                 body=email_body,
+                                 email_id=new_user,
+                                 text_body=text_body)
+
+            # These mails will be sent in both cases.
+            subject = "user %s %s added in %s organisation" % (
+                user.first_name, user.last_name, org.location.name)
+            email_body = loader.get_template(
+                'email_messages/organisation/member_addition_to_user.html').render(
+                    email_context)
+            text_body = loader.get_template(
+                'email_messages/organisation/member_addition_to_user.txt').render(
+                    email_context)
+
+            # send mail to the user who added the new member
+            send_email_to_id(subject,
+                             body=email_body,
+                             email_id=request.user.email,
+                             text_body=text_body)
+
+            regional_lead = Profile.objects.filter(
+                interested_locations=org.location,
+                usertype__slug='lead').values_list('user__email', flat=True)
+
+            email_body = loader.get_template(
+                'email_messages/organisation/member_addition_to_lead.html').render(
+                    email_context)
+            text_body = loader.get_template(
+                'email_messages/organisation/member_addition_to_lead.txt').render(
+                    email_context)
+
+            # send mail to the regional leads
+            send_email_to_list(subject,
+                               body=email_body,
+                               users_list=regional_lead,
+                               text_body=text_body)
+
+            return HttpResponseRedirect(self.success_url)
+
+        else:
+            return render(request, self.template_name, {'form': form})
+
+
+def activate_view(request, user_id, token):
+    """
+    View function that activates the given User by setting `is_active` to
+    true if the provided information is verified.
+    """
+    try:
+        user = User.objects.get(id=user_id, is_active=False)
+    except(User.DoesNotExist):
+        raise Http404("Your URL may have expired.")
+
+    if not PasswordResetTokenGenerator().check_token(user, token):
+        raise Http404("Your URL may have expired.")
+
+    form = UserRegistrationForm(data=request.POST or None, instance=user)
+    if form.is_valid():
+        user.is_active = True
+        user.username = form.cleaned_data['username']
+        user.first_name = form.cleaned_data['first_name']
+        user.last_name = form.cleaned_data['last_name']
+        user.set_password(form.cleaned_data['password'])
+        user.save()
+        return redirect(reverse_lazy('organisations:organisation_list'))
+    else:
+        return render(request, 'organisation/register_form.html',
+                      {'form': form})
 
 
 class OrganisationDeactive(views.CsrfExemptMixin,

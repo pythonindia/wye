@@ -61,7 +61,8 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
-                            </div>
+                            </div><br>
+                            <a href="{% url 'organisations:organisation_member_add' organisation.pk  %}" class="btn btn-success"><i class="fa fa-cog"></i>Add Users</a>
                         </li>
                     </ul>
                 </div>
