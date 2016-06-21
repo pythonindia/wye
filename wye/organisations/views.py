@@ -127,7 +127,11 @@ class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy('organisations:organisation_list')
 
     def get_object(self, queryset=None):
-        return Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])
+        org = Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])
+        if org.created_by == self.request.user:
+            return Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])
+        else:
+            self.template_name = "403.html"
 
 
 class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
