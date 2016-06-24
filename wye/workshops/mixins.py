@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
 
 from wye.base.constants import WorkshopStatus, FeedbackType
 from wye.base.emailer import send_mail
@@ -75,7 +76,12 @@ class WorkshopRestrictMixin(object):
                 Profile.is_admin(self.user)):
             pass  # don't restrict lead and admin
         else:
-            raise PermissionDenied
+            msg = """
+                    To request workshop you need to create organisaiton.\n\n 
+                    Please use organisation tab above to create your organisation"""
+
+            # return json for ajax request
+            return render(request, 'error.html', {'message': msg})
 
         if self.feedback_required:
             return self.return_response(request)
