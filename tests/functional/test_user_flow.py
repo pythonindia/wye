@@ -55,14 +55,14 @@ def test_signup_flow(base_url, browser, outbox):
 
     assert browser.is_text_present("Edit Profile")
 
-    poc_type = f.create_usertype(slug='dummy', display_name='College POC')
+    # poc_type = f.create_usertype(slug='dummy', display_name='College POC')
     section1 = f.create_workshop_section(name='section1')
     location1 = f.create_locaiton(name='location1')
 
     url = base_url + '/profile/randomnessprevails/edit'
     browser.visit(url)
 
-    browser.select('usertype', poc_type.id)
+    # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.select('interested_locations', location1.id)
     browser.select('location', location1.id)

@@ -120,7 +120,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.visit(url)
 
     browser.fill('mobile', '0812739120')
-    browser.select('usertype', poc_type.id)
+    # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.select('interested_locations', location1.id)
     browser.select('location', location2.id)

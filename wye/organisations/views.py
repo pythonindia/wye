@@ -2,19 +2,19 @@ import uuid
 
 from django.conf import settings
 from django.conf.urls import patterns, url
-from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views import generic
 
-
 from braces import views
+from django.http.response import HttpResponseRedirect
 from wye.base.emailer_html import send_email_to_id, send_email_to_list
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead
+
 from .forms import (
     OrganisationForm, OrganisationMemberAddForm,
     UserRegistrationForm
@@ -29,8 +29,8 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
     def dispatch(self, request, *args, **kwargs):
         user_profile, created = Profile.objects.get_or_create(
             user__id=self.request.user.id)
-        if not user_profile.get_user_type:
-            return redirect('profiles:profile-edit', slug=request.user.username)
+        # if not user_profile.get_user_type:
+        #     return redirect('profiles:profile-edit', slug=request.user.username)
         return super(OrganisationList, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
