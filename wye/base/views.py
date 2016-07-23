@@ -29,8 +29,9 @@ def verify_user_profile(f):
     '''
     def wrap(request, *args, **kwargs):
         user_profile, created = Profile.objects.get_or_create(
-        user__id=request.user.id)
-        if  not user_profile.is_profile_filled:
-            return HttpResponseRedirect('/profile/{}/edit'.format(request.user.username))
+            user__id=request.user.id)
+        if not user_profile.is_profile_filled:
+            return HttpResponseRedirect(
+                '/profile/{}/edit'.format(request.user.username))
         return f(request, *args, **kwargs)
     return wrap
