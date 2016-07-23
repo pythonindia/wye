@@ -28,6 +28,8 @@ def test_workshop_flow(base_url, browser, outbox):
     org = f.create_organisation()
     org.user.add(user)
     user.profile.interested_locations.add(org.location)
+    user.profile.location = org.location
+    user.profile.save()
     org.save()
 
     workshop = f.create_workshop(requester=org)
@@ -60,6 +62,7 @@ def test_workshop_flow(base_url, browser, outbox):
 
     user.profile.usertype.remove(tutor_type)
     user.profile.usertype.add(poc_type)
+    user.profile.save()
     user.save()
 
 #   checking to move requested workshop in hold state

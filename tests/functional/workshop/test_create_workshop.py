@@ -14,6 +14,9 @@ def test_workshop_create(base_url, browser, outbox):
     url = base_url + '/workshop/'
     base.login_and_confirm(browser, url, outbox, user, password)
     user.save()
+    location = f.create_locaiton(name='location1')
+    user.profile.location = location
+    user.profile.save()
 
     url = base_url + '/workshop/'
     base.login(browser, url, user, password)
@@ -23,9 +26,11 @@ def test_workshop_create(base_url, browser, outbox):
     browser.visit(url)
     assert browser.is_text_present("create organisaiton.")
     # Create org
-    org = f.create_organisation()
+    org = f.create_organisation(location=location)
     org.user.add(user)
     user.profile.interested_locations.add(org.location)
+#     user.profile.location = org.location
+#     user.profile.save()
     org.save()
     section1 = f.create_workshop_section(name='section1')
 

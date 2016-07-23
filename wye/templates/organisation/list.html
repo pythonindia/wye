@@ -11,13 +11,13 @@
 		<div class="push-4-bottom">
 			<div class="row">
 				<div class="col-xs-6">
-					<h3 class="space-1q-top">{% if is_not_tutor %}My {% endif %}Organisations</h3>
+					<h3 class="space-1q-top">My Organisations</h3>
 				</div>
-				{% if is_not_tutor %}
+				
 				<div class="col-xs-6 text-right">
 					<a href="{% url 'organisations:organisation_create' %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-plus"></i>&nbsp;&nbsp;<span class="hidden-xs">Add Organisation</span></a>
 				</div>
-				{% endif %}
+				
 			</div>
 			<div class="row push-1">
 				<div class="col-sm-12">

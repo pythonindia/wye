@@ -19,14 +19,17 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.visit(confirm_link[0])
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
-
+    location1 = f.create_locaiton(name='location1')
+    
     # -------------------------------------- add user type ----------------------------------------
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user.profile.usertype.add(poc_type)
+    user.profile.location = location1
+    user.profile.save()
     user.save()
 
     # location
-    location1 = f.create_locaiton(name='location1')
+#     location1 = f.create_locaiton(name='location1')
 
     # -------------------------------------- creating organisation --------------------------------
     url = base_url + '/organisation/'
@@ -152,14 +155,16 @@ def test_add_existing_member_flow(base_url, browser, outbox):
     browser.visit(confirm_link[0])
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
-
+    location1 = f.create_locaiton(name='location1')
     # -------------------------------------- add user type ----------------------------------------
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user.profile.usertype.add(poc_type)
+    user.profile.location = location1
+    user.profile.save()
     user.save()
 
     # location
-    location1 = f.create_locaiton(name='location1')
+#     location1 = f.create_locaiton(name='location1')
 
     # -------------------------------------- creating organisation --------------------------------
     url = base_url + '/organisation/'

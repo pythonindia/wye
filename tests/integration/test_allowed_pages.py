@@ -74,6 +74,8 @@ def test_orgnisation_pages(client, settings):
     org = f.create_organisation()
     org.user.add(normal_user)
     org.save()
+    normal_user.profile.location = org.location
+    normal_user.profile.save()
 
     url_list = [
         '/organisation/',
@@ -97,9 +99,12 @@ def test_workshop_pages(client, settings):
     poc_user = f.UserFactory(is_staff=False)
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     poc_user.profile.usertype.add(poc_type)
+    
     org = f.create_organisation()
     org.user.add(poc_user)
     org.save()
+    poc_user.profile.location = org.location
+    poc_user.profile.save()
     workshop = f.create_workshop(requester=org)
     workshop.presenter.add(poc_user)
     workshop.save()

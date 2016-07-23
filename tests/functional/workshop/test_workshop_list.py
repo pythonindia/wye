@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 
 import base
+from tests import factories as f
 from wye.base.constants import WorkshopStatus
 from wye.regions.models import RegionalLead
-from tests import factories as f
+
 
 outbox_len = 0
 password = '123123'
@@ -34,6 +35,8 @@ def test_workshop_list(base_url, browser, outbox):
     org = f.create_organisation()
     org.user.add(user)
     user.profile.interested_locations.add(org.location)
+    user.profile.location = org.location
+    user.profile.save()
     org.save()
 
     # Create workshop
