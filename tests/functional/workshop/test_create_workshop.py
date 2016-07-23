@@ -1,11 +1,9 @@
-from datetime import datetime, timedelta
-
 import base
 from tests import factories as f
 
-
 outbox_len = 0
 password = '123123'
+
 
 def test_workshop_create(base_url, browser, outbox):
     """
@@ -44,4 +42,3 @@ def test_workshop_create(base_url, browser, outbox):
     # valid form
     url = base_url + '/workshop/create/'
     base.workshop_create(browser, url, org, section1)
-

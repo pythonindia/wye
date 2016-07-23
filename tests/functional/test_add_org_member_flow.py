@@ -3,7 +3,7 @@ from .. import factories as f
 
 
 def test_add_new_member_flow(base_url, browser, outbox):
-    # -------------------------------------- creating new user ------------------------------------
+    # ----------------- creating new user ------------------------
     user = f.create_user()
     user.set_password('123123')
     user.save()
@@ -20,18 +20,15 @@ def test_add_new_member_flow(base_url, browser, outbox):
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
     location1 = f.create_locaiton(name='location1')
-    
-    # -------------------------------------- add user type ----------------------------------------
+
+    # ----------------------add user type -------------------
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user.profile.usertype.add(poc_type)
     user.profile.location = location1
     user.profile.save()
     user.save()
 
-    # location
-#     location1 = f.create_locaiton(name='location1')
-
-    # -------------------------------------- creating organisation --------------------------------
+    # -----------------------creating organisation ---------------------
     url = base_url + '/organisation/'
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -51,7 +48,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
     org.user.add(user)
     org.save()
 
-    # -------------------------------------- Adding member ----------------------------------------
+    # -------------------Adding member ------------------------
     # existing user
     browser.find_by_text('Org1')[0].click()
 
@@ -68,7 +65,8 @@ def test_add_new_member_flow(base_url, browser, outbox):
     invite_link = re.findall(r'http.*/invitation/.*/', mail.body)
     assert invite_link
     browser.visit(invite_link[0])
-    assert 'Signup' in browser.title  # asserting if it's the signup page or not
+    # asserting if it's the signup page or not
+    assert 'Signup' in browser.title
 
     # fill sign up form
     browser.fill('first_name', 'random')
@@ -94,7 +92,8 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     # confirmation email sent
-    assert browser.is_text_present('We have sent an e-mail to you for verification')
+    assert browser.is_text_present(
+        'We have sent an e-mail to you for verification')
     assert len(outbox) == 7
     mail = outbox[6]
 
@@ -139,7 +138,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
 
 
 def test_add_existing_member_flow(base_url, browser, outbox):
-    # -------------------------------------- creating new user ------------------------------------
+    # ------------------creating new user ----------------------
     user = f.create_user()
     user.set_password('123123')
     user.save()
@@ -156,17 +155,14 @@ def test_add_existing_member_flow(base_url, browser, outbox):
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
     location1 = f.create_locaiton(name='location1')
-    # -------------------------------------- add user type ----------------------------------------
+    # ---------------------add user type -----------------------
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user.profile.usertype.add(poc_type)
     user.profile.location = location1
     user.profile.save()
     user.save()
 
-    # location
-#     location1 = f.create_locaiton(name='location1')
-
-    # -------------------------------------- creating organisation --------------------------------
+    # -------------------creating organisation --------------------
     url = base_url + '/organisation/'
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -186,7 +182,7 @@ def test_add_existing_member_flow(base_url, browser, outbox):
     org.user.add(user)
     org.save()
 
-    # -------------------------------------- Adding member ----------------------------------------
+    # -------------- Adding member ------------------------
 
     # create user
     user2 = f.create_user(is_active=True)

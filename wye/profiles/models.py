@@ -66,6 +66,7 @@ class Profile(models.Model):
         if self.location:
             return True
         return False
+
     @cached_property
     def slug(self):
         return slugify(self.user.username, only_ascii=True)

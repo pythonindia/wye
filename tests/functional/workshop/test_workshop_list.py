@@ -22,7 +22,8 @@ def test_workshop_list(base_url, browser, outbox):
     # Create usertypes
     # poc_type = f.create_usertype(slug='poc', display_name='poc')
     # tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
-    regional_lead_type = f.create_usertype(slug='lead', display_name='regional lead')
+    regional_lead_type = f.create_usertype(
+        slug='lead', display_name='regional lead')
 
     # Testcase with usertyep poc
     user = base.create_user(password)

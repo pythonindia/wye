@@ -24,8 +24,6 @@ def test_organisation_flow(base_url, browser, outbox):
     user.profile.location = location1
     user.profile.save()
     user.save()
-    
-
     url = base_url + '/organisation/'
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -42,7 +40,7 @@ def test_organisation_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     # browser.find_by_css('[clickable-row]')[0].click()
     browser.find_by_text('Org1')[0].click()
-    
+
     browser.find_by_text('Edit')[0].click()
     browser.fill('organisation_role', 'Role updated')
     browser.find_by_css('[type=submit]')[0].click()
@@ -103,15 +101,12 @@ def test_org_edit_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     location1 = f.create_locaiton(name='location1')
-    
+
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user.profile.usertype.add(poc_type)
     user.profile.location = location1
     user.profile.save()
     user.save()
-
-    
-
     browser.fill('login', user.email)
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()

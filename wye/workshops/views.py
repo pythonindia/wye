@@ -13,12 +13,12 @@ from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead
 from wye.social.sites.twitter import send_tweet
-from wye.base.views import  verify_user_profile
+from wye.base.views import verify_user_profile
 from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
 from .mixins import (
     WorkshopEmailMixin,
-    WorkshopAccessMixin,
-    WorkshopRestrictMixin)
+    WorkshopAccessMixin
+    )
 from .models import Workshop
 
 

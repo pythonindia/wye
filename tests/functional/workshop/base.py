@@ -44,4 +44,3 @@ def workshop_create(browser, url, org, section):
     browser.select('workshop_level', WorkshopLevel.BEGINNER)
     browser.select('workshop_section', section.id)
     browser.find_by_css('[type=submit]')[0].click()
-    

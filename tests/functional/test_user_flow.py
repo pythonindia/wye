@@ -16,7 +16,8 @@ def test_signup_flow(base_url, browser, outbox):
 
     # On Clicking it, it should open a Sign Up Page
     sign_up_link.click()
-    assert 'Signup' in browser.title  # asserting if it's the signup page or not
+    # asserting if it's the signup page or not
+    assert 'Signup' in browser.title
 
     # Now Fill the relevant information
 
@@ -32,7 +33,8 @@ def test_signup_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     # Check for the text shown in the browser when user hits submit button
-    assert browser.is_text_present('We have sent an e-mail to you for verification')
+    assert browser.is_text_present(
+        'We have sent an e-mail to you for verification')
 
     # Check for the mailbox for the confirmation link
 

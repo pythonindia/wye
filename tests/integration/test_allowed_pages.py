@@ -99,7 +99,6 @@ def test_workshop_pages(client, settings):
     poc_user = f.UserFactory(is_staff=False)
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     poc_user.profile.usertype.add(poc_type)
-    
     org = f.create_organisation()
     org.user.add(poc_user)
     org.save()

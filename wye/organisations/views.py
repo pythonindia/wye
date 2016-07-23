@@ -66,14 +66,14 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     form_class = OrganisationForm
     template_name = 'organisation/create.html'
     success_url = reverse_lazy('organisations:organisation_list')
-    
+
     def dispatch(self, request, *args, **kwargs):
         user_profile = Profile.objects.get(
             user__id=self.request.user.id)
         if not user_profile.is_profile_filled:
             return redirect('profiles:profile-edit', slug=request.user.username)
         return super(OrganisationCreate, self).dispatch(request, *args, **kwargs)
-    
+
     def post(self, request, *args, **kwargs):
         form = OrganisationForm(data=request.POST)
         if form.is_valid():
@@ -83,12 +83,12 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             form.instance.user.add(request.user)
             form.instance.save()
             user_profile = Profile.objects.get(
-            user__id=self.request.user.id)
+                user__id=self.request.user.id)
             if not ('poc' in user_profile.get_user_type):
                 poc_type = UserType.objects.get(slug='poc')
                 user_profile.usertype.add(poc_type)
                 user_profile.save()
-                
+
             host = '{}://{}'.format(settings.SITE_PROTOCOL,
                                     request.META['HTTP_HOST'])
             email_context = Context({
@@ -127,8 +127,7 @@ class OrganisationDetail(views.LoginRequiredMixin, generic.DetailView):
     model = Organisation
     template_name = 'organisation/detail.html'
     success_url = reverse_lazy('organisations:organisation_list')
-    
-    
+
     def get_queryset(self):
         return Organisation.objects.filter(
             user=self.request.user,
