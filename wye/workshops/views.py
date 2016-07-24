@@ -12,6 +12,8 @@ from wye.base.emailer_html import send_email_to_list
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead
+from wye.base.constants import WorkshopStatus
+
 from wye.social.sites.twitter import send_tweet
 from wye.base.views import verify_user_profile
 from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
@@ -216,3 +218,12 @@ class WorkshopFeedbackView(views.LoginRequiredMixin,
             *args, **kwargs)
         context['workshop'] = Workshop.objects.get(pk=self.kwargs.get('pk'))
         return context
+
+
+def upcoming_workshops(request):
+    template_name = 'upcoming.html'
+    workshop_list = Workshop.objects.filter(status=WorkshopStatus.REQUESTED)
+    context_dict = {}
+    context_dict['workshop_list'] = workshop_list
+
+    return render(request, template_name, context_dict)

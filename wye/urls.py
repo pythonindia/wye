@@ -8,6 +8,7 @@ from django.views.generic.base import TemplateView
 from wye.base.views import HomePageView
 from wye.profiles.views import UserDashboard, contact
 from wye.organisations.views import activate_view
+from wye.workshops.views import upcoming_workshops
 
 urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
@@ -23,6 +24,7 @@ urlpatterns = [
     url(r'^workshops_info/$', TemplateView.as_view(
         template_name='workshops_info.html',),
         name='workshops_info'),
+    url(r'^workshops_upcoming/$', upcoming_workshops, name="upcoming_workshops"),
     url(r'^faq/$', TemplateView.as_view(template_name='faq.html',),
         name='faq'),
     url(r'^organisation/',
