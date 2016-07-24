@@ -1,13 +1,13 @@
 from django.conf.urls import url
-from .views import WorkshopList, WorkshopDetail, \
-    WorkshopCreate, WorkshopUpdate, WorkshopToggleActive, \
+from .views import workshop_list, workshop_details, \
+    workshop_create, WorkshopUpdate, WorkshopToggleActive, \
     WorkshopFeedbackView, WorkshopAction
 
 
 urlpatterns = [
-    url(r'^$', WorkshopList.as_view(), name="workshop_list"),
-    url(r'^(?P<pk>\d+)/$', WorkshopDetail.as_view(), name="workshop_detail"),
-    url(r'^create/$', WorkshopCreate.as_view(), name="workshop_create"),
+    url(r'^$', workshop_list, name="workshop_list"),
+    url(r'^(?P<pk>\d+)/$', workshop_details, name="workshop_detail"),
+    url(r'^create/$', workshop_create, name="workshop_create"),
     url(r'^update/(?P<pk>\d+)/$',
         WorkshopUpdate.as_view(), name="workshop_update"),
     url(r'^(?P<pk>\d+)/(?P<action>active|deactive)/$',

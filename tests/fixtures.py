@@ -13,17 +13,22 @@ class PartialMethodCaller:
         self.partial_params = partial_params
 
     def __getattr__(self, name):
-        return functools.partial(getattr(self.obj, name), **self.partial_params)
+        return functools.partial(
+            getattr(self.obj, name), **self.partial_params)
 
 
 @pytest.fixture
 def client():
-    '''Overrides default client fixture adding a mocked up login method and a json() helper
+    '''Overrides default client fixture adding a mocked
+    up login method and a json() helper
     '''
     from django.test.client import Client
 
     class _Client(Client):
-        def login(self, user=None, backend="django.contrib.auth.backends.ModelBackend", **credentials):
+        def login(
+            self, user=None,
+            backend="django.contrib.auth.backends.ModelBackend",
+            **credentials):
             if user is None:
                 return super(_Client, self).login(**credentials)
 
@@ -34,7 +39,8 @@ def client():
 
         @property
         def json(self):
-            return PartialMethodCaller(obj=self, content_type='application/json;charset="utf-8"')
+            return PartialMethodCaller(
+                obj=self, content_type='application/json;charset="utf-8"')
 
     return _Client()
 

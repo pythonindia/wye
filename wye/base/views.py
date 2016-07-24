@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView
-
+from django.http import HttpResponseRedirect
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.workshops.models import Workshop
@@ -21,3 +21,17 @@ class HomePageView(TemplateView):
         context['tutor_registered_count'] = Profile.objects.filter(
             usertype__slug="tutor").count()
         return context
+
+
+def verify_user_profile(f):
+    '''
+    This decorator check  whether the user are valid for certain views
+    '''
+    def wrap(request, *args, **kwargs):
+        user_profile, created = Profile.objects.get_or_create(
+            user__id=request.user.id)
+        if not user_profile.is_profile_filled:
+            return HttpResponseRedirect(
+                '/profile/{}/edit'.format(request.user.username))
+        return f(request, *args, **kwargs)
+    return wrap

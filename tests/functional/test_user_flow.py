@@ -16,7 +16,8 @@ def test_signup_flow(base_url, browser, outbox):
 
     # On Clicking it, it should open a Sign Up Page
     sign_up_link.click()
-    assert 'Signup' in browser.title  # asserting if it's the signup page or not
+    # asserting if it's the signup page or not
+    assert 'Signup' in browser.title
 
     # Now Fill the relevant information
 
@@ -32,7 +33,8 @@ def test_signup_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     # Check for the text shown in the browser when user hits submit button
-    assert browser.is_text_present('We have sent an e-mail to you for verification')
+    assert browser.is_text_present(
+        'We have sent an e-mail to you for verification')
 
     # Check for the mailbox for the confirmation link
 
@@ -55,14 +57,14 @@ def test_signup_flow(base_url, browser, outbox):
 
     assert browser.is_text_present("Edit Profile")
 
-    poc_type = f.create_usertype(slug='dummy', display_name='College POC')
+    # poc_type = f.create_usertype(slug='dummy', display_name='College POC')
     section1 = f.create_workshop_section(name='section1')
     location1 = f.create_locaiton(name='location1')
 
     url = base_url + '/profile/randomnessprevails/edit'
     browser.visit(url)
 
-    browser.select('usertype', poc_type.id)
+    # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.select('interested_locations', location1.id)
     browser.select('location', location1.id)

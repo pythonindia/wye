@@ -39,7 +39,7 @@ class Profile(models.Model):
     mobile = models.CharField(max_length=10, blank=False, null=True)
     is_mobile_visible = models.BooleanField(default=False)
     is_email_visible = models.BooleanField(default=False)
-    usertype = models.ManyToManyField(UserType)
+    usertype = models.ManyToManyField(UserType, null=True)
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_locations = models.ManyToManyField(Location)
     location = models.ForeignKey(
@@ -60,6 +60,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return '{} {}'.format(self.user, self.slug)
+
+    @property
+    def is_profile_filled(self):
+        if self.location:
+            return True
+        return False
 
     @cached_property
     def slug(self):
@@ -161,10 +167,6 @@ class Profile(models.Model):
     @classmethod
     def is_admin(cls, user):
         return user.profile.usertype.filter(slug__iexact="admin").exists()
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def create_auth_token(sender, instance=None, created=False, **kwargs):
-#     if created:
-#         token, created = Token.objects.get_or_create(user=instance)
 
 
 def create_user_profile(sender, instance, created, **kwargs):

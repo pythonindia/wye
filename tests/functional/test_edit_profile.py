@@ -33,55 +33,55 @@ def test_signup_flow(base_url, browser, outbox):
 
     assert browser.is_text_present("Edit Profile")
 
-    poc_type = f.create_usertype(slug='dummy', display_name='College POC')
+    # poc_type = f.create_usertype(slug='dummy', display_name='College POC')
     section1 = f.create_workshop_section(name='section1')
     location1 = f.create_locaiton(name='location1')
 
     # mobile number chechk
-    url = base_url + '/profile/'+user.username+'/edit'
+    url = base_url + '/profile/' + user.username + '/edit'
     browser.visit(url)
     browser.fill('mobile', '')
-    browser.select('usertype', poc_type.id)
+    # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.select('interested_locations', location1.id)
     browser.select('location', location1.id)
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
-    # usertype check
-    browser.visit(url)
-    browser.fill('mobile', '1234567890')
-    browser.select('interested_sections', section1.id)
-    browser.select('interested_locations', location1.id)
-    browser.select('location', location1.id)
-    browser.find_by_css('[type=submit]')[0].click()
-    assert browser.is_text_present('This field is required.')
+    # # usertype check
+    # browser.visit(url)
+    # browser.fill('mobile', '1234567890')
+    # browser.select('interested_sections', section1.id)
+    # browser.select('interested_locations', location1.id)
+    # browser.select('location', location1.id)
+    # browser.find_by_css('[type=submit]')[0].click()
+    # assert browser.is_text_present('This field is required.')
 
     # intrested_location check
-    url = base_url + '/profile/'+user.username+'/edit'
+    # url = base_url + '/profile/'+user.username+'/edit'
     browser.visit(url)
     browser.fill('mobile', '1234567890')
-    browser.select('usertype', poc_type.id)
+    # browser.select('usertype', poc_type.id)
     browser.select('interested_locations', location1.id)
     browser.select('location', location1.id)
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
     # intrested location check
-    url = base_url + '/profile/'+user.username+'/edit'
+    # url = base_url + '/profile/'+user.username+'/edit'
     browser.visit(url)
     browser.fill('mobile', '')
-    browser.select('usertype', poc_type.id)
+    # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.select('location', location1.id)
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
     # location check
-    url = base_url + '/profile/'+user.username+'/edit'
+    # url = base_url + '/profile/'+user.username+'/edit'
     browser.visit(url)
     browser.fill('mobile', '')
-    browser.select('usertype', poc_type.id)
+    # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.select('interested_locations', location1.id)
     browser.find_by_css('[type=submit]')[0].click()

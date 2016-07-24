@@ -2,19 +2,19 @@ import uuid
 
 from django.conf import settings
 from django.conf.urls import patterns, url
-from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views import generic
 
-
 from braces import views
+from django.http.response import HttpResponseRedirect
 from wye.base.emailer_html import send_email_to_id, send_email_to_list
-from wye.profiles.models import Profile
+from wye.profiles.models import Profile, UserType
 from wye.regions.models import RegionalLead
+
 from .forms import (
     OrganisationForm, OrganisationMemberAddForm,
     UserRegistrationForm
@@ -27,9 +27,9 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
     template_name = 'organisation/list.html'
 
     def dispatch(self, request, *args, **kwargs):
-        user_profile, created = Profile.objects.get_or_create(
+        user_profile = Profile.objects.get(
             user__id=self.request.user.id)
-        if not user_profile.get_user_type:
+        if not user_profile.is_profile_filled:
             return redirect('profiles:profile-edit', slug=request.user.username)
         return super(OrganisationList, self).dispatch(request, *args, **kwargs)
 
@@ -51,7 +51,7 @@ class OrganisationList(views.LoginRequiredMixin, generic.ListView):
                 location__id__in=[x.location.id for x in regions])
         context['user'] = self.request.user
         # need to improve the part
-        context['is_not_tutor'] = False
+        # context['is_not_tutor'] = False
         # as user can be tutor and regional lead hence we need to verify like
         # this
         if (Profile.is_regional_lead(self.request.user) or
@@ -67,6 +67,13 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
     template_name = 'organisation/create.html'
     success_url = reverse_lazy('organisations:organisation_list')
 
+    def dispatch(self, request, *args, **kwargs):
+        user_profile = Profile.objects.get(
+            user__id=self.request.user.id)
+        if not user_profile.is_profile_filled:
+            return redirect('profiles:profile-edit', slug=request.user.username)
+        return super(OrganisationCreate, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         form = OrganisationForm(data=request.POST)
         if form.is_valid():
@@ -75,6 +82,13 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             form.instance.save()
             form.instance.user.add(request.user)
             form.instance.save()
+            user_profile = Profile.objects.get(
+                user__id=self.request.user.id)
+            if not ('poc' in user_profile.get_user_type):
+                poc_type = UserType.objects.get(slug='poc')
+                user_profile.usertype.add(poc_type)
+                user_profile.save()
+
             host = '{}://{}'.format(settings.SITE_PROTOCOL,
                                     request.META['HTTP_HOST'])
             email_context = Context({

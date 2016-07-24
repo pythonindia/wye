@@ -18,12 +18,12 @@ def test_organisation_flow(base_url, browser, outbox):
     browser.visit(confirm_link[0])
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
-
+    location1 = f.create_locaiton(name='location1')
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user.profile.usertype.add(poc_type)
+    user.profile.location = location1
+    user.profile.save()
     user.save()
-    location1 = f.create_locaiton(name='location1')
-
     url = base_url + '/organisation/'
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -40,6 +40,7 @@ def test_organisation_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     # browser.find_by_css('[clickable-row]')[0].click()
     browser.find_by_text('Org1')[0].click()
+
     browser.find_by_text('Edit')[0].click()
     browser.fill('organisation_role', 'Role updated')
     browser.find_by_css('[type=submit]')[0].click()
@@ -99,12 +100,13 @@ def test_org_edit_flow(base_url, browser, outbox):
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
 
-    poc_type = f.create_usertype(slug='poc', display_name='poc')
-    user.profile.usertype.add(poc_type)
-    user.save()
-
     location1 = f.create_locaiton(name='location1')
 
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    user.profile.usertype.add(poc_type)
+    user.profile.location = location1
+    user.profile.save()
+    user.save()
     browser.fill('login', user.email)
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
@@ -147,6 +149,8 @@ def test_org_edit_flow(base_url, browser, outbox):
 
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user2.profile.usertype.add(poc_type)
+    user2.profile.location = location1
+    user2.profile.save()
     user2.save()
 
     org.user.add(user2)
