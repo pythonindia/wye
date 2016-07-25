@@ -222,7 +222,11 @@ class WorkshopFeedbackView(views.LoginRequiredMixin,
 
 def upcoming_workshops(request):
     template_name = 'upcoming.html'
-    workshop_list = Workshop.objects.filter(status=WorkshopStatus.REQUESTED)
+    workshop_list = Workshop.objects.filter(is_active=True).filter(
+        status__in=[WorkshopStatus.REQUESTED,
+            WorkshopStatus.ACCEPTED]).order_by('-expected_date')
+    for workshop in workshop_list:
+        print(workshop.presenter)
     context_dict = {}
     context_dict['workshop_list'] = workshop_list
 

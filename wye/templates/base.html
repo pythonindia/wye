@@ -35,7 +35,7 @@
                                 {% endif %}
                             {% endif %}
                             <li><a href="/workshops_info" class="{% if request.resolver_match.url_name == 'workshops_info' %}active{% endif %}">Workshops Info</a></li>
-                            <li><a href="workshop/upcoming/" class="{% if request.resolver_match.url_name == 'upcoming_workshops' %}active{% endif %}">Upcoming Workshops</a></li>
+                            <li><a href="/workshops_upcoming/" class="{% if request.resolver_match.url_name == 'upcoming_workshops' %}active{% endif %}">Upcoming Workshops</a></li>
                             <li><a href="/faq" class="{% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a></li>
                             <li><a href="/contact" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact Us</a></li>
                         </ul>
