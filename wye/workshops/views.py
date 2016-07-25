@@ -227,7 +227,7 @@ def upcoming_workshops(request):
     template_name = 'upcoming.html'
     workshop_list = Workshop.objects.filter(is_active=True).filter(
         status__in=[WorkshopStatus.REQUESTED,
-            WorkshopStatus.ACCEPTED]).order_by('-expected_date')
+            WorkshopStatus.ACCEPTED]).order_by('expected_date')
     for workshop in workshop_list:
         print(workshop.presenter)
     context_dict = {}
