@@ -34,20 +34,23 @@ def workshop_list(request):
         return redirect('profiles:profile-edit', slug=request.user.username)
     context_dict = {}
     workshop_list = Workshop.objects.all().order_by('-expected_date')
-    if Profile.is_organiser(request.user):
-        workshop_list = workshop_list.filter(
-            requester__user=request.user)
-    elif Profile.is_presenter(request.user):
-        workshop_list = workshop_list.filter(
-            Q(presenter=request.user) | Q
-            (requester__location__id__in=[
-                x.id for x in
-                request.user.profile.interested_locations.all()]))
-    elif Profile.is_regional_lead(request.user):
-        regions = RegionalLead.objects.filter(leads=request.user)
-        workshop_list = workshop_list.filter(
-            location__id__in=[x.location.id for x in regions])
-
+    workshop_list = workshop_list.filter(
+        requester__location__id__in=[ x.id for x in
+                request.user.profile.interested_locations.all()])
+    # if Profile.is_organiser(request.user):
+    #     workshop_list = workshop_list.filter(
+    #         requester__user=request.user)
+    # elif Profile.is_presenter(request.user):
+    #     workshop_list = workshop_list.filter(
+    #         Q(presenter=request.user) | Q
+    #         (requester__location__id__in=[
+    #             x.id for x in
+    #             request.user.profile.interested_locations.all()]))
+    # elif Profile.is_regional_lead(request.user):
+    #     regions = RegionalLead.objects.filter(leads=request.user)
+    #     workshop_list = workshop_list.filter(
+    #         location__id__in=[x.location.id for x in regions])
+    print(workshop_list)
     context_dict['workshop_list'] = workshop_list
     context_dict['user'] = request.user
     # need to improve the part

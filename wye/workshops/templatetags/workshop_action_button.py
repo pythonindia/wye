@@ -28,8 +28,7 @@ register.filter(show_requested_button)
 
 
 def show_accepted_button(workshop, user):
-    if (workshop.status == WorkshopStatus.REQUESTED and
-            'tutor' in user.profile.get_user_type):
+    if (workshop.status == WorkshopStatus.REQUESTED):
         return True
     return False
 
