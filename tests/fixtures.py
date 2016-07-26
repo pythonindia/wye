@@ -27,8 +27,8 @@ def client():
     class _Client(Client):
         def login(
             self, user=None,
-            backend="django.contrib.auth.backends.ModelBackend",
-            **credentials):
+                backend="django.contrib.auth.backends.ModelBackend",
+                **credentials):
             if user is None:
                 return super(_Client, self).login(**credentials)
 

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.db.models import Q
+# from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, render
@@ -11,7 +11,7 @@ from braces import views
 from wye.base.emailer_html import send_email_to_list
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
-from wye.regions.models import RegionalLead
+# from wye.regions.models import RegionalLead
 from wye.base.constants import WorkshopStatus
 
 from wye.social.sites.twitter import send_tweet
@@ -20,7 +20,7 @@ from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
 from .mixins import (
     WorkshopEmailMixin,
     WorkshopAccessMixin
-    )
+)
 from .models import Workshop
 
 
@@ -35,8 +35,9 @@ def workshop_list(request):
     context_dict = {}
     workshop_list = Workshop.objects.all().order_by('-expected_date')
     workshop_list = workshop_list.filter(
-        requester__location__id__in=[ x.id for x in
-                request.user.profile.interested_locations.all()])
+        requester__location__id__in=[
+            x.id for x in request.user.profile.interested_locations.all()]
+    )
     # if Profile.is_organiser(request.user):
     #     workshop_list = workshop_list.filter(
     #         requester__user=request.user)
@@ -96,12 +97,13 @@ def workshop_create(request):
     context = {
         'workshop': workshop,
         'date': workshop.expected_date,
-        'workshop_url': 'https://pythonexpress.in/workshop/{}/'.format(workshop.id)
+        'workshop_url': 'https://pythonexpress.in/workshop/{}/'.format(
+            workshop.id)
     }
     # Collage POC and admin email
     poc_admin_user = Profile.get_user_with_type(
         user_type=['Collage POC', 'admin']
-        ).values_list('email', flat=True)
+    ).values_list('email', flat=True)
 
     org_user_emails = workshop.requester.user.filter(
         is_active=True).values_list('email', flat=True)
@@ -112,7 +114,7 @@ def workshop_create(request):
     region_interested_member = Profile.objects.filter(
         interested_locations=workshop.requester.location,
         usertype__slug='tutor'
-        ).values_list('user__email', flat=True)
+    ).values_list('user__email', flat=True)
     all_email = []
     all_email.extend(org_user_emails)
     all_email.extend(all_presenter_email)
@@ -227,7 +229,7 @@ def upcoming_workshops(request):
     template_name = 'upcoming.html'
     workshop_list = Workshop.objects.filter(is_active=True).filter(
         status__in=[WorkshopStatus.REQUESTED,
-            WorkshopStatus.ACCEPTED]).order_by('expected_date')
+                    WorkshopStatus.ACCEPTED]).order_by('expected_date')
     for workshop in workshop_list:
         print(workshop.presenter)
     context_dict = {}
