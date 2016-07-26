@@ -96,7 +96,7 @@ def workshop_create(request):
     context = {
         'workshop': workshop,
         'date': workshop.expected_date,
-        'workshop_url': '/workshop/{}/'.format(workshop.id)
+        'workshop_url': 'https://pythonexpress.in/workshop/{}/'.format(workshop.id)
     }
     # Collage POC and admin email
     poc_admin_user = Profile.get_user_with_type(
