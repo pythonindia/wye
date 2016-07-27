@@ -6,6 +6,7 @@ from .. import factories as f
 
 
 def test_workshop_flow(base_url, browser, outbox):
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
     user.save()

@@ -8,6 +8,7 @@ password = '123123'
 def test_workshop_create(base_url, browser, outbox):
     """
     """
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = base.create_user(password)
     url = base_url + '/workshop/'
     base.login_and_confirm(browser, url, outbox, user, password)

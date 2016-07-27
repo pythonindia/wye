@@ -1,4 +1,4 @@
-import json
+# import json
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -14,6 +14,7 @@ from wye.workshops.models import Workshop, WorkshopSections
 
 # from django.dispatch import receiver
 # from rest_framework.authtoken.models import Token
+
 class UserType(models.Model):
     '''
     USER_TYPE = ['Tutor', 'Regional Lead', 'College POC','admin']
@@ -168,10 +169,10 @@ class Profile(models.Model):
     def is_admin(cls, user):
         return user.profile.usertype.filter(slug__iexact="admin").exists()
 
-
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile, created = Profile.objects.get_or_create(user=instance)
+        profile.usertype.add(UserType.objects.get(slug='tutor'))
 
 
 post_save.connect(

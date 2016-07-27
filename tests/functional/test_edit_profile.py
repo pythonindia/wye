@@ -8,7 +8,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_signup_flow(base_url, browser, outbox):
-
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
     user.save()
@@ -31,7 +31,7 @@ def test_signup_flow(base_url, browser, outbox):
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
 
-    assert browser.is_text_present("Edit Profile")
+    assert browser.is_text_present("Dashboard")
 
     # poc_type = f.create_usertype(slug='dummy', display_name='College POC')
     section1 = f.create_workshop_section(name='section1')

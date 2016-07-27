@@ -4,6 +4,7 @@ from .. import factories as f
 
 def test_add_new_member_flow(base_url, browser, outbox):
     # ----------------- creating new user ------------------------
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
     user.save()
@@ -112,7 +113,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     # edit profile
-    assert browser.is_text_present("Edit Profile")
+    assert browser.is_text_present("Dashboard")
 
     poc_type = f.create_usertype(slug='dummy', display_name='College POC')
     section1 = f.create_workshop_section(name='section1')
@@ -139,6 +140,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
 
 def test_add_existing_member_flow(base_url, browser, outbox):
     # ------------------creating new user ----------------------
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
     user.save()

@@ -3,6 +3,7 @@ from .. import factories as f
 
 
 def test_forgot_password_flow(base_url, browser, outbox):
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.UserFactory()
 
     # Forgot password link must be present on login page
