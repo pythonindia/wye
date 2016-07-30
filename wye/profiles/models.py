@@ -1,4 +1,4 @@
-# import json
+import json
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -168,6 +168,7 @@ class Profile(models.Model):
     @classmethod
     def is_admin(cls, user):
         return user.profile.usertype.filter(slug__iexact="admin").exists()
+
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
