@@ -24,6 +24,7 @@
             {% if workshop_list %}
             <table class="table table-bordered">
                 <tr>
+                <th>sl.no </th>
                 <th>Location</th>
                 <th>Workshop Section</th>
                 <th>Tentative Dates *</th>
@@ -32,6 +33,7 @@
                 </tr>
                 {% for workshop in workshop_list %}
                     <tr>
+                    <td>{{forloop.counter}}</td>
                     <td><u><a href="/workshop/{{workshop.id}}/">{{workshop.location}}</a></u></td>
                     <td>{{workshop.workshop_section.name}}</td>
 
