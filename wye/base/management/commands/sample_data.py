@@ -36,6 +36,10 @@ class Command(BaseCommand):
         site.domain, site.name = 'localhost:8000', 'Local'
         site.save()
 
+        # User Type
+        self.stdout.write('  Creating User Types')
+        self.create_user_type(counter=NUMBER_OF_WORKSHOP_SECTIONS)
+
         self.stdout.write('  Creating Superuser')
         email = 'admin@pythonexpress.in'
         user = self.create_user(is_superuser=True, username='admin',
@@ -59,9 +63,6 @@ class Command(BaseCommand):
         self.stdout.write('  Creating sample workshop sections')
         self.create_workshop_sections()
 
-        # User Type
-        self.stdout.write('  Creating User Types')
-        self.create_user_type(counter=NUMBER_OF_WORKSHOP_SECTIONS)
 
         # Profile
         self.stdout.write('  Creating Profile')
