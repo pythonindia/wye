@@ -80,6 +80,28 @@
                             <div class="col-xs-8">{{ workshop.description }}</div>
                         </div>
                     </li>
+                    {% if show_contact_flag %}
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-2"><strong>College representative</strong></div>
+                            {% for u in workshop.requester.all %}
+                            <div class="col-xs-2">{{ u.}}</div>
+                            <div class="col-xs-2">{{ u.email}}</div>
+                            <div class="col-xs-2">{{ u.profile.mobile}}</div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-2"><strong>Presenter/Tutor</strong></div>
+                            {% for u in workshop.presenter.all %}
+                            <div class="col-xs-2">{{ u }}</div>
+                            <div class="col-xs-2">{{ u.email}}</div>
+                            <div class="col-xs-2">{{ u.profile.mobile}}</div>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

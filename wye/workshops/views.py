@@ -69,7 +69,16 @@ def workshop_list(request):
 def workshop_details(request, pk):
     template_name = 'workshops/workshop_detail.html'
     workshop_obj = get_object_or_404(Workshop, id=pk)
-    context_dict = {'workshop': workshop_obj}
+    show_contact_flag = False
+    if [u for u in workshop_obj.presenter.all() if request.user == u]:
+        show_contact_flag = True
+    elif [u for u in workshop_obj.requester.user.all() if request.user == u]:
+        show_contact_flag = True
+
+    context_dict = {
+        'workshop': workshop_obj,
+        'show_contact_flag': show_contact_flag
+    }
     return render(request, template_name, context_dict)
 
 
