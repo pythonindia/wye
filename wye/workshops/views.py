@@ -70,9 +70,11 @@ def workshop_details(request, pk):
     template_name = 'workshops/workshop_detail.html'
     workshop_obj = get_object_or_404(Workshop, id=pk)
     show_contact_flag = False
-    if [u for u in workshop_obj.presenter.all() if request.user == u]:
-        show_contact_flag = True
-    elif [u for u in workshop_obj.requester.user.all() if request.user == u]:
+    user = request.user
+    if (
+        [u for u in workshop_obj.presenter.all() if user == u] or
+            [u for u in workshop_obj.requester.user.all() if user == u] or
+            user.is_superuser):
         show_contact_flag = True
 
     context_dict = {
