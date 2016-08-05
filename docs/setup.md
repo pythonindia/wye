@@ -38,7 +38,7 @@ Follow this guide to setup your development machine.
 
     ```
     
-6. Change credential in setting/dev.py
+7. Change credential in setting/dev.py
     
     ```
     nano settings/dev.py
@@ -48,7 +48,7 @@ Follow this guide to setup your development machine.
    
     >PASSWORD: [password enter on prompt at user creation]
 
-7. Create an empty postgres database and run database migration.
+8. Create an empty postgres database and run database migration.
 
     ```
     createdb wye
@@ -56,7 +56,7 @@ Follow this guide to setup your development machine.
     python manage.py sample_data
     ```
 
-8. That's it. Now you can run development server and open the site admin at http://localhost:8000/django-admin/ (initial creds: admin / 123123)
+9. That's it. Now you can run development server and open the site admin at http://localhost:8000/django-admin/ (initial creds: admin / 123123)
 
     ```
     python manage.py runserver
