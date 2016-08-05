@@ -30,15 +30,23 @@ Follow this guide to setup your development machine.
     ```
     cp settings/dev.sample.py settings/dev.py
     ```
+
+6. Creating user
+
+    ```
+    sudo -u postgres createuser [user] -s --pwprompt
+
+    ```
     
 6. Change credential in setting/dev.py
     
     ```
     nano settings/dev.py
-    ```
-    For new postgresql user  
+    ```  
     
-    USER: "postgres";PASSWORD: ""
+    >USER: [user]
+   
+    >PASSWORD: [password enter on prompt at user creation]
 
 7. Create an empty postgres database and run database migration.
 
