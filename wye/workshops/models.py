@@ -78,6 +78,13 @@ class Workshop(TimeAuditModel):
 
     def set_status(self, user, **kwargs):
         self.status = kwargs.get('action')
+        presenter_list = self.presenter.all()
+        for u in presenter_list:
+            self.presenter.remove(u)
+        if kwargs.get('action') == WorkshopStatus.DECLINED:
+            self.is_active = False
+        else:
+            self.is_active = True
         self.save()
         return {
             'status': True,
