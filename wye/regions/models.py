@@ -26,7 +26,7 @@ class Location(TimeAuditModel):
         db_table = 'locations'
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return '{}, {}'.format(self.name, self.state.name)
 
 
 class RegionalLead(models.Model):

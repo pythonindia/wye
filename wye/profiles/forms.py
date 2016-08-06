@@ -61,9 +61,9 @@ class SignupForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    # queryset = models.UserType.objects.exclude(slug__in=['admin', 'lead'])
-    # usertype = forms.ModelMultipleChoiceField(
-    #     label="Usertype", queryset=queryset)
+    queryset = models.UserType.objects.exclude(slug__in=['admin', 'lead'])
+    usertype = forms.ModelMultipleChoiceField(
+        label="Usertype", queryset=queryset)
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
@@ -71,7 +71,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = models.Profile
-        exclude = ('user', 'slug', 'usertype')
+        exclude = ('user', 'slug')
 
 
 class ContactUsForm(forms.Form):
