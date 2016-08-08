@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 # from django.db.models import Q
+from django.contrib.sites.models import Site
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, render
@@ -92,11 +93,11 @@ def workshop_create(request):
         context_dict['errors'] = form.errors
         return render(request, template_name, context_dict)
     workshop = form.save()
+    domain = Site.objects.get_current().domain
     context = {
         'workshop': workshop,
         'date': workshop.expected_date,
-        'workshop_url': 'https://pythonexpress.in/workshop/{}/'.format(
-            workshop.id)
+        'workshop_url': domain + '/workshop/{}/'.format(workshop.id)
     }
     # Collage POC and admin email
     poc_admin_user = Profile.get_user_with_type(
