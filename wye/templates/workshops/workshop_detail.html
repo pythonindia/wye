@@ -84,7 +84,7 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-2"><strong>College representative</strong></div>
-                            {% for u in workshop.requester.all %}
+                            {% for u in workshop.requester.user.all %}
                             <div class="col-xs-2">{{ u.}}</div>
                             <div class="col-xs-2">{{ u.email}}</div>
                             <div class="col-xs-2">{{ u.profile.mobile}}</div>
