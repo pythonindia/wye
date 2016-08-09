@@ -169,6 +169,11 @@ class Profile(models.Model):
     def is_admin(cls, user):
         return user.profile.usertype.filter(slug__iexact="admin").exists()
 
+    @classmethod
+    def is_coordinator(cls, user):
+        return user.profile.usertype.filter(slug__iexact="coordinator").exists()
+
+
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
