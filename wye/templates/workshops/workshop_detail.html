@@ -12,9 +12,11 @@
             <div class="col-xs-6 sub">
                 <a href="{% url 'workshops:workshop_list' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Workshops</a>
             </div>
+            {% if display_edit_button %}
             <div class="col-xs-6 text-right">
                 <a href="{% url 'workshops:workshop_update' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Edit<span class="hidden-xs"> Workshop</span></a>
             </div>
+            {% endif %}
         </div>
         {% endif %}
         <div class="row">
