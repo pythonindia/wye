@@ -80,6 +80,7 @@
                         <li class="list-group-item">
                             <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub">Edit</a>
                         </li>
+                        <a href="{% url 'profiles:account_deactivate'  slug=object.slug %}"><i class="fa fa-power-off fa-width"></i>Deactive Account</a>
                     {% endif %}
                 </ul>
             </div>
