@@ -6,6 +6,14 @@
         <h1 class="no-space">Upcoming Workshops</h1>
     </div>
 {% endblock %}
+{% block extracss %}
+
+<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+{% endblock %}
 
 {% block content %}
 
@@ -16,40 +24,53 @@
         <li>Changes in dates will be discussed via email between both the tutor and college.</li>
         <li>If required, we will work with the college to help share logistics cost.</li>
     </ul>
+    <div class="container">
  <div class="row text-center push-6-bottom">
 
         <div class="col-md-8 push-3">
             <p class="push-3q-bottom pad-2"><h3>Upcoming Workshops</h3></p>
 
             {% if workshop_list %}
-            <table class="table table-bordered">
+            <table id="upcoming" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
                 <tr>
-                <th>sl.no </th>
-                <th>Location</th>
-                <th>Workshop Section</th>
-                <th>Tentative Dates *</th>
-                <th>College</th>
-                <th>presenter</th>
+                    <th>sl.no </th>
+                    <th>Location</th>
+                    <th>Workshop Section</th>
+                    <th>Tentative Dates *</th>
+                    <th>College</th>
+                    <th>presenter</th>
                 </tr>
-                {% for workshop in workshop_list %}
-                    <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td><u><a href="/workshop/{{workshop.id}}/">{{workshop.location}}</a></u></td>
-                    <td>{{workshop.workshop_section.name}}</td>
+                </thead>
+                <tbody>
+                    {% for workshop in workshop_list %}
+                        <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><u><a href="/workshop/{{workshop.id}}/">{{workshop.location}}</a></u></td>
+                        <td>{{workshop.workshop_section.name}}</td>
 
-                    <td>{{workshop.expected_date}}</td>
-                    <td>{{workshop.requester.name}}</td>
-                    <td>
-                            {% for u in  workshop.presenter.all %}
-                                {{u.get_full_name}}
-                            {% endfor %}
-                    </td>
-                    </tr>
-                {% endfor %}
+                        <td>{{workshop.expected_date}}</td>
+                        <td>{{workshop.requester.name}}</td>
+                        <td>
+                                {% for u in  workshop.presenter.all %}
+                                    {{u.get_full_name}}
+                                {% endfor %}
+                        </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
             {% else %}
             <h3>All workshop request are completed</h3>
             {% endif %}
         </div>
     </div>
+    </div>
+
+<script>
+    $('#upcoming').dataTable();
+</script>
+
 {% endblock %}
+
+
