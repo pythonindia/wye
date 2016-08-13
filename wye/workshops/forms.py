@@ -45,7 +45,9 @@ class WorkshopForm(forms.ModelForm):
     def clean_expected_date(self):
         date = self.cleaned_data['expected_date']
         if not (date > datetime.date.today() + datetime.timedelta(days=14)):
-            raise ValidationError('Workshop request has to future date and atleast 2 weeks ahead of today')
+            raise ValidationError(
+                '''Workshop request has to future date and
+                 atleast 2 weeks ahead of today''')
         else:
             return date
 

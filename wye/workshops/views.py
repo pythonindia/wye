@@ -60,20 +60,19 @@ def workshop_details(request, pk):
     show_contact_flag = False
     display_edit_button = False
     user = request.user
-    if (
-        [u for u in workshop_obj.presenter.all() if user == u] or
-            [u for u in workshop_obj.requester.user.all() if user == u] or
-            user.is_superuser or (
-                (not user.is_anonymous()) and Profile.is_coordinator(user)
-        )):
+    user_is_presenter = [u for u in workshop_obj.presenter.all() if user == u]
+    user_is_requester = [
+        u for u in workshop_obj.requester.user.all() if user == u]
+    if (user_is_presenter or user_is_requester or
+            user.is_superuser or ((not user.is_anonymous()) and Profile.is_coordinator(user))):
         show_contact_flag = True
-    if ([u for u in workshop_obj.requester.user.all() if user == u]):
+    if (user_is_presenter):
         display_edit_button = True
 
     context_dict = {
         'workshop': workshop_obj,
         'show_contact_flag': show_contact_flag,
-        'display_edit_button':display_edit_button
+        'display_edit_button': display_edit_button
     }
     return render(request, template_name, context_dict)
 

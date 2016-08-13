@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site
+# from django.contrib.sites.models import Site
 from django.core.validators import MaxValueValidator
-from django.core.urlresolvers import reverse_lazy
+# from django.core.urlresolvers import reverse_lazy
 from django.db import models
-from django.template import loader
+# from django.template import loader
 
 from wye.base.constants import (
     FeedbackType,
@@ -11,7 +11,7 @@ from wye.base.constants import (
     WorkshopLevel,
     WorkshopStatus,
 )
-from wye.base.emailer_html import send_email_to_list
+# from wye.base.emailer_html import send_email_to_list
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
 # from wye.profiles.models import Profile
@@ -92,7 +92,6 @@ class Workshop(TimeAuditModel):
     #             text_body=text_body)
 
     #     super(Workshop, self).save(force_insert, force_update, using)
-
 
     def is_presenter(self, user):
         return self.presenter.filter(pk=user.pk).exists()
