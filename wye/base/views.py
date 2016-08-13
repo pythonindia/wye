@@ -17,6 +17,10 @@ class HomePageView(TemplateView):
         context['organisation_registered_count'] = organisationObj.count()
         context['completed_workshop_count'] = workshopObj.filter(
             status=WorkshopStatus.COMPLETED).count()
+        workshopObj = workshopObj.exclude(status__in=[
+            WorkshopStatus.DRAFT,
+            WorkshopStatus.HOLD,
+            WorkshopStatus.COMPLETED])
         context['requested_workshop_count'] = workshopObj.count()
         context['tutor_registered_count'] = Profile.objects.filter(
             usertype__slug="tutor").count()
