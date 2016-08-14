@@ -68,7 +68,9 @@
     </div>
 
 <script>
-    $('#upcoming').dataTable();
+    $('#upcoming').dataTable({
+        "iDisplayLength": 50
+    } );
 </script>
 
 {% endblock %}
