@@ -37,6 +37,7 @@
                     <th>sl.no </th>
                     <th>Location</th>
                     <th>Workshop Section</th>
+                    <th>Workshop level</th>
                     <th>Tentative Dates *</th>
                     <th>College</th>
                     <th>presenter</th>
@@ -48,6 +49,7 @@
                         <td>{{forloop.counter}}</td>
                         <td><u><a href="/workshop/{{workshop.id}}/">{{workshop.location}}</a></u></td>
                         <td>{{workshop.workshop_section.name}}</td>
+                        <td>{{workshop.get_workshop_level_display}}</td>
 
                         <td>{{workshop.expected_date}}</td>
                         <td>{{workshop.requester.name}}</td>
