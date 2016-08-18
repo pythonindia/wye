@@ -61,7 +61,8 @@ class SignupForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    queryset = models.UserType.objects.exclude(slug__in=['admin', 'lead','coordinator'])
+    queryset = models.UserType.objects.exclude(
+        slug__in=['admin', 'lead', 'coordinator'])
     usertype = forms.ModelMultipleChoiceField(
         label="Usertype", queryset=queryset)
 

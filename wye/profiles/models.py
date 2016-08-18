@@ -174,7 +174,6 @@ class Profile(models.Model):
         return user.profile.usertype.filter(slug__iexact="coordinator").exists()
 
 
-
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile, created = Profile.objects.get_or_create(user=instance)
