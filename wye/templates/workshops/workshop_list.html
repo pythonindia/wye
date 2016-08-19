@@ -14,10 +14,43 @@
                 <h3 class="space-1q-top">{% if is_not_tutor %}My {% endif %}Workshops</h3>
             </div>
             {% if is_not_tutor %}
-            <div class="col-xs-6 text-right">
+            <div class="col-xs-4 text-right">
                 <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request for workshop</a>
             </div>
+            {% else %}
+            <div class="col-xs-offset-4">
+            </div>
             {% endif %}
+            <div class="col-xs-2 text-right">
+                <a data-target="#filterBlock" data-toggle="collapse" class="btn btn-theme-primary sub pad-1 col-xs-12">Filter</a>
+            </div>
+        </div>
+        <div class="row collapse push-1" id="filterBlock">
+            <form method="get" action="{% url "workshops:workshop_list" %}" class="form-inline">
+                <div class="form-group" style="width:25%">
+                    <label for="field.id_for_label">{{form.location.label}}</label>
+                    {{ form.location }}
+                </div>
+                {% if form.presenter %}
+                    <div class="form-group" style="width:16%">
+                        <label for="field.id_for_label">{{form.presenter.label}}</label>
+                        {{ form.presenter }}
+                    </div>
+                {% endif %}
+                <div class="form-group" style="width:14%">
+                    <label for="field.id_for_label">{{form.level.label}}</label>
+                    {{ form.level }}
+                </div>
+                <div class="form-group" style="width:14%">
+                    <label for="field.id_for_label">{{form.section.label}}</label>
+                    {{ form.section }}
+                </div>
+                <div class="form-group" style="width:19%">
+                    <label for="field.id_for_label">{{form.status.label}}</label>
+                    {{ form.status }}
+                </div>
+                <button class="btn btn-theme-primary" style="width:10%">Go</button>
+            </form>
         </div>
         <div class="row push-1">
             <div class="col-sm-12">
