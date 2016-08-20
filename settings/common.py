@@ -234,3 +234,5 @@ CELERYBEAT_SCHEDULE = {
         'schedule': crontab(hour=7, minute=30),
     },
 }
+
+CELERY_ACCEPT_CONTENT = ['json']
