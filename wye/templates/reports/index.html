@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Reports | {{ block.super }}{% endblock %}
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Reports</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <section class="myreports">
+        <div class="push-4-bottom">
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3 class="space-1q-top"> Report from {{date}}</h3>
+                </div>
+                <div class="col-xs-6">
+                    <h3 class="space-1q-top"> Number of participants: {{no_of_participants}}</h3>
+                </div>
+            </div>
+            <div class="row push-1">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for org in organisations %}
+                                        <tr>
+                                            <td>{{org.name }}</td>
+                                            <td>{{org.location}}</td>
+                                            <td>{{org.get_organisation_type_display}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="col-sm-4">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for workshop in workshops %}
+                                            <tr>
+                                            <td>
+                                                <u>
+                                                <a href="{% url 'workshops:workshop_detail' workshop.pk %}">{{workshop.id}}
+                                                </a>
+                                                </u>
+                                                </td>
+                                            <td>{{workshop.requester }}</td>
+                                            <td>{{workshop.no_of_participants}}</td>
+                                            <td>{{workshop.expected_date}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="col-sm-4">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in profiles %}
+                                        <tr>
+                                            <td>{{p.user.get_full_name}}</td>
+                                            <td>{{p.user.email}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if org_belongs_list %}
+        <section class="organisations_working_for">
+            <div class="push-4-bottom push-1-top">
+                <h3>Other organisations I am member of</h3>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for org in org_belongs_list %}
+                                        <tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+                                            <td>{{org.name }}</td>
+                                            <td>{{org.location}}</td>
+                                            <td>{{org.get_organisation_type_display}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {% if regional_org_list %}
+        <section class="organisations_working_for">
+            <div class="push-4-bottom push-1-top">
+                <h3>Regional Organisations</h3>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for org in regional_org_list %}
+                                        <tr class="clickable-row" data-href="{% url 'organisations:organisation_details' org.pk %}">
+                                            <td>{{org.name }}</td>
+                                            <td>{{org.location}}</td>
+                                            <td>{{org.get_organisation_type_display}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}
+
+
