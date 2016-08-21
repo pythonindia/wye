@@ -20,7 +20,7 @@ def index(request, days):
         expected_date__gte=d).filter(
         expected_date__lt=datetime.datetime.now()).filter(
         status__in=[WorkshopStatus.COMPLETED,
-                    WorkshopStatus.FEEDBACK_PENDING])
+                    WorkshopStatus.FEEDBACK_PENDING]).order_by('expected_date')
     profiles = Profile.objects.filter(user__date_joined__gte=d)
     no_of_participants = sum([w.no_of_participants for w in workshops])
     template_name = 'reports/index.html'
