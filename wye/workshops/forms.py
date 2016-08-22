@@ -118,25 +118,30 @@ class WorkshopListForm(forms.Form):
     """
     Form to filter workshop list
     """
-    location = forms.ModelMultipleChoiceField(label="Workshop Location",
-                required=False,
-                queryset='')
+    location = forms.ModelMultipleChoiceField(
+            label="Workshop Location",
+            required=False,
+            queryset='')
 
-    presenter = forms.ModelMultipleChoiceField(label="Presenter",
-                required=False,
-                queryset='')
+    presenter = forms.ModelMultipleChoiceField(
+            label="Presenter",
+            required=False,
+            queryset='')
 
-    level = forms.MultipleChoiceField(label="Level",
-                required=False,
-                choices=WorkshopLevel.CHOICES )
+    level = forms.MultipleChoiceField(
+            label="Level",
+            required=False,
+            choices=WorkshopLevel.CHOICES)
 
-    section = forms.ModelMultipleChoiceField(label="Section",
-                required=False,
-                queryset='')
+    section = forms.ModelMultipleChoiceField(
+            label="Section",
+            required=False,
+            queryset='')
 
-    status = forms.MultipleChoiceField(label="Status",
-                required=False,
-                choices=WorkshopStatus.CHOICES)
+    status = forms.MultipleChoiceField(
+            label="Status",
+            required=False,
+            choices=WorkshopStatus.CHOICES)
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
