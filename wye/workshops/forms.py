@@ -113,42 +113,43 @@ class WorkshopFeedbackForm(forms.Form):
         data = {k.split("-")[-1]: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)
 
+
 class WorkshopListForm(forms.Form):
     """
     Form to filter workshop list
     """
     location = forms.ModelMultipleChoiceField(label="Workshop Location",
-        required=False,
-        queryset = '')
+                required=False,
+                queryset='')
 
     presenter = forms.ModelMultipleChoiceField(label="Presenter",
-        required=False,
-        queryset = '')
+                required=False,
+                queryset='')
 
     level = forms.MultipleChoiceField(label="Level",
-        required=False,
-        choices = WorkshopLevel.CHOICES )
+                required=False,
+                choices=WorkshopLevel.CHOICES )
 
     section = forms.ModelMultipleChoiceField(label="Section",
-        required=False,
-        queryset = '' )
+                required=False,
+                queryset='')
 
     status = forms.MultipleChoiceField(label="Status",
-        required=False,
-        choices = WorkshopStatus.CHOICES )
+                required=False,
+                choices=WorkshopStatus.CHOICES)
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(WorkshopListForm, self).__init__(*args, **kwargs)
         self.fields['location'].queryset = self.get_all_locations(user)
         if Profile.is_admin(user) or Profile.is_regional_lead(user):
-            self.fields['presenter'].queryset =  User.objects.filter(
+            self.fields['presenter'].queryset = User.objects.filter(
                 profile__usertype__slug="tutor"
             )
         elif 'poc' in user.profile.get_user_type:
-            self.fields['presenter'].queryset =  User.objects.filter(
-                profile__usertype__slug = "tutor",
-                profile__location__in = self.get_all_locations(user)
+            self.fields['presenter'].queryset = User.objects.filter(
+                profile__usertype__slug="tutor",
+                profile__location__in=self.get_all_locations(user)
             )
         else:
             del self.fields['presenter']

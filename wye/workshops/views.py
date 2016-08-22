@@ -40,34 +40,34 @@ def workshop_list(request):
             x.id for x in request.user.profile.interested_locations.all()]
     )
 
-    location_list =  request.GET.getlist("location")
+    location_list = request.GET.getlist("location")
     if location_list:
         workshop_list = workshop_list.filter(
-            location__id__in = location_list
+            location__id__in=location_list
         )
 
     presenter_list = request.GET.getlist("presenter")
     if presenter_list:
         workshop_list = workshop_list.filter(
-            presenter__id__in = presenter_list
+            presenter__id__in=presenter_list
         )
 
     workshop_level_list = request.GET.getlist("level")
     if workshop_level_list:
         workshop_list = workshop_list.filter(
-            workshop_level__in = workshop_level_list
+            workshop_level__in=workshop_level_list
         )
 
     workshop_section_list = request.GET.getlist("section")
     if workshop_section_list:
         workshop_list = workshop_list.filter(
-            workshop_section__id__in = workshop_section_list
+            workshop_section__id__in=workshop_section_list
         )
 
     status_list = request.GET.getlist("status")
     if status_list:
         workshop_list = workshop_list.filter(
-            status__in = status_list 
+            status__in=status_list
         )
 
     context_dict['workshop_list'] = workshop_list
@@ -80,7 +80,7 @@ def workshop_list(request):
             Profile.is_organiser(request.user) or
             Profile.is_admin(request.user)):
         context_dict['is_not_tutor'] = True
-    context_dict['form'] = WorkshopListForm(user = request.user)
+    context_dict['form'] = WorkshopListForm(user=request.user)
 
     return render(request, template_name, context_dict)
 

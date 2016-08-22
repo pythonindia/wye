@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import base
 from tests import factories as f
-from wye.base.constants import WorkshopStatus
+from wye.base.constants import WorkshopStatus, WorkshopLevel
 from wye.regions.models import RegionalLead
 
 
@@ -45,6 +45,7 @@ def test_workshop_list(base_url, browser, outbox):
     workshop = f.create_workshop(requester=org)
     workshop.expected_date = datetime.now() + timedelta(days=20)
     workshop.status = WorkshopStatus.REQUESTED
+    workshop.level = WorkshopLevel.BEGINNER
     workshop.location = org.location
     workshop.save()
 
@@ -52,6 +53,26 @@ def test_workshop_list(base_url, browser, outbox):
     base.login(browser, url, user, password)
     data_check = browser.find_by_text(org.name)
     assert data_check
+
+    browser.visit(url + "?location={}".format(org.location.id))
+    data_check = browser.find_by_text(org.name)
+    assert data_check
+
+    browser.visit(url + "?location={}".format(org.location.id + 1))
+    data_check = browser.find_by_text(org.name)
+    assert not data_check
+
+    browser.visit(url + "?presenter={}".format(user.id))
+    data_check = browser.find_by_text(org.name)
+    assert not data_check
+
+    browser.visit(url + "?status={}".format(WorkshopStatus.REQUESTED))
+    data_check = browser.find_by_text(org.name)
+    assert data_check
+
+    browser.visit(url + "?level={}".format(WorkshopStatus.ACCEPTED))
+    data_check = browser.find_by_text(org.name)
+    assert not data_check
 
     # Testcase for usertype tutor
     browser.visit(base_url + "/accounts/logout")
@@ -99,3 +120,4 @@ def test_workshop_list(base_url, browser, outbox):
     base.login(browser, url, user, password)
     # data_check = browser.find_by_text(org.name)
     # assert [] == data_check
+    browser.visit(base_url + "/accounts/logout")
