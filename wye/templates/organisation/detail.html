@@ -15,7 +15,7 @@
             {% if object.created_by == request.user %}
             <div class="col-xs-6 text-right">
                 <a href="{% url 'organisations:organisation_update' organisation.pk  %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-cog"></i>Edit</a>
-               
+
                 <a href="javascript:void(0);" data-url="{% url 'organisations:organisation_delete' organisation.pk 'deactive' %}" class="btn btn-danger sub pad-1 org-delete">
                 <i class="fa fa-times"></i>Delete</a>
             </div>
@@ -43,10 +43,40 @@
                         </li>
                         <li class="list-group-item">
                             <div class="row">
+                                <div class="col-xs-4"><strong>Full Address</strong></div>
+                                <div class="col-xs-8">{{object.full_address}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
                                 <div class="col-xs-4"><strong>Location</strong></div>
                                 <div class="col-xs-8">{{object.location}}</div>
                             </div>
                         </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Pincode</strong></div>
+                                <div class="col-xs-8">{{object.pincode}}</div>
+                            </div>
+                        </li>
+                        {% if object.full_address and GOOGLE_MAP_API %}
+                        <li class="list-group-item">
+                          <div class="row">
+                              <div class="col-xs-4"><strong>Address Map</strong></div>
+                              <div class="col-xs-8">
+                                <iframe width="600" height="450" frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/place?q=place:{{ object.full_address }}&key={{ GOOGLE_MAP_API }}" allowfullscreen>
+                                </iframe>
+                              </div>
+                          </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-xs-4"><strong>Address Map Url</strong></div>
+                                <div class="col-xs-8"><a href="{{object.address_map_url}}" target="_blank">{{object.address_map_url}}</a></div>
+                            </div>
+                        </li>
+                        {% endif %}
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-xs-4"><strong>Active</strong></div>
@@ -78,10 +108,10 @@
     <script>
         'use strict';
         $(function(){
-            $('.clickable-row td:nth-child(-n + 5)').click(function() { 
+            $('.clickable-row td:nth-child(-n + 5)').click(function() {
                window.document.location = $(this).parent().attr('data-href');
             });
-        
+
         $(".org-delete").bind('click', function() {
             $.post($(this).attr('data-url'), {}, function(data) {
                 if (data["status"]) {
