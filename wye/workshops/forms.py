@@ -6,13 +6,13 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from wye.base.constants import WorkshopRatings
+from wye.base.constants import WorkshopRatings, WorkshopLevel, WorkshopStatus
 from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
-from wye.regions.models import RegionalLead
+from wye.regions.models import RegionalLead, Location
 
-from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack
+from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack, WorkshopSections
 
 
 class WorkshopForm(forms.ModelForm):
@@ -112,3 +112,56 @@ class WorkshopFeedbackForm(forms.Form):
     def save(self, user, workshop_id):
         data = {k.split("-")[-1]: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)
+
+
+class WorkshopListForm(forms.Form):
+    """
+    Form to filter workshop list
+    """
+    location = forms.ModelMultipleChoiceField(
+            label="Workshop Location",
+            required=False,
+            queryset='')
+
+    presenter = forms.ModelMultipleChoiceField(
+            label="Presenter",
+            required=False,
+            queryset='')
+
+    level = forms.MultipleChoiceField(
+            label="Level",
+            required=False,
+            choices=WorkshopLevel.CHOICES)
+
+    section = forms.ModelMultipleChoiceField(
+            label="Section",
+            required=False,
+            queryset='')
+
+    status = forms.MultipleChoiceField(
+            label="Status",
+            required=False,
+            choices=WorkshopStatus.CHOICES)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(WorkshopListForm, self).__init__(*args, **kwargs)
+        self.fields['location'].queryset = self.get_all_locations(user)
+        if Profile.is_admin(user) or Profile.is_regional_lead(user):
+            self.fields['presenter'].queryset = User.objects.filter(
+                profile__usertype__slug="tutor"
+            )
+        elif 'poc' in user.profile.get_user_type:
+            self.fields['presenter'].queryset = User.objects.filter(
+                profile__usertype__slug="tutor",
+                profile__location__in=self.get_all_locations(user)
+            )
+        else:
+            del self.fields['presenter']
+        self.fields['section'].queryset = WorkshopSections.objects.all()
+
+    def get_all_locations(self, user):
+        if Profile.is_admin(user):
+            return Location.objects.all()
+        else:
+            return user.profile.interested_locations.all()
