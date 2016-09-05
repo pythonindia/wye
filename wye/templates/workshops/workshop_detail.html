@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load workshop_action_button %}
 {% block header %}
     <div class="fill-theme push-2 text-center">
         <h1 class="no-space">Workshop Details</h1>
@@ -9,14 +10,33 @@
     <div class="push-4-bottom">
     	{% if user.is_authenticated %}
         <div class="row push-1-bottom">
-            <div class="col-xs-6 sub">
+            <div class="col-xs-5 sub">
                 <a href="{% url 'workshops:workshop_list' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Workshops</a>
             </div>
-            {% if display_edit_button %}
-            <div class="col-xs-6 text-right">
+            <div class="col-xs-7 text-right">
+                {% if display_edit_button %}
                 <a href="{% url 'workshops:workshop_update' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Edit<span class="hidden-xs"> Workshop</span></a>
+                {% endif %}
+                {% if workshop|show_draft_button:user  %}
+                   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold sub pad-1 sub">Hold Workshop</a>
+                {% endif %}
+                {% if workshop|show_requested_button:user %}
+                   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold sub">Publish/Request</a>
+                {% endif %}
+                {% if workshop|show_accepted_button:user %}
+                   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept sub">Accept Workshop</a>
+                {% endif %}
+		{% if workshop|show_decline_button:user %}
+		   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline sub">Decline Workshop</a>
+               {% endif %}
+	       {% if workshop|show_reject_button:user %}
+                  <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject sub">Reject Workshop</a>
+               {% endif %}
+               {% if workshop|show_feedback_button:user %}
+                  <a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default sub">Share Feedback</a>
+               {% endif %}
+
             </div>
-            {% endif %}
         </div>
         {% endif %}
         <div class="row">
