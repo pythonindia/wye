@@ -85,11 +85,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for p in profiles %}
+                                    {% for p in tutors %}
                                         <tr>
                                             <td>{{forloop.counter}}</td>
-                                            <td>{{p.user.get_full_name}}</td>
-                                            <td>{{p.user.email}}</td>
+                                            <td>{{p.get_full_name}}</td>
+                                            <td>{{p.email}}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -99,6 +99,8 @@
                 </div>
             </div>
         </div>
+        <div>{{state_based_dict}}</div>
+        <div>{{regions_based_dict}}</div>
     </section>
 
 {% endblock %}
