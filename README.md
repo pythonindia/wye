@@ -5,7 +5,11 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pythonindia/wye/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pythonindia/wye/?branch=master)
 [![Code Health](https://landscape.io/github/pythonindia/wye/master/landscape.svg?style=flat)](https://landscape.io/github/pythonindia/wye/master)
 
-wye is the platform to help organisations(Colleges/FOSS) connect to experienced tutors which will benefit number of students to learn Python and real time use of Python in different domains.
+Wye is a software that connects colleges and FOSS organizations looking to conduct workshops on FOSS based technologies with experienced tutors to help students in learning FOSS based technologies and real time use of FOSS based software in different domains.
+
+It is a web application built using python and Django.
+
+PythonExpress (https://pythonexpress.in) is used for Python and related technologies and it is deployed using wye project.
 
 wye is pronounced as #Y
 
