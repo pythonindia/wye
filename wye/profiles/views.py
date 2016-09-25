@@ -3,7 +3,7 @@
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.template import Context, loader
 from django.views.generic import UpdateView
 from django.views.generic.list import ListView
@@ -31,8 +31,8 @@ class UserDashboard(ListView):
     template_name = 'profile/dashboard.html'
 
     def dispatch(self, request, *args, **kwargs):
-        user_profile = Profile.objects.get(
-            user__id=self.request.user.id)
+        user_profile = get_object_or_404(
+            Profile, user__id=self.request.user.id)
         if not user_profile.get_user_type:
             return redirect('profiles:profile-edit',
                             slug=request.user.username)
