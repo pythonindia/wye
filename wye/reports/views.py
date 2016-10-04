@@ -5,7 +5,6 @@ from django.shortcuts import render
 
 from wye.base.constants import WorkshopStatus
 from wye.organisations.models import Organisation
-from wye.profiles.models import Profile
 from wye.workshops.models import Workshop
 
 
@@ -36,7 +35,7 @@ def index(request, days):
         state_based_dict.setdefault(w.location.state.id, [w.location.state.name, 0, 0])
         state_based_dict[w.location.state.id][1] = state_based_dict[w.location.state.id][1] + 1
         state_based_dict[w.location.state.id][2] = state_based_dict[w.location.state.id][2] + +w.no_of_participants
-        
+
 #     print(state_based_dict)
 #     print(regions_based_dict)
     template_name = 'reports/index.html'
