@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views.generic import UpdateView
 from django.views.generic.list import ListView
-
+from django.contrib.auth import logout
 from wye.base.constants import WorkshopStatus
 from wye.base.emailer_html import send_email_to_id, send_email_to_list
 from wye.organisations.models import Organisation
@@ -21,7 +21,8 @@ def profile_view(request, slug):
     try:
         p = Profile.objects.get(user__username=slug)
     except Profile.DoesNotExist:
-        return render(request, 'error.html', {"message": "Profile does not exist"})
+        return render(request, 'error.html', {
+            "message": "Profile does not exist"})
     return render(request, 'profile/index.html', {'object': p})
 
 
@@ -33,7 +34,8 @@ class UserDashboard(ListView):
         user_profile = Profile.objects.get(
             user__id=self.request.user.id)
         if not user_profile.get_user_type:
-            return redirect('profiles:profile-edit', slug=request.user.username)
+            return redirect('profiles:profile-edit',
+                            slug=request.user.username)
         return super(UserDashboard, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -116,7 +118,8 @@ def contact(request):
                 'feedback_type': form.cleaned_data['feedback_type']
             })
 
-            subject = "PythonExpress Feedback by %s" % (form.cleaned_data['name'])
+            subject = "PythonExpress Feedback by %s" % (
+                form.cleaned_data['name'])
             text_body = loader.get_template(
                 'email_messages/contactus/message.txt').render(email_context)
             email_body = loader.get_template(
@@ -148,3 +151,11 @@ def contact(request):
     else:
         form = ContactUsForm()
     return render(request, 'contact.html', {'form': form})
+
+
+def account_deactivate(request, slug):
+    user = request.user
+    user.is_active = False
+    user.save()
+    logout(request)
+    return HttpResponseRedirect('/')

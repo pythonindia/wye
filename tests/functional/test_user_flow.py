@@ -8,7 +8,7 @@ pytestmark = pytest.mark.django_db
 
 
 def test_signup_flow(base_url, browser, outbox):
-
+    f.create_usertype(slug='tutor', display_name='tutor')
     # Sign-Up option should be present there
     browser.visit(base_url)
     sign_up_link = browser.find_by_text('Sign Up')[0]
@@ -55,7 +55,7 @@ def test_signup_flow(base_url, browser, outbox):
     browser.fill('password', 'secretpassword')
     browser.find_by_css('[type=submit]')[0].click()
 
-    assert browser.is_text_present("Edit Profile")
+    assert browser.is_text_present("Dashboard")
 
     # poc_type = f.create_usertype(slug='dummy', display_name='College POC')
     section1 = f.create_workshop_section(name='section1')

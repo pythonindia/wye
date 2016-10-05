@@ -11,7 +11,10 @@ class Organisation(AuditModel):
         choices=OrganisationType.CHOICES, verbose_name="organisation type")
     name = models.CharField(max_length=300, unique=True)
     description = models.TextField()
+    full_address = models.TextField(blank=True, null=True)
     location = models.ForeignKey(Location)
+    pincode = models.CharField(max_length=6, blank=True, null=True)
+    address_map_url = models.URLField(blank=True, null=True)
     organisation_role = models.CharField(
         max_length=300, verbose_name="Your position in organisation")
     user = models.ManyToManyField(User, related_name='organisation_users')
@@ -48,5 +51,4 @@ class Organisation(AuditModel):
         db_table = 'organisations'
 
     def __str__(self):
-        return '{}-{}-{}'.format(self.name,
-                                 self.organisation_type, self.location)
+        return '{} , {}'.format(self.name, self.location)

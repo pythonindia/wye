@@ -31,10 +31,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.fake.seed(4321)
 
-        self.stdout.write('  Updating domain to localhost:8000')  # Update site url
+        # Update site url
+        self.stdout.write('  Updating domain to localhost:8000')
         site = Site.objects.get_current()
         site.domain, site.name = 'localhost:8000', 'Local'
         site.save()
+
+        # User Type
+        self.stdout.write('  Creating User Types')
+        self.create_user_type(counter=NUMBER_OF_WORKSHOP_SECTIONS)
 
         self.stdout.write('  Creating Superuser')
         email = 'admin@pythonexpress.in'
@@ -59,10 +64,6 @@ class Command(BaseCommand):
         self.stdout.write('  Creating sample workshop sections')
         self.create_workshop_sections()
 
-        # User Type
-        self.stdout.write('  Creating User Types')
-        self.create_user_type(counter=NUMBER_OF_WORKSHOP_SECTIONS)
-
         # Profile
         self.stdout.write('  Creating Profile')
         self.create_profile(user)
@@ -82,7 +83,9 @@ class Command(BaseCommand):
             "email": kwargs.get('email', self.fake.email()),
             "is_active": kwargs.get('is_active', self.fake.boolean()),
             "is_superuser": kwargs.get('is_superuser', False),
-            "is_staff": kwargs.get('is_staff', kwargs.get('is_superuser', self.fake.boolean())),
+            "is_staff": kwargs.get(
+                'is_staff',
+                kwargs.get('is_superuser', self.fake.boolean())),
         }
 
         user, created = get_user_model().objects.get_or_create(**params)
@@ -92,8 +95,9 @@ class Command(BaseCommand):
             user.set_password(password)
             user.save()
 
-            self.stdout.write("SuperUser created with username: {username} and password: {password}".format(
-                username=params['username'], password=password)
+            self.stdout.write(
+                "SuperUser created with username: {} and password: {}".format(
+                    params['username'], password)
             )
         return user
 
@@ -163,7 +167,8 @@ class Command(BaseCommand):
         for i in range(50):
             w = Workshop.objects.create(
                 no_of_participants=random.randrange(10, 100),
-                expected_date=date(2015, random.randrange(1, 12), random.randrange(1, 29)),
+                expected_date=date(
+                    2015, random.randrange(1, 12), random.randrange(1, 29)),
                 description=self.fake.text(),
                 requester=random.choice(organisations),
                 location=random.choice(locations),

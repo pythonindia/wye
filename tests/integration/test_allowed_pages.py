@@ -34,6 +34,7 @@ def test_public_pages(client):
 
 def test_staff_pages(client, settings):
     settings.SITE_VARIABLES['site_name'] = 'My Test Website'
+    f.create_usertype(slug='tutor', display_name='tutor')
     normal_user = f.UserFactory(is_staff=False)
     staff_user = f.UserFactory(is_staff=True)
 
@@ -67,8 +68,10 @@ def test_staff_pages(client, settings):
 
 
 def test_orgnisation_pages(client, settings):
+    f.create_usertype(slug='tutor', display_name='tutor')
     settings.SITE_VARIABLES['site_name'] = 'My Test Website'
     normal_user = f.UserFactory(is_staff=False)
+
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     normal_user.profile.usertype.add(poc_type)
     org = f.create_organisation()
@@ -96,6 +99,7 @@ def test_orgnisation_pages(client, settings):
 
 def test_workshop_pages(client, settings):
     settings.SITE_VARIABLES['site_name'] = 'My Test Website'
+    f.create_usertype(slug='tutor', display_name='tutor')
     poc_user = f.UserFactory(is_staff=False)
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     poc_user.profile.usertype.add(poc_type)

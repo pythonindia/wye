@@ -3,6 +3,7 @@ from .. import factories as f
 
 
 def test_regional_lead_flow(base_url, browser, outbox):
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user(is_staff=True)
     user.set_password('123123')
     user.save()

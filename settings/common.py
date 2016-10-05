@@ -221,6 +221,10 @@ TWITTER_CONSUMER_SECRET = os.environ.get("TWITTER_CONSUMER_SECRET", "")
 TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN", "")
 TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", "")
 
+# Google
+GOOGLE_MAP_API = os.environ.get("GOOGLE_MAP_API", "")
+
+
 # Celery
 djcelery.setup_loader()
 
@@ -234,3 +238,5 @@ CELERYBEAT_SCHEDULE = {
         'schedule': crontab(hour=7, minute=30),
     },
 }
+
+CELERY_ACCEPT_CONTENT = ['json']

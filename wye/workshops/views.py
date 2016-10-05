@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 # from django.db.models import Q
+from django.contrib.sites.models import Site
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, render
@@ -16,7 +17,7 @@ from wye.base.constants import WorkshopStatus
 
 from wye.social.sites.twitter import send_tweet
 from wye.base.views import verify_user_profile
-from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm
+from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm, WorkshopListForm
 from .mixins import (
     WorkshopEmailMixin,
     WorkshopAccessMixin
@@ -38,20 +39,37 @@ def workshop_list(request):
         requester__location__id__in=[
             x.id for x in request.user.profile.interested_locations.all()]
     )
-    # if Profile.is_organiser(request.user):
-    #     workshop_list = workshop_list.filter(
-    #         requester__user=request.user)
-    # elif Profile.is_presenter(request.user):
-    #     workshop_list = workshop_list.filter(
-    #         Q(presenter=request.user) | Q
-    #         (requester__location__id__in=[
-    #             x.id for x in
-    #             request.user.profile.interested_locations.all()]))
-    # elif Profile.is_regional_lead(request.user):
-    #     regions = RegionalLead.objects.filter(leads=request.user)
-    #     workshop_list = workshop_list.filter(
-    #         location__id__in=[x.location.id for x in regions])
-    print(workshop_list)
+
+    location_list = request.GET.getlist("location")
+    if location_list:
+        workshop_list = workshop_list.filter(
+            location__id__in=location_list
+        )
+
+    presenter_list = request.GET.getlist("presenter")
+    if presenter_list:
+        workshop_list = workshop_list.filter(
+            presenter__id__in=presenter_list
+        )
+
+    workshop_level_list = request.GET.getlist("level")
+    if workshop_level_list:
+        workshop_list = workshop_list.filter(
+            workshop_level__in=workshop_level_list
+        )
+
+    workshop_section_list = request.GET.getlist("section")
+    if workshop_section_list:
+        workshop_list = workshop_list.filter(
+            workshop_section__id__in=workshop_section_list
+        )
+
+    status_list = request.GET.getlist("status")
+    if status_list:
+        workshop_list = workshop_list.filter(
+            status__in=status_list
+        )
+
     context_dict['workshop_list'] = workshop_list
     context_dict['user'] = request.user
     # need to improve the part
@@ -62,6 +80,7 @@ def workshop_list(request):
             Profile.is_organiser(request.user) or
             Profile.is_admin(request.user)):
         context_dict['is_not_tutor'] = True
+    context_dict['form'] = WorkshopListForm(user=request.user)
 
     return render(request, template_name, context_dict)
 
@@ -69,7 +88,23 @@ def workshop_list(request):
 def workshop_details(request, pk):
     template_name = 'workshops/workshop_detail.html'
     workshop_obj = get_object_or_404(Workshop, id=pk)
-    context_dict = {'workshop': workshop_obj}
+    show_contact_flag = False
+    display_edit_button = False
+    user = request.user
+    user_is_presenter = [u for u in workshop_obj.presenter.all() if user == u]
+    user_is_requester = [
+        u for u in workshop_obj.requester.user.all() if user == u]
+    if (user_is_presenter or user_is_requester or
+            user.is_superuser or ((not user.is_anonymous()) and Profile.is_coordinator(user))):
+        show_contact_flag = True
+    if (user_is_presenter):
+        display_edit_button = True
+
+    context_dict = {
+        'workshop': workshop_obj,
+        'show_contact_flag': show_contact_flag,
+        'display_edit_button': display_edit_button
+    }
     return render(request, template_name, context_dict)
 
 
@@ -94,11 +129,11 @@ def workshop_create(request):
         context_dict['errors'] = form.errors
         return render(request, template_name, context_dict)
     workshop = form.save()
+    domain = Site.objects.get_current().domain
     context = {
         'workshop': workshop,
         'date': workshop.expected_date,
-        'workshop_url': 'https://pythonexpress.in/workshop/{}/'.format(
-            workshop.id)
+        'workshop_url': domain + '/workshop/{}/'.format(workshop.id)
     }
     # Collage POC and admin email
     poc_admin_user = Profile.get_user_with_type(
@@ -230,8 +265,6 @@ def upcoming_workshops(request):
     workshop_list = Workshop.objects.filter(is_active=True).filter(
         status__in=[WorkshopStatus.REQUESTED,
                     WorkshopStatus.ACCEPTED]).order_by('expected_date')
-    for workshop in workshop_list:
-        print(workshop.presenter)
     context_dict = {}
     context_dict['workshop_list'] = workshop_list
 

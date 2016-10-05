@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Reports | {{ block.super }}{% endblock %}
+{% block header %}
+    <div class="fill-theme push-2 text-center">
+        <h1 class="no-space">Reports</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <section class="myreports">
+        <div class="push-4-bottom">
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3 class="space-1q-top"> Report from {{date}}</h3>
+                </div>
+                <div class="col-xs-6">
+                    <h3 class="space-1q-top"> Number of participants: {{no_of_participants}}</h3>
+                </div>
+            </div>
+            <div>{{state_based_dict}}</div>
+        	<div>{{regions_based_dict}}</div>
+            <div class="row push-1">
+                <div class="col-sm-12">
+                    <div class="col-sm-4">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>sl.no</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for org in organisations %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{org.name }}</td>
+                                            <td>{{org.location}}</td>
+                                            <td>{{org.get_organisation_type_display}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="col-sm-4">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>sl.no</th>
+                                        <th>Id</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for workshop in workshops %}
+                                            <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>
+                                                <u>
+                                                <a href="{% url 'workshops:workshop_detail' workshop.pk %}">{{workshop.id}}
+                                                </a>
+                                                </u>
+                                                </td>
+                                            <td>{{workshop.requester }}</td>
+                                            <td>{{workshop.no_of_participants}}</td>
+                                            <td>{{workshop.expected_date}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                        <div class="col-sm-4">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-clickable sub">
+                                <thead>
+                                    <tr>
+                                        <th>sl.no</th>
+                                        <th>Name</th>
+                                        <th>email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in tutors %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{p.get_full_name}}</td>
+                                            <td>{{p.email}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+
+{% endblock %}
+
+

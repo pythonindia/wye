@@ -3,6 +3,7 @@ from .. import factories as f
 
 
 def test_organisation_flow(base_url, browser, outbox):
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
     user.save()
@@ -84,6 +85,7 @@ def test_organisation_flow(base_url, browser, outbox):
 
 
 def test_org_edit_flow(base_url, browser, outbox):
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
     user.save()

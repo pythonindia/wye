@@ -18,10 +18,10 @@ class WorkshopAdmin(admin.ModelAdmin):
 admin.site.register(models.Workshop, WorkshopAdmin)
 
 
-class WorkshopFeedBackAdmin(admin.ModelAdmin):
-    pass
+# class WorkshopFeedBackAdmin(admin.ModelAdmin):
+#     pass
 
-admin.site.register(models.WorkshopFeedBack, WorkshopFeedBackAdmin)
+admin.site.register(models.WorkshopFeedBack)
 
 admin.site.register(models.WorkshopSections)
 admin.site.register(models.WorkshopRatingValues)
