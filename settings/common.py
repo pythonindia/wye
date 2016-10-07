@@ -53,8 +53,11 @@ SITE_VARIABLES = {
         '<a target="_blank" href="https://github.com/pythonindia/wye">'
         '<i class="fa fa-github"></i> Github</a>'
         '&nbsp;&nbsp;'
+	'<a target="_blank" href="https://www.facebook.com/PythonExpressdotin/">'
+	'<i class="fa fa-facebook"></i> Facebook</a>'
+	'&nbsp;&nbsp;'
         '<a target="_blank" href="https://twitter.com/pythonexpress/">'
-        '<i class="fa fa-twitter"></i>Twitter</a>'.format(
+        '<i class="fa fa-twitter"></i> Twitter</a>'.format(
             datetime.datetime.today().strftime('%Y'))
     )
 }
