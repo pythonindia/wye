@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import re
 from wye.base.constants import WorkshopStatus
-from wye.workshops.models import Workshop
+# from wye.workshops.models import Workshop
 from .. import factories as f
 
 
@@ -188,4 +188,3 @@ def test_workshop_flow(base_url, browser, outbox):
     browser.fill('comment', "Testing comments")
 
     browser.find_by_css('[type=submit]')[0].click()
-

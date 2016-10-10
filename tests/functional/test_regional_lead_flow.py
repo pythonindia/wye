@@ -3,7 +3,7 @@ from .. import factories as f
 
 
 def test_regional_lead_flow(base_url, browser, outbox):
-    tutor = f.create_usertype(slug='tutor', display_name='tutor')
+    f.create_usertype(slug='tutor', display_name='tutor')
     section1 = f.create_workshop_section()
     state = f.create_state()
     location = f.create_locaiton()
@@ -32,7 +32,6 @@ def test_regional_lead_flow(base_url, browser, outbox):
     user2.profile.github = 'https://github.com'
     user2.profile.save()
     user2.save()
-
 
     url = base_url + '/accounts/login/'
     browser.visit(url)

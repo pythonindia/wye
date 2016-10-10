@@ -1,7 +1,7 @@
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
+# from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.http import Http404
+# from django.http import Http404
 from django.http import HttpResponseForbidden
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render

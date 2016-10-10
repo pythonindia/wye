@@ -69,10 +69,8 @@ def test_signup_flow(base_url, browser, outbox):
     url = base_url + '/profile/randomnessprevails/edit'
     browser.visit(url)
 
-    # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.select('interested_states', state1.id)
-    #browser.select('interested_locations', location1.id)
     browser.select('location', location1.id)
     browser.find_by_css('[type=submit]')[0].click()
 

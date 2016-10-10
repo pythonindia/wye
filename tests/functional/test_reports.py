@@ -3,7 +3,7 @@ from .. import factories as f
 
 
 def test_report_oage(base_url, browser, outbox):
-    tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
+    f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
     user.save()

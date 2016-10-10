@@ -7,7 +7,6 @@ from django.template import loader
 
 from wye.base.constants import (
     FeedbackType,
-    WorkshopAction,
     WorkshopLevel,
     WorkshopStatus,
 )

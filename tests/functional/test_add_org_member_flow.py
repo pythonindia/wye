@@ -2,6 +2,7 @@ import re
 from .. import factories as f
 from django.contrib.auth.models import User
 
+
 def test_add_new_member_flow(base_url, browser, outbox):
     # ----------------- creating new user ------------------------
     f.create_usertype(slug='tutor', display_name='tutor')

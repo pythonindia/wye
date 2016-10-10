@@ -43,7 +43,7 @@ def test_signup_college_poc_flow(base_url, browser, outbox):
     location1 = f.create_locaiton(name='location1')
     state1 = f.create_state(name='state1')
 
-     # mobile number chechk
+    # mobile number chechk
     url = base_url + '/profile/' + user.username + '/edit'
     browser.visit(url)
     browser.fill('mobile', '')
