@@ -50,8 +50,10 @@ class SignupForm(forms.ModelForm):
         model = get_user_model()
         fields = ['first_name', 'last_name']
         widgets = {
-            'first_name': forms.TextInput(attrs={'placeholder': 'First Name', 'autofocus': 'on'}),
-            'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
+            'first_name': forms.TextInput(
+                attrs={'placeholder': 'First Name', 'autofocus': 'on'}),
+            'last_name': forms.TextInput(
+                attrs={'placeholder': 'Last Name'}),
         }
 
     def signup(self, request, user):
@@ -70,9 +72,49 @@ class UserProfileForm(forms.ModelForm):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         mandatory_field(self)
 
+    def clean_interested_states(self):
+        if ('tutor' in [u.slug for u in self.cleaned_data['usertype']]):
+            if not self.cleaned_data['interested_states']:
+                raise ValidationError('States field is mandatory')
+        return self.cleaned_data['interested_states']
+
+    def clean_github(self):
+        if ('tutor' in [u.slug for u in self.cleaned_data['usertype']]):
+            if not(
+                ('github' in self.cleaned_data and
+                    self.cleaned_data['github']) or
+                ('linkedin' in self.cleaned_data and
+                    self.cleaned_data['linkedin'])
+            ):
+                raise ValidationError(
+                    'Github or LinkedIn field is mandatory')
+        return self.cleaned_data['github']
+
+    def clean_linkedin(self):
+        if ('tutor' in [u.slug for u in self.cleaned_data['usertype']]):
+            if not (
+                ('github' in self.cleaned_data and
+                    self.cleaned_data['github']) or
+                ('linkedin' in self.cleaned_data and
+                    self.cleaned_data['linkedin'])
+            ):
+                raise ValidationError(
+                    'Github or LinkedIn field is mandatory')
+        return self.cleaned_data['linkedin']
+
+    def clean_interested_level(self):
+        if ('tutor' in [u.slug for u in self.cleaned_data['usertype']]):
+            if not self.cleaned_data['interested_level']:
+                raise ValidationError(
+                    'Interested workshop level field is mandatory')
+        return self.cleaned_data['interested_level']
+
+    def is_valid(self):
+        return super(UserProfileForm, self).is_valid()
+
     class Meta:
         model = models.Profile
-        exclude = ('user', 'slug')
+        exclude = ('user', 'slug', 'interested_locations')
 
 
 class ContactUsForm(forms.Form):

@@ -2,11 +2,14 @@ from datetime import datetime, timedelta
 
 import re
 from wye.base.constants import WorkshopStatus
+# from wye.workshops.models import Workshop
 from .. import factories as f
 
 
-def test_workshop_flow(base_url, browser, outbox):
-    f.create_usertype(slug='tutor', display_name='tutor')
+def test_workshop_wrong_action(base_url, browser, outbox):
+    tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+
     user = f.create_user()
     user.set_password('123123')
     user.save()
@@ -23,7 +26,7 @@ def test_workshop_flow(base_url, browser, outbox):
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
 
-    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
     user.save()
     org = f.create_organisation()
@@ -36,7 +39,6 @@ def test_workshop_flow(base_url, browser, outbox):
     workshop = f.create_workshop(requester=org)
 
     workshop.expected_date = datetime.now() + timedelta(days=20)
-    # workshop.presenter.add(user)
     workshop.status = WorkshopStatus.REQUESTED
     workshop.location = org.location
     workshop.save()
@@ -45,9 +47,86 @@ def test_workshop_flow(base_url, browser, outbox):
     browser.fill('login', user.email)
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
-    tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
-    user.profile.usertype.remove(poc_type)
+
+    section1 = f.create_workshop_section(name='section1')
+    location = org.location
+    state = f.create_state(name='state2')
+
+    user.profile.usertype.clear()
     user.profile.usertype.add(tutor_type)
+
+    user.profile.location = location
+    user.profile.interested_states.add(state)
+    user.profile.mobile = '1234567890'
+    user.profile.interested_sections.add(section1)
+    user.profile.interested_level = 1
+    user.profile.github = 'https://github.com'
+    user.profile.save()
+    user.save()
+
+    url = base_url + '/workshop/'+'feedback/000/'
+    browser.visit(url)
+
+    url = base_url + '/workshop/feedback/{}/'.format(workshop.id)
+    browser.visit(url)
+
+
+def test_workshop_flow(base_url, browser, outbox):
+    tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+
+    user = f.create_user()
+    user.set_password('123123')
+    user.save()
+    url = base_url + '/workshop/'
+    browser.visit(url)
+    browser.fill('login', user.email)
+    browser.fill('password', '123123')
+    browser.find_by_css('[type=submit]')[0].click()
+    assert len(outbox) == 1
+    mail = outbox[0]
+    confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
+    assert confirm_link
+    browser.visit(confirm_link[0])
+    assert browser.title, "Confirm E-mail Address"
+    browser.find_by_css('[type=submit]')[0].click()
+
+    user.profile.usertype.clear()
+    user.profile.usertype.add(poc_type)
+    user.save()
+    org = f.create_organisation()
+    org.user.add(user)
+    user.profile.interested_locations.add(org.location)
+    user.profile.location = org.location
+    user.profile.save()
+    org.save()
+
+    workshop = f.create_workshop(requester=org)
+
+    workshop.expected_date = datetime.now() + timedelta(days=20)
+    workshop.status = WorkshopStatus.REQUESTED
+    workshop.location = org.location
+    workshop.save()
+    url = base_url + '/workshop/update/{}/'.format(workshop.id)
+    browser.visit(url)
+    browser.fill('login', user.email)
+    browser.fill('password', '123123')
+    browser.find_by_css('[type=submit]')[0].click()
+
+    section1 = f.create_workshop_section(name='section1')
+    location = org.location
+    state = f.create_state(name='state2')
+
+    user.profile.usertype.clear()
+    user.profile.usertype.add(tutor_type)
+
+    user.profile.location = location
+    user.profile.interested_states.add(state)
+    user.profile.mobile = '1234567890'
+    user.profile.interested_sections.add(section1)
+    user.profile.interested_level = 1
+    user.profile.github = 'https://github.com'
+    user.profile.save()
     user.save()
 
     url = base_url + '/workshop/'
@@ -57,11 +136,7 @@ def test_workshop_flow(base_url, browser, outbox):
     assert accept_workshop_link
     accept_workshop_link.click()
 
-#     reject_workshop_link = browser.find_by_text('Reject')[0]
-#     assert reject_workshop_link
-#     reject_workshop_link.click()
-
-    user.profile.usertype.remove(tutor_type)
+    user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
     user.profile.save()
     user.save()
@@ -81,14 +156,23 @@ def test_workshop_flow(base_url, browser, outbox):
     publish_workshop_link.click()
     hold_workshop_link = browser.find_by_text('Hold')[0]
     assert hold_workshop_link
+    hold_workshop_link.click()
 
 #   checking declined state
     decline_workshop_link = browser.find_by_text('Decline')[0]
+    assert decline_workshop_link
     decline_workshop_link.click()
     workshop.status = WorkshopStatus.REQUESTED
+    workshop.is_active = True
     workshop.save()
 
-    workshop.expected_date = datetime.now() + timedelta(days=-20)
+    url = base_url + '/workshop/'
+    browser.visit(url)
+    accept_workshop_link = browser.find_by_text('Accept')[0]
+    assert accept_workshop_link
+    accept_workshop_link.click()
+
+    workshop.expected_date = datetime.now() + timedelta(days=-22)
     workshop.save()
 
     url = base_url + '/workshop/'

@@ -132,3 +132,7 @@ def create_workshop_section(**kwargs):
 
 def create_locaiton(**kwargs):
     return LocationFactory.create(**kwargs)
+
+
+def create_state(**kwargs):
+    return StateFactory.create(**kwargs)

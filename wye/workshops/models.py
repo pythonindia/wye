@@ -7,17 +7,15 @@ from django.template import loader
 
 from wye.base.constants import (
     FeedbackType,
-    WorkshopAction,
     WorkshopLevel,
     WorkshopStatus,
 )
 from wye.base.emailer_html import send_email_to_list
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
-# from wye.profiles.models import Profile
 from wye.regions.models import Location
 
-from .decorators import validate_action_param, validate_assignme_action
+# from .decorators import  validate_assignme_action
 
 
 class WorkshopSections(TimeAuditModel):
@@ -134,7 +132,7 @@ class Workshop(TimeAuditModel):
             'status': True,
             'msg': 'Workshop successfully updated.'}
 
-    @validate_action_param(WorkshopAction.ACTIVE)
+    # @validate_action_param(WorkshopAction.ACTIVE)
     def toggle_active(self, user, **kwargs):
         """
         Helper method to toggle is_active for the model.
@@ -149,7 +147,7 @@ class Workshop(TimeAuditModel):
             'msg': 'Workshop successfully updated.'}
 
     # @validate_action_param(WorkshopAction.ASSIGNME)
-    @validate_assignme_action
+    # @validate_assignme_action
     def assign_me(self, user, **kwargs):
         """
         Method to assign workshop by presenter self.
@@ -200,18 +198,22 @@ class Workshop(TimeAuditModel):
 
     def get_tweet(self, context):
         workshop = self
-        date = workshop.expected_date
+        try:
+            date = workshop.expected_date.strftime('%d-%m-%Y')
+        except:
+            date = workshop.expected_date
+
         topic = workshop.workshop_section
         organization = workshop.requester
         location = workshop.location
         workshop_url = context.get('workshop_url', None)
-        message = "{} workshop at {} on {} confirmed! Details at {}".format(
+        message = "{} workshop at {} on {} confirmed! Details: {}".format(
             topic, organization, date, workshop_url)
         if len(message) >= 140:
-            message = "{} workshop at {} on {} confirmed! Details at {}".format(
+            message = "{} workshop at {} on {} confirmed! Details: {}".format(
                 topic, location, date, workshop_url)
         if len(message) >= 140:
-            message = "{} workshop on {} confirmed! Details at {}".format(
+            message = "{} workshop on {} confirmed! Details :{}".format(
                 topic, date, workshop_url)
 
         return message

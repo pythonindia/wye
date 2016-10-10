@@ -8,7 +8,7 @@
 {% endblock %}
 {% block extracss %}
 
-<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+<!--<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />-->
 <link href="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
@@ -51,7 +51,7 @@
                         <td>{{workshop.workshop_section.name}}</td>
                         <td>{{workshop.get_workshop_level_display}}</td>
 
-                        <td>{{workshop.expected_date}}</td>
+                        <td>{{workshop.expected_date|date:'l,  M. d Y' }}</td>
                         <td>{{workshop.requester.name}}</td>
                         <td>
                                 {% for u in  workshop.presenter.all %}
