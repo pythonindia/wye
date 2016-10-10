@@ -51,7 +51,7 @@
                         <td>{{workshop.workshop_section.name}}</td>
                         <td>{{workshop.get_workshop_level_display}}</td>
 
-                        <td>{{workshop.expected_date}}</td>
+                        <td>{{workshop.expected_date|date:'l,  M. d Y' }}</td>
                         <td>{{workshop.requester.name}}</td>
                         <td>
                                 {% for u in  workshop.presenter.all %}

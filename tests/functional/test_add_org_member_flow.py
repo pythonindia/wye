@@ -1,6 +1,6 @@
 import re
 from .. import factories as f
-
+from django.contrib.auth.models import User
 
 def test_add_new_member_flow(base_url, browser, outbox):
     # ----------------- creating new user ------------------------
@@ -20,20 +20,23 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.visit(confirm_link[0])
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
-    location1 = f.create_locaiton(name='location1')
 
     # ----------------------add user type -------------------
+    location1 = f.create_locaiton(name='location1')
+    state1 = f.create_state(name='state1')
     poc_type = f.create_usertype(slug='poc', display_name='poc')
+    user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
     user.profile.location = location1
+    user.profile.interested_states.add(state1)
     user.profile.save()
     user.save()
-
     # -----------------------creating organisation ---------------------
     url = base_url + '/organisation/'
     browser.fill('login', user.email)
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
+    url = base_url + '/organisation/'
     browser.visit(url)
     org_create_link = browser.find_by_text('Add Organisation')[0]
     assert org_create_link
@@ -115,7 +118,10 @@ def test_add_new_member_flow(base_url, browser, outbox):
     # edit profile
     assert browser.is_text_present("Dashboard")
 
-    poc_type = f.create_usertype(slug='dummy', display_name='College POC')
+    u = User.objects.get(email='user@example.com')
+    u.profile.usertype.clear()
+
+    poc_type = f.create_usertype(slug='poc', display_name='College POC')
     section1 = f.create_workshop_section(name='section1')
     location2 = f.create_locaiton(name='location2')
 
@@ -123,9 +129,10 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.visit(url)
 
     browser.fill('mobile', '0812739120')
-    # browser.select('usertype', poc_type.id)
+    browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
-    browser.select('interested_locations', location1.id)
+    # browser.select('interested_locations', location1.id)
+    browser.select('interested_states', state1.id)
     browser.select('location', location2.id)
     browser.find_by_css('[type=submit]')[0].click()
 
@@ -157,10 +164,13 @@ def test_add_existing_member_flow(base_url, browser, outbox):
     assert browser.title, "Confirm E-mail Address"
     browser.find_by_css('[type=submit]')[0].click()
     location1 = f.create_locaiton(name='location1')
+    state1 = f.create_state(name='state1')
     # ---------------------add user type -----------------------
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     user.profile.usertype.add(poc_type)
+    user.profile.usertype.clear()
     user.profile.location = location1
+    user.profile.state = state1
     user.profile.save()
     user.save()
 

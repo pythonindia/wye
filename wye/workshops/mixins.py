@@ -32,24 +32,24 @@ class WorkshopAccessMixin(object):
         return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
 
 
-class WorkshopFeedBackMixin(object):
-    """
-    Restrict access to feedback url if
-    - Workshop is not completed
-    - If the user accessing the url is not presenter or
-      organiser
-    """
+# class WorkshopFeedBackMixin(object):
+#     """
+#     Restrict access to feedback url if
+#     - Workshop is not completed
+#     - If the user accessing the url is not presenter or
+#       organiser
+#     """
 
-    def dispatch(self, request, *args, **kwargs):
-        pk = self.kwargs.get('pk')
-        workshop = Workshop.objects.get(id=pk)
-        user = self.request.user
+#     def dispatch(self, request, *args, **kwargs):
+#         pk = self.kwargs.get('pk')
+#         workshop = Workshop.objects.get(id=pk)
+#         user = self.request.user
 
-        if workshop.status != WorkshopStatus.COMPLETED:
-            raise Http404
-        if not (workshop.is_presenter(user) or workshop.is_organiser(user)):
-            raise PermissionDenied
-        return super(WorkshopFeedBackMixin, self).dispatch(request, *args, **kwargs)
+#         if workshop.status != WorkshopStatus.COMPLETED:
+#             raise Http404
+#         if not (workshop.is_presenter(user) or workshop.is_organiser(user)):
+#             raise PermissionDenied
+#         return super(WorkshopFeedBackMixin, self).dispatch(request, *args, **kwargs)
 
 
 class WorkshopRestrictMixin(object):

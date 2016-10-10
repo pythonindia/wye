@@ -20,18 +20,20 @@ def test_workshop_list(base_url, browser, outbox):
     """
 
     # Create usertypes
-    # poc_type = f.create_usertype(slug='poc', display_name='poc')
-    # tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
     regional_lead_type = f.create_usertype(
         slug='lead', display_name='regional lead')
-    f.create_usertype(slug='tutor', display_name='tutor')
-
+    tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    state = f.create_state()
     # Testcase with usertyep poc
     user = base.create_user(password)
     url = base_url + '/workshop/'
     base.login_and_confirm(browser, url, outbox, user, password)
-    # user.profile.usertype.add(poc_type)
-    # user.save()
+    user.profile.usertype.clear()
+    user.profile.usertype.add(poc_type)
+    user.profile.interested_states.add(state)
+    user.profile.save()
+    user.save()
 
     # Create org
     org = f.create_organisation()

@@ -73,6 +73,7 @@ def test_orgnisation_pages(client, settings):
     normal_user = f.UserFactory(is_staff=False)
 
     poc_type = f.create_usertype(slug='poc', display_name='poc')
+    normal_user.profile.usertype.clear()
     normal_user.profile.usertype.add(poc_type)
     org = f.create_organisation()
     org.user.add(normal_user)
@@ -102,6 +103,7 @@ def test_workshop_pages(client, settings):
     f.create_usertype(slug='tutor', display_name='tutor')
     poc_user = f.UserFactory(is_staff=False)
     poc_type = f.create_usertype(slug='poc', display_name='poc')
+    poc_user.profile.usertype.clear()
     poc_user.profile.usertype.add(poc_type)
     org = f.create_organisation()
     org.user.add(poc_user)

@@ -21,6 +21,7 @@ def test_organisation_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     location1 = f.create_locaiton(name='location1')
     poc_type = f.create_usertype(slug='poc', display_name='poc')
+    user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
     user.profile.location = location1
     user.profile.save()
@@ -105,6 +106,7 @@ def test_org_edit_flow(base_url, browser, outbox):
     location1 = f.create_locaiton(name='location1')
 
     poc_type = f.create_usertype(slug='poc', display_name='poc')
+    user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
     user.profile.location = location1
     user.profile.save()
@@ -150,6 +152,7 @@ def test_org_edit_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     poc_type = f.create_usertype(slug='poc', display_name='poc')
+    user2.profile.usertype.clear()
     user2.profile.usertype.add(poc_type)
     user2.profile.location = location1
     user2.profile.save()

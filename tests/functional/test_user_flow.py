@@ -3,6 +3,7 @@ import re
 import pytest
 
 from .. import factories as f
+from django.contrib.auth.models import User
 
 pytestmark = pytest.mark.django_db
 
@@ -57,16 +58,21 @@ def test_signup_flow(base_url, browser, outbox):
 
     assert browser.is_text_present("Dashboard")
 
-    # poc_type = f.create_usertype(slug='dummy', display_name='College POC')
+    u = User.objects.get(email='random@a.com')
+    u.profile.usertype.clear()
+    poc_type = f.create_usertype(slug='poc', display_name='College POC')
+    u.profile.usertype.add(poc_type)
     section1 = f.create_workshop_section(name='section1')
     location1 = f.create_locaiton(name='location1')
+    state1 = f.create_state(name='state1')
 
     url = base_url + '/profile/randomnessprevails/edit'
     browser.visit(url)
 
     # browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
-    browser.select('interested_locations', location1.id)
+    browser.select('interested_states', state1.id)
+    #browser.select('interested_locations', location1.id)
     browser.select('location', location1.id)
     browser.find_by_css('[type=submit]')[0].click()
 
