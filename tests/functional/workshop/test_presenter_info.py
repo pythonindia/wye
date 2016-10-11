@@ -5,13 +5,25 @@ outbox_len = 0
 password = '123123'
 
 
-def test_workshop_details(base_url, browser, outbox):
+def test_presenter_info(base_url, browser, outbox):
+    '''
+    Test the flow of getting presenter information from workshop page.
+    '''
+
+    f.create_usertype(slug='tutor', display_name='tutor')
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    state = f.create_state()
+
     user = base.create_user(password)
+
     url = base_url + '/workshop/'
     base.login_and_confirm(browser, url, outbox, user, password)
     user.save()
     location = f.create_locaiton(name='location1')
     user.profile.location = location
+    user.profile.usertype.clear()
+    user.profile.usertype.add(poc_type)
+    user.profile.interested_states.add(state)
     user.profile.save()
 
     url = base_url + '/workshop/'
@@ -33,12 +45,12 @@ def test_workshop_details(base_url, browser, outbox):
     base.workshop_create(browser, url, org, section1)
 
     # accept the workshop
-    browser.find_by_css(".ws-accept")[0].click()
+    # accpet_btn = browser.find_by_css(".ws-accept")[0]
+    accept_workshop_link = browser.find_by_text('Accept')[0]
+    workshop_row = accept_workshop_link.find_by_xpath(".//ancestor::tr")[0]
 
-    # visit workshop details page
-    workshop_id = section1.id
-    url = base_url + '/workshop/{workshop_id}'.format(workshop_id=workshop_id)
-    browser.visit(url)
+    accept_workshop_link.click()
+    workshop_row.click()
     assert browser.title, "Workshop Details"
 
     # find and click user's full name on the details page
@@ -46,4 +58,4 @@ def test_workshop_details(base_url, browser, outbox):
 
     # veify that profile was indeed open
     assert browser.title, "My Profile"
-    assert browser.is_text_present(user.get_full_name())
+    assert browser.title, user.get_full_name()

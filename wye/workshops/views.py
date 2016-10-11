@@ -133,7 +133,8 @@ def workshop_create(request):
     context = {
         'workshop': workshop,
         'date': workshop.expected_date,
-        'workshop_url': domain + '/workshop/{}/'.format(workshop.id)
+        'workshop_url': domain + '/workshop/{}/'.format(workshop.id),
+        'workshop_topic': workshop.workshop_section
     }
     # Collage POC and admin email
     poc_admin_user = Profile.get_user_with_type(
