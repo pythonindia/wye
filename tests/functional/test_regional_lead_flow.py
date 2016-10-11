@@ -4,12 +4,33 @@ from .. import factories as f
 
 def test_regional_lead_flow(base_url, browser, outbox):
     f.create_usertype(slug='tutor', display_name='tutor')
+    section1 = f.create_workshop_section()
+    state = f.create_state()
+    location = f.create_locaiton()
     user = f.create_user(is_staff=True)
     user.set_password('123123')
+    user.profile.interested_locations.add(location)
+    user.profile.location = location
+    user.profile.interested_states.add(state)
+    user.profile.mobile = '1234567890'
+    user.profile.interested_sections.add(section1)
+    user.profile.interested_level = 1
+    user.profile.github = 'https://github.com'
+    user.profile.save()
+    user.save()
+
     user.save()
 
     user2 = f.create_user()
     user2.set_password('123123')
+    user2.profile.interested_locations.add(location)
+    user2.profile.location = location
+    user2.profile.interested_states.add(state)
+    user2.profile.mobile = '1234567890'
+    user2.profile.interested_sections.add(section1)
+    user2.profile.interested_level = 1
+    user2.profile.github = 'https://github.com'
+    user2.profile.save()
     user2.save()
 
     url = base_url + '/accounts/login/'

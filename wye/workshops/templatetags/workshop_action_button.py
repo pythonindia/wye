@@ -40,7 +40,6 @@ def show_feedback_button(workshop, user):
          datetime.now().date() > workshop.expected_date) and
         (user in workshop.requester.user.all() or
          user in workshop.presenter.all())):
-
         return True
     return False
 

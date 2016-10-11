@@ -9,12 +9,18 @@ def test_workshop_create(base_url, browser, outbox):
     """
     """
     f.create_usertype(slug='tutor', display_name='tutor')
+    poc_type = f.create_usertype(slug='poc', display_name='poc')
+    state = f.create_state()
     user = base.create_user(password)
     url = base_url + '/workshop/'
     base.login_and_confirm(browser, url, outbox, user, password)
     user.save()
     location = f.create_locaiton(name='location1')
     user.profile.location = location
+    user.profile.usertype.clear()
+    user.profile.usertype.add(poc_type)
+    user.profile.interested_states.add(state)
+
     user.profile.save()
 
     url = base_url + '/workshop/'

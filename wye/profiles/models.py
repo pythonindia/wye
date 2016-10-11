@@ -1,19 +1,16 @@
-import json
 
+import json
+from dateutil.rrule import rrule, MONTHLY
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.utils.functional import cached_property
 
-from dateutil.rrule import rrule, MONTHLY
 from slugify import slugify
-from wye.base.constants import WorkshopStatus
-from wye.regions.models import Location
+from wye.base.constants import WorkshopLevel, WorkshopStatus
+from wye.regions.models import Location, State
 from wye.workshops.models import Workshop, WorkshopSections
 
-
-# from django.dispatch import receiver
-# from rest_framework.authtoken.models import Token
 
 class UserType(models.Model):
     '''
@@ -41,10 +38,29 @@ class Profile(models.Model):
     is_mobile_visible = models.BooleanField(default=False)
     is_email_visible = models.BooleanField(default=False)
     usertype = models.ManyToManyField(UserType, null=True)
+    enable_notifications = models.BooleanField(
+        default=True,
+        verbose_name=u"Email Notification")
+
     interested_sections = models.ManyToManyField(WorkshopSections)
-    interested_locations = models.ManyToManyField(Location)
+    interested_level = models.PositiveSmallIntegerField(
+        choices=WorkshopLevel.CHOICES,
+        verbose_name="Interested Workshop Level",
+        null=True, blank=True)
+    interested_locations = models.ManyToManyField(
+        Location, null=True, blank=True)
+    interested_states = models.ManyToManyField(
+        State, null=True, blank=True,
+        verbose_name=u"Interested State *")
     location = models.ForeignKey(
         Location, related_name="user_location", null=True)
+    work_location = models.TextField(
+        null=True, blank=True, verbose_name=u"Present Company")
+    work_experience = models.FloatField(
+        null=True, blank=True, verbose_name=u"Work Experience")
+    no_workshop = models.IntegerField(
+        verbose_name=u"Workshop conducted(apart from pythonexpress)",
+        default=0)
     github = models.URLField(null=True, blank=True)
     facebook = models.URLField(null=True, blank=True)
     googleplus = models.URLField(null=True, blank=True)
@@ -64,32 +80,45 @@ class Profile(models.Model):
 
     @property
     def is_profile_filled(self):
+        if ('tutor' in [x.slug for x in self.usertype.all()]):
+            if (self.location and
+                    self.interested_level and
+                    self.interested_states and
+                    self.interested_sections):
+                return True
+            return False
         if self.location:
             return True
         return False
 
     @cached_property
     def slug(self):
-        return slugify(self.user.username, only_ascii=True)
+        return slugify(
+            self.user.username,
+            only_ascii=True)
 
     @property
     def get_workshop_details(self):
-        return Workshop.objects.filter(presenter=self.user).order_by('-id')
+        return Workshop.objects.filter(
+            presenter=self.user).order_by('-id')
 
     @property
     def get_workshop_completed_count(self):
         return len([x for x in
-                    self.get_workshop_details if x.status == WorkshopStatus.COMPLETED])
+                    self.get_workshop_details if (
+                        x.status == WorkshopStatus.COMPLETED)])
 
     @property
     def get_workshop_upcoming_count(self):
         return len([x for x in
-                    self.get_workshop_details if x.status == WorkshopStatus.ACCEPTED])
+                    self.get_workshop_details if (
+                        x.status == WorkshopStatus.ACCEPTED)])
 
     @property
     def get_total_no_of_participants(self):
         return sum([x.no_of_participants for x in
-                    self.get_workshop_details if x.status == WorkshopStatus.COMPLETED])
+                    self.get_workshop_details if (
+                        x.status == WorkshopStatus.COMPLETED)])
 
     @property
     def get_last_workshop_date(self):
@@ -133,7 +162,9 @@ class Profile(models.Model):
             data = []
             if max_workshop_date and min_workshop_date:
                 dates = [dt for dt in rrule(
-                    MONTHLY, dtstart=min_workshop_date, until=max_workshop_date)]
+                    MONTHLY,
+                    dtstart=min_workshop_date,
+                    until=max_workshop_date)]
                 if dates:
                     for section in sections:
                         values = []
@@ -171,7 +202,8 @@ class Profile(models.Model):
 
     @classmethod
     def is_coordinator(cls, user):
-        return user.profile.usertype.filter(slug__iexact="coordinator").exists()
+        return user.profile.usertype.filter(
+            slug__iexact="coordinator").exists()
 
 
 def create_user_profile(sender, instance, created, **kwargs):
