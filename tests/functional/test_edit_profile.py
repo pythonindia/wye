@@ -74,9 +74,18 @@ def test_signup_college_poc_flow(base_url, browser, outbox):
     browser.select('interested_sections', section1.id)
     browser.select('interested_states', state1.id)
     browser.select('location', location1.id)
-    # browser.fill('github', 'https://github.com')
     browser.find_by_css('[type=submit]')[0].click()
+    assert browser.is_text_present('This field is required.')
 
+    browser.visit(url)
+    browser.fill('mobile', '1234567890')
+    browser.select('interested_sections', section1.id)
+    browser.select('interested_states', state1.id)
+    browser.select('location', location1.id)
+    # browser.fill('github', 'https://github.com')
+    browser.fill('first_name', 'First Name')
+    browser.fill('last_name', 'Last Name')
+    browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('Deactive Account')
 
 
@@ -171,5 +180,18 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     browser.select('location', location1.id)
     browser.fill('github', 'https://github.com')
     browser.find_by_css('[type=submit]')[0].click()
+    assert browser.is_text_present('This field is required.')
+
+    browser.visit(url)
+    browser.fill('first_name', 'First Name')
+    browser.fill('last_name', 'Last Name')
+    browser.fill('mobile', '1234567890')
+    browser.select('interested_sections', section1.id)
+    browser.select('interested_states', state1.id)
+    browser.select('interested_level', 1)
+    browser.select('location', location1.id)
+    browser.fill('github', 'https://github.com')
+    browser.find_by_css('[type=submit]')[0].click()
+
 
     assert browser.is_text_present('Deactive Account')
