@@ -192,6 +192,4 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     browser.select('location', location1.id)
     browser.fill('github', 'https://github.com')
     browser.find_by_css('[type=submit]')[0].click()
-
-
     assert browser.is_text_present('Deactive Account')
