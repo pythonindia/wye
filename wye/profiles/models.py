@@ -10,7 +10,7 @@ from slugify import slugify
 from wye.base.constants import WorkshopLevel, WorkshopStatus
 from wye.regions.models import Location, State
 from wye.workshops.models import Workshop, WorkshopSections
-
+from wye.organisations.models import Organisation
 
 class UserType(models.Model):
     '''
@@ -101,6 +101,13 @@ class Profile(models.Model):
     def get_workshop_details(self):
         return Workshop.objects.filter(
             presenter=self.user).order_by('-id')
+
+    @property
+    def can_create_organisation(self):
+        org_count = Organisation.objects.filter(
+            created_by=self.user).count()
+        return False if org_count > 5 else True
+
 
     @property
     def get_workshop_completed_count(self):
