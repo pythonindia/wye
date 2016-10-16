@@ -14,11 +14,11 @@
                 <h3 class="space-1q-top">{% if is_not_tutor %}My {% endif %}Workshops</h3>
             </div>
             {% if is_not_tutor %}
-            <div class="col-xs-4 text-right">
+            <div class="col-sm-4 text-right">
                 <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request for workshop</a>
             </div>
             {% else %}
-            <div class="col-xs-offset-4">
+            <div class="col-sm-offset-4">
             </div>
             {% endif %}
             <div class="col-xs-2 text-right">
@@ -74,11 +74,7 @@
                             </thead>
                             <tbody>
                                 {% for workshop in workshop_list %}
-                                	{% if is_not_tutor %}
                                 	<tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
-                                	{% else %}
-									<tr>
-									{% endif %}
                                         <td>{{ workshop.requester.name }}</td>
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
