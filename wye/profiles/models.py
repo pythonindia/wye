@@ -12,6 +12,7 @@ from wye.regions.models import Location, State
 from wye.workshops.models import Workshop, WorkshopSections
 from wye.organisations.models import Organisation
 
+
 class UserType(models.Model):
     '''
     USER_TYPE = ['Tutor', 'Regional Lead', 'College POC','admin']
@@ -107,7 +108,6 @@ class Profile(models.Model):
         org_count = Organisation.objects.filter(
             created_by=self.user).count()
         return False if org_count > 5 else True
-
 
     @property
     def get_workshop_completed_count(self):

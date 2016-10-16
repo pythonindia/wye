@@ -72,7 +72,7 @@ class OrganisationCreate(views.LoginRequiredMixin, generic.CreateView):
             user__id=self.request.user.id)
         if not user_profile.is_profile_filled:
             return redirect('profiles:profile-edit', slug=request.user.username)
-        if  not user_profile.can_create_organisation:
+        if not user_profile.can_create_organisation:
             msg = '''Exceed number of organisaiton registration.
                 Use contact us form to connect to co-ordinators'''
             return render(request, 'error.html', {'message': msg})
