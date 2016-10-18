@@ -9,7 +9,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
         <link rel="stylesheet" href="{% static 'css/libs/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/app.css' %}">
-        <link href='//fonts.googleapis.com/css?family=EB+Garamond|Source+Sans+Pro|Mallanna' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600|Alegreya+Sans:800' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         {% block extracss %} {% endblock %}
     </head>
@@ -71,6 +71,8 @@
                     {% block header %}{% endblock %}
                 </header>
                 {% block sub_header %}{% endblock %}
+
+                {% block content_full %}{% endblock %}
 
                 {% block container_body %}
                     <div class="container push-2-top">
