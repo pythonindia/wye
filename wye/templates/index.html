@@ -3,55 +3,93 @@
 {% block title %}Home | {{ block.super }}{% endblock %}
 
 {% block header %}
-    <div class="fill-theme text-center push-8-bottom push-6-top pad-1-xs">
+    <div class="masthead text-center relative">
+        <div class="container vertical-center">
+            <h1 class="masthead__title prose-type">PythonExpress brings<br>tutors, organizations and students together<br>to spread the love of Python far and wide.</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sub_header %}{% endblock %}
+
+{% block content_full %}
+    {% load static from staticfiles %}
+    <section class="intro block clearfix">
         <div class="container">
-            <h1 class="prose-type extralarge">PythonExpress brings <span class="primary">tutors</span>, <span class="secondary">organizations</span> and <span class="tertiary">students</span> together <br>to spread the love of Python far and wide.</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="intro__text">
+                        <p>PythonExpress is an initiative and ongoing effort by the <a href="https://pssi.org.in/" target="_blank">Python Software Society of India (PSSI)</a>. It aims to create an avenue for learning and exploring the Python programming language and community by acting as a bridge between organizations interested in hosting a workshop, students who want to learn, and experienced Python programmers who are interested to teach.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="intro__stats">
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--1">
+                                <div class="statbox__count prose-type">{{ tutor_registered_count }}</div>
+                                <div class="statbox__label">Tutors registered</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--2">
+                                <div class="statbox__count prose-type">{{ organisation_registered_count }}</div>
+                                <div class="statbox__label">Organizations registered</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--3">
+                                <div class="statbox__count prose-type">{{ requested_workshop_count }}</div>
+                                <div class="statbox__label">Workshops Requested</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--4">
+                                <div class="statbox__count prose-type">{{ completed_workshop_count }}</div>
+                                <div class="statbox__label">Workshops completed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-{% endblock %}
-
-{% block sub_header %}
-    <div class="clearfix text-center">
-        <div class="col-sm-3 fill-primary">
-            <div class="huge push-h-top push-1q-bottom">{{ tutor_registered_count }}</div>
-            <div class="regular push-3q-bottom">Tutors registered</div>
+    </section>
+    <section class="fill-silver">
+        <div class="container">
+            <div class="row text-center push-4">
+                <div class="col-md-4">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/teacher.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-2">Know Python? Love to teach? Register as a tutor!</p>
+                        <div class="featurebox__button">
+                            <a href="/accounts/login/" class="btn btn-theme-primary regular push-1q pad-2">I am a teacher</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/host.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-1h">Want to host a workshop at your organization?</p>
+                        <div class="featurebox__button">
+                            <a href="/accounts/login/" class="btn btn-theme-secondary regular push-1q pad-2">I am a host</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/student.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-2">Want to learn? Checkout the upcoming workshops!</p>
+                        <div class="featurebox__button">
+                            <a href="/accounts/login/" class="btn btn-theme-tertiary regular push-1q pad-2">I am a Student</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-3 fill-secondary">
-            <div class="huge push-h-top push-1q-bottom">{{ organisation_registered_count }}</div>
-            <div class="regular push-3q-bottom">Organizations registered</div>
-        </div>
-        <div class="col-sm-3 fill-tertiary">
-            <div class="huge push-h-top push-1q-bottom">{{ requested_workshop_count }}</div>
-            <div class="regular push-3q-bottom">Workshops Requested</div>
-        </div>
-        <div class="col-sm-3 fill-quaternary">
-            <div class="huge push-h-top push-1q-bottom">{{ completed_workshop_count }}</div>
-            <div class="regular push-3q-bottom">Workshops completed</div>
-        </div>
-        <!-- <div class="col-sm-4 fill-theme">
-            <div class="extralarge push-h-top push-1q-bottom">500</div>
-            <div class="regular push-3q-bottom">Students registered</div>
-        </div> -->
-    </div>
-{% endblock %}
-
-{% block content %}
-    <p class="push-2-top push-4-bottom pad-6 pad-1-xs">PythonExpress is an initiative and ongoing effort by the <a href="https://pssi.org.in/" target="_blank">Python Software Society of India (PSSI)</a>. It aims to create an avenue for learning and exploring the Python programming language and community by acting as a bridge between organizations interested in hosting a workshop, students who want to learn, and experienced Python programmers who are interested to teach.</p>
-    <div class="row text-center push-6-bottom">
-        <div class="col-md-4 push-3">
-            <p><i class="fa fa-keyboard-o fa-3x gray"></i></p>
-            <p class="push-3q-bottom pad-2">Know Python? Love to teach? Register as a tutor!</p>
-            <div><a href="/accounts/login/" class="btn btn-theme-primary regular push-1q pad-2">I am a teacher</a></div>
-        </div>
-        <div class="col-md-4 push-3">
-            <p><i class="fa fa-university fa-3x gray"></i></p>
-            <p class="push-3q-bottom pad-1h">Want to host a workshop at your organization?</p>
-            <div><a href="/accounts/login/" class="btn btn-theme-secondary regular push-1q pad-2">I am a host</a></div>
-        </div>
-        <div class="col-md-4 push-3">
-            <p><i class="fa fa-graduation-cap fa-3x gray"></i></p>
-            <p class="push-3q-bottom pad-2">Want to learn? Checkout the upcoming workshops!</p>
-            <div><a href="/accounts/login/" class="btn btn-theme-tertiary regular push-1q pad-2">I am a Student</a></div>
-        </div>
-    </div>
+    </section>
 {% endblock %}

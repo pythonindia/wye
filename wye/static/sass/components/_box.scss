@@ -1,0 +1,36 @@
+.statbox {
+    width: 100%;
+    margin: 0.5em;
+    border-radius: 0.3em;
+    color: white;
+    padding: 1em 1.3em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    &__count {
+        font-size: 2.5em;
+        padding-bottom: 0.3em;
+    }
+    &__label {
+        font-weight: 300;
+    }
+    &--1 {
+        background-color: $primary;
+    }
+    &--2 {
+        background-color: $secondary;
+    }
+    &--3 {
+        background-color: $tertiary;
+    }
+    &--4 {
+        background-color: $quaternary;
+    }
+}
+
+.featurebox {
+    padding: 2em;
+    &__icon {
+        width: 9em;
+        margin: auto auto 1em auto;
+    }
+}

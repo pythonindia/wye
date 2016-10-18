@@ -110,3 +110,12 @@
 .contain-width {
     width: 100%;
 }
+
+.vertical-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.relative {
+    position: relative;
+}
