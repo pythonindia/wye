@@ -1,6 +1,10 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}Home | {{ block.super }}{% endblock %}
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'css/libs/justifiedGallery.min.css' %}">
+{% endblock %}
 
 {% block header %}
     <div class="masthead text-center relative">
@@ -13,7 +17,6 @@
 {% block sub_header %}{% endblock %}
 
 {% block content_full %}
-    {% load static from staticfiles %}
     <section class="intro block clearfix">
         <div class="container">
             <div class="row">
@@ -56,7 +59,7 @@
     <section class="fill-silver">
         <div class="container">
             <div class="row text-center push-4">
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="featurebox">
                         <div class="featurebox__icon">
                             <object type="image/svg+xml" data="{% static 'img/home/teacher.svg' %}"></object>
@@ -67,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="featurebox">
                         <div class="featurebox__icon">
                             <object type="image/svg+xml" data="{% static 'img/home/host.svg' %}"></object>
@@ -78,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-3">
                     <div class="featurebox">
                         <div class="featurebox__icon">
                             <object type="image/svg+xml" data="{% static 'img/home/student.svg' %}"></object>
@@ -92,4 +95,96 @@
             </div>
         </div>
     </section>
+    {% if upcoming_workshops %}
+        <section class="home-workshops">
+            <div class="container push-4-bottom">
+                <div class="row push-4-top push-2-bottom">
+                    <div class="col-sm-6">
+                        <h3 class="no-space-top">Upcoming Workshops</h3>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <button class="btn btn-theme btn-theme-accent font-regular">View all <i class="fa fa-angle-right pad-h-left"></i></button>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for workshop in upcoming_workshops %}
+                        <div class="col-md-4 col-sm-6">
+                            <a href="/workshop/{{workshop.id}}/" class="eventcard block">
+                                <div class="eventcard__title truncate">
+                                    <h3 class="eventcard__topic no-space-top">{{workshop.workshop_section.name}}</h3>
+                                    <label class="eventcard__level label label-success">{{workshop.get_workshop_level_display}}</label>
+                                </div>
+                                <div class="eventcard__location truncate">
+                                    <i class="eventcard__icon fa fa-map-marker"></i>
+                                    {{workshop.requester.name}}, {{workshop.location}}
+                                </div>
+                                <div class="eventcard__speaker truncate">
+                                    {% if workshop.presenter.all %}
+                                        <i class="eventcard__icon fa fa-user"></i>
+                                    {% endif %}
+                                    {% for u in  workshop.presenter.all %}
+                                        {{u.get_full_name}}
+                                    {% endfor %}&nbsp;
+                                </div>
+                                <div class="eventcard__date gray">
+                                    <i class="eventcard__icon fa fa-clock-o"></i>
+                                    <em>{{workshop.expected_date|date:'l,  M. d Y' }}</em>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    <section class="photos-gallery">
+        <div id="mygallery" >
+            <div>
+                <img alt="Title 1" src="https://lh3.googleusercontent.com/CcwvPjJFGhhizOd7NMIx74K6B58efWshcuoGO1G3LPr4a9KAVmPkR2pes1KQGdLW4-jFxXLSigFSSJ_QUezArXb4rfouHSbQ5z1s_Z3Aksx9hHck0inDC4AzbryB_OKd2GtrBfsnvFLjpwFNP64Cp_cI8bnI14eFHXiPNVW7cNTiwdLO6y2zSUyLBC-ldcAmW7JThtevMBSafR1N0DnH0ElSnVfbqzbCEN2P1AWpJZM3TfSQwXFNEcXiNR_y26HsU35OL12AK9idXvpwpyLuoyYdhxMeNjkwXCc8bpyLe1t-pPyH8wDiVpx0qcK3azEi3t_aROTeI0Q0b5UO2x5ONFUDs4Iet6PRByEPReCWg2SiSrD5_JZEM7D8uaM66E-3skz12NrTVvcrDzAIssnhS4HUQ5c4EwXMjducgfzsoGFMX6usrkm9pc_ge-YMf6AEUVZSZomo4t2vT9wOCbz3IidzYYzGVmqE0XTUyrZj5xTAGIoeClspA2OJTN6rloWOgxn22M2LCMHYtabb6tBvdlfq6Pb8lWZqVrV-fLGkfnKwMADS6F7WfLsMj7UKVcxQduw9HE87cSn2UQNBk2AfMe6XQdiVOWdvGVSE6EytODM75Fgn=w274-h182-no"/>
+            </div>
+            <div>
+                <img alt="Title 2" src="https://lh3.googleusercontent.com/BoZI16JySxn8kcs4ojnzS5SLgyl_Tvnf4M--vZj2S0hVWTSUi9tFWxyYZIhi-Ix95PmGL2V8LuOwEU2T1joADJkMqhmXra9a2cYb-dRQCs5yhyduPbXH6iQhtoWQO2H_nK5BseWovdTOnA4_3NkFPSQOnSp0Tcgj4AvxHPb5p_sHtOEuDnUVk2EoGofIu5qY2JQSVqGl6pP4bnWWJjomI3-mr3SKmNd4elxcauz-45MChLyX6AmMX8rR868vXM4TsmB7yo0x35nY9EH6lCvkB9yLuvPGlAQZpVEImA030Yx_xmctl-bsk6fpMcAwmDxh2G1cGsfPSw7D16ymdqBT66KgOJ85_UlYdGvuGGWAZF6su-0vIoNadEz1JguAaM7oGM69Q9MF2JiV-KN7IIkQdDyGcBI4MVCjqbHt_lpzH9vCT4EPwHEzugQHdziLAqyQLDbaCv_Eh_hgo9BtsFbc8m9gGxDNK6Jms7gO1eI7l5I1WcsNxaXDnhTg4waadG_EvuHQ_EfXXKxyznTqE3hiHfl5-SQvw79b901ABcDN1jX5lIm1sY4g_Vvd9KDwFVA0wETA5u0GZqWHEs3DmQPlgKWfY1SUsyJ07JexTwogw4GJaPb9=w350-h197-no"/>
+            </div>
+            <div>
+                <img alt="Title 3" src="https://lh3.googleusercontent.com/COev9l6dJ6xG0TFtdZLf2j5HVpufM51Bv6gSUb1vXXHABbdsJ_KAejDBzU8aPrmj_zYOak3D8fIk4mTkjwHqXfUMWuF6f5P34FaFjKNOotHCjXMiK1Rztu6CX7yYNKS8g-dmbW9Tnb7ceH1SoxMrC7Hwz_A8EPP9N8teAMDRaWpWIq4iayMfuka7BbpuMVY8TFjHJPYc5OjaknjuyJG_d9KmWAxlxJBFL7xG2L5tayoAvTo0cR2PrBLlOAMjg4qCI7FaCEeRC2yqt9GYTN1vJvJVPCzecvxnzhXkipo6dLkWOzVlCh6AW-6AWjLEODLQ1N7dJWVHETvVq3pCNVyVB55i0SdbwxAzZHkGykzQHPoC-SZgPKa96a9EE1UylE7l58hIC1GgyGUhftjxhrLIjkTsOUYOwaVeEJhN8WvnWIQ-S8PedQ2U5GWyElKuY5pFf4nRVf-QPC4ScvHP3-2GWTnQii05v-SOrP6iR2voZABrqLhoi2DN_1tu41skld09YZvyWaqk8GS1yf6fYwahsSGwUq8WDSyRq6ihpPgy_YgiGka5A9lDA0zSXD-AfD7x6lGuhohLjtFCDWy00JWX49li6gRZTAHyDB-zTZ70AFM73g6n=w325-h243-no"/>
+            </div>
+            <div>
+                <img alt="Title 4" src="https://lh3.googleusercontent.com/xhkmOurxFC9ZR9d7ruixZiwq28QRmX3JudkFbCbJDG4hnG1WpkmalXTmiuCOYH6--KgZhBX1_O4Esho_MMtThjHd1J50ytNpuopkwfU1K0pb2nNX-IxghUlUEEKu34vkIk7OsF3E8-r1EfIG8M8SZY2bNvqiU8wL8GSxBkU4t3bGXSDyJz7rxLUdR6Jyc25cJxiQBUoGn-b27EsgxxWuezvFm7YXED4DidZj2MT9JmNxpgdbdlug58E8IAPlhbGpaK5x33QrCBMPQllerUo6lwvOPVlWkdr1qEsd5hEphnFAWTlDUK7-9mBTBy-r32InaYP_cn9h44Y8swgYEKUJ5-QEX7OfqVxVLkH-uhb8QiJtDodLkSHRYmgOUizHglhDwNjZxT8et92WoIBBAYcGww9Whpsg7KAzTi_lj9Er8S4rmLuPX1HtC47Ob9oJIMm_kQakqzaFI9iblKTtVXtDo06cEv0WPeTyU2iiVphoo5Z7BVVO9alUVZOWBX5zyCZms3QtBVjuuFqzTh6pyagvWc4KfVUstzapqOJsZ4dWFcQDbI7TDur4ljESkNEvijO6r3Ir6b1aKy64hpHrZSpOd6CIjAbICfu2zH4-X5OQYMwOdCuV=w356-h200-no"/>
+            </div>
+            <div>
+                <img alt="Title 5" src="https://lh3.googleusercontent.com/hYCQ8btAgXf0QpJelb9CKovbbSpXbDlIZnM0yOq5mx-BrWc_a6u6CrextlKA8evRJxNjxbLVuSqCIogW3oQbDdTqI_l8ZHuQ5cfSG_4rGPy9BxK4LpWheizbTMsZdcjh01fX_alLmOdDz321Mu9XcsWGNALuDU7rbI9_rEQFf5WWTsJlKjq1KTetOqgOTYFTLLijFKt9vgCdBLCQaBOpIAzLf-amyt8uKBIuZ6M59ipfkC6iHw5E-m7z_t2tljx7gi2vPlli5xniEny1Qnoej4RTG6pf5U_ZzbFuyJL1wFQCtDK0FxVMRu61OAsl7WzkR6LVVr3dw6flIAndTQOKZvE2wPVs-dPfwLl7gOzScG94HonrVvbi8RN6UQPYPa4h1Sm3PNyQnwqELR1iST5HYIymHRoO1WOu4qQTxNaSYnkgZyur3-WmMm6Q82trEl9jUvprvBqygdZkfVWqOCoJV4jfEpU6uWGGf1pyfXuHK63sXENG4OghAmBFUUydM3DiEV-Ox2Nbe4WXut7lBta_m2ofTNZZ2mGYRq8AIl63psqrBsI-Hh2uEYD9uZTxINXxdsQOniKR-0-ZlW7q2juF6HZ3WWCeYoptebIDxJlUNyiZvHKP=w254-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 6" src="https://lh3.googleusercontent.com/pVOv1f_tlY1CsmcuJDSSAoSoGEovSYrE_UL75M1Mzqs3T2D7dKggM0anilVapLZM4JdH9fO23N1MX1N-YVqnZ3nhJVxsyWaI26R-zvJDbqbaC4gVvXJ9mYWvJA7qDj55ps_bRfh3pVrY_jhC6-HkvY6fTSoOpoxd_2uMqyRcsiQebWGwIYzquhNJ17_c8IDHxq1MPLB0rNuWVHtJVG1k9BBfdZSxtSEkq2v1buaVSHEW_p7tglMDGVpf69k5GRriHwOyPxzj1GBCEfrvH62H6I0db11O1guzhQPRQ8xzTzCvO16MttwuWHO7jvWndlZZGkWHN5PiJC3tnNz80ZQapSqUOe_XRQ3Y0tbV9JhEekwfEukvsdG6ax7xJEbvFtQiC2LmRWaOZ0oeCjPYdW527I8uYq2_8gwQDTuLNk2aYD6zif0s7IdLAxmb60cW5BJdmxxn2Q8glfheTtPpNAmx-wsMWMg7nSHGyiYPiRl-06DPgfgZj9_F-7ajagNGrffcChTc5mS4rfteKtGE9w1HemMLWCjNyvJaWZgsC-pT4xmsk5D98YB1_SzhjIYuWP9znrnPWcltY5dXMgMHOZ2T7wzAlYjLyTI3bxF_EI4oYKKn9e5_=w253-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 7" src="https://lh3.googleusercontent.com/HsfPDvoIVN_5kriMCJTrfvuSeeZABG-9Q6wwEz6t7YZU0xN1ssyKo5Ogqqndr3DkSf7ze1IE0cZFP5qPza4vQWAM0An2mS-sudOU-TXgdL7-ryGJPtZKamJbTqooZA4j3FMqrzRfrrqDvW56Hd_OZMg9r7bM4sd7lmtJAT43vM_y0nwz8xAzugNL5aGsQR7HFWYcB8b0iIgawr2DakL1IR1viprEpyWdBOTxlJ_Ps7O5hNG3ztBvNo3yEpcglfnGkD2VD2NMjnJQrquHSBHgzcfVOX5xzW9-C3CCPJsRU1BLD5nYgoquVFvOmQ5A6-lECtUsUOXy-iVdOpPfue2_m-2ekv367eSs0G8ZTpNQ3SY8Lt7hm_XiDFcSSPPmlQlpkP-RGSYbmyySBp0y2qRtyM2Ylpwh3tn1LeQUjfuAEAPiDilCSJ26Ro7oFx3tEAcU8etsrvaBnqz91RwHiPDhLKn1XHddgSU9lI13X7eCyenIocLN1LmYP8APpYhQJp2ORrW4IkzYBScqJJL6pDqjB5N3qZx11BgbFFojVolHitZDOt6Ha7z4NU08-Kx9CJ3Evl2Qh-Gmt82hcyxHiZvmx-I230sTkjoIH0ewi1y7pliRtfP1=w254-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 8" src="https://lh3.googleusercontent.com/YRZviz0Axpyzo3hexfF8pbfq3bNz4guBHPso7FA5Vqbygqf61ExlJ_SuNjmrXsarlfHnAzN4JNEVHKHAWzbe5uVhWQP7-Obv-aT52AkD1iMjm_7CT6r_rsvc8IZKEHf0xyZwZPPyYTHhT0_AcOKkHFz3Ht3M1PD7alSOsINTDGu2XyauWN4LRb7GbOV5fIuLTQhbJcxFgB2noWJ0ADwhdat-ej9IvOUjAPNh6KSRNddS3hd8Lw97nseWZRczDqDpuGS1DZ02FSBNNN-dodO6r6mkgM2T_c0echdUsEIKqyZgcOsXBQ7KOmUUH-7ABzH_Dktin7qjlkgZxKmMv5FQwiQedZko6zzK7bqVRWi74zUxX7V-mwJcG_TFXL9lcnr92D4wb5nZyyQaalmhoWnoI47FpM7L2_1qHXpAZOjm13nM0KLrKDdNnA-olKiz6UPlSFo3_HhZ53T7wJT83hds9BtbaSZMNASM7WUCsUGvbNZn3jMFDh2hW_DqPL9tv1c0VYQ-4qQ4tHWVA3lv_ozygUPYM6djtgI6KQPLTbHLIMnwNVLYV51hNQqfzqpmk6VCwwGlkl-9zpYeP4vQjNnOszJhGmCOxYIjYK-iJtADk2dLgF1J=w253-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 9" src="https://lh3.googleusercontent.com/AMC5Jm-YRejKiGtp8q7vLvgWGUde1qXJepqGrDUseo3Dn79YrMirbcYvb3gFWPBYwiD48L9VUPqCZ12Ny6Q4Tmd1aaRKAKvuWjEQcQ8No0_gh8aqJ-UPsW5r58HFc9BXUhNRQyRfdFE1M9rMGRGLkUt728YYx3Hn5EN166JiV1NwmTs5eY_Eos8UjmMt2L3LQX_D3i7KF5erJuXPRPlKCGhjj6CQJmELmMlZs03vyFcF9o3jNvrIkUYAOGUtPyMFzygEXok5t3NnhpLWc8sS1XGbPLxY6O-py8i9vQzVBSpUVbBOG8IEXmWT_tHLSvjzaY4oweDn1uGPLO6CEiHdQCITDQ8IRsxHD6CDS_qahN8c18yncRbIoSPPUY6R5lRq8JVHHL_cM0O7YNcpqPZXBIUmaLkI0_3l6p8Pxxow-ZNRbHfeJaYHlmH9CusbnFvlezyU0B8k_FhlkqIzJTRQ4GzkeZ4bLZPiAkTHaQqct8uUKxhkvkGMzzETDWXrd4VAMyw5-7fVqAX_9cp48x7OQKGr00bt2cYJxVhT_jUR6J0y00rN0x4Nf9Wji04N-zOvatf6PX9O5uF9ZLkdrXCXOj5ebBkyfZ-1CUweJnSXTy4Gdihi=w254-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 11" src="https://lh3.googleusercontent.com/s9UWVzaI3MkZwBrBWBJnuWxPwXRrqLCh5UhtKyleMdlMVw6b720whz2k7d5P_beWU2z_MZVNM_v_QpQIsfOr0D8dZwNDKCOAMaDogU3c5kRzFHZVb7SeH1bwZ7mSmtyGtzPyqN4za9tk5EefiNlx_kCGGx0PRb1e2MhD2ohY2pqXz56gaTgXe18duI2sEapFyBIZmJGYtCXQ22mPP5howwdB_ZCSK6yvB2MILHgK4qQHStc0Hn4EoaYVhCUCcRfBRkuXeYe0Yz1LenfwZjpmegNDdkDLDX65PYWxGMAVpPfOwrBQdZJGJ5IHc1v5QImpBdGjWX1Qv1_IMftBS_RBG5Bk-KTlbAUAbr-esms_VI8j97KHDkDYbzCi2PoKLAJDoFm0eJd3y37C3QddZM5I6hKsVgJKuUslyrG2cKLrb_KEH5x_MchAgRFQDuANmBYCJS8Wc9lLObBVApYcxf7pXyKJGdeO8dxLUtQKuUuUr4cFZlCpNKwX7xCk8VHvIWkjyqQgfzZhXaaFTuuR8lnzHvx_5mz8uyOesCyU9Tpp4dfmy6UmIk_uCd0RyJw82Yu3nCK-zdx-Mkjd2GF87vmx1InNBugwnVAEqL17R31GubXz_uuj=w350-h219-no"/>
+            </div>
+            <div>
+                <img alt="Title 10" src="https://lh3.googleusercontent.com/xzGUmUVm3FrVQW9gdYcI3FZUSTwrQuLtQbdxniRYzzFhbYZ9-OQH9soC8ueUV_FSZcvMx1pdhOGzKJWwT7pICQYDsadJLZi61TII7Lte7s6f5nbEYJR58SlE8aTP3ffnDQNmLoLIaGj-D6NnYGkYhKCLRJKFvyu2a6oYdcGX9SBB6B4RJSssYJmouJeX_abF_bySrFUAPSMrMuCGv40hf260g-OguCrAme5ApigDTBUnlLRSK8yuV8dvuxLbhhk95wKu8K2NOaLZWrjHHyfhvw077vlzsIGBCOliNbQK4j_PvAN8-4Qi3o1s04pP_48wHMlQnYhG4LzY0UFNCUhc3pbgZc551IF9yedHLP1EpL6CrnHO2osfP782aJ34zhmYaEgWl2IJlzoiKmGSc8U79lew2gsv-vU_7hzcE9WQb7QoEyrzuqPIxneAm9BPkrwaUIP7v5tXzhL22m1J_fra2qQ7AvYp6hnsK41jLP1J4hEZgobtXqnF-6NqseOzqqly6b6IsIDn4E2G92OcFv4A994wppCSDsNi366GNrWEswbIPhem6izFKR3UUztGA84s3DmNPsH-6Spd47Au96JDqXB9q1oQneSPJO2K3VnAmPjzoc_K=w350-h197-no"/>
+            </div>
+            <!-- other images... -->
+        </div>
+    </section>
+{% endblock %}
+
+{% block footer_scripts %}
+    <script src="{% static 'js/libs/jquery.justifiedGallery.min.js' %}"></script>
+    <script>
+        $("#mygallery").justifiedGallery({
+            rowHeight : 150,
+            lastRow : 'hide',
+            margins : 3,
+            captions: false
+        });
+    </script>
 {% endblock %}
