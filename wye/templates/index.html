@@ -110,15 +110,11 @@
                     {% for workshop in upcoming_workshops %}
                         <div class="col-md-4 col-sm-6">
                             <a href="/workshop/{{workshop.id}}/" class="eventcard block">
-                                <div class="eventcard__title truncate">
-                                    <h3 class="eventcard__topic no-space-top">{{workshop.workshop_section.name}}</h3>
-                                    <label class="eventcard__level label label-success">{{workshop.get_workshop_level_display}}</label>
-                                </div>
-                                <div class="eventcard__location truncate">
-                                    <i class="eventcard__icon fa fa-map-marker"></i>
-                                    {{workshop.requester.name}}, {{workshop.location}}
-                                </div>
-                                <div class="eventcard__speaker truncate">
+                                <!-- <div class="eventcard__title truncate"> -->
+                                <h3 class="eventcard__topic no-space push-1q-bottom truncate">{{workshop.workshop_section.name}}</h3>
+                                <label class="eventcard__level label">{{workshop.get_workshop_level_display}}</label>
+                                <!-- </div> -->
+                                <div class="eventcard__speaker truncate push-h-top">
                                     {% if workshop.presenter.all %}
                                         <i class="eventcard__icon fa fa-user"></i>
                                     {% endif %}
@@ -126,8 +122,12 @@
                                         {{u.get_full_name}}
                                     {% endfor %}&nbsp;
                                 </div>
+                                <div class="eventcard__location truncate">
+                                    <!-- <i class="eventcard__icon fa fa-map-marker"></i> -->
+                                    {{workshop.requester.name}}, {{workshop.location}}
+                                </div>
                                 <div class="eventcard__date gray">
-                                    <i class="eventcard__icon fa fa-clock-o"></i>
+                                    <!-- <i class="eventcard__icon fa fa-clock-o"></i> -->
                                     <em>{{workshop.expected_date|date:'l,  M. d Y' }}</em>
                                 </div>
                             </a>
