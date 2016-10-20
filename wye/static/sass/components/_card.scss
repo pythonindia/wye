@@ -23,3 +23,9 @@
     }
     &__speaker {}
 }
+.twitter-widget {
+    &__profile {
+        height: 40em;
+        overflow: auto;
+    }
+}
