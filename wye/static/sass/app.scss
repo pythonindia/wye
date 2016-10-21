@@ -15,12 +15,12 @@
     margin: 0;
     box-sizing: border-box;
 }
-/* sticky footer */
-html, body {
-    height: 100%
+
+::-moz-selection, ::selection {
+    background: $theme;
 }
+
 .wrapper {
-    min-height: 100%;
     margin: 0 auto;
 }
 
@@ -92,13 +92,17 @@ p a {
 }
 
 footer {
-    font-size: 1.2em;
+    background: $color__bg--dark;
+    font-size: 1em;
     li {
         margin: 1em 0;
     }
+    &, a {
+        color: $color__text--spacegray;
+    }
     a {
         &:hover, &:focus, &:active {
-            color: $primary;
+            color: white;
         }
     }
 }
@@ -114,23 +118,26 @@ footer {
         border-radius: 50%;
         text-align: center;
         padding: 0.5em;
-        width: 1.9em;
-        height: 1.9em;
-        color: white;
+        width: 2em;
+        height: 2em;
         font-size: 2em;
         line-height: 1;
         margin-right: 0.5em;
-        &--twitter {
-            background-color: $twitter;
-        }
-        &--facebook {
-            background-color: $facebook;
-        }
-        &--mail {
-            background-color: $mail;
-        }
-        &--github {
-            background-color: $github;
+    }
+    &__media:hover {
+        & > .social__icon {
+            &--twitter {
+                background-color: $twitter;
+            }
+            &--facebook {
+                background-color: $facebook;
+            }
+            &--mail {
+                background-color: $mail;
+            }
+            &--github {
+                background-color: $github;
+            }
         }
     }
     &__label {

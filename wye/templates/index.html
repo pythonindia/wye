@@ -175,58 +175,67 @@
             <!-- other images... -->
         </div>
     </section>
-    <section class="twitter-widget fill-silver">
-        <div class="container push-4">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 text-center">
-                    <a href="https://twitter.com/pythonexpress" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @pythonexpress</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                    <div class="twitter-widget__profile space-2-top">
-                        <a class="twitter-timeline" data-height="500" data-theme="light" href="https://twitter.com/pythonexpress">Tweets by pythonexpress</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="testimonial">
-        <div class="container push-4">
-            <h3 class="text-center push-3-bottom">Testimonials</h3>
-            <div class="row push-2-bottom">
-                <div class="col-md-6 col-sm-offset-0 col-xs-8 col-xs-offset-2">
-                    <div class="testimonial__block">
-                        <i class="fa fa-quote-left testimonial__icon"></i>
-                        <span class="testimonial__quote">Students have asked us to arrange more of these workshops in future. I would like to request you guys if we can have a regular enthusiast to help develop competency in the language for 3 months.</span>
-                    </div>
-                    <div class="testimonial__block">
-                        <i class="fa fa-quote-left testimonial__icon"></i>
-                        <span class="testimonial__quote">Anuvrat has been amazing throughout the session with his energy. He also inspired participants to focus on their own projects and goals.</span>
-                    </div>
-                    <div class="testimonial__block">
-                        <i class="fa fa-quote-left testimonial__icon"></i>
-                        <span class="testimonial__quote">It was nice experience for us , in future we will try to do some more</span>
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-offset-0 col-xs-8 col-xs-offset-2">
-                    <div class="testimonial__block">
-                        <i class="fa fa-quote-left testimonial__icon"></i>
-                        <span class="testimonial__quote">we really appreciate the efforts given to make this open workshop available to all the girls...and we hope to have many more with more response from our peers as learners.</span>
-                    </div>
-                    <div class="testimonial__block">
-                        <i class="fa fa-quote-left testimonial__icon"></i>
-                        <span class="testimonial__quote">Mr. Jaisinh Shukla along with his team were knowledgeable and cooperative throughout the workshop. Students are now waiting for more such advanced Python workshops to be organized in near future.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-{% endblock %}
 
+    <div class="panel-container contain-width fill-theme">
+        <div class="panel-half fill-primary">
+            <section class="testimonial">
+                <div class="container-fluid push-3 pad-4">
+                    <h3 class="text-center push-1h-bottom">Testimonials</h3>
+                    <div class="row push-2-bottom">
+                        <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
+                            <div class="testimonial__block">
+                                <i class="fa fa-quote-left testimonial__icon"></i>
+                                <span class="testimonial__quote">Students have asked us to arrange more of these workshops in future. I would like to request you guys if we can have a regular enthusiast to help develop competency in the language for 3 months.</span>
+                            </div>
+                            <div class="testimonial__block">
+                                <i class="fa fa-quote-left testimonial__icon"></i>
+                                <span class="testimonial__quote">Anuvrat has been amazing throughout the session with his energy. He also inspired participants to focus on their own projects and goals.</span>
+                            </div>
+                            <div class="testimonial__block">
+                                <i class="fa fa-quote-left testimonial__icon"></i>
+                                <span class="testimonial__quote">It was nice experience for us , in future we will try to do some more</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
+                            <div class="testimonial__block">
+                                <i class="fa fa-quote-left testimonial__icon"></i>
+                                <span class="testimonial__quote">we really appreciate the efforts given to make this open workshop available to all the girls...and we hope to have many more with more response from our peers as learners.</span>
+                            </div>
+                            <div class="testimonial__block">
+                                <i class="fa fa-quote-left testimonial__icon"></i>
+                                <span class="testimonial__quote">Mr. Jaisinh Shukla along with his team were knowledgeable and cooperative throughout the workshop. Students are now waiting for more such advanced Python workshops to be organized in near future.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="panel-half fill-theme">
+            <section class="twitter-widget">
+                <div class="container-fluid push-4">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 text-center">
+                            <a href="https://twitter.com/pythonexpress" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @pythonexpress</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            <div class="twitter-widget__profile space-2-top">
+                                <a class="twitter-timeline" data-height="400" data-theme="dark" href="https://twitter.com/pythonexpress">Tweets by pythonexpress</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                <!-- <a class="twitter-timeline" data-height="300" data-theme="light" href="https://twitter.com/pythonexpress">Tweets by pythonexpress</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}
+{% block container_body %}{% endblock %}
 {% block footer_scripts %}
     <script src="{% static 'js/libs/jquery.justifiedGallery.min.js' %}"></script>
     <script>
         $("#mygallery").justifiedGallery({
             rowHeight : 150,
             lastRow : 'hide',
-            margins : 3,
+            margins : 0,
             captions: false
         });
     </script>

@@ -26,7 +26,6 @@
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/about/" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
                             {% if user.is_authenticated %}
                                 <li><a href="/organisation/" class="{% if request.resolver_match.namespace == 'organisations' %}active{% endif %}">Organisations</a></li>
                                 <li><a href="/workshop/" class="{% if request.resolver_match.namespace == 'workshops' %}active{% endif %}">Workshops</a></li>
@@ -34,10 +33,8 @@
                                 	<li><a href="/region" class="{% if request.resolver_match.namespace == 'regions' %}active{% endif %}">Regions</a></li>
                                 {% endif %}
                             {% endif %}
-                            <li><a href="/workshops_info" class="{% if request.resolver_match.url_name == 'workshops_info' %}active{% endif %}">Workshops Info</a></li>
                             <li><a href="/workshops_upcoming/" class="{% if request.resolver_match.url_name == 'upcoming_workshops' %}active{% endif %}">Upcoming Workshops</a></li>
                             <li><a href="/faq" class="{% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a></li>
-                            <li><a href="/contact" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact Us</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             {% block loginindicator %}
@@ -85,45 +82,49 @@
             {% endblock %}
         </div>
 
-        <footer class="push-1-top push-4-bottom block">
+        <footer class="push-3-top push-4-bottom block">
             <div class="container">
             {% block footer %}
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 col-sm-offset-0 col-sm-push-6 col-xs-8 col-xs-offset-2">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-silent">
+                                    <li>
+                                        <a href="/about" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+                                    </li>
+                                    <li>
+                                        <a href="/workshops_info" class="{% if request.resolver_match.url_name == 'workshops_info' %}active{% endif %}">Workshops Info</a>
+                                    </li>
+                                    <li>
+                                        <a href="/contact" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact Us</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="social list-silent">
+                                    {% for link in SITE_INFO.footer.social %}
+                                        <li class="social__link">
+                                            <a href="{{ link.url }}" class="social__media">
+                                                <i class="{{ link.icon }} social__icon social__icon--{{ link.media }}"></i>
+                                                <span class="social__label">{{ link.label }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-sm-offset-0 col-sm-pull-6 col-xs-8 col-xs-offset-2">
                         <div class="copyright">
                             <div class="copyright__logo space-1-top">
-                                <img class="contain-width" src="{% static 'img/logo_python_express.png' %}" alt="">
+                                <img class="contain-width" src="{% static 'img/logo_python_express_monochrome.png' %}" alt="">
                             </div>
                             <div class="copyright__label space-1-top">
                                 &copy;&nbsp;{{ SITE_INFO.footer.copyright.year }}&nbsp;
                                 <a href="{{ SITE_INFO.footer.copyright.url }}">{{ SITE_INFO.footer.copyright.label }}</a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <ul class="list-silent">
-                            <li>
-                                <a href="/about">About</a>
-                            </li>
-                            <li>
-                                <a href="/workshops_info">Workshops Info</a>
-                            </li>
-                            <li>
-                                <a href="/contact">Contact Us</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-sm-3">
-                        <ul class="social list-silent">
-                            {% for link in SITE_INFO.footer.social %}
-                                <li class="social__link">
-                                    <a href="{{ link.url }}">
-                                        <i class="{{ link.icon }} social__icon social__icon--{{ link.media }}"></i>
-                                        <span class="social__label">{{ link.label }}</span>
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
                     </div>
                 </div>
             {% endblock %}

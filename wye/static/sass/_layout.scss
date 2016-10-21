@@ -119,3 +119,25 @@
 .relative {
     position: relative;
 }
+
+.block {
+    display: block;
+}
+
+.panel {
+    &-container {
+        display: block;
+        @media (min-width: 768px) {
+            display: table;
+        }
+    }
+    &-half {
+        width: 100%;
+        display: block;
+        table-layout: fixed;
+        @media (min-width: 768px) {
+            width: 50%;
+            display: table-cell;
+        }
+    }
+}
