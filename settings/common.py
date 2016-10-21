@@ -43,23 +43,39 @@ SITE_ID = 1
 SITE_VARIABLES = {
     'site_name': os.environ.get('SITE_NAME', 'PythonExpress'),
     'site_description': '',
-    'footer': (
-        '&copy; 2014-{} <a target="_blank" href="http://pssi.org.in/">'
-        'Python Software Society of India</a><br>'
-        '<a target="_blank" '
-        'href="http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress">'
-        '<i class="fa fa-envelope"></i> Mailing List </a>'
-        '&nbsp;&nbsp;'
-        '<a target="_blank" href="https://github.com/pythonindia/wye">'
-        '<i class="fa fa-github"></i> Github</a>'
-        '&nbsp;&nbsp;'
-        '<a target="_blank" href="https://twitter.com/pythonexpress/">'
-        '<i class="fa fa-twitter"></i>Twitter</a>'
-        '&nbsp;&nbsp;'
-        '<a target="_blank" href="https://www.facebook.com/PythonExpressdotin/">'
-        '<i class="fa fa-facebook"></i> Facebook</a>'.format(
-            datetime.datetime.today().strftime('%Y'))
-    )
+    'footer': {
+        'copyright': {
+            'year': '2014-{}'.format(datetime.datetime.today().strftime('%Y')),
+            'url': 'http://pssi.org.in/',
+            'label': 'Python Software Society of India'
+        },
+        'social': [
+            {
+                'media': 'mail',
+                'icon': 'fa fa-envelope',
+                'label': 'Mailing List',
+                'url': 'http://lists.pssi.org.in/cgi-bin/mailman/listinfo/pythonexpress'
+            },
+            {
+                'media': 'github',
+                'icon': 'fa fa-github',
+                'label': 'Github',
+                'url': 'https://github.com/pythonindia/wye'
+            },
+            {
+                'media': 'twitter',
+                'icon': 'fa fa-twitter',
+                'label': 'Twitter',
+                'url': 'https://twitter.com/pythonexpress/'
+            },
+            {
+                'media': 'facebook',
+                'icon': 'fa fa-facebook',
+                'label': 'Facebook',
+                'url': 'https://www.facebook.com/PythonExpressdotin/'
+            }
+        ]
+    }
 }
 
 DEFAULT_APPS = (
