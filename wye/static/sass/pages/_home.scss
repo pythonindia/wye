@@ -18,4 +18,18 @@
         padding: 2em 0;
     }
 }
-
+.testimonial {
+    background: $primary;
+    color: white;
+    &__block {
+        padding: 0.5em 0;
+    }
+    &__quote {
+        font-style: italic;
+        font-weight: 300;
+    }
+    &__icon {
+        color: $theme;
+        width: 2em;
+    }
+}
