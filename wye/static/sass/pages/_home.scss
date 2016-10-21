@@ -33,3 +33,11 @@
         width: 2em;
     }
 }
+
+.twitter-widget {
+    background-color: $color__bg--silver;
+    &__profile {
+        height: 40em;
+        overflow: auto;
+    }
+}

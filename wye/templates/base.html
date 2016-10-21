@@ -85,10 +85,47 @@
             {% endblock %}
         </div>
 
-        <footer class="fill-white push-1">
-            <div class="container text-center">
+        <footer class="push-1-top push-4-bottom block">
+            <div class="container">
             {% block footer %}
-                <p class="tiny">{{ SITE_INFO.footer|safe }}</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="copyright">
+                            <div class="copyright__logo space-1-top">
+                                <img class="contain-width" src="{% static 'img/logo_python_express.png' %}" alt="">
+                            </div>
+                            <div class="copyright__label space-1-top">
+                                &copy;&nbsp;{{ SITE_INFO.footer.copyright.year }}&nbsp;
+                                <a href="{{ SITE_INFO.footer.copyright.url }}">{{ SITE_INFO.footer.copyright.label }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="list-silent">
+                            <li>
+                                <a href="/about">About</a>
+                            </li>
+                            <li>
+                                <a href="/workshops_info">Workshops Info</a>
+                            </li>
+                            <li>
+                                <a href="/contact">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="social list-silent">
+                            {% for link in SITE_INFO.footer.social %}
+                                <li class="social__link">
+                                    <a href="{{ link.url }}">
+                                        <i class="{{ link.icon }} social__icon social__icon--{{ link.media }}"></i>
+                                        <span class="social__label">{{ link.label }}</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             {% endblock %}
             </div>
         </footer>

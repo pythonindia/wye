@@ -23,9 +23,6 @@ html, body {
     min-height: 100%;
     margin: 0 auto;
 }
-footer {
-    height: 4em;
-}
 
 body {
     color: $dark;
@@ -92,4 +89,51 @@ p a {
 }
 .banner {
     z-index: 0;
+}
+
+footer {
+    font-size: 1.2em;
+    li {
+        margin: 1em 0;
+    }
+    a {
+        &:hover, &:focus, &:active {
+            color: $primary;
+        }
+    }
+}
+.copyright {
+    &__logo {
+        width: 6em;
+    }
+}
+.social {
+    &__link {
+    }
+    &__icon {
+        border-radius: 50%;
+        text-align: center;
+        padding: 0.5em;
+        width: 1.9em;
+        height: 1.9em;
+        color: white;
+        font-size: 2em;
+        line-height: 1;
+        margin-right: 0.5em;
+        &--twitter {
+            background-color: $twitter;
+        }
+        &--facebook {
+            background-color: $facebook;
+        }
+        &--mail {
+            background-color: $mail;
+        }
+        &--github {
+            background-color: $github;
+        }
+    }
+    &__label {
+
+    }
 }
