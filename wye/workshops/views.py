@@ -17,7 +17,7 @@ from wye.base.constants import WorkshopStatus
 
 from wye.social.sites.twitter import send_tweet
 from wye.base.views import verify_user_profile
-from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm, WorkshopListForm
+from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm, WorkshopListForm, WorkshopVolunteer
 from .mixins import (
     WorkshopEmailMixin,
     WorkshopAccessMixin
@@ -100,10 +100,13 @@ def workshop_details(request, pk):
     if (user_is_presenter):
         display_edit_button = True
 
+    form = WorkshopVolunteer(initial={'number_of_volunteers': workshop_obj.number_of_volunteers})
+
     context_dict = {
         'workshop': workshop_obj,
         'show_contact_flag': show_contact_flag,
-        'display_edit_button': display_edit_button
+        'display_edit_button': display_edit_button,
+        'form': form
     }
     return render(request, template_name, context_dict)
 
@@ -269,3 +272,17 @@ def upcoming_workshops(request):
     context_dict['workshop_list'] = workshop_list
 
     return render(request, template_name, context_dict)
+
+
+@login_required
+def workshop_update_volunteer(request, pk):
+    if request.POST:
+        volunteers = request.POST.get('number_of_volunteers')
+        # if not form.is_valid():
+        #     context_dict['form'] = form
+        #     context_dict['errors'] = form.errors
+        #     return render(request, template_name, context_dict)
+
+        workshop_volunteer = Workshop.objects.filter(pk=pk)
+        workshop_volunteer.update(number_of_volunteers=volunteers)
+    return HttpResponseRedirect(reverse('workshop_detail', args=[pk]))

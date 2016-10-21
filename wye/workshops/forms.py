@@ -55,6 +55,7 @@ class WorkshopForm(forms.ModelForm):
         model = Workshop
         exclude = (
             'presenter', 'created_at', 'modified_at',
+            'number_of_volunteers', 'volunteer',
             'is_active', 'status',)
 
 
@@ -82,8 +83,9 @@ class WorkshopEditForm(forms.ModelForm):
     class Meta:
         model = Workshop
         exclude = (
-            'created_at', 'modified_at', 'is_active',
-            'status', 'location')
+            'created_at', 'modified_at',
+            'number_of_volunteers', 'volunteer',
+            'is_active', 'status', 'location')
 
 
 class WorkshopFeedbackForm(forms.Form):
@@ -165,3 +167,7 @@ class WorkshopListForm(forms.Form):
             return Location.objects.all()
         else:
             return user.profile.interested_locations.all()
+
+
+class WorkshopVolunteer(forms.Form):
+    number_of_volunteers = forms.IntegerField()
