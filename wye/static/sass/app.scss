@@ -89,6 +89,10 @@ p a {
 }
 .banner {
     z-index: 0;
+    // background-color: $color__bg--silver;
+    background: linear-gradient(135deg, $secondary, $tertiary);
+    color: $color__bg--silver;
+    padding: 6em;
 }
 
 footer {
