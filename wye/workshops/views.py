@@ -100,7 +100,7 @@ def workshop_details(request, pk):
     if (user_is_presenter):
         display_edit_button = True
 
-    form = WorkshopVolunteer(initial={'number_of_volunteers': workshop_obj.number_of_volunteers})
+    form = WorkshopVolunteer(initial={'number_of_volunteers': workshop_obj.number_of_volunteers or 0})
 
     context_dict = {
         'workshop': workshop_obj,
@@ -278,11 +278,8 @@ def upcoming_workshops(request):
 def workshop_update_volunteer(request, pk):
     if request.POST:
         volunteers = request.POST.get('number_of_volunteers')
-        # if not form.is_valid():
-        #     context_dict['form'] = form
-        #     context_dict['errors'] = form.errors
-        #     return render(request, template_name, context_dict)
 
-        workshop_volunteer = Workshop.objects.filter(pk=pk)
-        workshop_volunteer.update(number_of_volunteers=volunteers)
-    return HttpResponseRedirect(reverse('workshop_detail', args=[pk]))
+        if volunteers.strip() not in ('', None):
+            workshop_volunteer = Workshop.objects.filter(pk=pk)
+            workshop_volunteer.update(number_of_volunteers=volunteers)
+    return HttpResponseRedirect(reverse('workshops:workshop_detail', args=[pk]))

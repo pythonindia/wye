@@ -123,18 +123,23 @@
                             {% endfor %}
                         </div>
                     </li>
+                    {% endif %}
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-2"><strong>No. of Volunteers</strong></div>
-                            <div class="col-xs-10">{{ u.get_full_name}}</div>
-                              <form method="post" action="{% url 'workshops:workshop_update_volunteer' workshop.pk %}">{%csrf_token%}
-                                <div class="col-xs-6">{{form.number_of_volunteers}}</div>
-                                <div class="col-xs-4"><input type="submit" class="btn btn-theme small" value="Update"></div>
-                              </form>
+                            <div class="col-xs-10">
+                              {% if user|show_volunteer_count %}
+                                <div class="col-xs-2"></div>
+                                <div class="col-xs-8">{{ workshop.volunteer.count }} / {{ workshop.number_of_volunteers }}</div>>
+                              {% else %}
+                                <form method="post" action="{% url 'workshops:workshop_update_volunteer' workshop.pk %}">{%csrf_token%}
+                                  <div class="col-xs-6">{{ form.number_of_volunteers }}</div>
+                                  <div class="col-xs-4"><input type="submit" class="btn btn-theme small" value="Update"></div>
+                                </form>
+                              {% endif %}
                             </div>
                         </div>
                     </li>
-                    {% endif %}
                 </ul>
             </div>
         </div>

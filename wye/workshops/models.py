@@ -43,7 +43,7 @@ class Workshop(TimeAuditModel):
     workshop_level = models.PositiveSmallIntegerField(
         choices=WorkshopLevel.CHOICES, verbose_name="Workshop Level")
     workshop_section = models.ForeignKey(WorkshopSections)
-    number_of_volunteers = models.IntegerField(null=True, blank=True)
+    number_of_volunteers = models.PositiveSmallIntegerField(default=0, null=True, blank=True)
     volunteer = models.ManyToManyField(User, related_name='workshop_volunteer')
     is_active = models.BooleanField(default=True)
     status = models.PositiveSmallIntegerField(
