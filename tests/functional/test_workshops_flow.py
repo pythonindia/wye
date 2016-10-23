@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import re
 from wye.base.constants import WorkshopStatus
-from wye.workshops.models import Workshop
+# from wye.workshops.models import Workshop
 from .. import factories as f
 
 
@@ -74,10 +74,10 @@ def test_workshop_wrong_action(base_url, browser, outbox):
 def test_workshop_flow(base_url, browser, outbox):
     tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
     poc_type = f.create_usertype(slug='poc', display_name='poc')
-    rating1 = f.create_workshop_rating()
-    rating2 = f.create_workshop_rating()
-    rating3 = f.create_workshop_rating()
-    rating4 = f.create_workshop_rating()
+    f.create_workshop_rating()
+    f.create_workshop_rating()
+    f.create_workshop_rating()
+    f.create_workshop_rating()
 
     user = f.create_user()
     user.set_password('123123')

@@ -276,7 +276,7 @@ def workshop_feedback_view(request, pk):
         if form.is_valid():
             WorkshopFeedBack.save_feedback(
                 request.user, pk, **request.POST)
-            w = Workshop.objects.get(pk=pk)
+            # w = Workshop.objects.get(pk=pk)
             success_url = reverse_lazy('workshops:workshop_list')
             return HttpResponseRedirect(success_url)
         print(form.errors)
