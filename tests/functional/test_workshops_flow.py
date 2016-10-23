@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import re
 from wye.base.constants import WorkshopStatus
-# from wye.workshops.models import Workshop
+from wye.workshops.models import Workshop
 from .. import factories as f
 
 
@@ -64,7 +64,7 @@ def test_workshop_wrong_action(base_url, browser, outbox):
     user.profile.save()
     user.save()
 
-    url = base_url + '/workshop/'+'feedback/000/'
+    url = base_url + '/workshop/' + 'feedback/000/'
     browser.visit(url)
 
     url = base_url + '/workshop/feedback/{}/'.format(workshop.id)
@@ -74,6 +74,10 @@ def test_workshop_wrong_action(base_url, browser, outbox):
 def test_workshop_flow(base_url, browser, outbox):
     tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
     poc_type = f.create_usertype(slug='poc', display_name='poc')
+    rating1 = f.create_workshop_rating()
+    rating2 = f.create_workshop_rating()
+    rating3 = f.create_workshop_rating()
+    rating4 = f.create_workshop_rating()
 
     user = f.create_user()
     user.set_password('123123')
@@ -172,19 +176,23 @@ def test_workshop_flow(base_url, browser, outbox):
     assert accept_workshop_link
     accept_workshop_link.click()
 
-    workshop.expected_date = datetime.now() + timedelta(days=-22)
+    print(datetime.now() + timedelta(days=-10))
+    workshop.expected_date = datetime.now() + timedelta(days=-60)
+    workshop.status = WorkshopStatus.FEEDBACK_PENDING
     workshop.save()
-
     url = base_url + '/workshop/'
     browser.visit(url)
-
-    f.create_workshop_rating()
+    browser.reload()
+    url = base_url + '/workshop/'
+    browser.visit(url)
+    browser.screenshot()
     publish_workshop_link = browser.find_by_text('Share Feedback')[0]
     assert publish_workshop_link
     publish_workshop_link.click()
     url = base_url + '/workshop/feedback/{}'.format(workshop.id)
     browser.visit(url)
-    browser.check('rating0-1')
+    browser.check('1-1')
+    browser.check('3-1')
     browser.fill('comment', "Testing comments")
 
     browser.find_by_css('[type=submit]')[0].click()
