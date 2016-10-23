@@ -63,6 +63,8 @@ class SignupForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    first_name = forms.CharField(label="First Name", max_length=50)
+    last_name = forms.CharField(label="Last Name", max_length=50)
     queryset = models.UserType.objects.exclude(
         slug__in=['admin', 'lead', 'coordinator'])
     usertype = forms.ModelMultipleChoiceField(
@@ -70,6 +72,10 @@ class UserProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['first_name'].initial = self.instance.user.first_name
+        self.fields['last_name'].required = True
+        self.fields['last_name'].initial = self.instance.user.last_name
         mandatory_field(self)
 
     def clean_interested_states(self):
@@ -111,6 +117,13 @@ class UserProfileForm(forms.ModelForm):
 
     def is_valid(self):
         return super(UserProfileForm, self).is_valid()
+
+    def save(self, *args, **kwargs):
+        self.instance.user.first_name = self.cleaned_data['first_name']
+        self.instance.user.last_name = self.cleaned_data['last_name']
+        self.instance.user.save()
+        self.instance.save()
+        return self.instance
 
     class Meta:
         model = models.Profile

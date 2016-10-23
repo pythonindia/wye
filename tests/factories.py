@@ -6,7 +6,7 @@ import datetime
 from django.conf import settings
 
 import factory
-from wye.base.constants import OrganisationType, WorkshopLevel, WorkshopStatus
+from wye.base.constants import OrganisationType, WorkshopLevel, WorkshopStatus, FeedbackType
 
 
 class Factory(factory.DjangoModelFactory):
@@ -99,6 +99,7 @@ class WorkshopRatingValuesFactory(Factory):
     class Meta:
         model = "workshops.WorkshopRatingValues"
     name = factory.Sequence(lambda n: "Rating{}".format(n))
+    feedback_type = factory.Iterator(dict(FeedbackType.CHOICES).keys())
 
 
 def create_usertype(**kwargs):

@@ -2,17 +2,25 @@ import datetime
 
 from django import forms
 from django.conf import settings
-from django.utils.text import slugify
+# from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from wye.base.constants import WorkshopRatings, WorkshopLevel, WorkshopStatus
+from wye.base.constants import (
+    WorkshopRatings,
+    WorkshopLevel,
+    WorkshopStatus,
+    FeedbackType)
 from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead, Location
 
-from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack, WorkshopSections
+from .models import (
+    Workshop,
+    WorkshopRatingValues,
+    WorkshopFeedBack,
+    WorkshopSections)
 
 
 class WorkshopForm(forms.ModelForm):
@@ -94,23 +102,29 @@ class WorkshopFeedbackForm(forms.Form):
 
     question_model = WorkshopRatingValues
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, id, *args, **kwargs):
         super(WorkshopFeedbackForm, self).__init__(*args, **kwargs)
-        questions = self.question_model.get_questions()
+        w = Workshop.objects.get(id=id)
+        if user in w.presenter.all():
+            feedback_type = FeedbackType.PRESENTER
+        elif user in w.requester.user.all():
+            feedback_type = FeedbackType.ORGANISATION
+        else:
+            feedback_type = None
+        questions = self.question_model.get_questions(feedback_type)
 
         for question in questions:
-            key = "{}-{}".format(
-                slugify(question["name"]), question["pk"]
-            )
+            key = "{}".format(question)
             self.fields[key] = forms.ChoiceField(
                 choices=WorkshopRatings.CHOICES, required=True,
                 widget=forms.RadioSelect())
-            self.fields[key].label = question["name"]
+            self.fields[key].label = question.name
 
         self.fields["comment"] = forms.CharField(widget=forms.Textarea)
 
     def save(self, user, workshop_id):
-        data = {k.split("-")[-1]: v for k, v in self.cleaned_data.items()}
+        print(dir(self))
+        data = {k: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)
 
 

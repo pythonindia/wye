@@ -1,8 +1,8 @@
 from datetime import datetime
 
 from django import template
+from wye.base.constants import WorkshopStatus, FeedbackType
 
-from wye.base.constants import WorkshopStatus
 register = template.Library()
 
 
@@ -36,11 +36,17 @@ register.filter(show_accepted_button)
 
 
 def show_feedback_button(workshop, user):
-    if ((workshop.status == WorkshopStatus.COMPLETED or
-         datetime.now().date() > workshop.expected_date) and
-        (user in workshop.requester.user.all() or
-         user in workshop.presenter.all())):
-        return True
+    if (workshop.status == WorkshopStatus.COMPLETED or
+            datetime.now().date() > workshop.expected_date):
+        if (workshop.is_presenter(user) and
+            workshop.workshopfeedback_set.filter(
+                feedback_type=FeedbackType.PRESENTER).count() <= 0 or
+            (workshop.is_organiser(user) and
+                workshop.workshopfeedback_set.filter(
+                feedback_type=FeedbackType.ORGANISATION).count() <= 0)):
+            return True
+        else:
+            return False
     return False
 
 register.filter(show_feedback_button)

@@ -17,12 +17,16 @@ from wye.base.constants import WorkshopStatus
 
 from wye.social.sites.twitter import send_tweet
 from wye.base.views import verify_user_profile
-from .forms import WorkshopForm, WorkshopEditForm, WorkshopFeedbackForm, WorkshopListForm
+from .forms import (
+    WorkshopForm,
+    WorkshopEditForm,
+    WorkshopFeedbackForm,
+    WorkshopListForm)
 from .mixins import (
     WorkshopEmailMixin,
     WorkshopAccessMixin
 )
-from .models import Workshop
+from .models import Workshop, WorkshopFeedBack
 
 
 @login_required
@@ -95,7 +99,8 @@ def workshop_details(request, pk):
     user_is_requester = [
         u for u in workshop_obj.requester.user.all() if user == u]
     if (user_is_presenter or user_is_requester or
-            user.is_superuser or ((not user.is_anonymous()) and Profile.is_coordinator(user))):
+            user.is_superuser or (
+                (not user.is_anonymous()) and Profile.is_coordinator(user))):
         show_contact_flag = True
     if (user_is_presenter):
         display_edit_button = True
@@ -242,22 +247,44 @@ class WorkshopAction(views.CsrfExemptMixin, views.LoginRequiredMixin,
         self.send_mail_to_group(context, exclude_emails=[user.email])
 
 
-class WorkshopFeedbackView(views.LoginRequiredMixin,
-                           generic.FormView):
-    form_class = WorkshopFeedbackForm
+# class WorkshopFeedbackView(views.LoginRequiredMixin,
+#                            generic.FormView):
+#     form_class = WorkshopFeedbackForm
+#     template_name = "workshops/workshop_feedback.html"
+#     success_url = reverse_lazy('workshops:workshop_list')
+
+#     def form_valid(self, form):
+#         workshop_id = self.kwargs.get('pk')
+#         form.save(self.request.user, workshop_id)
+#         return super(WorkshopFeedbackView, self).form_valid(form)
+
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(WorkshopFeedbackView, self).get_context_data(
+#             *args, **kwargs)
+#         context['workshop'] = Workshop.objects.get(pk=self.kwargs.get('pk'))
+#         return context
+
+
+@login_required
+def workshop_feedback_view(request, pk):
+    context_dict = {}
     template_name = "workshops/workshop_feedback.html"
-    success_url = reverse_lazy('workshops:workshop_list')
-
-    def form_valid(self, form):
-        workshop_id = self.kwargs.get('pk')
-        form.save(self.request.user, workshop_id)
-        return super(WorkshopFeedbackView, self).form_valid(form)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(WorkshopFeedbackView, self).get_context_data(
-            *args, **kwargs)
-        context['workshop'] = Workshop.objects.get(pk=self.kwargs.get('pk'))
-        return context
+    context_dict['workshop'] = Workshop.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = WorkshopFeedbackForm(
+            data=request.POST, user=request.user, id=pk)
+        if form.is_valid():
+            WorkshopFeedBack.save_feedback(
+                request.user, pk, **request.POST)
+            # w = Workshop.objects.get(pk=pk)
+            success_url = reverse_lazy('workshops:workshop_list')
+            return HttpResponseRedirect(success_url)
+        print(form.errors)
+    else:
+        context_dict['form'] = WorkshopFeedbackForm(
+            user=request.user, id=pk)
+    context_dict['user'] = request.user
+    return render(request, template_name, context_dict)
 
 
 def upcoming_workshops(request):
