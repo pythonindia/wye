@@ -236,9 +236,24 @@ CELERY_IMPORTS = ('wye.workshops.tasks',)
 
 CELERYBEAT_SCHEDULE = {
     # Executes every Monday morning at 7:30 A.M
-    'send-details-daily': {
+    'send_weekly_email': {
         'task': 'wye.workshops.tasks.workshop_reminder',
         'schedule': crontab(hour=7, minute=30),
+        'args': (7, True)
+    },
+    'send-upcoming_event_reminder': {
+        'task': 'wye.workshops.tasks.workshop_reminder',
+        'schedule': crontab(hour=7, minute=30),
+        'args': (2, False)
+    },
+    'send-feedback-reminder': {
+        'task': 'wye.workshops.tasks.workshop_feedback',
+        'schedule': crontab(hour=7, minute=30),
+    },
+    'send-feedback-second-reminder': {
+        'task': 'wye.workshops.tasks.workshop_feedback',
+        'schedule': crontab(hour=7, minute=30),
+        'args': (2,)
     },
 }
 
