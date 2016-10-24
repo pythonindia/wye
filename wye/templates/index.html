@@ -4,6 +4,7 @@
 {% block title %}Home | {{ block.super }}{% endblock %}
 {% block extracss %}
     <link rel="stylesheet" href="{% static 'css/libs/justifiedGallery.min.css' %}">
+    <link href="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
 {% endblock %}
 
 {% block header %}
@@ -96,19 +97,52 @@
         </div>
     </section>
     {% if upcoming_workshops %}
-        <section class="home-workshops">
-            <div class="container push-4-bottom">
-                <div class="row text-center push-4-top push-3-bottom">
+        <section id="upcoming-workshops" class="home-workshops">
+            <div class="container push-4-top push-5-bottom">
+                <div class="row text-center push-3-bottom">
                     <h3 class="space-0-top title-type large">Upcoming Workshops</h3>
                 </div>
                 <div class="row">
+                    <div class="col-lg-10 col-lg-offset-1 col-xs-12 table-responsive">
+                        <table id="upcoming" class="table table-striped table-bordered table-clickable" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>sl.no </th>
+                                    <th>Location</th>
+                                    <th>Workshop Section</th>
+                                    <th>Workshop level</th>
+                                    <th>Tentative Dates *</th>
+                                    <th>College</th>
+                                    <th>presenter</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for workshop in upcoming_workshops %}
+                                    <tr class="clickable-row" data-href="/workshop/{{workshop.id}}/">
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{workshop.location}}</td>
+                                        <td>{{workshop.workshop_section.name}}</td>
+                                        <td>{{workshop.get_workshop_level_display}}</td>
+
+                                        <td>{{workshop.expected_date|date:'l,  M. d Y' }}</td>
+                                        <td>{{workshop.requester.name}}</td>
+                                        <td>
+                                            {% for u in  workshop.presenter.all %}
+                                                {{u.get_full_name}}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="row">
                     {% for workshop in upcoming_workshops %}
                         <div class="col-md-4 col-sm-6">
                             <a href="/workshop/{{workshop.id}}/" class="eventcard block">
-                                <!-- <div class="eventcard__title truncate"> -->
                                 <h3 class="eventcard__topic space-0 push-1q-bottom truncate">{{workshop.workshop_section.name}}</h3>
                                 <label class="eventcard__level label">{{workshop.get_workshop_level_display}}</label>
-                                <!-- </div> -->
                                 <div class="eventcard__speaker truncate push-h-top">
                                     {% if workshop.presenter.all %}
                                         <i class="eventcard__icon fa fa-user"></i>
@@ -118,11 +152,9 @@
                                     {% endfor %}&nbsp;
                                 </div>
                                 <div class="eventcard__location truncate">
-                                    <!-- <i class="eventcard__icon fa fa-map-marker"></i> -->
                                     {{workshop.requester.name}}, {{workshop.location}}
                                 </div>
                                 <div class="eventcard__date gray">
-                                    <!-- <i class="eventcard__icon fa fa-clock-o"></i> -->
                                     <em>{{workshop.expected_date|date:'l,  M. d Y' }}</em>
                                 </div>
                             </a>
@@ -131,7 +163,7 @@
                 </div>
                 <div class="row text-center push-1h-top">
                     <button class="btn btn-theme btn-theme-accent font-regular">View all <i class="fa fa-angle-right pad-h-left"></i></button>
-                </div>
+                </div> -->
             </div>
         </section>
     {% endif %}
@@ -246,6 +278,14 @@
 {% endblock %}
 {% block container_body %}{% endblock %}
 {% block footer_scripts %}
+    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script>
+        $('#upcoming').dataTable({
+            "iDisplayLength": 10
+        } );
+    </script>
+
     <script src="{% static 'js/libs/jquery.justifiedGallery.min.js' %}"></script>
     <script>
         $("#mygallery").justifiedGallery({
@@ -253,6 +293,15 @@
             lastRow : 'hide',
             margins : 0,
             captions: false
+        });
+    </script>
+
+    <script>
+        'use strict';
+        $(function(){
+            $('.clickable-row td').click(function() {
+               window.document.location = $(this).parent().attr('data-href');
+            });
         });
     </script>
 {% endblock %}
