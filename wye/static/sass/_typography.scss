@@ -5,17 +5,16 @@ body {
     font-weight: normal;
 }
 
-.prose-type {
+.title-type {
     font-family: 'Alegreya Sans', serif;
 }
 
 .huge       { font-size: 3em;   }
 .extralarge { font-size: 2.5em; line-height: 1.4; }
-.large      { font-size: 2em;   }
-.legible    { font-size: 1.8em; line-height: 1.4; }
-.regular    { font-size: 1.4em; line-height: 1.5; }
-.sub        { font-size: 1.2em; }
-.tiny       { font-size: 1em; }
+.large      { font-size: 2em; line-height: 1.4;  }
+.legible    { font-size: 1.2em; line-height: 1.5; }
+.regular    { font-size: 1em; line-height: 1.5; }
+.tiny       { font-size: 0.8em; }
 
 .extrabold  { font-weight: 800; }
 .bold       { font-weight: 700; }

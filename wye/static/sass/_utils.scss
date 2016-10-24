@@ -6,3 +6,46 @@
         }
     }
 }
+.truncate {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.list-silent {
+   list-style-type: none;
+}
+.flushright { float: right; }
+.flushleft  { float: left;  }
+.contain-width {
+    width: 100%;
+}
+
+.vertical-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.relative {
+    position: relative;
+}
+.block {
+    display: block;
+}
+
+.panel {
+    &-container {
+        display: block;
+        @media (min-width: 768px) {
+            display: table;
+        }
+    }
+    &-half {
+        width: 100%;
+        display: block;
+        table-layout: fixed;
+        @media (min-width: 768px) {
+            width: 50%;
+            display: table-cell;
+        }
+    }
+}
