@@ -9,7 +9,7 @@
 {% block header %}
     <div class="masthead text-center relative">
         <div class="container vertical-center">
-            <h1 class="masthead__title prose-type">PythonExpress brings<br>tutors, organizations and students together<br>to spread the love of Python far and wide.</h1>
+            <h1 class="extralarge title-type">PythonExpress brings<br>tutors, organizations and students together<br>to spread the love of Python far and wide.</h1>
         </div>
     </div>
 {% endblock %}
@@ -29,25 +29,25 @@
                     <div class="intro__stats">
                         <div class="col-xs-6">
                             <div class="statbox statbox--1">
-                                <div class="statbox__count prose-type">{{ tutor_registered_count }}</div>
+                                <div class="statbox__count title-type">{{ tutor_registered_count }}</div>
                                 <div class="statbox__label">Tutors registered</div>
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="statbox statbox--2">
-                                <div class="statbox__count prose-type">{{ organisation_registered_count }}</div>
+                                <div class="statbox__count title-type">{{ organisation_registered_count }}</div>
                                 <div class="statbox__label">Organizations registered</div>
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="statbox statbox--3">
-                                <div class="statbox__count prose-type">{{ requested_workshop_count }}</div>
+                                <div class="statbox__count title-type">{{ requested_workshop_count }}</div>
                                 <div class="statbox__label">Workshops Requested</div>
                             </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="statbox statbox--4">
-                                <div class="statbox__count prose-type">{{ completed_workshop_count }}</div>
+                                <div class="statbox__count title-type">{{ completed_workshop_count }}</div>
                                 <div class="statbox__label">Workshops completed</div>
                             </div>
                         </div>
@@ -98,20 +98,15 @@
     {% if upcoming_workshops %}
         <section class="home-workshops">
             <div class="container push-4-bottom">
-                <div class="row push-4-top push-2-bottom">
-                    <div class="col-sm-6">
-                        <h3 class="no-space-top">Upcoming Workshops</h3>
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        <button class="btn btn-theme btn-theme-accent font-regular">View all <i class="fa fa-angle-right pad-h-left"></i></button>
-                    </div>
+                <div class="row text-center push-4-top push-3-bottom">
+                    <h3 class="space-0-top title-type large">Upcoming Workshops</h3>
                 </div>
                 <div class="row">
                     {% for workshop in upcoming_workshops %}
                         <div class="col-md-4 col-sm-6">
                             <a href="/workshop/{{workshop.id}}/" class="eventcard block">
                                 <!-- <div class="eventcard__title truncate"> -->
-                                <h3 class="eventcard__topic no-space push-1q-bottom truncate">{{workshop.workshop_section.name}}</h3>
+                                <h3 class="eventcard__topic space-0 push-1q-bottom truncate">{{workshop.workshop_section.name}}</h3>
                                 <label class="eventcard__level label">{{workshop.get_workshop_level_display}}</label>
                                 <!-- </div> -->
                                 <div class="eventcard__speaker truncate push-h-top">
@@ -134,9 +129,43 @@
                         </div>
                     {% endfor %}
                 </div>
+                <div class="row text-center push-1h-top">
+                    <button class="btn btn-theme btn-theme-accent font-regular">View all <i class="fa fa-angle-right pad-h-left"></i></button>
+                </div>
             </div>
         </section>
     {% endif %}
+    <section class="testimonial fill-theme">
+        <div class="container-fluid push-3 pad-4">
+            <h3 class="text-center push-1h-bottom title-type large">Testimonials</h3>
+            <div class="row push-2-bottom">
+                <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
+                    <div class="testimonial__block">
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">Students have asked us to arrange more of these workshops in future. I would like to request you guys if we can have a regular enthusiast to help develop competency in the language for 3 months.</span>
+                    </div>
+                    <div class="testimonial__block">
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">Anuvrat has been amazing throughout the session with his energy. He also inspired participants to focus on their own projects and goals.</span>
+                    </div>
+                    <div class="testimonial__block">
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">It was nice experience for us , in future we will try to do some more</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
+                    <div class="testimonial__block">
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">we really appreciate the efforts given to make this open workshop available to all the girls...and we hope to have many more with more response from our peers as learners.</span>
+                    </div>
+                    <div class="testimonial__block">
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">Mr. Jaisinh Shukla along with his team were knowledgeable and cooperative throughout the workshop. Students are now waiting for more such advanced Python workshops to be organized in near future.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="photos-gallery">
         <div id="mygallery">
             <div>
@@ -175,50 +204,37 @@
             <!-- other images... -->
         </div>
     </section>
-
-    <div class="panel-container contain-width fill-theme">
+    <div class="panel-container contain-width">
         <div class="panel-half fill-primary">
-            <section class="testimonial">
+            <section class="blog-higlights">
                 <div class="container-fluid push-3 pad-4">
-                    <h3 class="text-center push-1h-bottom">Testimonials</h3>
+                    <h3 class="text-center push-1h-bottom title-type large">From our Blog</h3>
                     <div class="row push-2-bottom">
-                        <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
-                            <div class="testimonial__block">
-                                <i class="fa fa-quote-left testimonial__icon"></i>
-                                <span class="testimonial__quote">Students have asked us to arrange more of these workshops in future. I would like to request you guys if we can have a regular enthusiast to help develop competency in the language for 3 months.</span>
-                            </div>
-                            <div class="testimonial__block">
-                                <i class="fa fa-quote-left testimonial__icon"></i>
-                                <span class="testimonial__quote">Anuvrat has been amazing throughout the session with his energy. He also inspired participants to focus on their own projects and goals.</span>
-                            </div>
-                            <div class="testimonial__block">
-                                <i class="fa fa-quote-left testimonial__icon"></i>
-                                <span class="testimonial__quote">It was nice experience for us , in future we will try to do some more</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
-                            <div class="testimonial__block">
-                                <i class="fa fa-quote-left testimonial__icon"></i>
-                                <span class="testimonial__quote">we really appreciate the efforts given to make this open workshop available to all the girls...and we hope to have many more with more response from our peers as learners.</span>
-                            </div>
-                            <div class="testimonial__block">
-                                <i class="fa fa-quote-left testimonial__icon"></i>
-                                <span class="testimonial__quote">Mr. Jaisinh Shukla along with his team were knowledgeable and cooperative throughout the workshop. Students are now waiting for more such advanced Python workshops to be organized in near future.</span>
-                            </div>
+                        <div class="col-xs-12">
+                            <ul class="list-silent legible text-center">
+                                <li class="push-h">
+                                    <a class="blog-highlights__link" href="http://blog.pythonexpress.in/posts/grand-show/">Grand Show</a>
+                                </li>
+                                <li class="push-h">
+                                    <a class="blog-highlights__link" href="http://blog.pythonexpress.in/posts/crescent-python-month/">Crescent PythonMonth</a>
+                                </li>
+                                <li class="push-h">
+                                    <a class="blog-highlights__link" href="http://blog.pythonexpress.in/posts/python-month-has-arrived/">PythonMonth has arrived, in style!</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
-        <div class="panel-half fill-theme">
+        <div class="panel-half fill-secondary">
             <section class="twitter-widget">
                 <div class="container-fluid push-4">
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 text-center">
                             <a href="https://twitter.com/pythonexpress" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @pythonexpress</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                             <div class="twitter-widget__profile space-2-top">
-                                <a class="twitter-timeline" data-height="400" data-theme="dark" href="https://twitter.com/pythonexpress">Tweets by pythonexpress</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-                                <!-- <a class="twitter-timeline" data-height="300" data-theme="light" href="https://twitter.com/pythonexpress">Tweets by pythonexpress</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> -->
+                                <a class="twitter-timeline" data-height="400" data-theme="light" href="https://twitter.com/pythonexpress">Tweets by pythonexpress</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                             </div>
                         </div>
                     </div>

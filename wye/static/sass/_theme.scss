@@ -10,6 +10,7 @@ $color__text--spacegray: #88939e;
 .fill-quaternary    { background-color: $quaternary; color: white; }
 .fill-white         { background-color: white; }
 .fill-theme         { background-color: $theme; color: $dark; }
+.fill-theme-alt      { background-color: lighten($theme, 10%); color: $dark; }
 .fill-light         { background-color: #F5F5F5; }
 .fill-silver        { background-color: #f4f5f7; }
 .white      { color: white; }

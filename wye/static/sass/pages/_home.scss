@@ -3,10 +3,6 @@
     background-size: cover;
     color: white;
     height: 30em;
-    &__title {
-        font-size: 2.5em;
-        line-height: 1.3;
-    }
 }
 .intro {
     &__text {
@@ -19,7 +15,6 @@
     }
 }
 .testimonial {
-    color: white;
     &__block {
         padding: 0.5em 0;
     }
@@ -28,11 +23,18 @@
         font-weight: 300;
     }
     &__icon {
-        color: $theme;
+        color: $primary;
         width: 2em;
     }
 }
-
+.blog-highlights {
+    &__link {
+        color: $color__bg--silver;
+        &:hover, &:active, &:focus {
+            color: $theme;
+        }
+    }
+}
 .twitter-widget {
     // background-color: $theme;
 }
