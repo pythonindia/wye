@@ -5,6 +5,11 @@ body {
     font-weight: normal;
 }
 
+p {
+    color: #848B91;
+    font-size: 1.1em;
+    line-height: 1.7;
+}
 .title-type {
     font-family: 'Alegreya Sans', serif;
 }
@@ -12,16 +17,15 @@ body {
 .huge       { font-size: 3em;   }
 .extralarge { font-size: 2.5em; line-height: 1.4; }
 .large      { font-size: 2em; line-height: 1.4;  }
-.legible    { font-size: 1.2em; line-height: 1.5; }
+.legible    { font-size: 1.2em; line-height: 1.7; }
 .regular    { font-size: 1em; line-height: 1.5; }
 .tiny       { font-size: 0.8em; }
 
 .extrabold  { font-weight: 800; }
 .bold       { font-weight: 700; }
 .semibold   { font-weight: 600; }
-.normal     { font-weight: 400; }
-.light      { font-weight: 200; }
-.thin       { font-weight: 100; }
+.regular    { font-weight: 400; }
+.light      { font-weight: 300; }
 
 .all-caps {
     text-transform: uppercase;

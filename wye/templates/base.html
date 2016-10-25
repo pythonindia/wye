@@ -111,7 +111,7 @@
                                 <ul class="social list-silent">
                                     {% for link in SITE_INFO.footer.social %}
                                         <li class="social__link">
-                                            <a href="{{ link.url }}" class="social__media">
+                                            <a target="_blank" href="{{ link.url }}" class="social__media">
                                                 <i class="{{ link.icon }} social__icon social__icon--{{ link.media }}"></i>
                                                 <span class="social__label">{{ link.label }}</span>
                                             </a>

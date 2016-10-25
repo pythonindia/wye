@@ -1,6 +1,14 @@
 .btn-theme {
     padding: 0.5em 2em;
     font-size: 1.1em;
+    background-color: $theme;
+    border-color: $theme;
+    color: $dark;
+    &:hover {
+        background-color: darken($theme, 10%);
+        border-color: $theme;
+        color: $dark;
+    }
 
     &-primary {
         background-color: $primary;
