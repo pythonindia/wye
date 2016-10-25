@@ -18,8 +18,11 @@
     box-sizing: border-box;
 }
 
-::-moz-selection, ::selection {
-    background: $theme;
+::selection {
+    background-color: $theme;
+}
+::-moz-selection {
+    background-color: $theme;
 }
 
 .wrapper {
