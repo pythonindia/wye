@@ -21,13 +21,13 @@
     <section class="intro block clearfix">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="intro__text">
+                <div class="col-md-6 push-2">
+                    <div class="intro__text push-4-top">
                         <p>PythonExpress is an initiative and ongoing effort by the <a href="https://pssi.org.in/" target="_blank">Python Software Society of India (PSSI)</a>. It aims to create an avenue for learning and exploring the Python programming language and community by acting as a bridge between organizations interested in hosting a workshop, students who want to learn, and experienced Python programmers who are interested to teach.</p>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="intro__stats">
+                <div class="col-md-6 push-2">
+                    <div class="intro__stats row">
                         <div class="col-xs-6">
                             <div class="statbox statbox--1">
                                 <div class="statbox__count title-type">{{ tutor_registered_count }}</div>
@@ -58,9 +58,9 @@
         </div>
     </section>
     <section class="fill-silver">
-        <div class="container">
-            <div class="row text-center push-4">
-                <div class="col-md-4 col-sm-6">
+        <div class="container-fluid">
+            <div class="row text-center push-2">
+                <div class="col-md-3 col-sm-6 push-2">
                     <div class="featurebox">
                         <div class="featurebox__icon">
                             <object type="image/svg+xml" data="{% static 'img/home/teacher.svg' %}"></object>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-3 col-sm-6 push-2">
                     <div class="featurebox">
                         <div class="featurebox__icon">
                             <object type="image/svg+xml" data="{% static 'img/home/host.svg' %}"></object>
@@ -82,7 +82,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-3">
+                <div class="col-md-3 col-sm-6 push-2">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/partner.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-2">Want your organisation to partner with us?</p>
+                        <div class="featurebox__button">
+                            <a href="/accounts/login/" class="btn btn-theme btn-theme-tertiary font-light">I can Partner</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 push-2">
                     <div class="featurebox">
                         <div class="featurebox__icon">
                             <object type="image/svg+xml" data="{% static 'img/home/student.svg' %}"></object>
