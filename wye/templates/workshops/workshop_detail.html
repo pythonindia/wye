@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load workshop_action_button %}
 {% block header %}
-    <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">Workshop Details</h1>
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">Workshop Details</h1>
     </div>
 {% endblock %}
 
@@ -107,7 +107,7 @@
                         <div class="row">
                             <div class="col-xs-2"><strong>College representative</strong></div>
                             {% for u in workshop.requester.user.all %}
-                            <div class="col-xs-2">{{u}} </div>
+                            <div class="col-xs-2">{{u.get_full_name}} </div>
                             <div class="col-xs-4">{{ u.email}}</div>
                             <div class="col-xs-4">{{ u.profile.mobile}}</div>
                             {% endfor %}

@@ -1,0 +1,39 @@
+.masthead {
+    background-image: linear-gradient(rgba(72, 88, 111, 0.7), rgba(72, 88, 111, 0.7)), url('../img/home/banner.jpg');
+    background-size: cover;
+    color: white;
+    height: 30em;
+}
+.intro {
+    &__text {
+        font-size: 1em;
+        color: $color__text--gray;
+    }
+    &__stats {
+        padding: 2em 0;
+    }
+}
+.testimonial {
+    &__block {
+        padding: 0.5em 0;
+    }
+    &__quote {
+        font-style: italic;
+        font-weight: 300;
+    }
+    &__icon {
+        color: $primary;
+        width: 2em;
+    }
+}
+.blog-highlights {
+    &__link {
+        color: $color__bg--silver;
+        &:hover, &:active, &:focus {
+            color: $theme;
+        }
+    }
+}
+.twitter-widget {
+    // background-color: $theme;
+}

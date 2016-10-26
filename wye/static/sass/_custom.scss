@@ -8,7 +8,6 @@
 .navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
     color: $dark;
     font-size: 1em;
-    text-transform: uppercase;
     &:hover {
         color: $gray-text;
     }
@@ -19,18 +18,21 @@
 
 @media screen and (min-width: 768px) {
     .navbar-nav>li>a.nav-btn {
-        background: $primary;
-        color: #fff;
-        margin: 11px 0;
-        border-radius: 0.4em;
+        background: $theme;
+        border: 1px solid darken($theme, 6%);
+        color: $dark;
+        margin: 10px 0;
+        border-radius: 0.2em;
         padding: 4px 15px;
         &:hover {
-            background-color: $primary-alt;
-            color: white;
+            background-color: darken($theme, 10%);
+            border-color: darken($theme, 16%);
+            color: $dark;
         }
     }
     .navbar-default .navbar-nav>li>a.active {
-        border-bottom: 5px solid $primary;
+        border-bottom: 5px solid $theme;
+        background-color: $color__bg--silver;
         padding-bottom: 10px;
     }
     .navbar-nav>li>a.user-dropdown {

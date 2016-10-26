@@ -9,13 +9,13 @@
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
         <link rel="stylesheet" href="{% static 'css/libs/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/app.css' %}">
-        <link href='//fonts.googleapis.com/css?family=EB+Garamond|Source+Sans+Pro|Mallanna' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600|Alegreya+Sans:800' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         {% block extracss %} {% endblock %}
     </head>
     <body>
         <div class="wrapper">
-            <nav class="navbar no-space-bottom navbar-default fill-white" role="navigation">
+            <nav class="navbar space-0-bottom navbar-default fill-white" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -26,7 +26,6 @@
                     </div>
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="/about/" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
                             {% if user.is_authenticated %}
                                 <li><a href="/organisation/" class="{% if request.resolver_match.namespace == 'organisations' %}active{% endif %}">Organisations</a></li>
                                 <li><a href="/workshop/" class="{% if request.resolver_match.namespace == 'workshops' %}active{% endif %}">Workshops</a></li>
@@ -34,10 +33,11 @@
                                 	<li><a href="/region" class="{% if request.resolver_match.namespace == 'regions' %}active{% endif %}">Regions</a></li>
                                 {% endif %}
                             {% endif %}
-                            <li><a href="/workshops_info" class="{% if request.resolver_match.url_name == 'workshops_info' %}active{% endif %}">Workshops Info</a></li>
-                            <li><a href="/workshops_upcoming/" class="{% if request.resolver_match.url_name == 'upcoming_workshops' %}active{% endif %}">Upcoming Workshops</a></li>
+                            {% if not user.is_authenticated %}
+                                <li><a href="/about" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
+                                <li><a href="/workshops_upcoming" class="{% if request.resolver_match.url_name == 'upcoming_workshops' %}active{% endif %}">Upcoming Workshops</a></li>
+                            {% endif %}
                             <li><a href="/faq" class="{% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a></li>
-                            <li><a href="/contact" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact Us</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             {% block loginindicator %}
@@ -59,7 +59,7 @@
                                     </li>
                                 {% else %}
                                 <li><a href="{% url 'account_login' %}">Log In</a>
-                                <li><a href="{% url 'account_signup' %}">Sign Up</a>
+                                <li><a href="{% url 'account_signup' %}" class="nav-btn">Sign Up</a></li>
                                 {% endif %}
                             {%endblock loginindicator %}
                         </ul>
@@ -72,6 +72,8 @@
                 </header>
                 {% block sub_header %}{% endblock %}
 
+                {% block content_full %}{% endblock %}
+
                 {% block container_body %}
                     <div class="container push-2-top">
                         {% block content_body %}
@@ -83,10 +85,54 @@
             {% endblock %}
         </div>
 
-        <footer class="fill-white push-1">
-            <div class="container text-center">
+        <footer class="push-3-top push-4-bottom block">
+            <div class="container">
             {% block footer %}
-                <p class="tiny">{{ SITE_INFO.footer|safe }}</p>
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-0 col-sm-push-6 col-xs-8 col-xs-offset-2">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-silent">
+                                    <li>
+                                        <a href="/about" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+                                    </li>
+                                    <li>
+                                        <a href="/workshops_info" class="{% if request.resolver_match.url_name == 'workshops_info' %}active{% endif %}">Workshops Info</a>
+                                    </li>
+                                    <li>
+                                        <a href="/contact" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact Us</a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="http://blog.pythonexpress.in/">Blog</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="social list-silent">
+                                    {% for link in SITE_INFO.footer.social %}
+                                        <li class="social__link">
+                                            <a target="_blank" href="{{ link.url }}" class="social__media">
+                                                <i class="{{ link.icon }} social__icon social__icon--{{ link.media }}"></i>
+                                                <span class="social__label">{{ link.label }}</span>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-sm-offset-0 col-sm-pull-6 col-xs-8 col-xs-offset-2">
+                        <div class="copyright">
+                            <div class="copyright__logo space-1-top">
+                                <img class="contain-width" src="{% static 'img/logo_python_express_monochrome.png' %}" alt="">
+                            </div>
+                            <div class="copyright__label space-1-top">
+                                &copy;&nbsp;{{ SITE_INFO.footer.copyright.year }}&nbsp;
+                                <a href="{{ SITE_INFO.footer.copyright.url }}">{{ SITE_INFO.footer.copyright.label }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% endblock %}
             </div>
         </footer>

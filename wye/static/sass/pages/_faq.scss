@@ -1,0 +1,14 @@
+.faq {
+    &__list {
+        padding-left: 1.5em;
+        font-weight: 600;
+    }
+    &__question {
+        font-size: 1.2em;
+        padding-bottom: 0.5em;
+        padding-top: 0.5em;
+    }
+    &__answer {
+        font-weight: 400;
+    }
+}
