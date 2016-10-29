@@ -276,10 +276,11 @@ def workshop_feedback_view(request, pk):
         if form.is_valid():
             WorkshopFeedBack.save_feedback(
                 request.user, pk, **request.POST)
-            # w = Workshop.objects.get(pk=pk)
             success_url = reverse_lazy('workshops:workshop_list')
             return HttpResponseRedirect(success_url)
-        print(form.errors)
+        context_dict['form'] = form
+        context_dict['user'] = request.user
+        return render(request, template_name, context_dict)
     else:
         context_dict['form'] = WorkshopFeedbackForm(
             user=request.user, id=pk)
