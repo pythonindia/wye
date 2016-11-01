@@ -1,0 +1,7 @@
+Hi all,
+We have received feedback from {{contact_name}}. Requesting to respective Regional or Admin members to reply and inform all on the action taken.
+
+Email : {{contact_email}}
+Feedback Type : {{feedback_type}}
+Contact Number : {{conatct_number}}
+Comments : {{comments}}
