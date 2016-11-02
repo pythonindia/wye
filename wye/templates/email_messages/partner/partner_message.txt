@@ -1,7 +1,18 @@
 Hi all,
 We have received feedback from {{contact_name}}. Requesting to respective Regional or Admin members to reply and inform all on the action taken.
 
+Organisation Name: {{org_name}}
+Organisation url : {{org_url}}
+Partnership Type : {{partner_type}}
+Description: {{description}}
+Python Usage in organisation : {{python_use}}
+Name : {{name}}
 Email : {{contact_email}}
-Feedback Type : {{feedback_type}}
 Contact Number : {{conatct_number}}
 Comments : {{comments}}
+
+
+May the love of Python spread far and wide!
+
+Warmly,
+The PythonExpress team

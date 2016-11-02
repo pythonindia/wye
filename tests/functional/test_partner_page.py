@@ -1,5 +1,5 @@
 import re
-from .. import factories as f
+# from .. import factories as f
 
 
 def get_captcha_value(html_body):
