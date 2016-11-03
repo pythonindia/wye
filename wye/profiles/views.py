@@ -170,6 +170,9 @@ def partner_view(request):
                 'python_use': form.cleaned_data['python_use'],
                 'comments': form.cleaned_data['comments'],
                 'name': form.cleaned_data['name'],
+                'email': form.cleaned_data['email'],
+                'contact_name': form.cleaned_data['name'],
+                'contact_email': form.cleaned_data['email'],
                 'conatct_number': form.cleaned_data['contact_number'],
 
             })

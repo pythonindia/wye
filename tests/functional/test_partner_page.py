@@ -15,7 +15,7 @@ def get_captcha_value(html_body):
         return int(a[0]) * int(a[2])
 
 
-def test_contact_page(base_url, browser, outbox):
+def test_partner_page(base_url, browser, outbox):
 
     url = base_url + '/partner/'
     browser.visit(url)
