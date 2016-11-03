@@ -1,57 +1,352 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block title %}Home | {{ block.super }}{% endblock %}
+{% block extracss %}
+    <link rel="stylesheet" href="{% static 'css/libs/justifiedGallery.min.css' %}">
+    <link href="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
+{% endblock %}
 
 {% block header %}
-    <div class="fill-theme text-center push-8-bottom push-6-top pad-1-xs">
+    <div class="masthead text-center relative">
+        <div class="container vertical-center">
+            <h1 class="extralarge title-type">PythonExpress brings<br>tutors, organizations and students together<br>to spread the love of Python far and wide.</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sub_header %}{% endblock %}
+
+{% block content_full %}
+    <section class="intro block clearfix">
         <div class="container">
-            <h1 class="prose-type extralarge">PythonExpress brings <span class="primary">tutors</span>, <span class="secondary">organizations</span> and <span class="tertiary">students</span> together <br>to spread the love of Python far and wide.</h1>
+            <div class="row">
+                <div class="col-md-6 push-2">
+                    <div class="intro__text push-4-top">
+                        <p>PythonExpress is an initiative and ongoing effort by the <a href="https://pssi.org.in/" target="_blank">Python Software Society of India (PSSI)</a>. It aims to create an avenue for learning and exploring the Python programming language and community by acting as a bridge between organizations interested in hosting a workshop, students who want to learn, and experienced Python programmers who are interested to teach.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 push-2">
+                    <div class="intro__stats row">
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--1">
+                                <div class="statbox__count title-type">{{ tutor_registered_count }}</div>
+                                <div class="statbox__label">Tutors registered</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--2">
+                                <div class="statbox__count title-type">{{ organisation_registered_count }}</div>
+                                <div class="statbox__label">Organizations registered</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--3">
+                                <div class="statbox__count title-type">{{ requested_workshop_count }}</div>
+                                <div class="statbox__label">Workshops Requested</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="statbox statbox--4">
+                                <div class="statbox__count title-type">{{ completed_workshop_count }}</div>
+                                <div class="statbox__label">Workshops completed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-{% endblock %}
+    </section>
+    <section class="fill-silver">
+        <div class="container-fluid">
+            <div class="row text-center push-2">
+                <div class="col-md-3 col-sm-6 push-2">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/teacher.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-2">Know Python? Love to teach? Register as a tutor!</p>
+                        <div class="featurebox__button">
+                            <a href="/accounts/login/" class="btn btn-theme btn-theme-primary">I am a teacher</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 push-2">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/host.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-1h">Want to host a workshop at your organization?</p>
+                        <div class="featurebox__button">
+                            <a href="/accounts/login/" class="btn btn-theme btn-theme-secondary">I am a host</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 push-2">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/partner.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-2">Want your organisation to partner with us?</p>
+                        <div class="featurebox__button">
+                            <a href="/partner/" class="btn btn-theme btn-theme-tertiary font-light">I can Partner</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 push-2">
+                    <div class="featurebox">
+                        <div class="featurebox__icon">
+                            <object type="image/svg+xml" data="{% static 'img/home/student.svg' %}"></object>
+                        </div>
+                        <p class="featurebox__text push-3q-bottom pad-2">Want to learn? Checkout the upcoming workshops!</p>
+                        <div class="featurebox__button">
+                            <a href="/accounts/login/" class="btn btn-theme btn-theme-tertiary">I am a Student</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if upcoming_workshops %}
+        <section id="upcoming-workshops" class="home-workshops">
+            <div class="container push-4-top push-5-bottom">
+                <div class="row text-center push-3-bottom">
+                    <h3 class="space-0-top title-type large">Upcoming Workshops</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10 col-lg-offset-1 col-xs-12 table-responsive">
+                        <table id="upcoming" class="table table-striped table-bordered table-clickable" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>sl.no </th>
+                                    <th>Location</th>
+                                    <th>Workshop Section</th>
+                                    <th>Workshop level</th>
+                                    <th>Tentative Dates *</th>
+                                    <th>College</th>
+                                    <th>presenter</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for workshop in upcoming_workshops %}
+                                    <tr class="clickable-row" data-href="/workshop/{{workshop.id}}/">
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{workshop.location}}</td>
+                                        <td>{{workshop.workshop_section.name}}</td>
+                                        <td>{{workshop.get_workshop_level_display}}</td>
 
-{% block sub_header %}
-    <div class="clearfix text-center">
-        <div class="col-sm-3 fill-primary">
-            <div class="huge push-h-top push-1q-bottom">{{ tutor_registered_count }}</div>
-            <div class="regular push-3q-bottom">Tutors registered</div>
-        </div>
-        <div class="col-sm-3 fill-secondary">
-            <div class="huge push-h-top push-1q-bottom">{{ organisation_registered_count }}</div>
-            <div class="regular push-3q-bottom">Organizations registered</div>
-        </div>
-        <div class="col-sm-3 fill-tertiary">
-            <div class="huge push-h-top push-1q-bottom">{{ requested_workshop_count }}</div>
-            <div class="regular push-3q-bottom">Workshops Requested</div>
-        </div>
-        <div class="col-sm-3 fill-quaternary">
-            <div class="huge push-h-top push-1q-bottom">{{ completed_workshop_count }}</div>
-            <div class="regular push-3q-bottom">Workshops completed</div>
-        </div>
-        <!-- <div class="col-sm-4 fill-theme">
-            <div class="extralarge push-h-top push-1q-bottom">500</div>
-            <div class="regular push-3q-bottom">Students registered</div>
-        </div> -->
-    </div>
-{% endblock %}
+                                        <td>{{workshop.expected_date|date:'l,  M. d Y' }}</td>
+                                        <td>{{workshop.requester.name}}</td>
+                                        <td>
+                                            {% for u in  workshop.presenter.all %}
+                                                {{u.get_full_name}}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    {% for workshop in upcoming_workshops %}
+                        <div class="col-md-4 col-sm-6">
+                            <a href="/workshop/{{workshop.id}}/" class="eventcard block">
+                                <h3 class="eventcard__topic space-0 push-1q-bottom truncate">{{workshop.workshop_section.name}}</h3>
+                                <label class="eventcard__level label">{{workshop.get_workshop_level_display}}</label>
+                                <div class="eventcard__speaker truncate push-h-top">
+                                    {% if workshop.presenter.all %}
+                                        <i class="eventcard__icon fa fa-user"></i>
+                                    {% endif %}
+                                    {% for u in  workshop.presenter.all %}
+                                        {{u.get_full_name}}
+                                    {% endfor %}&nbsp;
+                                </div>
+                                <div class="eventcard__location truncate">
+                                    {{workshop.requester.name}}, {{workshop.location}}
+                                </div>
+                                <div class="eventcard__date gray">
+                                    <em>{{workshop.expected_date|date:'l,  M. d Y' }}</em>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row text-center push-1h-top">
+                    <button class="btn btn-theme btn-theme-accent font-regular">View all <i class="fa fa-angle-right pad-h-left"></i></button>
+                </div> -->
+            </div>
+        </section>
+    {% endif %}
+    <section class="testimonial fill-theme">
+        <div class="container-fluid push-3 pad-4">
+            <h3 class="text-center push-1h-bottom title-type large">Testimonials</h3>
+            <div class="row push-2-bottom">
+                <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
+                <div class="testimonial__block">
+                        <span><b>SIR MVIT , Bengaluru, </b></span>
+                        <br>
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">The approach taken to teach machine learning basics by Sasidhar and Amol is worth mentioning. Sasidhar started with data analysis and gave a through insights into it.His way of teaching the use of numpy and pandas was good. Amol then started with the machine learning concepts using sklearn and was successful in making the participants get the concepts clearly.Thank you python express for making this wonderful event to happen and for your continuous support.
+                        </span>
 
-{% block content %}
-    <p class="push-2-top push-4-bottom pad-6 pad-1-xs">PythonExpress is an initiative and ongoing effort by the <a href="https://pssi.org.in/" target="_blank">Python Software Society of India (PSSI)</a>. It aims to create an avenue for learning and exploring the Python programming language and community by acting as a bridge between organizations interested in hosting a workshop, students who want to learn, and experienced Python programmers who are interested to teach.</p>
-    <div class="row text-center push-6-bottom">
-        <div class="col-md-4 push-3">
-            <p><i class="fa fa-keyboard-o fa-3x gray"></i></p>
-            <p class="push-3q-bottom pad-2">Know Python? Love to teach? Register as a tutor!</p>
-            <div><a href="/accounts/login/" class="btn btn-theme-primary regular push-1q pad-2">I am a teacher</a></div>
+                    </div>
+                    <div class="testimonial__block">
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span><b>INMANTEC Institutions , Delhi</b></span>
+                        <br>
+                        <span class="testimonial__quote">Students have really benefited from the workshop. They were now enthusiastic to learn more about python and its the various applications of it. Trainers were also very good and students enjoyed their session. Can we have more of these sessions, regularly like in every 15 days so that interest is continued or nay other plan as per your interest. Looking for more interactions in future.</span>
+                    </div>
+                    <div class="testimonial__block">
+                        <span><b>KLE S Nijalingappa College , Bengaluru</b></span>
+                        <br>
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">The instructor was very enthusiastic and fun to talk to, all the students liked the approachability of the instructor. It's something that is not found in most classrooms.</span>
+                    </div>
+                    <div class="testimonial__block">
+                        <span><b>N. I. E. T. , Greater Noida </b></span>
+                        <br>
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">Anuvrat has been amazing throughout the session with his energy. He also inspired participants to focus on their own projects and goals.</span>
+                    </div>
+
+                </div>
+                <div class="col-md-6 col-sm-12 col-sm-offset-0 col-xs-8 col-xs-offset-2">
+                <div class="testimonial__block">
+                        <span><b>SIR MVIT , Bengaluru, </b></span>
+                        <br>
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">Suman Debnath did a great job.He presented the concepts of python programming in a very easy and understandable manner.The response from the participants was overwhelming .The approach taken by him to teach python is worth mentioning.The overall experience was too good.Thank you python express for making this wonderful event to happen."
+                        </span>
+                    </div>
+                    <div class="testimonial__block">
+                        <span><b>Shri Govindram Seksaria Institute of Technology and Science , Indore</b></span>
+                        <br>
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">we really appreciate the efforts given to make this open workshop available to all the girls...and we hope to have many more with more response from our peers as learners.</span>
+                    </div>
+                    <div class="testimonial__block">
+                        <span><b>ACM-Ahmedabad Chapter and School of Computer Studies,Ahmedabad University</b></span>
+                        <br>
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">Mr. Jaisinh Shukla along with his team were knowledgeable and cooperative throughout the workshop. Students are now waiting for more such advanced Python workshops to be organized in near future.</span>
+                    </div>
+                    <div class="testimonial__block">
+                        <span><b>Oxford College of Engineering , Bengaluru,</b></span>
+                        <br>
+                        <i class="fa fa-quote-left testimonial__icon"></i>
+                        <span class="testimonial__quote">Workshop was awesome. Tutor was very humble and generous. Workshop went on very successfully and students are also satisfied with the teaching. Hope to have more workshops like these in the future..</span>
+                    </div>
+
+                </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 push-3">
-            <p><i class="fa fa-university fa-3x gray"></i></p>
-            <p class="push-3q-bottom pad-1h">Want to host a workshop at your organization?</p>
-            <div><a href="/accounts/login/" class="btn btn-theme-secondary regular push-1q pad-2">I am a host</a></div>
+    </section>
+    <section class="photos-gallery">
+        <div id="mygallery">
+            <div>
+                <img alt="Title 1" src="https://lh3.googleusercontent.com/CcwvPjJFGhhizOd7NMIx74K6B58efWshcuoGO1G3LPr4a9KAVmPkR2pes1KQGdLW4-jFxXLSigFSSJ_QUezArXb4rfouHSbQ5z1s_Z3Aksx9hHck0inDC4AzbryB_OKd2GtrBfsnvFLjpwFNP64Cp_cI8bnI14eFHXiPNVW7cNTiwdLO6y2zSUyLBC-ldcAmW7JThtevMBSafR1N0DnH0ElSnVfbqzbCEN2P1AWpJZM3TfSQwXFNEcXiNR_y26HsU35OL12AK9idXvpwpyLuoyYdhxMeNjkwXCc8bpyLe1t-pPyH8wDiVpx0qcK3azEi3t_aROTeI0Q0b5UO2x5ONFUDs4Iet6PRByEPReCWg2SiSrD5_JZEM7D8uaM66E-3skz12NrTVvcrDzAIssnhS4HUQ5c4EwXMjducgfzsoGFMX6usrkm9pc_ge-YMf6AEUVZSZomo4t2vT9wOCbz3IidzYYzGVmqE0XTUyrZj5xTAGIoeClspA2OJTN6rloWOgxn22M2LCMHYtabb6tBvdlfq6Pb8lWZqVrV-fLGkfnKwMADS6F7WfLsMj7UKVcxQduw9HE87cSn2UQNBk2AfMe6XQdiVOWdvGVSE6EytODM75Fgn=w274-h182-no"/>
+            </div>
+            <div>
+                <img alt="Title 2" src="https://lh3.googleusercontent.com/BoZI16JySxn8kcs4ojnzS5SLgyl_Tvnf4M--vZj2S0hVWTSUi9tFWxyYZIhi-Ix95PmGL2V8LuOwEU2T1joADJkMqhmXra9a2cYb-dRQCs5yhyduPbXH6iQhtoWQO2H_nK5BseWovdTOnA4_3NkFPSQOnSp0Tcgj4AvxHPb5p_sHtOEuDnUVk2EoGofIu5qY2JQSVqGl6pP4bnWWJjomI3-mr3SKmNd4elxcauz-45MChLyX6AmMX8rR868vXM4TsmB7yo0x35nY9EH6lCvkB9yLuvPGlAQZpVEImA030Yx_xmctl-bsk6fpMcAwmDxh2G1cGsfPSw7D16ymdqBT66KgOJ85_UlYdGvuGGWAZF6su-0vIoNadEz1JguAaM7oGM69Q9MF2JiV-KN7IIkQdDyGcBI4MVCjqbHt_lpzH9vCT4EPwHEzugQHdziLAqyQLDbaCv_Eh_hgo9BtsFbc8m9gGxDNK6Jms7gO1eI7l5I1WcsNxaXDnhTg4waadG_EvuHQ_EfXXKxyznTqE3hiHfl5-SQvw79b901ABcDN1jX5lIm1sY4g_Vvd9KDwFVA0wETA5u0GZqWHEs3DmQPlgKWfY1SUsyJ07JexTwogw4GJaPb9=w350-h197-no"/>
+            </div>
+            <div>
+                <img alt="Title 3" src="https://lh3.googleusercontent.com/COev9l6dJ6xG0TFtdZLf2j5HVpufM51Bv6gSUb1vXXHABbdsJ_KAejDBzU8aPrmj_zYOak3D8fIk4mTkjwHqXfUMWuF6f5P34FaFjKNOotHCjXMiK1Rztu6CX7yYNKS8g-dmbW9Tnb7ceH1SoxMrC7Hwz_A8EPP9N8teAMDRaWpWIq4iayMfuka7BbpuMVY8TFjHJPYc5OjaknjuyJG_d9KmWAxlxJBFL7xG2L5tayoAvTo0cR2PrBLlOAMjg4qCI7FaCEeRC2yqt9GYTN1vJvJVPCzecvxnzhXkipo6dLkWOzVlCh6AW-6AWjLEODLQ1N7dJWVHETvVq3pCNVyVB55i0SdbwxAzZHkGykzQHPoC-SZgPKa96a9EE1UylE7l58hIC1GgyGUhftjxhrLIjkTsOUYOwaVeEJhN8WvnWIQ-S8PedQ2U5GWyElKuY5pFf4nRVf-QPC4ScvHP3-2GWTnQii05v-SOrP6iR2voZABrqLhoi2DN_1tu41skld09YZvyWaqk8GS1yf6fYwahsSGwUq8WDSyRq6ihpPgy_YgiGka5A9lDA0zSXD-AfD7x6lGuhohLjtFCDWy00JWX49li6gRZTAHyDB-zTZ70AFM73g6n=w325-h243-no"/>
+            </div>
+            <div>
+                <img alt="Title 4" src="https://lh3.googleusercontent.com/xhkmOurxFC9ZR9d7ruixZiwq28QRmX3JudkFbCbJDG4hnG1WpkmalXTmiuCOYH6--KgZhBX1_O4Esho_MMtThjHd1J50ytNpuopkwfU1K0pb2nNX-IxghUlUEEKu34vkIk7OsF3E8-r1EfIG8M8SZY2bNvqiU8wL8GSxBkU4t3bGXSDyJz7rxLUdR6Jyc25cJxiQBUoGn-b27EsgxxWuezvFm7YXED4DidZj2MT9JmNxpgdbdlug58E8IAPlhbGpaK5x33QrCBMPQllerUo6lwvOPVlWkdr1qEsd5hEphnFAWTlDUK7-9mBTBy-r32InaYP_cn9h44Y8swgYEKUJ5-QEX7OfqVxVLkH-uhb8QiJtDodLkSHRYmgOUizHglhDwNjZxT8et92WoIBBAYcGww9Whpsg7KAzTi_lj9Er8S4rmLuPX1HtC47Ob9oJIMm_kQakqzaFI9iblKTtVXtDo06cEv0WPeTyU2iiVphoo5Z7BVVO9alUVZOWBX5zyCZms3QtBVjuuFqzTh6pyagvWc4KfVUstzapqOJsZ4dWFcQDbI7TDur4ljESkNEvijO6r3Ir6b1aKy64hpHrZSpOd6CIjAbICfu2zH4-X5OQYMwOdCuV=w356-h200-no"/>
+            </div>
+            <div>
+                <img alt="Title 5" src="https://lh3.googleusercontent.com/hYCQ8btAgXf0QpJelb9CKovbbSpXbDlIZnM0yOq5mx-BrWc_a6u6CrextlKA8evRJxNjxbLVuSqCIogW3oQbDdTqI_l8ZHuQ5cfSG_4rGPy9BxK4LpWheizbTMsZdcjh01fX_alLmOdDz321Mu9XcsWGNALuDU7rbI9_rEQFf5WWTsJlKjq1KTetOqgOTYFTLLijFKt9vgCdBLCQaBOpIAzLf-amyt8uKBIuZ6M59ipfkC6iHw5E-m7z_t2tljx7gi2vPlli5xniEny1Qnoej4RTG6pf5U_ZzbFuyJL1wFQCtDK0FxVMRu61OAsl7WzkR6LVVr3dw6flIAndTQOKZvE2wPVs-dPfwLl7gOzScG94HonrVvbi8RN6UQPYPa4h1Sm3PNyQnwqELR1iST5HYIymHRoO1WOu4qQTxNaSYnkgZyur3-WmMm6Q82trEl9jUvprvBqygdZkfVWqOCoJV4jfEpU6uWGGf1pyfXuHK63sXENG4OghAmBFUUydM3DiEV-Ox2Nbe4WXut7lBta_m2ofTNZZ2mGYRq8AIl63psqrBsI-Hh2uEYD9uZTxINXxdsQOniKR-0-ZlW7q2juF6HZ3WWCeYoptebIDxJlUNyiZvHKP=w254-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 6" src="https://lh3.googleusercontent.com/pVOv1f_tlY1CsmcuJDSSAoSoGEovSYrE_UL75M1Mzqs3T2D7dKggM0anilVapLZM4JdH9fO23N1MX1N-YVqnZ3nhJVxsyWaI26R-zvJDbqbaC4gVvXJ9mYWvJA7qDj55ps_bRfh3pVrY_jhC6-HkvY6fTSoOpoxd_2uMqyRcsiQebWGwIYzquhNJ17_c8IDHxq1MPLB0rNuWVHtJVG1k9BBfdZSxtSEkq2v1buaVSHEW_p7tglMDGVpf69k5GRriHwOyPxzj1GBCEfrvH62H6I0db11O1guzhQPRQ8xzTzCvO16MttwuWHO7jvWndlZZGkWHN5PiJC3tnNz80ZQapSqUOe_XRQ3Y0tbV9JhEekwfEukvsdG6ax7xJEbvFtQiC2LmRWaOZ0oeCjPYdW527I8uYq2_8gwQDTuLNk2aYD6zif0s7IdLAxmb60cW5BJdmxxn2Q8glfheTtPpNAmx-wsMWMg7nSHGyiYPiRl-06DPgfgZj9_F-7ajagNGrffcChTc5mS4rfteKtGE9w1HemMLWCjNyvJaWZgsC-pT4xmsk5D98YB1_SzhjIYuWP9znrnPWcltY5dXMgMHOZ2T7wzAlYjLyTI3bxF_EI4oYKKn9e5_=w253-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 7" src="https://lh3.googleusercontent.com/HsfPDvoIVN_5kriMCJTrfvuSeeZABG-9Q6wwEz6t7YZU0xN1ssyKo5Ogqqndr3DkSf7ze1IE0cZFP5qPza4vQWAM0An2mS-sudOU-TXgdL7-ryGJPtZKamJbTqooZA4j3FMqrzRfrrqDvW56Hd_OZMg9r7bM4sd7lmtJAT43vM_y0nwz8xAzugNL5aGsQR7HFWYcB8b0iIgawr2DakL1IR1viprEpyWdBOTxlJ_Ps7O5hNG3ztBvNo3yEpcglfnGkD2VD2NMjnJQrquHSBHgzcfVOX5xzW9-C3CCPJsRU1BLD5nYgoquVFvOmQ5A6-lECtUsUOXy-iVdOpPfue2_m-2ekv367eSs0G8ZTpNQ3SY8Lt7hm_XiDFcSSPPmlQlpkP-RGSYbmyySBp0y2qRtyM2Ylpwh3tn1LeQUjfuAEAPiDilCSJ26Ro7oFx3tEAcU8etsrvaBnqz91RwHiPDhLKn1XHddgSU9lI13X7eCyenIocLN1LmYP8APpYhQJp2ORrW4IkzYBScqJJL6pDqjB5N3qZx11BgbFFojVolHitZDOt6Ha7z4NU08-Kx9CJ3Evl2Qh-Gmt82hcyxHiZvmx-I230sTkjoIH0ewi1y7pliRtfP1=w254-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 8" src="https://lh3.googleusercontent.com/YRZviz0Axpyzo3hexfF8pbfq3bNz4guBHPso7FA5Vqbygqf61ExlJ_SuNjmrXsarlfHnAzN4JNEVHKHAWzbe5uVhWQP7-Obv-aT52AkD1iMjm_7CT6r_rsvc8IZKEHf0xyZwZPPyYTHhT0_AcOKkHFz3Ht3M1PD7alSOsINTDGu2XyauWN4LRb7GbOV5fIuLTQhbJcxFgB2noWJ0ADwhdat-ej9IvOUjAPNh6KSRNddS3hd8Lw97nseWZRczDqDpuGS1DZ02FSBNNN-dodO6r6mkgM2T_c0echdUsEIKqyZgcOsXBQ7KOmUUH-7ABzH_Dktin7qjlkgZxKmMv5FQwiQedZko6zzK7bqVRWi74zUxX7V-mwJcG_TFXL9lcnr92D4wb5nZyyQaalmhoWnoI47FpM7L2_1qHXpAZOjm13nM0KLrKDdNnA-olKiz6UPlSFo3_HhZ53T7wJT83hds9BtbaSZMNASM7WUCsUGvbNZn3jMFDh2hW_DqPL9tv1c0VYQ-4qQ4tHWVA3lv_ozygUPYM6djtgI6KQPLTbHLIMnwNVLYV51hNQqfzqpmk6VCwwGlkl-9zpYeP4vQjNnOszJhGmCOxYIjYK-iJtADk2dLgF1J=w253-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 9" src="https://lh3.googleusercontent.com/AMC5Jm-YRejKiGtp8q7vLvgWGUde1qXJepqGrDUseo3Dn79YrMirbcYvb3gFWPBYwiD48L9VUPqCZ12Ny6Q4Tmd1aaRKAKvuWjEQcQ8No0_gh8aqJ-UPsW5r58HFc9BXUhNRQyRfdFE1M9rMGRGLkUt728YYx3Hn5EN166JiV1NwmTs5eY_Eos8UjmMt2L3LQX_D3i7KF5erJuXPRPlKCGhjj6CQJmELmMlZs03vyFcF9o3jNvrIkUYAOGUtPyMFzygEXok5t3NnhpLWc8sS1XGbPLxY6O-py8i9vQzVBSpUVbBOG8IEXmWT_tHLSvjzaY4oweDn1uGPLO6CEiHdQCITDQ8IRsxHD6CDS_qahN8c18yncRbIoSPPUY6R5lRq8JVHHL_cM0O7YNcpqPZXBIUmaLkI0_3l6p8Pxxow-ZNRbHfeJaYHlmH9CusbnFvlezyU0B8k_FhlkqIzJTRQ4GzkeZ4bLZPiAkTHaQqct8uUKxhkvkGMzzETDWXrd4VAMyw5-7fVqAX_9cp48x7OQKGr00bt2cYJxVhT_jUR6J0y00rN0x4Nf9Wji04N-zOvatf6PX9O5uF9ZLkdrXCXOj5ebBkyfZ-1CUweJnSXTy4Gdihi=w254-h190-no"/>
+            </div>
+            <div>
+                <img alt="Title 11" src="https://lh3.googleusercontent.com/s9UWVzaI3MkZwBrBWBJnuWxPwXRrqLCh5UhtKyleMdlMVw6b720whz2k7d5P_beWU2z_MZVNM_v_QpQIsfOr0D8dZwNDKCOAMaDogU3c5kRzFHZVb7SeH1bwZ7mSmtyGtzPyqN4za9tk5EefiNlx_kCGGx0PRb1e2MhD2ohY2pqXz56gaTgXe18duI2sEapFyBIZmJGYtCXQ22mPP5howwdB_ZCSK6yvB2MILHgK4qQHStc0Hn4EoaYVhCUCcRfBRkuXeYe0Yz1LenfwZjpmegNDdkDLDX65PYWxGMAVpPfOwrBQdZJGJ5IHc1v5QImpBdGjWX1Qv1_IMftBS_RBG5Bk-KTlbAUAbr-esms_VI8j97KHDkDYbzCi2PoKLAJDoFm0eJd3y37C3QddZM5I6hKsVgJKuUslyrG2cKLrb_KEH5x_MchAgRFQDuANmBYCJS8Wc9lLObBVApYcxf7pXyKJGdeO8dxLUtQKuUuUr4cFZlCpNKwX7xCk8VHvIWkjyqQgfzZhXaaFTuuR8lnzHvx_5mz8uyOesCyU9Tpp4dfmy6UmIk_uCd0RyJw82Yu3nCK-zdx-Mkjd2GF87vmx1InNBugwnVAEqL17R31GubXz_uuj=w350-h219-no"/>
+            </div>
+            <div>
+                <img alt="Title 10" src="https://lh3.googleusercontent.com/xzGUmUVm3FrVQW9gdYcI3FZUSTwrQuLtQbdxniRYzzFhbYZ9-OQH9soC8ueUV_FSZcvMx1pdhOGzKJWwT7pICQYDsadJLZi61TII7Lte7s6f5nbEYJR58SlE8aTP3ffnDQNmLoLIaGj-D6NnYGkYhKCLRJKFvyu2a6oYdcGX9SBB6B4RJSssYJmouJeX_abF_bySrFUAPSMrMuCGv40hf260g-OguCrAme5ApigDTBUnlLRSK8yuV8dvuxLbhhk95wKu8K2NOaLZWrjHHyfhvw077vlzsIGBCOliNbQK4j_PvAN8-4Qi3o1s04pP_48wHMlQnYhG4LzY0UFNCUhc3pbgZc551IF9yedHLP1EpL6CrnHO2osfP782aJ34zhmYaEgWl2IJlzoiKmGSc8U79lew2gsv-vU_7hzcE9WQb7QoEyrzuqPIxneAm9BPkrwaUIP7v5tXzhL22m1J_fra2qQ7AvYp6hnsK41jLP1J4hEZgobtXqnF-6NqseOzqqly6b6IsIDn4E2G92OcFv4A994wppCSDsNi366GNrWEswbIPhem6izFKR3UUztGA84s3DmNPsH-6Spd47Au96JDqXB9q1oQneSPJO2K3VnAmPjzoc_K=w350-h197-no"/>
+            </div>
+            <!-- other images... -->
         </div>
-        <div class="col-md-4 push-3">
-            <p><i class="fa fa-graduation-cap fa-3x gray"></i></p>
-            <p class="push-3q-bottom pad-2">Want to learn? Checkout the upcoming workshops!</p>
-            <div><a href="/accounts/login/" class="btn btn-theme-tertiary regular push-1q pad-2">I am a Student</a></div>
+    </section>
+    <div class="panel-container contain-width">
+        <div class="panel-half fill-primary">
+            <section class="blog-higlights">
+                <div class="container-fluid push-3 pad-4">
+                    <h3 class="text-center push-1h-bottom title-type large">From our Blog</h3>
+                    <div class="row push-2-bottom">
+                        <div class="col-xs-12">
+                            <ul class="list-silent legible text-center">
+                                <li class="push-h">
+                                    <a class="blog-highlights__link" href="http://blog.pythonexpress.in/posts/grand-show/">Grand Show</a>
+                                </li>
+                                <li class="push-h">
+                                    <a class="blog-highlights__link" href="http://blog.pythonexpress.in/posts/crescent-python-month/">Crescent PythonMonth</a>
+                                </li>
+                                <li class="push-h">
+                                    <a class="blog-highlights__link" href="http://blog.pythonexpress.in/posts/python-month-has-arrived/">PythonMonth has arrived, in style!</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="panel-half fill-secondary">
+            <section class="twitter-widget">
+                <div class="container-fluid push-4">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2 text-center">
+                            <a href="https://twitter.com/pythonexpress" class="twitter-follow-button" data-size="large" data-show-count="false">Follow @pythonexpress</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            <div class="twitter-widget__profile space-2-top">
+                                <a class="twitter-timeline" data-height="400" data-theme="light" href="https://twitter.com/pythonexpress">Tweets by pythonexpress</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
+
+{% endblock %}
+{% block container_body %}{% endblock %}
+{% block footer_scripts %}
+    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script>
+        $('#upcoming').dataTable({
+            "iDisplayLength": 10
+        } );
+    </script>
+
+    <script src="{% static 'js/libs/jquery.justifiedGallery.min.js' %}"></script>
+    <script>
+        $("#mygallery").justifiedGallery({
+            rowHeight : 150,
+            lastRow : 'hide',
+            margins : 0,
+            captions: false
+        });
+    </script>
+
+    <script>
+        'use strict';
+        $(function(){
+            $('.clickable-row td').click(function() {
+               window.document.location = $(this).parent().attr('data-href');
+            });
+        });
+    </script>
 {% endblock %}

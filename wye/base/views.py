@@ -21,9 +21,15 @@ class HomePageView(TemplateView):
             WorkshopStatus.REQUESTED,
             WorkshopStatus.ACCEPTED,
             WorkshopStatus.DECLINED])
+        workshop_list = Workshop.objects.filter(
+            is_active=True
+        ).filter(
+            status__in=[WorkshopStatus.REQUESTED, WorkshopStatus.ACCEPTED]
+        ).order_by('expected_date')
         context['requested_workshop_count'] = workshopObj.count()
         context['tutor_registered_count'] = Profile.objects.filter(
             usertype__slug="tutor").count()
+        context['upcoming_workshops'] = workshop_list
         return context
 
 

@@ -2,8 +2,8 @@
 {% block title %}Workshops | {{ block.super }}{% endblock %}
 
 {% block header %}
-    <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">Upcoming Workshops</h1>
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">Upcoming Workshops</h1>
     </div>
 {% endblock %}
 {% block extracss %}
@@ -16,65 +16,61 @@
 {% endblock %}
 
 {% block content %}
-
-    <ul>Note:
-        <li>The dates displayed are tentative. It can be changed as per the tutors' availability and convenience.
-        <a href="https://pythonexpress.in/contact/">Contact us.</a>
-        </li>
-        <li>Changes in dates will be discussed via email between both the tutor and college.</li>
-        <li>If required, we will work with the college to help share logistics cost.</li>
-    </ul>
-    <div class="container">
- <div class="row text-center push-6-bottom">
-
-        <div class="col-md-8 push-3">
-            <p class="push-3q-bottom pad-2"><h3>Upcoming Workshops</h3></p>
-
-            {% if workshop_list %}
-            <table id="upcoming" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>sl.no </th>
-                    <th>Location</th>
-                    <th>Workshop Section</th>
-                    <th>Workshop level</th>
-                    <th>Tentative Dates *</th>
-                    <th>College</th>
-                    <th>presenter</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {% for workshop in workshop_list %}
-                        <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td><u><a href="/workshop/{{workshop.id}}/">{{workshop.location}}</a></u></td>
-                        <td>{{workshop.workshop_section.name}}</td>
-                        <td>{{workshop.get_workshop_level_display}}</td>
-
-                        <td>{{workshop.expected_date|date:'l,  M. d Y' }}</td>
-                        <td>{{workshop.requester.name}}</td>
-                        <td>
-                                {% for u in  workshop.presenter.all %}
-                                    {{u.get_full_name}}
-                                {% endfor %}
-                        </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <h3>All workshop request are completed</h3>
-            {% endif %}
+    <div class="push-1-top push-4-bottom">
+        <div class="alert alert-warning">
+            <h4>Note:</h4>
+            <ul class="pad-1">
+                <li>The dates displayed are tentative. It can be changed as per the tutors' availability and convenience.
+                <a href="https://pythonexpress.in/contact/">Contact us.</a>
+                </li>
+                <li>Changes in dates will be discussed via email between both the tutor and college.</li>
+                <li>If required, we will work with the college to help share logistics cost.</li>
+            </ul>
         </div>
-    </div>
-    </div>
+        {% if workshop_list %}
+            <div class="table-responsive">
+                <table id="upcoming" class="table table-striped table-bordered space-3-top" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>sl.no </th>
+                            <th>Location</th>
+                            <th>Workshop Section</th>
+                            <th>Workshop level</th>
+                            <th>Tentative Dates *</th>
+                            <th>College</th>
+                            <th>presenter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for workshop in workshop_list %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td><u><a href="/workshop/{{workshop.id}}/">{{workshop.location}}</a></u></td>
+                                <td>{{workshop.workshop_section.name}}</td>
+                                <td>{{workshop.get_workshop_level_display}}</td>
 
-<script>
-    $('#upcoming').dataTable({
-        "iDisplayLength": 50
-    } );
-</script>
-
+                                <td>{{workshop.expected_date|date:'l,  M. d Y' }}</td>
+                                <td>{{workshop.requester.name}}</td>
+                                <td>
+                                    {% for u in  workshop.presenter.all %}
+                                        {{u.get_full_name}}
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+        <h3>All workshop request are completed</h3>
+        {% endif %}
+    </div>
 {% endblock %}
 
-
+{% block footer_scripts %}
+    <script>
+        $('#upcoming').dataTable({
+            "iDisplayLength": 50
+        } );
+    </script>
+{% endblock %}

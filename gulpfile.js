@@ -6,7 +6,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var sourcemaps = require('gulp-sourcemaps');
 
 var paths = {
-    sass: 'wye/static/sass/*.scss',
+    sass: 'wye/static/sass/**/*.scss',
     css: 'wye/static/css'
 };
 

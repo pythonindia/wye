@@ -1,0 +1,53 @@
+.btn-theme {
+    padding: 0.5em 2em;
+    font-size: 1.1em;
+    background-color: $theme;
+    border-color: $theme;
+    color: $dark;
+    &:hover {
+        background-color: darken($theme, 10%);
+        border-color: $theme;
+        color: $dark;
+    }
+
+    &-primary {
+        background-color: $primary;
+        border-color: $primary;
+        color: white;
+        &:hover {
+            background-color: $primary-alt;
+            border-color: $primary-alt;
+            color: white;
+        }
+    }
+    &-secondary {
+        background-color: $secondary;
+        border-color: $secondary;
+        color: white;
+        &:hover {
+            background-color: $secondary-alt;
+            border-color: $secondary-alt;
+            color: white;
+        }
+    }
+    &-tertiary {
+        background-color: $tertiary;
+        border-color: $tertiary;
+        color: white;
+        &:hover {
+            background-color: $tertiary-alt;
+            border-color: $tertiary-alt;
+            color: white;
+        }
+    }
+    &-dark {
+        background-color: $dark;
+        border-color: $dark;
+        color: white;
+        &:hover {
+            background-color: $theme;
+            border-color: $theme;
+            color: $dark;
+        }
+    }
+}
