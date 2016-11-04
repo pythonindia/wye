@@ -1,58 +1,52 @@
-.btn-theme-primary {
-    background-color: $primary;
-    border-color: $primary;
-    color: white;
-    &:hover {
-        background-color: $primary-alt;
-        border-color: $primary-alt;
-        color: white;
-    }
-}
-.btn-theme-secondary {
-    background-color: $secondary;
-    border-color: $secondary;
-    color: white;
-    &:hover {
-        background-color: $secondary-alt;
-        border-color: $secondary-alt;
-        color: white;
-    }
-}
-.btn-theme-tertiary {
-    background-color: $tertiary;
-    border-color: $tertiary;
-    color: white;
-    &:hover {
-        background-color: $tertiary-alt;
-        border-color: $tertiary-alt;
-        color: white;
-    }
-}
-.btn-theme {
-    background-color: $theme;
-    border-color: $theme;
-    color: $dark;
-    &:hover {
-        background-color: $dark;
-        border-color: $dark;
-        color: white;
-    }
-}
-.btn-theme-dark {
-    background-color: $dark;
-    border-color: $dark;
-    color: white;
-    &:hover {
-        background-color: $theme;
-        border-color: $theme;
-        color: $dark;
-    }
-}
 .table-clickable {
     .clickable-row {
         cursor: pointer;
         &:hover {
-            background-color: $light;
+            background: rgba($theme, 0.8);
+            color: $secondary;
+        }
+    }
+}
+.truncate {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.list-silent {
+   list-style-type: none;
+}
+.flushright { float: right; }
+.flushleft  { float: left;  }
+.contain-width {
+    width: 100%;
+}
+
+.vertical-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.relative {
+    position: relative;
+}
+.block {
+    display: block;
+}
+
+.panel {
+    &-container {
+        display: block;
+        @media (min-width: 768px) {
+            display: table;
+        }
+    }
+    &-half {
+        width: 100%;
+        display: block;
+        table-layout: fixed;
+        @media (min-width: 768px) {
+            width: 50%;
+            display: table-cell;
         }
     }
 }

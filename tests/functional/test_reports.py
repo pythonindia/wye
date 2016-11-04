@@ -2,7 +2,7 @@ import re
 from .. import factories as f
 
 
-def test_report_oage(base_url, browser, outbox):
+def test_report_page(base_url, browser, outbox):
     f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')

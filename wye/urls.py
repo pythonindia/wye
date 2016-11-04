@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 
 from wye.base.views import HomePageView
-from wye.profiles.views import UserDashboard, contact
+from wye.profiles.views import UserDashboard, contact, partner_view
 from wye.organisations.views import activate_view
 from wye.workshops.views import upcoming_workshops
 
@@ -19,6 +19,8 @@ urlpatterns = [
         name='about'),
     url(r'^contact/$', contact,
         name='contact'),
+    url(r'^partner/$', partner_view,
+        name='partner'),
     url(r'^thankyou/$', TemplateView.as_view(template_name='contact.html'),
         name='thankyou'),
     url(r'^workshops_info/$', TemplateView.as_view(

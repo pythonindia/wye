@@ -160,3 +160,44 @@ class ContactUsForm(forms.Form):
 def mandatory_field(self):
     for v in filter(lambda x: x.required, self.fields.values()):
         v.label = str(v.label) + "*"
+
+
+class PartnerForm(forms.Form):
+    partner_choices = (
+        ('profit', 'Profit making'),
+        ('non-profit', "Non Profit"))
+    org_name = forms.CharField(label='Organization Name*', required=True)
+    org_url = forms.URLField(label='Organization Url*', required=True)
+    partner_type = forms.ChoiceField(
+        label='Type of organization*',
+        required=True, choices=partner_choices)
+    description = forms.CharField(
+        label='Describe how your organization will help both of us *',
+        required=True, widget=forms.Textarea)
+    python_use = forms.CharField(
+        label='Use of python in your organization ? *',
+        required=True, widget=forms.Textarea)
+    name = forms.CharField(label='Your Name*', required=True)
+    email = forms.EmailField(label='Your email*', required=True)
+    contact_number = forms.CharField(
+        label='Your contact number', required=True)
+
+    comments = forms.CharField(
+        label='Comments*',
+        required=True, widget=forms.Textarea)
+
+    captcha = MathCaptchaField()
+
+    def clean_contact_number(self):
+        contact_number = self.cleaned_data['contact_number']
+        error_message = []
+        if not contact_number.isdigit():
+            error_message.append(
+                "Contact Number should only consist digits")
+        if not len(contact_number) == 10:
+            error_message.append(
+                "Contact Number should be of 10 digits")
+
+        if error_message:
+            raise ValidationError(error_message)
+        return contact_number
