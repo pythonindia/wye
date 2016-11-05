@@ -9,6 +9,9 @@ def create_user(password):
     user = f.create_user()
     user.set_password(password)
     user.save()
+    user.first_name = user.username
+    user.last_name = user.username
+    user.save()
     return user
 
 

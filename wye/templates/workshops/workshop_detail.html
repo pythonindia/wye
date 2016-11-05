@@ -51,7 +51,11 @@
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-xs-4"><strong>Instructors</strong></div>
-                            <div class="col-xs-8">{{ workshop.get_presenter_list|join:", " }}</div>
+                            <div class="col-xs-8">
+                                {% for user in workshop.get_presenter_list %}
+                                  <a style="color:blue; margin-right:5px;"  href="/profile/{{ user.username }}/">{{ user.get_full_name }}</a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </li>
                     <li class="list-group-item">

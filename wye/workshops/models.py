@@ -196,7 +196,7 @@ class Workshop(TimeAuditModel):
         }
 
     def get_presenter_list(self):
-        return [user.get_full_name() for user in self.presenter.all()]
+        return [user for user in self.presenter.all()]
 
     def get_tweet(self, context):
         workshop = self
