@@ -125,7 +125,6 @@ class UserProfileForm(forms.ModelForm):
         profile_form = super(UserProfileForm, self).save(commit=True)
         return profile_form
 
-
     class Meta:
         model = models.Profile
         exclude = ('user', 'slug', 'interested_locations')
