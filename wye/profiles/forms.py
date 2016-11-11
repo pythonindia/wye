@@ -122,8 +122,9 @@ class UserProfileForm(forms.ModelForm):
         self.instance.user.first_name = self.cleaned_data['first_name']
         self.instance.user.last_name = self.cleaned_data['last_name']
         self.instance.user.save()
-        self.instance.save()
-        return self.instance
+        profile_form = super(UserProfileForm, self).save(commit=True)
+        return profile_form
+
 
     class Meta:
         model = models.Profile
