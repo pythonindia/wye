@@ -54,6 +54,9 @@
                                             {% if user.is_staff %}
                                                 <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
                                             {% endif %}
+                                            {% if user.is_staff %}
+                                                <li><a href="{% url 'reports:home' %}" target="_blank">Reports</a></li>
+                                            {% endif %}
                                             <li><a href="{% url 'account_logout' %}"><i class="fa fa-power-off fa-width"></i>Logout</a></li>
                                         </ul>
                                     </li>

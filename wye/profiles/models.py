@@ -113,7 +113,9 @@ class Profile(models.Model):
     def get_workshop_completed_count(self):
         return len([x for x in
                     self.get_workshop_details if (
-                        x.status == WorkshopStatus.COMPLETED)])
+                        x.status in [
+                            WorkshopStatus.COMPLETED,
+                            WorkshopStatus.FEEDBACK_PENDING])])
 
     @property
     def get_workshop_upcoming_count(self):
