@@ -40,8 +40,8 @@ def workshop_list(request):
     context_dict = {}
     workshop_list = Workshop.objects.all().order_by('-expected_date')
     workshop_list = workshop_list.filter(
-        requester__location__id__in=[
-            x.id for x in request.user.profile.interested_locations.all()]
+        requester__location__state__id__in=[
+            x.id for x in request.user.profile.interested_states.all()]
     )
 
     location_list = request.GET.getlist("location")

@@ -302,7 +302,7 @@ class WorkshopVoting(TimeAuditModel):
     def save_rating(cls, workshop_feedback, **kwargs):
         object_list = [
             cls(workshop_feedback=workshop_feedback,
-                workshop_rating_id=int(k), rating=v[0])
+                workshop_rating_id=int(k.split('-')[0]), rating=v[0])
             for k, v in kwargs.items()
         ]
         cls.objects.bulk_create(object_list)
