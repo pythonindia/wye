@@ -3,9 +3,10 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.contrib.auth.models import User
 from wye.base.constants import WorkshopStatus
 from wye.workshops.models import Workshop
+from wye.profiles.models import Profile
 
 
 @login_required
@@ -56,12 +57,10 @@ def index(request):
 
 
 @login_required
-def get_tutor_college_poc_csv(request, days=None, ):
+def get_tutor_college_poc_csv(request):
     if not request.user.is_staff:
         template_name = '403.html'
         return render(request, template_name, {})
-    data = request.POST
-    print(data)
     usertype = request.POST['usertype']
     year = request.POST['years']
     workshops = Workshop.objects.filter(is_active=True)
@@ -100,5 +99,30 @@ def get_tutor_college_poc_csv(request, days=None, ):
             for u in obj.requester.user.all():
                 row.append("{} {}".format(u.first_name, u.last_name))
                 row.append("{}".format(u.email))
+        writer.writerow(row)
+    return response
+
+
+@login_required
+def get_all_user_info(request):
+    if not request.user.is_staff:
+        template_name = '403.html'
+        return render(request, template_name, {})
+    users = User.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="all_users.csv"'
+    writer = csv.writer(response)
+    csv_titles = [
+        'User Id', 'First Name', 'Last Name', 'Email', 'Is Active',
+        'Is Presenter', 'Is POC', 'Is Regional Lead', 'Is Organiser']
+    writer.writerow(csv_titles)
+    for obj in users:
+        row = [
+            obj.id, obj.first_name, obj.last_name, obj.email, obj.is_active,
+            Profile.is_presenter(obj),
+            Profile.is_coordinator(obj),
+            Profile.is_regional_lead(obj),
+            Profile.is_organiser(obj)]
+
         writer.writerow(row)
     return response

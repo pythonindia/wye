@@ -89,7 +89,7 @@
             <div class="row">
                 <div class="col-xs-6">
                     <h3 class="space-1q-top">All workshop CSV</h3>
-                    <form action ="/reports/workshops_csv/" method="POST">
+                    <form action ="/reports/export_workshops/" method="POST">
                     {% csrf_token %}
                         <label>Years</label>
                             <select name="years" id="years">
@@ -103,6 +103,15 @@
                                 <option value="tutor">Tutor</option>
                                 <option value="poc">College POC</option>
                             </select>
+                        <input type="submit" name="submit" class="button">
+                    </form>
+                </div>
+            </div>
+            div class="row">
+                <div class="col-xs-6">
+                    <h3 class="space-1q-top">All User CSV</h3>
+                    <form action ="/reports/export_users/" method="POST">
+                    {% csrf_token %}
                         <input type="submit" name="submit" class="button">
                     </form>
                 </div>
