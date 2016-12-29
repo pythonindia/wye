@@ -75,3 +75,18 @@ class ContactFeedbackType:
     _ACCOUNT = [2, "Account"]
     _ORGANISATION = [3, "Organisation"]
     _OTHERS = [4, "Others"]
+
+
+@choices
+class WorkshopAudience:
+    _BE_FINAL_YEAR = [1, "B.E Final Year"]
+    _BE_THIRD_YEAR = [2, "B.E Third Year"]
+    _BE_SECOND_YEAR = [3, "B.E Second Year"]
+    _BE_FIRST_YEAR = [4, "B.E Second Year"]
+    _MASTER_FINAL_YEAR = [5, "MASTER Final Year"]
+    _MASTER_SECOND_YEAR = [6, "MASTER Second Year"]
+    _MASTER_FIRST_YEAR = [7, "MASTER Second Year"]
+    _TEN_PLUS_TWO = [8, "College 2nd year"]
+    _TEN_PLUD_ONE = [9, "College 1 Year"]
+    _SCHOOL = [10, "School"]
+    _OTHERS = [11, "Others"]

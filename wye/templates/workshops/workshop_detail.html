@@ -8,34 +8,33 @@
 
 {% block content %}
     <div class="push-4-bottom">
-    	{% if user.is_authenticated %}
-        <div class="row push-1-bottom">
+        {% if user.is_authenticated %}
+            <div class="row push-1-bottom">
             <div class="col-xs-5 sub">
                 <a href="{% url 'workshops:workshop_list' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Workshops</a>
             </div>
             <div class="col-xs-7 text-right">
                 {% if display_edit_button %}
-                <a href="{% url 'workshops:workshop_update' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Edit<span class="hidden-xs"> Workshop</span></a>
+                    <a href="{% url 'workshops:workshop_update' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Edit<span class="hidden-xs"> Workshop</span></a>
                 {% endif %}
                 {% if workshop|show_draft_button:user  %}
-                   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold sub pad-1 sub">Hold Workshop</a>
+                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/hold/" class="btn btn-warning ws-hold">Hold</a>
                 {% endif %}
                 {% if workshop|show_requested_button:user %}
-                   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold sub">Publish/Request</a>
+                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-publish">Publish/Request</a>
                 {% endif %}
                 {% if workshop|show_accepted_button:user %}
-                   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept sub">Accept Workshop</a>
+                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/accept/" class="btn btn-success ws-accept">Accept</a>
                 {% endif %}
-		{% if workshop|show_decline_button:user %}
-		   <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline sub">Decline Workshop</a>
-               {% endif %}
-	       {% if workshop|show_reject_button:user %}
-                  <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject sub">Reject Workshop</a>
-               {% endif %}
-               {% if workshop|show_feedback_button:user %}
-                  <a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default sub">Share Feedback</a>
-               {% endif %}
-
+                {% if workshop|show_decline_button:user %}
+                   <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
+                {% endif %}
+               {% if workshop|show_reject_button:user %}
+                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
+                {% endif %}
+                {% if workshop|show_feedback_button:user %}
+                    <a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
+                {% endif %}
             </div>
         </div>
         {% endif %}
@@ -129,3 +128,45 @@
         </div>
     </div>
 {% endblock %}
+{% block footer_scripts %}
+    <script>
+        'use strict';
+        $(function(){
+            $('.clickable-row td:nth-child(-n + 5)').click(function() {
+               window.document.location = $(this).parent().attr('data-href');
+            });
+
+        $(".ws-accept").bind('click', function(){
+            $.post($(this).attr('data-url'), {}, function (data) {
+
+                if (data['status']) {
+                    window.location.reload();
+                } else {
+                    alert(data['msg']);
+                }
+            });
+        });
+        $(".ws-reject").bind('click', function() {
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });
+        });
+        $(".ws-hold").bind('click', function() {
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });
+        });
+    $(".ws-decline").bind('click', function() {
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });
+        });
+    });
+    </script>
+    {% endblock %}

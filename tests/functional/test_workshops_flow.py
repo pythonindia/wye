@@ -78,6 +78,8 @@ def test_workshop_flow(base_url, browser, outbox):
     f.create_workshop_rating()
     f.create_workshop_rating()
     f.create_workshop_rating()
+    state1 = f.create_state(name='state1')
+    state2 = f.create_state(name='state2')
 
     user = f.create_user()
     user.set_password('123123')
@@ -98,18 +100,21 @@ def test_workshop_flow(base_url, browser, outbox):
     user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
     user.save()
-    org = f.create_organisation()
+    location = f.create_locaiton(state=state1)
+    org = f.create_organisation(location=location)
     org.user.add(user)
     user.profile.interested_locations.add(org.location)
     user.profile.location = org.location
     user.profile.save()
     org.save()
 
-    workshop = f.create_workshop(requester=org)
+    workshop = f.create_workshop(
+        requester=org,
+        location=org.location,
+        status=WorkshopStatus.REQUESTED)
 
     workshop.expected_date = datetime.now() + timedelta(days=20)
-    workshop.status = WorkshopStatus.REQUESTED
-    workshop.location = org.location
+    workshop.presenter.add(user)
     workshop.save()
     url = base_url + '/workshop/update/{}/'.format(workshop.id)
     browser.visit(url)
@@ -119,13 +124,13 @@ def test_workshop_flow(base_url, browser, outbox):
 
     section1 = f.create_workshop_section(name='section1')
     location = org.location
-    state = f.create_state(name='state2')
 
     user.profile.usertype.clear()
     user.profile.usertype.add(tutor_type)
 
     user.profile.location = location
-    user.profile.interested_states.add(state)
+    user.profile.interested_states.add(state2)
+    user.profile.interested_states.add(state1)
     user.profile.mobile = '1234567890'
     user.profile.interested_sections.add(section1)
     user.profile.interested_level = 1
@@ -166,12 +171,26 @@ def test_workshop_flow(base_url, browser, outbox):
     decline_workshop_link = browser.find_by_text('Decline')[0]
     assert decline_workshop_link
     decline_workshop_link.click()
-    workshop.status = WorkshopStatus.REQUESTED
-    workshop.is_active = True
-    workshop.save()
+    #workshop.status = WorkshopStatus.REQUESTED
+    #workshop.is_active = True
+    #workshop.save()
+
+    hold_workshop_link = browser.find_by_text('Hold')[0]
+    assert hold_workshop_link
+    hold_workshop_link.click()
 
     url = base_url + '/workshop/'
     browser.visit(url)
+    publish_workshop_link = browser.find_by_text('Publish/Request')[0]
+    assert publish_workshop_link
+    publish_workshop_link.click()
+    hold_workshop_link = browser.find_by_text('Hold')[0]
+    assert hold_workshop_link
+    hold_workshop_link.click()
+
+    url = base_url + '/workshop/'
+    browser.visit(url)
+
     accept_workshop_link = browser.find_by_text('Accept')[0]
     assert accept_workshop_link
     accept_workshop_link.click()
