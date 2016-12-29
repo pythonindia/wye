@@ -20,10 +20,14 @@ from .forms import ContactUsForm, UserProfileForm, PartnerForm
 def profile_view(request, slug):
     try:
         p = Profile.objects.get(user__username=slug)
+        workshops = Workshop.objects.filter(
+            presenter=p.user).order_by('-expected_date')
+        return render(
+            request, 'profile/index.html',
+            {'object': p, 'workshops': workshops})
     except Profile.DoesNotExist:
         return render(request, 'error.html', {
             "message": "Profile does not exist"})
-    return render(request, 'profile/index.html', {'object': p})
 
 
 class UserDashboard(ListView):

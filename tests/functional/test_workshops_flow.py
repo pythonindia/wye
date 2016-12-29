@@ -201,7 +201,8 @@ def test_workshop_flow(base_url, browser, outbox):
     browser.reload()
     url = base_url + '/workshop/'
     browser.visit(url)
-    browser.screenshot()
+    # browser.screenshot()
+    print(browser.html)
     publish_workshop_link = browser.find_by_text('Share Feedback')[0]
     assert publish_workshop_link
     publish_workshop_link.click()
