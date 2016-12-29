@@ -171,9 +171,7 @@ def test_workshop_flow(base_url, browser, outbox):
     decline_workshop_link = browser.find_by_text('Decline')[0]
     assert decline_workshop_link
     decline_workshop_link.click()
-    #workshop.status = WorkshopStatus.REQUESTED
-    #workshop.is_active = True
-    #workshop.save()
+
 
     hold_workshop_link = browser.find_by_text('Hold')[0]
     assert hold_workshop_link
