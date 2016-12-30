@@ -49,7 +49,7 @@ class UserDashboard(ListView):
     def get_context_data(self, **kwargs):
         context = super(UserDashboard, self).get_context_data(**kwargs)
         profile = Profile.objects.get(user=self.request.user)
-        workshop_all = Workshop.objects.all()
+        workshop_all = Workshop.objects.filter(is_active=True)
         accept_workshops = workshop_all.filter(
             status=WorkshopStatus.ACCEPTED)
         requested_workshops = workshop_all.filter(
