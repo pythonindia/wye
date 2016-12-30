@@ -108,7 +108,9 @@ class Workshop(TimeAuditModel):
             'decline': (WorkshopStatus.DECLINED, self.set_status),
             'publish': (WorkshopStatus.REQUESTED, self.set_status),
             'hold': (WorkshopStatus.HOLD, self.set_status),
-            'assign': ""
+            'assign': "",
+            'opt-in-as-volunteer': '',
+            'opt-out-as-volunteer': ''
         }
         if kwargs.get('action') not in actions:
             return {
@@ -219,6 +221,12 @@ class Workshop(TimeAuditModel):
                 topic, date, workshop_url)
 
         return message
+
+        def opt_in_as_volunteer(self):
+            pass
+
+        def opt_out_as_volunteer(self):
+            pass
 
 
 class WorkshopRatingValues(TimeAuditModel):

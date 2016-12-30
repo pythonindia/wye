@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 # from django.db.models import Q
 from django.contrib.sites.models import Site
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, render
 from django.template import loader
@@ -35,6 +35,7 @@ def workshop_list(request):
         return redirect('profiles:profile-edit', slug=request.user.username)
     context_dict = {}
     workshop_list = Workshop.objects.all().order_by('-expected_date')
+    
     workshop_list = workshop_list.filter(
         requester__location__id__in=[
             x.id for x in request.user.profile.interested_locations.all()]
@@ -276,10 +277,58 @@ def upcoming_workshops(request):
 
 @login_required
 def workshop_update_volunteer(request, pk):
+    if request.GET:
+	return JsonResponse({"items": range(1, 6)})	
+
     if request.POST:
         volunteers = request.POST.get('number_of_volunteers')
 
         if volunteers.strip() not in ('', None):
             workshop_volunteer = Workshop.objects.filter(pk=pk)
             workshop_volunteer.update(number_of_volunteers=volunteers)
-    return HttpResponseRedirect(reverse('workshops:workshop_detail', args=[pk]))
+    	    return JsonResponse({"status": True, "msg": "Updated successfully"})
+    return JsonResponse({"status": False, "msg": "Somthing went wrong"})	
+
+
+@login_required
+def accept_as_volunteer(request, pk):
+    if request.POST:
+	workshop_volunteer = Workshop.objects.filter(pk=pk)
+	user = request.user
+
+	if workshop_volunteer.volunteer.count >= 1:
+	    # Check if already registered
+	    if user in workshop_volunteer.volunteer.all():
+		return JsonResponse({
+                    "status": False,
+                    "msg": "You are already registered as volunteer."})
+	    else:
+		workshop_volunteer.volunteer.add(user)
+	    	return JsonResponse({
+		    "status": True, 
+		    "msg": "Registered successfully."})
+	else:
+	    return JsonResponse({
+		"status": False, 
+		"msg": "Unable to register you, as requirement already fulfilled"})   	
+    return JsonResponse({"status": False, "msg": "Something went wrong"})
+
+
+@login_required
+def opt_out_as_volunteer(request, pk):
+    if request.POST:
+        workshop_volunteer = Workshop.objects.filter(pk=pk)
+	user = request.user
+
+        if workshop_volunteer.volunteer.count >= 1 and \
+		 user in workshop_volunteer.volunteer.all():
+	    # remove volunteer
+	    workshop_volunteer.volunteer.remove(user)
+            return JsonResponse({
+                "status": True, 
+                "msg": "Opt-out successfully."})
+	else:
+	   return JsonResponse({
+		"status": False, 
+		"msg": "You are not registered as volunteer."})
+    return JsonResponse({"status": False, "msg": "Something went wrong"})

@@ -70,9 +70,6 @@ def show_decline_button(workshop, user):
 register.filter(show_decline_button)
 
 
-def show_accept_voluteer_button(user):
-    pass
-
 
 def show_volunteer_count(user):
     if not Profile.is_presenter(user):
@@ -81,5 +78,15 @@ def show_volunteer_count(user):
 register.filter(show_volunteer_count)
 
 
-def show_opt_out_volunteer_button(user):
-    pass
+def show_accept_volunteer_button(workshop, user):
+    if Profile.is_volunteer(user) and user not in workshop.volunteer.all() and  user not in workshop.requester.user.all():
+        return True
+    return False
+register.filter(show_accept_volunteer_button)
+
+
+def show_opt_out_volunteer_button(workshop, user):
+    if user in workshop.volunteer.all():
+        return True
+    return False
+register.filter(show_opt_out_volunteer_button)
