@@ -100,7 +100,7 @@ class Profile(models.Model):
 
     @property
     def get_workshop_details(self):
-        return Workshop.objects.filter(
+        return Workshop.objects.filter(is_active=True).filter(
             presenter=self.user).order_by('-id')
 
     @property
@@ -161,7 +161,8 @@ class Profile(models.Model):
         sections = WorkshopSections.objects.all()
         workshops = Workshop.objects.filter(
             presenter=self.user,
-            status=WorkshopStatus.COMPLETED
+            status=WorkshopStatus.COMPLETED,
+            is_active=True
         )
         if workshops:
             max_workshop_date = workshops.aggregate(
