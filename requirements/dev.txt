@@ -10,7 +10,7 @@ ipython==5.1.0
 # Testing
 # -------------------------------------------------
 pytest-django==3.1.2
-pytest-cov==2.2.*
+pytest-cov==2.4.0
 pytest-splinter==1.8.1
 factory-boy==2.8.1
 pdbpp==0.8.3
