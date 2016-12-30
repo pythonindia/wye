@@ -161,32 +161,29 @@ def test_workshop_flow(base_url, browser, outbox):
     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
     assert publish_workshop_link
     publish_workshop_link.click()
+    # hold_workshop_link = browser.find_by_text('Hold')[0]
+    # assert hold_workshop_link
+    # hold_workshop_link.click()
 
-# #   checking declined state
-#     browser.visit(url)
-#     decline_workshop_link = browser.find_by_text('Decline')[0]
-#     assert decline_workshop_link
-#     decline_workshop_link.click()
-
-#     workshop.status = WorkshopStatus.HOLD
-#     workshop.is_active = True
-#     workshop.save()
+#   checking declined state
+    # browser.visit(url)
+    # decline_workshop_link = browser.find_by_text('Decline')[0]
+    # assert decline_workshop_link
+    # decline_workshop_link.click()
 
     browser.visit(url)
-    print(browser.html)
+    hold_workshop_link = browser.find_by_text('Hold')[0]
+    assert hold_workshop_link
+    hold_workshop_link.click()
+
+    browser.visit(url)
     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
     assert publish_workshop_link
     publish_workshop_link.click()
 
-    browser.visit(url)
-    accept_workshop_link = browser.find_by_text('Accept')[0]
-    assert accept_workshop_link
-    accept_workshop_link.click()
-
-    browser.visit(url)
-    accept_workshop_link = browser.find_by_text('Reject')[0]
-    assert accept_workshop_link
-    accept_workshop_link.click()
+    # hold_workshop_link = browser.find_by_text('Hold')[0]
+    # assert hold_workshop_link
+    # hold_workshop_link.click()
 
     browser.visit(url)
     accept_workshop_link = browser.find_by_text('Accept')[0]
