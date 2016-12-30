@@ -20,8 +20,12 @@ from .forms import ContactUsForm, UserProfileForm, PartnerForm
 def profile_view(request, slug):
     try:
         p = Profile.objects.get(user__username=slug)
-        workshops = Workshop.objects.filter(
-            presenter=p.user).order_by('-expected_date')
+        workshops = Workshop.objects.filter(is_active=True).filter(
+            presenter=p.user).filter(status__in=[
+                WorkshopStatus.ACCEPTED,
+                WorkshopStatus.REQUESTED,
+                WorkshopStatus.FEEDBACK_PENDING,
+                WorkshopStatus.COMPLETED]).order_by('-expected_date')
         return render(
             request, 'profile/index.html',
             {'object': p, 'workshops': workshops})
