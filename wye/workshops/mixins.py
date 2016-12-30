@@ -1,18 +1,18 @@
-from django.contrib import messages
+# from django.contrib import messages
 # from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
 # from django.http import Http404
 from django.http import HttpResponseForbidden
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+# from django.http import HttpResponseRedirect, JsonResponse
+# from django.shortcuts import render
 
-from wye.base.constants import WorkshopStatus, FeedbackType
+# from wye.base.constants import WorkshopStatus, FeedbackType
 from wye.base.emailer import send_mail
-from wye.organisations.models import Organisation
+# from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead
 
-from .models import Workshop, WorkshopFeedBack
+from .models import Workshop
 
 
 class WorkshopAccessMixin(object):
@@ -29,7 +29,8 @@ class WorkshopAccessMixin(object):
 
         if not (is_admin or is_lead or is_organiser):
             return HttpResponseForbidden("Not sufficent permission")
-        return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
+        return super(WorkshopAccessMixin, self).dispatch(
+            request, *args, **kwargs)
 
 
 # class WorkshopFeedBackMixin(object):
