@@ -186,6 +186,10 @@ class Workshop(TimeAuditModel):
         func = action_map.get(action)
         func(user)
 
+        if action == 'opt-out':
+            self.number_of_volunteers = 0
+            self.volunteer.clear()
+
         if self.presenter.count() > 0:
             self.status = WorkshopStatus.ACCEPTED
         else:

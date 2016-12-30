@@ -6,8 +6,10 @@ from .views import (
     WorkshopUpdate,
     WorkshopToggleActive,
     WorkshopAction,
-    workshop_feedback_view, 
-    workshop_update_volunteer)
+    workshop_feedback_view,
+    workshop_update_volunteer,
+    workshop_accept_as_volunteer,
+    workshop_opt_out_as_volunteer)
 
 
 urlpatterns = [
@@ -21,7 +23,11 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/(?P<action>accept|reject|hold|publish|decline)/$',
         WorkshopAction.as_view(), name="workshop_action"),
     url(r'^feedback/(?P<pk>\d+)/$',
-	workshop_feedback_view, name="workshop_feedback")
-    url(r'^update-volunteer/(?P<pk>\d+)/$',
-        workshop_update_volunteer, name="workshop_update_volunteer")
+        workshop_feedback_view, name="workshop_feedback"),
+    url(r'^update-volunteer/(?P<pk>\d+)$',
+        workshop_update_volunteer, name="workshop_update_volunteer"),
+    url(r'^workshop-opt-in-as-volunteer/(?P<pk>\d+)$',
+        workshop_accept_as_volunteer, name="workshop_opt_in_volunteer"),
+    url(r'^workshop-opt-out-as-volunteer/(?P<pk>\d+)$',
+        workshop_opt_out_as_volunteer, name="workshop_opt_out_volunteer"),
 ]

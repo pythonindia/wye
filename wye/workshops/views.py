@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse, reverse_lazy
 # from django.db.models import Q
 from django.contrib.sites.models import Site
@@ -21,7 +22,7 @@ from .forms import (
     WorkshopForm,
     WorkshopEditForm,
     WorkshopFeedbackForm,
-    WorkshopListForm, 
+    WorkshopListForm,
     WorkshopVolunteer)
 from .mixins import (
     WorkshopEmailMixin,
@@ -304,10 +305,11 @@ def upcoming_workshops(request):
     return render(request, template_name, context_dict)
 
 
+@csrf_exempt
 @login_required
 def workshop_update_volunteer(request, pk):
     if request.GET:
-	return JsonResponse({"items": range(1, 6)})	
+        return JsonResponse({"items": range(1, 6)})
 
     if request.POST:
         volunteers = request.POST.get('number_of_volunteers')
@@ -315,49 +317,54 @@ def workshop_update_volunteer(request, pk):
         if volunteers.strip() not in ('', None):
             workshop_volunteer = Workshop.objects.filter(pk=pk)
             workshop_volunteer.update(number_of_volunteers=volunteers)
-    	    return JsonResponse({"status": True, "msg": "Updated successfully"})
-    return JsonResponse({"status": False, "msg": "Somthing went wrong"})	
+            return JsonResponse({"status": True, "msg": "Updated successfully"})
+    return JsonResponse({"status": False, "msg": "Somthing went wrong"})
 
 
+@csrf_exempt
 @login_required
-def accept_as_volunteer(request, pk):
-    if request.POST:
-	workshop_volunteer = Workshop.objects.filter(pk=pk)
-	user = request.user
+def workshop_accept_as_volunteer(request, pk):
+    if request.method == 'POST':
+        workshop = Workshop.objects.get(pk=pk)
+        user = request.user
 
-	if workshop_volunteer.volunteer.count >= 1:
-	    # Check if already registered
-	    if user in workshop_volunteer.volunteer.all():
-		return JsonResponse({
+        if workshop.number_of_volunteers == 0:
+            return JsonResponse({
+                "status": False,
+                "msg": "Volunteer not request for this workshop."})
+        elif workshop.number_of_volunteers - workshop.volunteer.count() >= 1:
+            # Check if already registered
+            if user in workshop.volunteer.all():
+                return JsonResponse({
                     "status": False,
                     "msg": "You are already registered as volunteer."})
-	    else:
-		workshop_volunteer.volunteer.add(user)
-	    	return JsonResponse({
-		    "status": True, 
-		    "msg": "Registered successfully."})
-	else:
-	    return JsonResponse({
-		"status": False, 
-		"msg": "Unable to register you, as requirement already fulfilled"})   	
+            else:
+                workshop.volunteer.add(user)
+                return JsonResponse({
+                    "status": True,
+                    "msg": "Registered successfully."})
+        else:
+            return JsonResponse({
+                "status": False,
+                "msg": "Unable to register you, as requirement already fulfilled"})
     return JsonResponse({"status": False, "msg": "Something went wrong"})
 
 
+@csrf_exempt
 @login_required
-def opt_out_as_volunteer(request, pk):
-    if request.POST:
-        workshop_volunteer = Workshop.objects.filter(pk=pk)
-	user = request.user
+def workshop_opt_out_as_volunteer(request, pk):
+    if request.method == 'POST':
+        workshop = Workshop.objects.get(pk=pk)
+        user = request.user
 
-        if workshop_volunteer.volunteer.count >= 1 and \
-		 user in workshop_volunteer.volunteer.all():
-	    # remove volunteer
-	    workshop_volunteer.volunteer.remove(user)
+        if workshop.volunteer.count >= 1 and user in workshop.volunteer.all():
+            # remove volunteer
+            workshop.volunteer.remove(user)
             return JsonResponse({
-                "status": True, 
+                "status": True,
                 "msg": "Opt-out successfully."})
-	else:
-	   return JsonResponse({
-		"status": False, 
-		"msg": "You are not registered as volunteer."})
+        else:
+            return JsonResponse({
+                "status": False,
+                "msg": "You are not registered as volunteer."})
     return JsonResponse({"status": False, "msg": "Something went wrong"})
