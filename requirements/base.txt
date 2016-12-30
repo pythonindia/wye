@@ -1,6 +1,6 @@
 # python==3.5.0
 Django==1.10.4
-django-braces==1.8.1
+django-braces==1.10.0
 
 # Utilities
 # --------------------------------------
