@@ -58,9 +58,9 @@ def index(request):
 
 @login_required
 def get_tutor_college_poc_csv(request):
-    if not request.user.is_staff:
-        template_name = '403.html'
-        return render(request, template_name, {})
+    # if not request.user.is_staff:
+    #     template_name = '403.html'
+    #     return render(request, template_name, {})
     usertype = request.POST['usertype']
     year = request.POST['years']
     workshops = Workshop.objects.filter(is_active=True)
@@ -105,9 +105,9 @@ def get_tutor_college_poc_csv(request):
 
 @login_required
 def get_all_user_info(request):
-    if not request.user.is_staff:
-        template_name = '403.html'
-        return render(request, template_name, {})
+    # if not request.user.is_staff:
+    #     template_name = '403.html'
+    #     return render(request, template_name, {})
     users = User.objects.all()
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="all_users.csv"'

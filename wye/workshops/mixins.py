@@ -1,18 +1,18 @@
-from django.contrib import messages
+# from django.contrib import messages
 # from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
 # from django.http import Http404
 from django.http import HttpResponseForbidden
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+# from django.http import HttpResponseRedirect, JsonResponse
+# from django.shortcuts import render
 
-from wye.base.constants import WorkshopStatus, FeedbackType
+# from wye.base.constants import WorkshopStatus, FeedbackType
 from wye.base.emailer import send_mail
-from wye.organisations.models import Organisation
+# from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.regions.models import RegionalLead
 
-from .models import Workshop, WorkshopFeedBack
+from .models import Workshop
 
 
 class WorkshopAccessMixin(object):
@@ -29,7 +29,8 @@ class WorkshopAccessMixin(object):
 
         if not (is_admin or is_lead or is_organiser):
             return HttpResponseForbidden("Not sufficent permission")
-        return super(WorkshopAccessMixin, self).dispatch(request, *args, **kwargs)
+        return super(WorkshopAccessMixin, self).dispatch(
+            request, *args, **kwargs)
 
 
 # class WorkshopFeedBackMixin(object):
@@ -52,73 +53,73 @@ class WorkshopAccessMixin(object):
 #         return super(WorkshopFeedBackMixin, self).dispatch(request, *args, **kwargs)
 
 
-class WorkshopRestrictMixin(object):
-    """
-    Mixin to restrict
-        - For organisation to add workshop if no feedback is shared.
-        - For presenter to takeup workshop if no feedback is shared
-    """
+# class WorkshopRestrictMixin(object):
+#     """
+#     Mixin to restrict
+#         - For organisation to add workshop if no feedback is shared.
+#         - For presenter to takeup workshop if no feedback is shared
+#     """
 
-    allow_presenter = False
+#     allow_presenter = False
 
-    def dispatch(self, request, *args, **kwargs):
-        self.user = request.user
-        self.feedback_required = []
+#     def dispatch(self, request, *args, **kwargs):
+#         self.user = request.user
+#         self.feedback_required = []
 
-        # check if user is tutor
-        if Profile.is_presenter(self.user) and self.allow_presenter:
-            self.validate_presenter_feedback()
-        elif (Profile.is_organiser(self.user) and
-                Organisation.list_user_organisations(self.user).exists()):
-            # if user is from organisation
-            self.validate_organisation_feedback()
-        elif (Profile.is_regional_lead(self.user) or
-                Profile.is_admin(self.user)):
-            pass  # don't restrict lead and admin
-        else:
-            msg = """
-                    To request workshop you need to create organisaiton.\n\n
-                 Please use organisation tab above to create your organisation"""
+#         # check if user is tutor
+#         if Profile.is_presenter(self.user) and self.allow_presenter:
+#             self.validate_presenter_feedback()
+#         elif (Profile.is_organiser(self.user) and
+#                 Organisation.list_user_organisations(self.user).exists()):
+#             # if user is from organisation
+#             self.validate_organisation_feedback()
+#         elif (Profile.is_regional_lead(self.user) or
+#                 Profile.is_admin(self.user)):
+#             pass  # don't restrict lead and admin
+#         else:
+#             msg = """
+#                     To request workshop you need to create organisaiton.\n\n
+#                  Please use organisation tab above to create your organisation"""
 
-            # return json for ajax request
-            return render(request, 'error.html', {'message': msg})
+#             # return json for ajax request
+#             return render(request, 'error.html', {'message': msg})
 
-        if self.feedback_required:
-            return self.return_response(request)
-        return super(WorkshopRestrictMixin, self).dispatch(request, *args, **kwargs)
+#         if self.feedback_required:
+#             return self.return_response(request)
+#         return super(WorkshopRestrictMixin, self).dispatch(request, *args, **kwargs)
 
-    def validate_presenter_feedback(self):
-        workshops = Workshop.objects.filter(
-            presenter=self.user, status=WorkshopStatus.COMPLETED)
+#     def validate_presenter_feedback(self):
+#         workshops = Workshop.objects.filter(
+#             presenter=self.user, status=WorkshopStatus.COMPLETED)
 
-        for workshop in workshops:
-            feedback = WorkshopFeedBack.objects.filter(
-                workshop=workshop, feedback_type=FeedbackType.PRESENTER
-            ).count()
-            if feedback == 0:
-                self.feedback_required.append(workshop)
+#         for workshop in workshops:
+#             feedback = WorkshopFeedBack.objects.filter(
+#                 workshop=workshop, feedback_type=FeedbackType.PRESENTER
+#             ).count()
+#             if feedback == 0:
+#                 self.feedback_required.append(workshop)
 
-    def validate_organisation_feedback(self):
-        workshops = Workshop.objects.filter(
-            requester__user=self.user, status=WorkshopStatus.COMPLETED)
+#     def validate_organisation_feedback(self):
+#         workshops = Workshop.objects.filter(
+#             requester__user=self.user, status=WorkshopStatus.COMPLETED)
 
-        for workshop in workshops:
-            feedback = WorkshopFeedBack.objects.filter(
-                workshop=workshop, feedback_type=FeedbackType.ORGANISATION
-            ).count()
-            if feedback == 0:
-                self.feedback_required.append(workshop)
+#         for workshop in workshops:
+#             feedback = WorkshopFeedBack.objects.filter(
+#                 workshop=workshop, feedback_type=FeedbackType.ORGANISATION
+#             ).count()
+#             if feedback == 0:
+#                 self.feedback_required.append(workshop)
 
-    def return_response(self, request):
-        msg = "Please complete the feeback for %s" % (
-            ", ".join(map(str, self.feedback_required)))
+#     def return_response(self, request):
+#         msg = "Please complete the feeback for %s" % (
+#             ", ".join(map(str, self.feedback_required)))
 
-        # return json for ajax request
-        if request.is_ajax():
-            return JsonResponse({"status": False, "msg": msg})
+#         # return json for ajax request
+#         if request.is_ajax():
+#             return JsonResponse({"status": False, "msg": msg})
 
-        messages.error(request, msg)
-        return HttpResponseRedirect(reverse('workshops:workshop_list'))
+#         messages.error(request, msg)
+#         return HttpResponseRedirect(reverse('workshops:workshop_list'))
 
 
 class WorkshopEmailMixin(object):
