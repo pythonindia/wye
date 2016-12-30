@@ -1,17 +1,27 @@
+$color__bg--silver: #f4f5f7;
+$color__text--gray: #848B91;
+$color__text--dark: #33384A;
+$color__bg--dark: #2E3D4C;
+$color__text--spacegray: #88939e;
+
 .fill-primary       { background-color: $primary; color: white; }
 .fill-secondary     { background-color: $secondary; color: white; }
 .fill-tertiary      { background-color: $tertiary; color: white; }
 .fill-quaternary    { background-color: $quaternary; color: white; }
 .fill-white         { background-color: white; }
 .fill-theme         { background-color: $theme; color: $dark; }
+.fill-theme-alt      { background-color: lighten($theme, 10%); color: $dark; }
 .fill-light         { background-color: #F5F5F5; }
-
+.fill-silver        { background-color: #f4f5f7; }
 .white      { color: white; }
 .gray       { color: $gray-text; }
 .primary    { color: $primary; }
 .secondary  { color: $secondary; }
 .tertiary   { color: $tertiary; }
 
+.github {
+    color: $github;
+}
 .twitter {
     color: $twitter;
 }

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load workshop_action_button %}
 {% block header %}
-    <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">Workshops</h1>
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">Workshops</h1>
     </div>
 {% endblock %}
 
@@ -14,11 +14,11 @@
                 <h3 class="space-1q-top">{% if is_not_tutor %}My {% endif %}Workshops</h3>
             </div>
             {% if is_not_tutor %}
-            <div class="col-xs-4 text-right">
+            <div class="col-sm-4 text-right">
                 <a href="{% url 'workshops:workshop_create' %}" class="btn btn-theme-primary sub pad-1">Request for workshop</a>
             </div>
             {% else %}
-            <div class="col-xs-offset-4">
+            <div class="col-sm-offset-4">
             </div>
             {% endif %}
             <div class="col-xs-2 text-right">
@@ -28,8 +28,8 @@
         <div class="row collapse push-1" id="filterBlock">
             <form method="get" action="{% url "workshops:workshop_list" %}" class="form-inline">
                 <div class="form-group" style="width:25%">
-                    <label for="field.id_for_label">{{form.location.label}}</label>
-                    {{ form.location }}
+                    <label for="field.id_for_label">{{form.state.label}}</label>
+                    {{ form.state }}
                 </div>
                 {% if form.presenter %}
                     <div class="form-group" style="width:16%">
@@ -69,16 +69,12 @@
                                     <th>Level</th>
                                     <th>Status</th>
                                     <th>Action</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for workshop in workshop_list %}
-                                	{% if is_not_tutor %}
                                 	<tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
-                                	{% else %}
-									<tr>
-									{% endif %}
                                         <td>{{ workshop.requester.name }}</td>
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
@@ -88,19 +84,19 @@
                                         <td>{{ workshop.get_status_display }}</td>
                                         <td>
                                         {% if workshop|show_draft_button:user  %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
                                         {% endif %}
                                         {% if workshop|show_requested_button:user %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold">Publish/Request</a>
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold">Publish/Request</a>
                                         {% endif %}
                                         {% if workshop|show_accepted_button:user %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
                                         {% endif %}
-					{% if workshop|show_decline_button:user %}
-					<a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
+					                    {% if workshop|show_decline_button:user %}
+					                       <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
                                         {% endif %}
-					{% if workshop|show_reject_button:user %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
+					                   {% if workshop|show_reject_button:user %}
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
                                         {% endif %}
                                         {% if workshop|show_feedback_button:user %}
                                         	<a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
@@ -120,7 +116,7 @@
     <script>
         'use strict';
         $(function(){
-            $('.clickable-row td:nth-child(-n + 5)').click(function() { 
+            $('.clickable-row td:nth-child(-n + 5)').click(function() {
                window.document.location = $(this).parent().attr('data-href');
             });
 
@@ -139,7 +135,7 @@
                 if (data["status"]) {
                     window.location.reload();
                 }
-            });                                         
+            });
         });
         $(".ws-hold").bind('click', function() {
             $.post($(this).attr('data-url'), {}, function(data) {

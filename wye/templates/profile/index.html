@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block header %}
-    <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">
             {% if request.user.pk == object.pk %}
                 My Profile
             {% else %}
@@ -131,6 +131,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-rocket"></i>&nbsp;&nbsp;Contributions</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-clickable sub">
+                                    <tbody>
+                                    {% for workshop in workshops %}
+                                        <tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
+                                        <td>
+                                        Conducted <b>{{workshop.workshop_section.name}}</b>  workshop on {{workshop.expected_date}} at {{workshop.location.name}} for {{workshop.no_of_participants}} students at {{workshop.requester.name}}</a>
+                                        </td>
+                                        </tr>
+                                    {% endfor %}    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -141,6 +163,11 @@
     <script src="{% static 'js/libs/nv.d3.min.js' %}"></script>
     <script>
         'use strict';
+        $(function(){
+            $('.clickable-row td:nth-child(-n + 5)').click(function() {
+               window.document.location = $(this).parent().attr('data-href');
+            });
+        });
         var nv;
         nv.addGraph(function() {
         var chart = nv.models.multiBarChart();

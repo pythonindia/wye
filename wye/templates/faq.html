@@ -3,80 +3,172 @@
 {% block title %}FAQ | {{ block.super }}{% endblock %}
 
 {% block header %}
-    <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">Frequently Asked Questions</h1>
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">Frequently Asked Questions</h1>
     </div>
 {% endblock %}
 
-{% block extracss %}
-<style>
-.section--faq ol > li {
-    font-weight: bold;
-}
-.section--faq a {
-    text-decoration: underline;
-}
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="section--faq">
-    <ol class="pad-2h-left regular">
-        <li>Why are we conducting free workshops?</li>
-            To create more awareness on Python programming language and help to build larger Python community.
-        <br>
-        <li>Who can sign up as Tutor?</li>
-            Anyone who has knowledge on Python and interested in conducting workshop can become tutor
-        <br>
-        <li>Is there a selection process for tutor registration?</li>
-            No
-        <br>
-        <li>Who are the intended audience?</li>
-            It depends on the organisation requested for workshop and infrastructure to conduct workshop. We help everyone from students till professionals learn Python and related technologies.
-        <br>
-        <li>Can I use this to organize a training in my company?</li>
-            Yes, you can register your company as an organisation with us and request for workshop
-        <br>
-        <li>How do I become a tutor?</li>
-            Register your self with the options usertype - tutor, interested location - your location to conduct workshop.
-            You will receive email from your time of registration for the workshops requested in your location.
-        <br>
-        <li>How do I organize a workshop?</li>
-            Register yourself as POC (usertype - "College POC"). Create organisation you are part of after which you can request for workshop for your organisation registered.
-        <br>
-        <li>Is there any kind of fee associated with PythonExpress?</li>
-            No, Workshops conducted through PythonExpress are free of cost.
-        <br>
-        <li>I don't see my city/location name in option?</li>
-            Please use <a href="{% url 'contact' %}">contact page</a>, chose feedback type option as "others". Share details about locaiton to be added.
-            Volunteers will add and let you know via email
-        <br>
-        <ol start="1">
-            <h2>For Tutor</h2>
-            <li>What is the typical duration of these workshops?</li>
-                It can be from half a day to 2 days
-            <br>
-            <li>Can I get help in the form of slide decks or sample code which can be re-used?</li>
-                Yes, drop email to contact@pythonexpress.in for help.
-            <br>
-            <li>Are there any guidelines in conducting workshops or can I adopt my style of teaching?</li>
-                You can adopt your style of teaching.
-            <br>
-            <li>How is my 'Average Rating' derived?</li>
-                It is the average rating of all the workshops conducted by you through PythonExpress.
-                Workshop rating is provided by Organisation POC as of now.
-                We have plans to integrate Students feedback for each workshop.
-            <br>
-            <li>Do we get any remuneration for doing the workshops?</li>
-                    No remuneration is provided as our intention is to help people learn Python. We do help reimburse travel expense upto certain level in case college can't fund tutors. Reach out to PSSI for the same.
-            <br>
-            <li> I don't see accept button ?</li>
-                    Well you first need to log in to your account. Then click on profile and go to UPDATE PROFILE section. Here in the region section you need to select the cities/region where it's easy for you to give the talk. Once you save the settings click on WORKSHOPS tabs and you should be able to see the related workshop of that area.
-            <li> It is to be noted that every user by default is treated as tutor now. Hence if you want to create organisation click on the ORGANISATIONS tab and add your respective ORGANISATION [ College, FSO, Others, Student Group].
-         </ol>
-    </ol>
-    <br>
-    <br>
-    <br>
+<div class="faq space-1-top">
+    <div class="row">
+        <div class="col-md-8">
+            <div id="general" class="space-3-bottom">
+                <h2 class="push-h-bottom">General</h2>
+                <ol start="1" class="faq__list">
+                    <li>
+                        <div class="faq__question">Why are we conducting free workshops?</div>
+                        <div class="faq__answer">
+                            <p>To create more awareness on Python programming language and help to build larger Python community.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="faq__question">Do we get any remuneration for doing the workshops?</div>
+                        <div class="faq__answer">
+                            <p>No remuneration is provided as our intention is to help people learn Python. We do help reimburse travel expense upto certain level in case college can't fund tutors. Reach out to PSSI for the same.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="faq__question"> I don't see accept button ?</div>
+                        <div class="faq__answer">
+                            <p>Well you first need to log in to your account. Then click on profile and go to UPDATE PROFILE section. Here in the region section you need to select the cities/region where it's easy for you to give the talk. Once you save the settings click on WORKSHOPS tabs and you should be able to see the related workshop of that area.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="faq__question">What is the typical duration of these workshops?</div>
+                        <div class="faq__answer">
+                            <p>As it more hands on workshop, it basically takes 1- 2 days.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="well legible semibold space-1h-top">
+                <ol class="pad-1 space-0-bottom">
+                    <li><a href="#college-poc">For College POC</a></li>
+                    <li><a href="#tutor">For Tutor</a></li>
+                    <li><a href="#volunteer">For Volunteer</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div id="college-poc" class="panel panel-info space-3-bottom">
+        <div class="panel-heading tiny">
+            <h2 class="panel-title large">For College Poc</h2>
+        </div>
+        <div class="panel-body">
+            <ol start="1" class="faq__list">
+                <li>
+                    <div class="faq__question">How do I organize a workshop?</div>
+                    <div class="faq__answer">
+                        <p>Register yourself as POC (usertype - "College POC"). Create organisation you are part of after which you can request for workshop for your organisation registered.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">Is there any kind of fee associated with PythonExpress?</div>
+                    <div class="faq__answer">
+                        <p>No, Workshops conducted through PythonExpress are free of cost.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">Can i change date for workshop conducted</div>
+                    <div class="faq__answer">
+                        <p>Yes, We would request you connect to tutor and infomred at contact@pythonexpres.in</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">Requirement for workshop</div>
+                    <div class="faq__answer">
+                        <p>
+                            <h5 class="semibold">Basic requirement:</h5>
+                            <ol start="1" class="pad-2">
+                                <li><p>Decent Internet connection for every attendee.</p></li>
+                                <li><p>Working Projector and screen.</p></li>
+                                <li><p>Adequate air conditioning systems.</p></li>
+                            </ol>
+                            <h5 class="semibold">Recommended:</h5>
+                            <ol start="1" class="pad-2">
+                                <li><p>Not more than 40 attendees in one room.</p></li>
+                                <li><p>Decent amplifier system with wireless mic if attendees > 25</p></li>
+                            </ol>
+                        </p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div id="tutor" class="panel panel-info space-3-bottom">
+        <div class="panel-heading tiny">
+            <h2 class="panel-title large">For Tutor</h2>
+        </div>
+        <div class="panel-body">
+            <ol start="1" class="faq__list">
+                <li>
+                    <div class="faq__question">Who can sign up as Tutor?</div>
+                    <div class="faq__answer">
+                        <p>Anyone who has knowledge on Python and interested in conducting workshop can become tutor</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">Is there a selection process for tutor registration?</div>
+                    <div class="faq__answer">
+                        <p>No, but tutor should have good knowledge on workshop section selected.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">How do I become a tutor?</div>
+                    <div class="faq__answer">
+                        <p>Register your self with the options usertype - tutor, interested location - your location to conduct workshop.<br>You will receive email from your time of registration for the workshops requested in your location.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">Who are the intended audience?</div>
+                    <div class="faq__answer">
+                        <p>It depends on the organisation requested for workshop and infrastructure to conduct workshop.<br>We help everyone from students till professionals learn Python and related technologies.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">I don't see my city/location name in option?</div>
+                    <div class="faq__answer">
+                        <p>Please use <a href="{% url 'contact' %}">contact page</a>, chose feedback type option as "others". Share details about locaiton to be added.<br>Volunteers will add and let you know via email</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">Can I get help in the form of slide decks or sample code which can be re-used?</div>
+                    <div class="faq__answer">
+                        <p>Yes, drop email to contact@pythonexpress.in for help.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">Are there any guidelines in conducting workshops or can I adopt my style of teaching?</div>
+                    <div class="faq__answer">
+                        <p>You can adopt your style of teaching.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="faq__question">How is my 'Average Rating' derived?</div>
+                    <div class="faq__answer">
+                        <p>It is the average rating of all the workshops conducted by you through PythonExpress.<br>Workshop rating is provided by Organisation POC as of now.<br>We have plans to integrate Students feedback for each workshop.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div id="volunteer" class="panel panel-info space-3-bottom">
+        <div class="panel-heading tiny">
+            <h2 class="panel-title large">For Volunteer</h2>
+        </div>
+        <div class="panel-body">
+            <ol start="1" class="faq__list">
+                <li>
+                    <div class="faq__question">Can I become support volunteer for workshop along with tutor?</div>
+                    <div class="faq__answer">
+                        <p>It depends on tutors. We are adding feature to ask tutor on support volunteer need.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
 </div>
  {% endblock %}

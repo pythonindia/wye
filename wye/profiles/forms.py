@@ -63,6 +63,8 @@ class SignupForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    first_name = forms.CharField(label="First Name", max_length=50)
+    last_name = forms.CharField(label="Last Name", max_length=50)
     queryset = models.UserType.objects.exclude(
         slug__in=['admin', 'lead', 'coordinator'])
     usertype = forms.ModelMultipleChoiceField(
@@ -70,6 +72,10 @@ class UserProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['first_name'].initial = self.instance.user.first_name
+        self.fields['last_name'].required = True
+        self.fields['last_name'].initial = self.instance.user.last_name
         mandatory_field(self)
 
     def clean_interested_states(self):
@@ -112,6 +118,13 @@ class UserProfileForm(forms.ModelForm):
     def is_valid(self):
         return super(UserProfileForm, self).is_valid()
 
+    def save(self, *args, **kwargs):
+        self.instance.user.first_name = self.cleaned_data['first_name']
+        self.instance.user.last_name = self.cleaned_data['last_name']
+        self.instance.user.save()
+        profile_form = super(UserProfileForm, self).save(commit=True)
+        return profile_form
+
     class Meta:
         model = models.Profile
         exclude = ('user', 'slug', 'interested_locations')
@@ -147,3 +160,44 @@ class ContactUsForm(forms.Form):
 def mandatory_field(self):
     for v in filter(lambda x: x.required, self.fields.values()):
         v.label = str(v.label) + "*"
+
+
+class PartnerForm(forms.Form):
+    partner_choices = (
+        ('profit', 'Profit making'),
+        ('non-profit', "Non Profit"))
+    org_name = forms.CharField(label='Organization Name*', required=True)
+    org_url = forms.URLField(label='Organization Url*', required=True)
+    partner_type = forms.ChoiceField(
+        label='Type of organization*',
+        required=True, choices=partner_choices)
+    description = forms.CharField(
+        label='Describe how your organization will help both of us *',
+        required=True, widget=forms.Textarea)
+    python_use = forms.CharField(
+        label='Use of python in your organization ? *',
+        required=True, widget=forms.Textarea)
+    name = forms.CharField(label='Your Name*', required=True)
+    email = forms.EmailField(label='Your email*', required=True)
+    contact_number = forms.CharField(
+        label='Your contact number', required=True)
+
+    comments = forms.CharField(
+        label='Comments*',
+        required=True, widget=forms.Textarea)
+
+    captcha = MathCaptchaField()
+
+    def clean_contact_number(self):
+        contact_number = self.cleaned_data['contact_number']
+        error_message = []
+        if not contact_number.isdigit():
+            error_message.append(
+                "Contact Number should only consist digits")
+        if not len(contact_number) == 10:
+            error_message.append(
+                "Contact Number should be of 10 digits")
+
+        if error_message:
+            raise ValidationError(error_message)
+        return contact_number

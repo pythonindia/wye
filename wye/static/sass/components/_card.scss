@@ -1,0 +1,25 @@
+.eventcard {
+    // border: 2px solid darken($color__bg--silver, 5%);
+    border: 2px solid lighten($theme, 15%);
+    padding: 1.5em;
+    margin-bottom: 2em;
+    border-radius: 0.3em;
+    text-align: center;
+    &:hover {
+        background-color: rgba($theme, 0.2);
+        border: 2px solid $theme;
+    }
+    &__icon {
+        width: 1.2em;
+        display: none;
+        color: darken($color__bg--silver, 40%);
+    }
+    &__topic {}
+    &__date {}
+    &__location {}
+    &__level {
+        background-color: $color__bg--silver;
+        color: $dark;
+    }
+    &__speaker {}
+}

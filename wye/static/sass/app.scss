@@ -6,21 +6,27 @@
 @import "custom";
 @import "forms";
 
+@import 'components/box';
+@import 'components/button';
+@import 'pages/home';
+@import 'pages/faq';
+
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
-/* sticky footer */
-html, body {
-    height: 100%
+
+::selection {
+    background-color: $theme;
 }
+::-moz-selection {
+    background-color: $theme;
+}
+
 .wrapper {
-    min-height: 100%;
-    margin: 0 auto -4em;
-}
-footer {
-    height: 4em;
+    margin: 0 auto;
 }
 
 body {
@@ -80,5 +86,70 @@ p a {
             max-width: 150px;
             max-height: 150px;
         }
+    }
+}
+
+.navbar {
+    z-index: 1;
+}
+.banner {
+    z-index: 0;
+    // background-color: $color__bg--silver;
+    background: linear-gradient(135deg, $secondary, $tertiary);
+    color: $color__bg--silver;
+    padding: 6em;
+}
+
+footer {
+    background: $color__bg--dark;
+    font-size: 1em;
+    li {
+        margin: 1em 0;
+    }
+    &, a {
+        color: $color__text--spacegray;
+    }
+    a {
+        &:hover, &:focus, &:active {
+            color: white;
+        }
+    }
+}
+.copyright {
+    &__logo {
+        width: 6em;
+    }
+}
+.social {
+    &__link {
+    }
+    &__icon {
+        border-radius: 50%;
+        text-align: center;
+        padding: 0.5em;
+        width: 2em;
+        height: 2em;
+        font-size: 2em;
+        line-height: 1;
+        margin-right: 0.5em;
+    }
+    &__media:hover {
+        & > .social__icon {
+            &--twitter {
+                background-color: $twitter;
+            }
+            &--facebook {
+                background-color: $facebook;
+            }
+            &--mail {
+                background-color: $mail;
+            }
+            &--github {
+                background-color: $github;
+            }
+        }
+    }
+    &__label {
+
     }
 }

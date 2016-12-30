@@ -14,16 +14,24 @@ from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.workshops.models import Workshop
 
-from .forms import ContactUsForm, UserProfileForm
+from .forms import ContactUsForm, UserProfileForm, PartnerForm
 
 
 def profile_view(request, slug):
     try:
         p = Profile.objects.get(user__username=slug)
+        workshops = Workshop.objects.filter(is_active=True).filter(
+            presenter=p.user).filter(status__in=[
+                WorkshopStatus.ACCEPTED,
+                WorkshopStatus.REQUESTED,
+                WorkshopStatus.FEEDBACK_PENDING,
+                WorkshopStatus.COMPLETED]).order_by('-expected_date')
+        return render(
+            request, 'profile/index.html',
+            {'object': p, 'workshops': workshops})
     except Profile.DoesNotExist:
         return render(request, 'error.html', {
             "message": "Profile does not exist"})
-    return render(request, 'profile/index.html', {'object': p})
 
 
 class UserDashboard(ListView):
@@ -40,19 +48,20 @@ class UserDashboard(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDashboard, self).get_context_data(**kwargs)
-        user_profile = Profile.objects.get(user=self.request.user)
-        workshop_all = Workshop.objects.all()
+        profile = Profile.objects.get(user=self.request.user)
+        workshop_all = Workshop.objects.filter(is_active=True)
         accept_workshops = workshop_all.filter(
             status=WorkshopStatus.ACCEPTED)
         requested_workshops = workshop_all.filter(
             status=WorkshopStatus.REQUESTED)
         organisation_all = Organisation.objects.all()
-        for each_type in user_profile.get_user_type:
+        for each_type in profile.get_user_type:
             if each_type == 'tutor':
                 context['is_tutor'] = True
                 context['workshop_requested_tutor'] = accept_workshops.filter(
                     presenter=self.request.user)
-                context['workshop_completed_tutor'] = requested_workshops.filter(
+                context['workshop_completed_tutor'] = \
+                    requested_workshops.filter(
                     presenter=self.request.user)
             if each_type == 'lead':
                 context['is_regional_lead'] = True
@@ -60,10 +69,11 @@ class UserDashboard(ListView):
                 context['workshops_pending_under_rl'] = requested_workshops
                 context['interested_tutors'] = Profile.objects.filter(
                     usertype__slug='tutor',
-                    interested_locations__name__in=user_profile.get_interested_locations).exclude(
-                    user=self.request.user).count()
+                    interested_locations__name__in=profile.get_interested_locations)\
+                    .exclude(user=self.request.user).count()
                 context['interested_locations'] = organisation_all.filter(
-                    location__name__in=user_profile.get_interested_locations).count()
+                    location__name__in=profile.get_interested_locations)\
+                    .count()
 
             if each_type == 'poc':
                 context['is_college_poc'] = True
@@ -97,7 +107,8 @@ class ProfileEditView(UpdateView):
         return super(ProfileEditView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('profiles:profile-page', kwargs={'slug': self.object.slug})
+        return reverse('profiles:profile-page', kwargs={
+            'slug': self.object.slug})
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.pk == self.get_object().pk:
@@ -126,9 +137,11 @@ def contact(request):
                 'email_messages/contactus/message.html').render(email_context)
             user_subject = '[PythonExpress] Feedback Received'
             user_text_body = loader.get_template(
-                'email_messages/contactus/message_user.txt').render(email_context)
+                'email_messages/contactus/message_user.txt').render(
+                email_context)
             user_email_body = loader.get_template(
-                'email_messages/contactus/message_user.html').render(email_context)
+                'email_messages/contactus/message_user.html').render(
+                email_context)
 
             try:
                 regional_lead = Profile.objects.filter(
@@ -151,6 +164,61 @@ def contact(request):
     else:
         form = ContactUsForm()
     return render(request, 'contact.html', {'form': form})
+
+
+def partner_view(request):
+    if request.method == 'POST':
+        form = PartnerForm(request.POST)
+        if form.is_valid():
+            email_context = Context({
+                'org_name': form.cleaned_data['org_name'],
+                'org_url': form.cleaned_data['org_url'],
+                'partner_type': form.cleaned_data['partner_type'],
+                'description': form.cleaned_data['description'],
+                'python_use': form.cleaned_data['python_use'],
+                'comments': form.cleaned_data['comments'],
+                'name': form.cleaned_data['name'],
+                'email': form.cleaned_data['email'],
+                'contact_name': form.cleaned_data['name'],
+                'contact_email': form.cleaned_data['email'],
+                'conatct_number': form.cleaned_data['contact_number'],
+
+            })
+
+            subject = "[PythonExpress] Partnership request by %s" % (
+                form.cleaned_data['org_name'])
+            text_body = loader.get_template(
+                'email_messages/partner/partner_message.txt').render(
+                email_context)
+            email_body = loader.get_template(
+                'email_messages/partner/partner_message.html').render
+            (email_context)
+            user_subject = '[PythonExpress] Partnership request Received'
+            user_text_body = loader.get_template(
+                'email_messages/partner/message_user.txt').render(
+                email_context)
+            user_email_body = loader.get_template(
+                'email_messages/partner/message_user.html').render(
+                email_context)
+
+            try:
+                send_email_to_list(
+                    subject,
+                    users_list=['contact@pythonexpress.in'],
+                    body=email_body,
+                    text_body=text_body)
+
+                send_email_to_id(
+                    user_subject,
+                    body=user_email_body,
+                    email_id=form.cleaned_data['email'],
+                    text_body=user_text_body)
+            except Exception as e:
+                print(e)
+            return HttpResponseRedirect('/thankyou')
+    else:
+        form = PartnerForm()
+    return render(request, 'partner.html', {'form': form})
 
 
 def account_deactivate(request, slug):

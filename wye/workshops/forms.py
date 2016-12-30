@@ -2,17 +2,25 @@ import datetime
 
 from django import forms
 from django.conf import settings
-from django.utils.text import slugify
+# from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from wye.base.constants import WorkshopRatings, WorkshopLevel, WorkshopStatus
+from wye.base.constants import (
+    WorkshopRatings,
+    WorkshopLevel,
+    WorkshopStatus,
+    FeedbackType)
 from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
-from wye.regions.models import RegionalLead, Location
+from wye.regions.models import RegionalLead, Location, State
 
-from .models import Workshop, WorkshopRatingValues, WorkshopFeedBack, WorkshopSections
+from .models import (
+    Workshop,
+    WorkshopRatingValues,
+    WorkshopFeedBack,
+    WorkshopSections)
 
 
 class WorkshopForm(forms.ModelForm):
@@ -96,23 +104,29 @@ class WorkshopFeedbackForm(forms.Form):
 
     question_model = WorkshopRatingValues
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, id, *args, **kwargs):
         super(WorkshopFeedbackForm, self).__init__(*args, **kwargs)
-        questions = self.question_model.get_questions()
+        w = Workshop.objects.get(id=id)
+        if user in w.presenter.all():
+            feedback_type = FeedbackType.PRESENTER
+        elif user in w.requester.user.all():
+            feedback_type = FeedbackType.ORGANISATION
+        else:
+            feedback_type = None
+        questions = self.question_model.get_questions(feedback_type)
 
         for question in questions:
-            key = "{}-{}".format(
-                slugify(question["name"]), question["pk"]
-            )
+            key = "{}".format(question)
             self.fields[key] = forms.ChoiceField(
                 choices=WorkshopRatings.CHOICES, required=True,
                 widget=forms.RadioSelect())
-            self.fields[key].label = question["name"]
+            self.fields[key].label = question.name
 
         self.fields["comment"] = forms.CharField(widget=forms.Textarea)
 
     def save(self, user, workshop_id):
-        data = {k.split("-")[-1]: v for k, v in self.cleaned_data.items()}
+        print(dir(self))
+        data = {k: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)
 
 
@@ -120,7 +134,7 @@ class WorkshopListForm(forms.Form):
     """
     Form to filter workshop list
     """
-    location = forms.ModelMultipleChoiceField(
+    state = forms.ModelMultipleChoiceField(
         label="Workshop Location",
         required=False,
         queryset='')
@@ -148,7 +162,7 @@ class WorkshopListForm(forms.Form):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(WorkshopListForm, self).__init__(*args, **kwargs)
-        self.fields['location'].queryset = self.get_all_locations(user)
+        self.fields['state'].queryset = self.get_all_locations(user)
         if Profile.is_admin(user) or Profile.is_regional_lead(user):
             self.fields['presenter'].queryset = User.objects.filter(
                 profile__usertype__slug="tutor"
@@ -156,7 +170,7 @@ class WorkshopListForm(forms.Form):
         elif 'poc' in user.profile.get_user_type:
             self.fields['presenter'].queryset = User.objects.filter(
                 profile__usertype__slug="tutor",
-                profile__location__in=self.get_all_locations(user)
+                profile__location__state__in=self.get_all_states(user)
             )
         else:
             del self.fields['presenter']
@@ -167,6 +181,12 @@ class WorkshopListForm(forms.Form):
             return Location.objects.all()
         else:
             return user.profile.interested_locations.all()
+
+    def get_all_states(self, user):
+        if Profile.is_admin(user):
+            return State.objects.all()
+        else:
+            return user.profile.interested_states.all()
 
 
 class WorkshopVolunteer(forms.Form):

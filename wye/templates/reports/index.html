@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Reports | {{ block.super }}{% endblock %}
 {% block header %}
-    <div class="fill-theme push-2 text-center">
-        <h1 class="no-space">Reports</h1>
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">Reports</h1>
     </div>
 {% endblock %}
 
@@ -10,98 +10,112 @@
     <section class="myreports">
         <div class="push-4-bottom">
             <div class="row">
-                <div class="col-xs-6">
-                    <h3 class="space-1q-top"> Report from {{date}}</h3>
+                <div class="col-xs-4">
+                    <h3 class="space-1q-top">Total workshops</h3>
+                     <div class="table-responsive">
+                        <table class="table table-bordered table-clickable sub">
+                            <thead>
+                                <tr>
+                                    <th>Completed</th>
+                                    <th>Drated</th>
+                                    <th>Hold</th>
+                                    <th>Feedback Pending</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr>
+                                    <td>{{workshops.completed}}</td>
+                                    <td>{{workshops.drafted}}</td>
+                                    <td>{{workshops.hold}}</td>
+                                    <td>{{workshops.feedback_pending}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <div class="col-xs-4">
+                    <h3 class="space-1q-top">Tutors</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-clickable sub">
+                            <thead>
+                                <tr>
+                                    <th>User Id</th>
+                                    <th>Full Name</th>
+                                    <th>Conducted workshops</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user_id, user_info in tutors.items %}
+                                 <tr>
+                                    <td><a href="/profile/{{user_info.0}}/">{{user_id}}</a></td>
+                                    <td>{{user_info.1}} {{user_info.2}}</td>
+                                    <td>{{user_info.3}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <h3 class="space-1q-top">Colleges</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-clickable sub">
+                            <thead>
+                                <tr>
+                                    <th>Org id</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Workshop</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for org_id, org_info in orgs.items %}
+                                 <tr>
+                                    <td><a href="">{{org_id}}</a></td>
+                                    <td>{{org_info.0}} </td>
+                                    <td>{{org_info.2}}</td>
+                                    <td>{{org_info.1}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row">
                 <div class="col-xs-6">
-                    <h3 class="space-1q-top"> Number of participants: {{no_of_participants}}</h3>
+                    <h3 class="space-1q-top">All workshop CSV</h3>
+                    <form action ="/reports/export_workshops/" method="POST">
+                    {% csrf_token %}
+                        <label>Years</label>
+                            <select name="years" id="years">
+                                {% for year in years %}
+                                    <option value={{year.0}}>{{year.1}}</option>
+                                {% endfor %}
+                            </select>
+                        <label> User Type</label>
+                            <select name="usertype" id="usertype">
+                                <option value="all">All</option>
+                                <option value="tutor">Tutor</option>
+                                <option value="poc">College POC</option>
+                            </select>
+                        <input type="submit" name="workshops" class="button">
+                    </form>
                 </div>
             </div>
-            <div>{{state_based_dict}}</div>
-        	<div>{{regions_based_dict}}</div>
-            <div class="row push-1">
-                <div class="col-sm-12">
-                    <div class="col-sm-4">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-clickable sub">
-                                <thead>
-                                    <tr>
-                                        <th>sl.no</th>
-                                        <th>Name</th>
-                                        <th>Location</th>
-                                        <th>Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for org in organisations %}
-                                        <tr>
-                                            <td>{{forloop.counter}}</td>
-                                            <td>{{org.name }}</td>
-                                            <td>{{org.location}}</td>
-                                            <td>{{org.get_organisation_type_display}}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
-                        <div class="col-sm-4">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-clickable sub">
-                                <thead>
-                                    <tr>
-                                        <th>sl.no</th>
-                                        <th>Id</th>
-                                        <th>Name</th>
-                                        <th>Location</th>
-                                        <th>Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for workshop in workshops %}
-                                            <tr>
-                                            <td>{{forloop.counter}}</td>
-                                            <td>
-                                                <u>
-                                                <a href="{% url 'workshops:workshop_detail' workshop.pk %}">{{workshop.id}}
-                                                </a>
-                                                </u>
-                                                </td>
-                                            <td>{{workshop.requester }}</td>
-                                            <td>{{workshop.no_of_participants}}</td>
-                                            <td>{{workshop.expected_date}}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
-                        <div class="col-sm-4">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-clickable sub">
-                                <thead>
-                                    <tr>
-                                        <th>sl.no</th>
-                                        <th>Name</th>
-                                        <th>email</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for p in tutors %}
-                                        <tr>
-                                            <td>{{forloop.counter}}</td>
-                                            <td>{{p.get_full_name}}</td>
-                                            <td>{{p.email}}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3 class="space-1q-top">All User CSV</h3>
+                    <form action ="/reports/export_users/" method="POST">
+                    {% csrf_token %}
+                        <input type="submit" name="users" class="button">
+                    </form>
                 </div>
             </div>
-        </div>
-        
     </section>
 
 {% endblock %}

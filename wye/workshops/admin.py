@@ -18,10 +18,19 @@ class WorkshopAdmin(admin.ModelAdmin):
 admin.site.register(models.Workshop, WorkshopAdmin)
 
 
-# class WorkshopFeedBackAdmin(admin.ModelAdmin):
-#     pass
+class WorkshopFeedBackAdmin(admin.ModelAdmin):
+    list_per_page = 50
+    list_display = (
+        'workshop',
+        'feedback_type',
+        'comment')
+    search_fields = (
+        'expected_date',
+        'workshop_level',
+        'status')
+    list_filter = ('feedback_type',)
 
-admin.site.register(models.WorkshopFeedBack)
+admin.site.register(models.WorkshopFeedBack, WorkshopFeedBackAdmin)
 
 admin.site.register(models.WorkshopSections)
 admin.site.register(models.WorkshopRatingValues)

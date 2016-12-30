@@ -112,8 +112,10 @@ class Command(BaseCommand):
         user_type_tuple = [
             ('tutor', 'Tutor'),
             ('lead', 'Regional Lead'),
-            ('poc', 'College POC'),
-            ('admin', 'admin')]
+            ('poc', 'Organisation Ambassador'),
+            ('admin', 'admin'),
+            ('volunteer', 'Volunteer'),
+            ('student', 'Student')]
         for i in user_type_tuple:
             obj, updated = UserType.objects.update_or_create(
                 slug=i[0])

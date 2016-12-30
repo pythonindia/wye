@@ -84,9 +84,11 @@ class Workshop(TimeAuditModel):
 
             subject = '[PythonExpress] Workshop request status.'
             email_body = loader.get_template(
-                'email_messages/workshop/create_workshop/message.html').render(context)
+                'email_messages/workshop/create_workshop/message.html').render(
+                context)
             text_body = loader.get_template(
-                'email_messages/workshop/create_workshop/message.txt').render(context)
+                'email_messages/workshop/create_workshop/message.txt').render(
+                context)
             send_email_to_list(
                 subject,
                 body=email_body,
@@ -235,16 +237,22 @@ class WorkshopRatingValues(TimeAuditModel):
     '''
 
     name = models.CharField(max_length=300)
+    feedback_type = models.PositiveSmallIntegerField(
+        choices=FeedbackType.CHOICES, verbose_name="User_type")
 
     class Meta:
         db_table = 'workshop_vote_value'
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return '{}-{}'.format(self.id, self.feedback_type)
 
     @classmethod
-    def get_questions(cls):
-        return cls.objects.values('name', 'pk')
+    def get_questions(cls, feedback_type):
+        if feedback_type:
+            print(cls.objects.filter(feedback_type=feedback_type))
+
+            return cls.objects.filter(feedback_type=feedback_type)
+        return None
 
 
 class WorkshopFeedBack(TimeAuditModel):
@@ -281,6 +289,7 @@ class WorkshopFeedBack(TimeAuditModel):
             comment=comment,
             feedback_type=feedback_type
         )
+        kwargs.pop('csrfmiddlewaretoken', None)
         WorkshopVoting.save_rating(workshop_feedback, **kwargs)
 
 
@@ -303,8 +312,7 @@ class WorkshopVoting(TimeAuditModel):
     def save_rating(cls, workshop_feedback, **kwargs):
         object_list = [
             cls(workshop_feedback=workshop_feedback,
-                workshop_rating_id=int(k), rating=v)
+                workshop_rating_id=int(k.split('-')[0]), rating=v[0])
             for k, v in kwargs.items()
         ]
-
         cls.objects.bulk_create(object_list)
