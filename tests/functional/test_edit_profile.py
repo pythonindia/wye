@@ -193,3 +193,22 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     browser.fill('github', 'https://github.com')
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('Deactive Account')
+
+    org = f.create_organisation()
+    org.user.add(user)
+    # section2 = f.create_workshop_section(name='section2')
+
+    w1 = f.create_workshop(requester=org, workshop_section=section1)
+    w1.presenter.add(user)
+    w2 = f.create_workshop(requester=org, workshop_section=section1)
+    w2.presenter.add(user)
+    w3 = f.create_workshop(requester=org, workshop_section=section1)
+    w3.presenter.add(user)
+    w4 = f.create_workshop(requester=org, workshop_section=section1)
+    w4.presenter.add(user)
+    w5 = f.create_workshop(requester=org, workshop_section=section1)
+    w5.presenter.add(user)
+
+    url = base_url + '/profile/' + user.username + '/'
+    browser.visit(url)
+    assert browser.is_text_present('Deactive Account')

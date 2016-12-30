@@ -103,16 +103,16 @@
                                 <option value="tutor">Tutor</option>
                                 <option value="poc">College POC</option>
                             </select>
-                        <input type="submit" name="submit" class="button">
+                        <input type="submit" name="workshops" class="button">
                     </form>
                 </div>
             </div>
-            div class="row">
+            <div class="row">
                 <div class="col-xs-6">
                     <h3 class="space-1q-top">All User CSV</h3>
                     <form action ="/reports/export_users/" method="POST">
                     {% csrf_token %}
-                        <input type="submit" name="submit" class="button">
+                        <input type="submit" name="users" class="button">
                     </form>
                 </div>
             </div>
