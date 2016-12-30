@@ -166,10 +166,10 @@ def test_workshop_flow(base_url, browser, outbox):
     # hold_workshop_link.click()
 
 #   checking declined state
-    browser.visit(url)
-    decline_workshop_link = browser.find_by_text('Decline')[0]
-    assert decline_workshop_link
-    decline_workshop_link.click()
+    # browser.visit(url)
+    # decline_workshop_link = browser.find_by_text('Decline')[0]
+    # assert decline_workshop_link
+    # decline_workshop_link.click()
 
     browser.visit(url)
     hold_workshop_link = browser.find_by_text('Hold')[0]
