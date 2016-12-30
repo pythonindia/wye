@@ -11,7 +11,7 @@ ipython==4.0.0
 # -------------------------------------------------
 pytest-django==2.9.*
 pytest-cov==2.2.*
-pytest-splinter==1.7.*
+pytest-splinter==1.8.1
 factory_boy==2.5.*
 pdbpp==0.8.*
 fancycompleter==0.4
