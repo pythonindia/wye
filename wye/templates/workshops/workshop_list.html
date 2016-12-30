@@ -28,8 +28,8 @@
         <div class="row collapse push-1" id="filterBlock">
             <form method="get" action="{% url "workshops:workshop_list" %}" class="form-inline">
                 <div class="form-group" style="width:25%">
-                    <label for="field.id_for_label">{{form.location.label}}</label>
-                    {{ form.location }}
+                    <label for="field.id_for_label">{{form.state.label}}</label>
+                    {{ form.state }}
                 </div>
                 {% if form.presenter %}
                     <div class="form-group" style="width:16%">
@@ -84,19 +84,19 @@
                                         <td>{{ workshop.get_status_display }}</td>
                                         <td>
                                         {% if workshop|show_draft_button:user  %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
                                         {% endif %}
                                         {% if workshop|show_requested_button:user %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold">Publish/Request</a>
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold">Publish/Request</a>
                                         {% endif %}
                                         {% if workshop|show_accepted_button:user %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
                                         {% endif %}
-					{% if workshop|show_decline_button:user %}
-					<a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
+					                    {% if workshop|show_decline_button:user %}
+					                       <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
                                         {% endif %}
-					{% if workshop|show_reject_button:user %}
-                                        <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
+					                   {% if workshop|show_reject_button:user %}
+                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
                                         {% endif %}
                                         {% if workshop|show_feedback_button:user %}
                                         	<a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>

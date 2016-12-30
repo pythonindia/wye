@@ -14,7 +14,7 @@ from wye.base.constants import (
 from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
-from wye.regions.models import RegionalLead, Location
+from wye.regions.models import RegionalLead, Location, State
 
 from .models import (
     Workshop,
@@ -132,7 +132,7 @@ class WorkshopListForm(forms.Form):
     """
     Form to filter workshop list
     """
-    location = forms.ModelMultipleChoiceField(
+    state = forms.ModelMultipleChoiceField(
         label="Workshop Location",
         required=False,
         queryset='')
@@ -160,7 +160,7 @@ class WorkshopListForm(forms.Form):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(WorkshopListForm, self).__init__(*args, **kwargs)
-        self.fields['location'].queryset = self.get_all_locations(user)
+        self.fields['state'].queryset = self.get_all_locations(user)
         if Profile.is_admin(user) or Profile.is_regional_lead(user):
             self.fields['presenter'].queryset = User.objects.filter(
                 profile__usertype__slug="tutor"
@@ -168,7 +168,7 @@ class WorkshopListForm(forms.Form):
         elif 'poc' in user.profile.get_user_type:
             self.fields['presenter'].queryset = User.objects.filter(
                 profile__usertype__slug="tutor",
-                profile__location__in=self.get_all_locations(user)
+                profile__location__state__in=self.get_all_states(user)
             )
         else:
             del self.fields['presenter']
@@ -179,3 +179,9 @@ class WorkshopListForm(forms.Form):
             return Location.objects.all()
         else:
             return user.profile.interested_locations.all()
+
+    def get_all_states(self, user):
+        if Profile.is_admin(user):
+            return State.objects.all()
+        else:
+            return user.profile.interested_states.all()

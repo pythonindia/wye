@@ -36,9 +36,10 @@ def test_workshop_list(base_url, browser, outbox):
     user.save()
 
     # Create org
-    org = f.create_organisation()
+    location = f.create_locaiton(state=state)
+    org = f.create_organisation(location=location)
     org.user.add(user)
-    user.profile.interested_locations.add(org.location)
+    user.profile.interested_locations.add(location)
     user.profile.location = org.location
     user.profile.save()
     org.save()
