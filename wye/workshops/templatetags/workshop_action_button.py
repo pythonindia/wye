@@ -14,8 +14,6 @@ def show_draft_button(workshop, user):
         return True
     return False
 
-register.filter(show_draft_button)
-
 
 def show_requested_button(workshop, user):
     if (workshop.status == WorkshopStatus.HOLD and
@@ -24,15 +22,11 @@ def show_requested_button(workshop, user):
         return True
     return False
 
-register.filter(show_requested_button)
-
 
 def show_accepted_button(workshop, user):
     if (workshop.status == WorkshopStatus.REQUESTED):
         return True
     return False
-
-register.filter(show_accepted_button)
 
 
 def show_feedback_button(workshop, user):
@@ -49,8 +43,6 @@ def show_feedback_button(workshop, user):
             return False
     return False
 
-register.filter(show_feedback_button)
-
 
 def show_reject_button(workshop, user):
     if (workshop.status == WorkshopStatus.ACCEPTED and
@@ -58,8 +50,6 @@ def show_reject_button(workshop, user):
 
         return True
     return False
-
-register.filter(show_reject_button)
 
 
 def show_decline_button(workshop, user):
@@ -70,4 +60,11 @@ def show_decline_button(workshop, user):
             user in workshop.requester.user.all()):
         return True
     return False
+
+
+register.filter(show_draft_button)
+register.filter(show_requested_button)
+register.filter(show_accepted_button)
+register.filter(show_feedback_button)
+register.filter(show_reject_button)
 register.filter(show_decline_button)
