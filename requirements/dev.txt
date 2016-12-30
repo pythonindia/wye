@@ -3,7 +3,7 @@
 
 # Debugging
 # -------------------------------------------------
-django-extensions==1.5.2
+django-extensions==1.7.5
 ipython==5.1.0
 
 
