@@ -158,8 +158,6 @@ def test_workshop_flow(base_url, browser, outbox):
     hold_workshop_link.click()
 
 #   checking to move on hold workshop into requested state
-    url = base_url + '/workshop/'
-    browser.visit(url)
     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
     assert publish_workshop_link
     publish_workshop_link.click()
@@ -168,15 +166,16 @@ def test_workshop_flow(base_url, browser, outbox):
     # hold_workshop_link.click()
 
 #   checking declined state
+    browser.visit(url)
     decline_workshop_link = browser.find_by_text('Decline')[0]
     assert decline_workshop_link
     decline_workshop_link.click()
 
+    browser.visit(url)
     hold_workshop_link = browser.find_by_text('Hold')[0]
     assert hold_workshop_link
     hold_workshop_link.click()
 
-    url = base_url + '/workshop/'
     browser.visit(url)
     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
     assert publish_workshop_link
@@ -186,9 +185,7 @@ def test_workshop_flow(base_url, browser, outbox):
     # assert hold_workshop_link
     # hold_workshop_link.click()
 
-    url = base_url + '/workshop/'
     browser.visit(url)
-
     accept_workshop_link = browser.find_by_text('Accept')[0]
     assert accept_workshop_link
     accept_workshop_link.click()
@@ -200,7 +197,7 @@ def test_workshop_flow(base_url, browser, outbox):
     # url = base_url + '/workshop/'
     # browser.visit(url)
     # browser.reload()
-    url = base_url + '/workshop/'
+
     browser.visit(url)
     browser.screenshot()
     # print(browser.html)
