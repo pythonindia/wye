@@ -12,7 +12,7 @@ def test_signup_college_poc_flow(base_url, browser, outbox):
     user = f.create_user()
     user.set_password('123123')
     user.save()
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -94,7 +94,7 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     user = f.create_user()
     user.set_password('123123')
     user.save()
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')

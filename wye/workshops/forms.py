@@ -35,12 +35,12 @@ class WorkshopForm(forms.ModelForm):
         self.fields['location'].required = False
         self.fields['location'].widget = forms.HiddenInput()
 
-    def clean_location(self):
-        if "requester" not in self.cleaned_data:
-            return ""
+    # def clean_location(self):
+    #     if "requester" not in self.cleaned_data:
+    #         return ""
 
-        organisation = self.cleaned_data['requester']
-        return organisation.location
+    #     organisation = self.cleaned_data['requester']
+    #     return organisation.location
 
     def get_organisations(self, user):
         if Profile.is_admin(user):
@@ -58,6 +58,13 @@ class WorkshopForm(forms.ModelForm):
                  atleast 2 weeks ahead of today''')
         else:
             return date
+
+    def clean_location(self):
+        # data = self.cleaned_data['requester']
+        if ('requester' not in self.data) or (not self.data['requester']):
+            return None
+        o = Organisation.objects.get(id=self.data['requester'])
+        return o.location
 
     class Meta:
         model = Workshop

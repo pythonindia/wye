@@ -1,7 +1,7 @@
 import uuid
 
 from django.conf import settings
-from django.conf.urls import  url
+from django.conf.urls import url
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.urlresolvers import reverse_lazy
 from django.http import Http404

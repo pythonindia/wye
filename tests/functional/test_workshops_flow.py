@@ -13,7 +13,7 @@ def test_workshop_wrong_action(base_url, browser, outbox):
     user = f.create_user()
     user.set_password('123123')
     user.save()
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -42,7 +42,7 @@ def test_workshop_wrong_action(base_url, browser, outbox):
     workshop.status = WorkshopStatus.REQUESTED
     workshop.location = org.location
     workshop.save()
-    url = base_url + '/workshop/update/{}/'.format(workshop.id)
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -84,7 +84,7 @@ def test_workshop_flow(base_url, browser, outbox):
     user = f.create_user()
     user.set_password('123123')
     user.save()
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -116,7 +116,7 @@ def test_workshop_flow(base_url, browser, outbox):
     workshop.expected_date = datetime.now() + timedelta(days=20)
     workshop.presenter.add(user)
     workshop.save()
-    url = base_url + '/workshop/update/{}/'.format(workshop.id)
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
