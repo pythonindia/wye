@@ -38,7 +38,8 @@ def workshop_list(request):
     if not user_profile.is_profile_filled:
         return redirect('profiles:profile-edit', slug=request.user.username)
     context_dict = {}
-    workshop_list = Workshop.objects.all().order_by('-expected_date')
+    workshop_list = Workshop.objects.filter(
+        is_active=True).order_by('-expected_date')
     workshop_list = workshop_list.filter(
         requester__location__state__id__in=[
             x.id for x in request.user.profile.interested_states.all()]
