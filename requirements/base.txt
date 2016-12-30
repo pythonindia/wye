@@ -18,7 +18,7 @@ django-allauth==0.25.2
 
 # MarkDown Support
 # ---------------------------------------
-Markdown==2.6.5
+Markdown==2.6.7
 
 # Sample Data
 # -----------------------------------------
