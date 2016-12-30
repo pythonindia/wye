@@ -46,6 +46,6 @@ django-simple-math-captcha==1.0.7
 
 # Celery
 # --------------------------------------------------
-celery==4.0.2
+celery>=3.1.15,<4.0
 django-celery==3.1.17
 redis==2.10.5
