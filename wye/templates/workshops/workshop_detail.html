@@ -133,8 +133,12 @@
     			<div class="row">
         		    <div class="col-xs-2"><strong>No. of Volunteers</strong></div>
 			        <div class="col-xs-10">
-            			<div class="col-xs-2"></div>
-           			 <div class="col-xs-8">{{ workshop.volunteer.count }} / {{ workshop.number_of_volunteers }}</div>>
+            	   <div class="col-xs-2"></div>
+                {% if workshop.volunteer.count > 0 %}
+           			    <div class="col-xs-8">{{ workshop.volunteer.count }} / {{ workshop.number_of_volunteers }} ({{ workshop.volunteer.all|join:", " }})</div>
+                {% else %}
+                    <div class="col-xs-8">{{ workshop.volunteer.count }} / {{ workshop.number_of_volunteers }}</div>
+                {% endif %}
         		   </div>
     			</div>
 		    </li>
