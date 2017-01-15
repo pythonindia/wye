@@ -55,7 +55,6 @@ def test_workshop_celery_task(base_url, browser, outbox):
 
     workshop.expected_date = datetime.now() + timedelta(days=2)
     workshop.save()
-    print(workshop.expected_date)
     rst = workshop_feedback.apply(args=(1,)).get()
     assert rst
     # url = base_url + '/workshop/'

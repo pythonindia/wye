@@ -641,7 +641,7 @@
                                                 <p> Point of Contact: 
                                                 {% for poc in poc_list %}
                                                     {{poc.first_name}} {{poc.last_name}} ,
-                                                    {{poc.email}}, {{poc.profile.phone}}
+                                                    {{poc.email}}, {{poc.profile.mobile}}
                                                     <br>
                                                 {% endfor %}
                                                 </p>
@@ -649,13 +649,13 @@
                                                 <p>The Trainer: 
 
                                                  {% for presenter in presenter_list %}
-                                                    {{presenter.first_name}} {{presenter.last_name}} , {{presenter.email}}, {{presenter.profile.phone}}
+                                                    {{presenter.first_name}} {{presenter.last_name}} , {{presenter.email}}, {{presenter.profile.mobile}}
                                                     <br>
                                                 {% endfor %}
 
                                                 </p>
                                                 <p>
-                                                {{trainer_name}}, please communicate your requirements for the workshop day to {{poc_name}}.
+                                                please communicate your requirements for the workshop day to {{poc_name}}.
                                                 Please feel free to take this discussion forward, preferably keeping contact@pythonexpress.in in the loop.</p>
                                                 
                                                 <p>Let’s work towards a great workshop !</p>
