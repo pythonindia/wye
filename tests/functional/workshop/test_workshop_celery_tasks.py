@@ -21,7 +21,7 @@ def test_workshop_celery_task(base_url, browser, outbox):
     state = f.create_state()
     # Testcase with usertyep poc
     user = base.create_user(password)
-    url = base_url + '/workshop/'
+    url = base_url + '/login/'
     base.login_and_confirm(browser, url, outbox, user, password)
     user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
@@ -57,75 +57,3 @@ def test_workshop_celery_task(base_url, browser, outbox):
     workshop.save()
     rst = workshop_feedback.apply(args=(1,)).get()
     assert rst
-    # url = base_url + '/workshop/'
-    # base.login(browser, url, user, password)
-    # data_check = browser.find_by_text(org.name)
-    # assert data_check
-
-    # browser.visit(url + "?location={}".format(org.location.id))
-    # data_check = browser.find_by_text(org.name)
-    # assert data_check
-
-    # browser.visit(url + "?location={}".format(org.location.id + 1))
-    # data_check = browser.find_by_text(org.name)
-    # assert not data_check
-
-    # browser.visit(url + "?presenter={}".format(user.id))
-    # data_check = browser.find_by_text(org.name)
-    # assert not data_check
-
-    # browser.visit(url + "?status={}".format(WorkshopStatus.REQUESTED))
-    # data_check = browser.find_by_text(org.name)
-    # assert data_check
-
-    # browser.visit(url + "?level={}".format(WorkshopStatus.ACCEPTED))
-    # data_check = browser.find_by_text(org.name)
-    # assert not data_check
-
-    # # Testcase for usertype tutor
-    # browser.visit(base_url + "/accounts/logout")
-    # user = base.create_user(password)
-    # url = base_url + '/workshop/'
-    # base.login_and_confirm(browser, url, outbox, user, password)
-    # # user.profile.usertype.add(tutor_type)
-    # # user.save()
-
-    # # url = base_url + '/workshop/'
-    # # base.login(browser, url, user, password)
-    # # # User not associate with workshop
-    # # data_check = browser.find_by_text(org.name)
-    # # assert [] == data_check
-
-    # # User associated with workshop
-    # workshop.presenter.add(user)
-    # browser.visit(url)
-    # # data_check = browser.find_by_text(org.name)
-    # # assert data_check
-
-    # # Testcase for lead
-    # browser.visit(base_url + "/accounts/logout")
-    # user = base.create_user(password)
-    # url = base_url + '/workshop/'
-    # base.login_and_confirm(browser, url, outbox, user, password)
-
-    # user.profile.usertype.add(regional_lead_type)
-    # user.save()
-    # lead = RegionalLead.objects.create(location=org.location)
-    # lead.leads.add(user)
-
-    # url = base_url + '/workshop/'
-    # base.login(browser, url, user, password)
-    # # data_check = browser.find_by_text(org.name)
-    # # assert data_check
-
-    # # Testcase for user with no usertype
-    # browser.visit(base_url + "/accounts/logout")
-    # user = base.create_user(password)
-    # url = base_url + '/workshop/'
-    # base.login_and_confirm(browser, url, outbox, user, password)
-
-    # url = base_url + '/workshop/'
-    # base.login(browser, url, user, password)
-    # # data_check = browser.find_by_text(org.name)
-    # # assert [] == data_check
-    # browser.visit(base_url + "/accounts/logout")
