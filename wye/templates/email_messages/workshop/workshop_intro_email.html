@@ -634,12 +634,32 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody">
                                         <tr>
                                             <td valign="top" class="bodyContent" mc:edit="body_content00">
-                                                <p> Hello folks!</p>
+                                                <p> >Namaste</p>
      
-                                                <p> Your organization's {{ workshop_topic }} workshop request on {{ date }} has been successfully added! We shall be notifying all the regional leads and potential instructors soon. <p>
-                                                <p> Meanwhile, do visit the url below for more information.
-                                                <a href="{{ workshop_url }}"> {{ workshop_url }}</a>
+                                                <p> >Welcome aboard. PythonExpress would like to take the liberty of introducing the Trainer and Point of Contact for the workshop scheduled for {{date}} and on the topic of {{workshop_title}}. <p>
+
+                                                <p> Point of Contact: 
+                                                {% for poc in poc_list %}
+                                                    {{poc.first_name}} {{poc.last_name}} ,
+                                                    {{poc.email}}, {{poc.profile.mobile}}
+                                                    <br>
+                                                {% endfor %}
                                                 </p>
+                                                
+                                                <p>The Trainer: 
+
+                                                 {% for presenter in presenter_list %}
+                                                    {{presenter.first_name}} {{presenter.last_name}} , {{presenter.email}}, {{presenter.profile.mobile}}
+                                                    <br>
+                                                {% endfor %}
+
+                                                </p>
+                                                <p>
+                                                please communicate your requirements for the workshop day to college POC's.
+                                                Please feel free to take this discussion forward, preferably keeping contact@pythonexpress.in in the loop.</p>
+                                                
+                                                <p>Let’s work towards a great workshop !</p>
+                                                
                                                 <p>May the love of Python spread far and wide!</p>
 												<p>Warmly,</p>
 												<p>The PythonExpress team</p>
