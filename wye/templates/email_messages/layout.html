@@ -620,7 +620,9 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
                                         <tr>
                                             <td valign="top" class="headerContent">
-                                                <h2>New Organization Confirmation</h2>
+                                                <h2>{% block header_content %}
+                                                    {% endblock %}
+                                                </h2>
                                                 <div class="underline"></div>
                                             </td>
                                         </tr>
@@ -634,9 +636,10 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateBody">
                                         <tr>
                                             <td valign="top" class="bodyContent" mc:edit="body_content00">
-                                                <p>Hello {{full_name}},</p>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et felis id mauris ultrices aliquam vitae vitae augue. Donec et elit sed libero interdum volutpat. Nam semper elit sit amet dignissim porttitor. Aenean bibendum volutpat lobortis. Suspendisse erat tellus, accumsan nec odio a, aliquet tempus ipsum. <a href="" target="_blank">Ut at aliquet ligula.</a> Fusce id maximus lorem. Nulla fringilla nisi in urna dignissim sollicitudin. Pellentesque molestie magna sed leo dignissim, eget posuere tortor vestibulum. Cras ornare aliquam neque, nec ullamcorper sapien accumsan at.</p>
-                                                <p>Suspendisse vel felis at tellus aliquet tempus eu ac erat. Proin facilisis aliquam sapien et blandit. Mauris molestie nisl nibh, vel tincidunt lorem fringilla ac. Suspendisse potenti. Nunc ut quam felis. Aliquam suscipit urna eu purus varius tristique. <a href="" target="_blank">Fusce a commodo odio, a ultrices orci.</a> Fusce ut pulvinar tortor, vel ultricies lectus. Vestibulum feugiat congue quam vel dapibus. Praesent iaculis, neque ac consectetur fermentum, diam lorem porttitor ex, eu cursus tellus sem vel tellus. Pellentesque quis auctor dui.</p>
+                                                {% block content_body %}
+                                                    {% block content %}
+                                                    {% endblock %}
+                                                {% endblock %}
                                             </td>
                                         </tr>
                                         <!-- <tr>
