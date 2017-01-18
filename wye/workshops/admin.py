@@ -15,8 +15,6 @@ class WorkshopAdmin(admin.ModelAdmin):
         'status')
     list_filter = ('is_active', 'status', 'workshop_level', 'location')
 
-admin.site.register(models.Workshop, WorkshopAdmin)
-
 
 class WorkshopFeedBackAdmin(admin.ModelAdmin):
     list_per_page = 50
@@ -30,8 +28,9 @@ class WorkshopFeedBackAdmin(admin.ModelAdmin):
         'status')
     list_filter = ('feedback_type',)
 
-admin.site.register(models.WorkshopFeedBack, WorkshopFeedBackAdmin)
 
+admin.site.register(models.Workshop, WorkshopAdmin)
+admin.site.register(models.WorkshopFeedBack, WorkshopFeedBackAdmin)
 admin.site.register(models.WorkshopSections)
 admin.site.register(models.WorkshopRatingValues)
 admin.site.register(models.WorkshopVoting)

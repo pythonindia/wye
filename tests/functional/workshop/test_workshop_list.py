@@ -27,7 +27,7 @@ def test_workshop_list(base_url, browser, outbox):
     state = f.create_state()
     # Testcase with usertyep poc
     user = base.create_user(password)
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login_and_confirm(browser, url, outbox, user, password)
     user.profile.usertype.clear()
     user.profile.usertype.add(poc_type)
@@ -52,11 +52,11 @@ def test_workshop_list(base_url, browser, outbox):
     workshop.location = org.location
     workshop.save()
 
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login(browser, url, user, password)
     data_check = browser.find_by_text(org.name)
     assert data_check
-
+    url = base_url + '/workshop/'
     browser.visit(url + "?location={}".format(org.location.id))
     data_check = browser.find_by_text(org.name)
     assert data_check
@@ -80,7 +80,7 @@ def test_workshop_list(base_url, browser, outbox):
     # Testcase for usertype tutor
     browser.visit(base_url + "/accounts/logout")
     user = base.create_user(password)
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login_and_confirm(browser, url, outbox, user, password)
     # user.profile.usertype.add(tutor_type)
     # user.save()
@@ -100,7 +100,7 @@ def test_workshop_list(base_url, browser, outbox):
     # Testcase for lead
     browser.visit(base_url + "/accounts/logout")
     user = base.create_user(password)
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login_and_confirm(browser, url, outbox, user, password)
 
     user.profile.usertype.add(regional_lead_type)
@@ -108,7 +108,7 @@ def test_workshop_list(base_url, browser, outbox):
     lead = RegionalLead.objects.create(location=org.location)
     lead.leads.add(user)
 
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login(browser, url, user, password)
     # data_check = browser.find_by_text(org.name)
     # assert data_check
@@ -116,11 +116,11 @@ def test_workshop_list(base_url, browser, outbox):
     # Testcase for user with no usertype
     browser.visit(base_url + "/accounts/logout")
     user = base.create_user(password)
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login_and_confirm(browser, url, outbox, user, password)
 
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login(browser, url, user, password)
     # data_check = browser.find_by_text(org.name)
-    # assert [] == data_check
+    url = base_url + '/accounts/login/'
     browser.visit(base_url + "/accounts/logout")

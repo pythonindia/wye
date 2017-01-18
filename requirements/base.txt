@@ -1,6 +1,6 @@
 # python==3.5.0
-Django==1.8.11
-django-braces==1.8.1
+Django==1.10.4
+django-braces==1.10.0
 
 # Utilities
 # --------------------------------------
@@ -8,37 +8,37 @@ unicode-slugify==0.1.3
 
 # Persistent Store
 # --------------------------------------
-psycopg2==2.6.1
+psycopg2==2.6.2
 
 # Rest FrameWork
 #---------------------------------------
-djangorestframework==3.2.4
-django-filter==0.13.0
-django-allauth==0.25.2
+djangorestframework==3.5.3
+django-filter==1.0.1
+django-allauth==0.29.0
 
 # MarkDown Support
 # ---------------------------------------
-Markdown==2.6.5
+Markdown==2.6.7
 
 # Sample Data
 # -----------------------------------------
-fake-factory==0.5.7
+fake-factory==9999.9.9
 
 # Twitter Connect
 # ---------------------------------------
-twython==3.3.0
+twython==3.4.0
 
 #AutoComplete
 #------------------------------------------
-django-autocomplete-light==3.1.3
+django-autocomplete-light==3.2.1
 
 # Image
 # ----------------------------------------
-Pillow==3.1.1
+Pillow==3.4.2
 
 # Dateutils
 #-----------------------------------------
-python-dateutil==2.5.0
+python-dateutil==2.6.0
 
 # Captcha
 #-----------------------------------------
@@ -46,6 +46,6 @@ django-simple-math-captcha==1.0.7
 
 # Celery
 # --------------------------------------------------
-celery==3.1.23
+celery>=3.1.15,<4.0
 django-celery==3.1.17
 redis==2.10.5

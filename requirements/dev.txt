@@ -3,18 +3,18 @@
 
 # Debugging
 # -------------------------------------------------
-django-extensions==1.5.2
-ipython==4.0.0
+django-extensions==1.7.5
+ipython==5.1.0
 
 
 # Testing
 # -------------------------------------------------
-pytest-django==2.9.*
-pytest-cov==2.2.*
-pytest-splinter==1.7.*
-factory_boy==2.5.*
-pdbpp==0.8.*
-fancycompleter==0.4
+pytest-django==3.1.2
+pytest-cov==2.4.0
+pytest-splinter==1.8.1
+factory-boy==2.8.1
+pdbpp==0.8.3
+fancycompleter==0.7
 
-coverage==4.*
-flake8==2.4.*
+coverage==4.3.1
+flake8==3.2.1

@@ -12,7 +12,7 @@ def test_workshop_create(base_url, browser, outbox):
     poc_type = f.create_usertype(slug='poc', display_name='poc')
     state = f.create_state()
     user = base.create_user(password)
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login_and_confirm(browser, url, outbox, user, password)
     user.save()
     location = f.create_locaiton(name='location1')
@@ -23,7 +23,7 @@ def test_workshop_create(base_url, browser, outbox):
 
     user.profile.save()
 
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     base.login(browser, url, user, password)
 
     # validate if user belongs to organisation
