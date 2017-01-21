@@ -190,5 +190,5 @@ class WorkshopListForm(forms.Form):
 
 
 class WorkshopVolunteer(forms.Form):
-    CHOICE_LIST = ((idx, idx) for idx in xrange(0, 6))
+    CHOICE_LIST = ((idx, idx) for idx in range(0, 6))
     number_of_volunteers = forms.ChoiceField(choices=CHOICE_LIST)
