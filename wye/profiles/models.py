@@ -15,7 +15,7 @@ from wye.organisations.models import Organisation
 
 class UserType(models.Model):
     '''
-    USER_TYPE = ['Tutor', 'Regional Lead', 'College POC','admin']
+    USER_TYPE = ['Tutor', 'Regional Lead', 'College POC','admin', 'Volunteer']
     '''
     slug = models.CharField(max_length=100,
                             verbose_name="slug")
@@ -214,6 +214,10 @@ class Profile(models.Model):
     def is_coordinator(cls, user):
         return user.profile.usertype.filter(
             slug__iexact="coordinator").exists()
+
+    @classmethod
+    def is_volunteer(cls, user):
+        return user.profile.usertype.filter(slug__iexact="volunteer").exists()
 
 
 def create_user_profile(sender, instance, created, **kwargs):

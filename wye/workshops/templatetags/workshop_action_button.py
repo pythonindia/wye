@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django import template
 from wye.base.constants import WorkshopStatus, FeedbackType
+from wye.profiles.models import Profile
 
 register = template.Library()
 
@@ -71,3 +72,27 @@ def show_decline_button(workshop, user):
         return True
     return False
 register.filter(show_decline_button)
+
+
+def show_volunteer_count(user):
+    if not Profile.is_presenter(user):
+        return True
+    return False
+register.filter(show_volunteer_count)
+
+
+def show_accept_volunteer_button(workshop, user):
+    if Profile.is_volunteer(user) and \
+            workshop.number_of_volunteers - workshop.volunteer.count() >= 1 and \
+            user not in workshop.volunteer.all() and  \
+            user not in workshop.requester.user.all():
+        return True
+    return False
+register.filter(show_accept_volunteer_button)
+
+
+def show_opt_out_volunteer_button(workshop, user):
+    if user in workshop.volunteer.all():
+        return True
+    return False
+register.filter(show_opt_out_volunteer_button)
