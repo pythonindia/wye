@@ -67,14 +67,15 @@ def show_decline_button(workshop, user):
     return False
 
 
-def show_volunteer_count(user):
+def show_volunteer_count(workshop, user):
     if workshop.status >= WorkshopStatus.ACCEPTED:
         return True
     return False
 
 
 def show_accept_volunteer_button(workshop, user):
-    number_of_volunteers = 0 if not workshop.number_of_volunteers else workshop.number_of_volunteers
+    number_of_volunteers = 0 if (
+        not workshop.number_of_volunteers) else workshop.number_of_volunteers
     if Profile.is_volunteer(user) and \
             number_of_volunteers - workshop.volunteer.count() >= 1 and \
             user not in workshop.volunteer.all() and  \

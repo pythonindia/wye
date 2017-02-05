@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 import re
 from wye.base.constants import WorkshopStatus
-from wye.workshops.models import Workshop
 from tests import factories as f
 
 
