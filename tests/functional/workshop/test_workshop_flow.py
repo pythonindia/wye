@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 
 import re
 from wye.base.constants import WorkshopStatus
-# from wye.workshops.models import Workshop
-from .. import factories as f
+from wye.workshops.models import Workshop
+from tests import factories as f
 
 
 def test_workshop_wrong_action(base_url, browser, outbox):
@@ -138,7 +138,7 @@ def test_workshop_flow(base_url, browser, outbox):
     user.profile.save()
     user.save()
 
-    url = base_url + '/workshop/'
+    url = base_url + '/workshop/{}/'.format(workshop.id)
     browser.visit(url)
 
     accept_workshop_link = browser.find_by_text('Accept')[0]
@@ -151,27 +151,20 @@ def test_workshop_flow(base_url, browser, outbox):
     user.save()
 
 #   checking to move requested workshop in hold state
-    url = base_url + '/workshop/'
+    url = base_url + '/workshop/{}/'.format(workshop.id)
     browser.visit(url)
     hold_workshop_link = browser.find_by_text('Hold')[0]
     assert hold_workshop_link
     hold_workshop_link.click()
 
 #   checking to move on hold workshop into requested state
+    browser.visit(url)
     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
     assert publish_workshop_link
     publish_workshop_link.click()
-    # hold_workshop_link = browser.find_by_text('Hold')[0]
-    # assert hold_workshop_link
-    # hold_workshop_link.click()
-
-#   checking declined state
-    # browser.visit(url)
-    # decline_workshop_link = browser.find_by_text('Decline')[0]
-    # assert decline_workshop_link
-    # decline_workshop_link.click()
 
     browser.visit(url)
+    # browser.screenshot()
     hold_workshop_link = browser.find_by_text('Hold')[0]
     assert hold_workshop_link
     hold_workshop_link.click()
@@ -180,10 +173,6 @@ def test_workshop_flow(base_url, browser, outbox):
     publish_workshop_link = browser.find_by_text('Publish/Request')[0]
     assert publish_workshop_link
     publish_workshop_link.click()
-
-    # hold_workshop_link = browser.find_by_text('Hold')[0]
-    # assert hold_workshop_link
-    # hold_workshop_link.click()
 
     browser.visit(url)
     accept_workshop_link = browser.find_by_text('Accept')[0]
@@ -194,16 +183,9 @@ def test_workshop_flow(base_url, browser, outbox):
     workshop.expected_date = datetime.now() + timedelta(days=-60)
     # workshop.status = WorkshopStatus.FEEDBACK_PENDING
     workshop.save()
-    # url = base_url + '/workshop/'
-    # browser.visit(url)
-    # browser.reload()
 
     browser.visit(url)
     browser.screenshot()
-    # print(browser.html)
-    # publish_workshop_link = browser.find_by_text('Share Feedback')[0]
-    # assert publish_workshop_link
-    # publish_workshop_link.click()
     url = base_url + '/workshop/feedback/{}'.format(workshop.id)
     browser.visit(url)
     browser.check('1-1')
