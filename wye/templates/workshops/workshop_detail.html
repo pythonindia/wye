@@ -17,24 +17,6 @@
                 {% if display_edit_button %}
                     <a href="{% url 'workshops:workshop_update' workshop.pk %}" class="btn btn-theme-primary sub pad-1"><i class="fa fa-cog"></i>&nbsp;&nbsp;Edit<span class="hidden-xs"> Workshop</span></a>
                 {% endif %}
-                {% if workshop|show_draft_button:user  %}
-                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/hold/" class="btn btn-warning ws-hold">Hold</a>
-                {% endif %}
-                {% if workshop|show_requested_button:user %}
-                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-publish">Publish/Request</a>
-                {% endif %}
-                {% if workshop|show_accepted_button:user %}
-                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/accept/" class="btn btn-success ws-accept">Accept</a>
-                {% endif %}
-                {% if workshop|show_decline_button:user %}
-                   <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
-                {% endif %}
-               {% if workshop|show_reject_button:user %}
-                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
-                {% endif %}
-                {% if workshop|show_feedback_button:user %}
-                    <a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
-                {% endif %}
             </div>
         </div>
         {% endif %}
@@ -123,10 +105,75 @@
                         </div>
                     </li>
                     {% endif %}
+                    <li class="list-group-item">
+    			         <div class="row">
+        		              <div class="col-xs-2"><strong>No. of Volunteers</strong></div>
+			                     <div class="col-xs-10">
+            	                       <div class="col-xs-2"></div>
+                                            {% if workshop.volunteer.count > 0 %}
+           			                  <div class="col-xs-8">{{ workshop.volunteer.count }} / {{ workshop.number_of_volunteers }} ({{ workshop.volunteer.all|join:", " }})</div>
+                                            {% else %}
+                                        <div class="col-xs-8">{{ workshop.volunteer.count }} / {{ workshop.number_of_volunteers }}</div>
+                                        {% endif %}
+        		                  </div>
+    			             </div>
+		              </li>
+                      <li class="list-group-item">
+                         <div class="row">
+                      
+                {% if workshop|show_draft_button:user  %}
+                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/hold/" class="btn btn-warning ws-hold">Hold</a>
+                {% endif %}
+                {% if workshop|show_requested_button:user %}
+                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-publish">Publish/Request</a>
+                {% endif %}
+                {% if workshop|show_accepted_button:user %}
+                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/accept/" class="btn btn-success ws-accept">Accept</a>
+                {% endif %}
+                {% if workshop|show_decline_button:user %}
+                   <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
+                {% endif %}
+               {% if workshop|show_reject_button:user %}
+                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
+                {% endif %}
+         {% if workshop|show_accept_volunteer_button:user %}
+                  <a href="javascript:void(0);" data-url="{% url "workshops:workshop_opt_in_volunteer" workshop.pk  %}"  class="btn btn-primary vol-ws-accept">Opt-In as Volunteer</a>
+               {% endif %}
+               {% if workshop|show_opt_out_volunteer_button:user %}
+                  <a href="javascript:void(0);" data-url="{% url "workshops:workshop_opt_out_volunteer" workshop.pk %}"  class="btn btn-danger vol-ws-reject">Opt-Out as Volunteer</a>
+               {% endif %}
+                {% if workshop|show_feedback_button:user %}
+                    <a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
+                {% endif %}
+                </div>
+                      </li>
                 </ul>
             </div>
         </div>
     </div>
+
+<!-- Modal -->
+<div id="volunteer-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" data-url="{% url 'workshops:workshop_update_volunteer' workshop.pk %}">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="volunteer-msg"></h4>
+      </div>
+      <div class="modal-body">
+        <p> Volunteer required: {{ form.number_of_volunteers }}</p>
+      </div>
+      <div class="modal-footer">
+	<button type="button" class="btn btn-default btn-primary" id="set-volunteer">Update</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 {% endblock %}
 {% block footer_scripts %}
     <script>
@@ -136,17 +183,42 @@
                window.document.location = $(this).parent().attr('data-href');
             });
 
+	   function update_volunteers() {
+            $("#volunteer-modal").modal('show');
+            $("#set-volunteer").bind('click', function() {
+                $.post(
+                    $(".modal-dialog").attr('data-url'),
+                    {"number_of_volunteers": $("#id_number_of_volunteers").val()
+                    },
+                    function (data) {
+                        $("#volunteer-msg").text(data['msg']);
+                    });
+                });
+                $("#volunteer-modal").on('hidden.bs.modal', function(){
+                    $("#volunteer-msg").text("");
+                    window.location.reload();
+                });
+        }
+
         $(".ws-accept").bind('click', function(){
             $.post($(this).attr('data-url'), {}, function (data) {
 
                 if (data['status']) {
-                    window.location.reload();
+              	    update_volunteers();
                 } else {
                     alert(data['msg']);
                 }
             });
         });
         $(".ws-reject").bind('click', function() {
+            $.post($(this).attr('data-url'), {}, function(data) {
+                if (data["status"]) {
+                    window.location.reload();
+                }
+            });
+        });
+
+        $(".ws-publish").bind('click', function() {
             $.post($(this).attr('data-url'), {}, function(data) {
                 if (data["status"]) {
                     window.location.reload();
@@ -160,13 +232,33 @@
                 }
             });
         });
-    $(".ws-decline").bind('click', function() {
+
+        $(".ws-decline").bind('click', function() {
             $.post($(this).attr('data-url'), {}, function(data) {
                 if (data["status"]) {
                     window.location.reload();
                 }
             });
         });
+        
+        $(".vol-ws-accept").bind("click", function(data) {
+        $.post($(this).attr('data-url'), {}, function(data) {
+            if (data["status"]) {
+                window.location.reload();
+            } else {
+                alert(data["msg"]);
+            }
+            });
+        });
+        $(".vol-ws-reject").bind("click", function(data) {
+        $.post($(this).attr('data-url'), {}, function(data) {
+            if (data["status"]) {
+                window.location.reload();
+            } else {
+                alert(data["msg"]);
+            }
+        });
+    });
     });
     </script>
     {% endblock %}
