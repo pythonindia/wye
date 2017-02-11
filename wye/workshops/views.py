@@ -357,9 +357,11 @@ def workshop_opt_out_as_volunteer(request, pk):
         workshop = Workshop.objects.get(pk=pk)
         user = request.user
 
-        if workshop.volunteer.count >= 1 and user in workshop.volunteer.all():
+        if user in workshop.volunteer.all():
             # remove volunteer
             workshop.volunteer.remove(user)
+
+            workshop.save()
             return JsonResponse({
                 "status": True,
                 "msg": "Opt-out successfully."})
