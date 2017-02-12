@@ -148,33 +148,6 @@
                         </table>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    {% for workshop in upcoming_workshops %}
-                        <div class="col-md-4 col-sm-6">
-                            <a href="/workshop/{{workshop.id}}/" class="eventcard block">
-                                <h3 class="eventcard__topic space-0 push-1q-bottom truncate">{{workshop.workshop_section.name}}</h3>
-                                <label class="eventcard__level label">{{workshop.get_workshop_level_display}}</label>
-                                <div class="eventcard__speaker truncate push-h-top">
-                                    {% if workshop.presenter.all %}
-                                        <i class="eventcard__icon fa fa-user"></i>
-                                    {% endif %}
-                                    {% for u in  workshop.presenter.all %}
-                                        {{u.get_full_name}}
-                                    {% endfor %}&nbsp;
-                                </div>
-                                <div class="eventcard__location truncate">
-                                    {{workshop.requester.name}}, {{workshop.location}}
-                                </div>
-                                <div class="eventcard__date gray">
-                                    <em>{{workshop.expected_date|date:'l,  M. d Y' }}</em>
-                                </div>
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="row text-center push-1h-top">
-                    <button class="btn btn-theme btn-theme-accent font-regular">View all <i class="fa fa-angle-right pad-h-left"></i></button>
-                </div> -->
             </div>
         </section>
     {% endif %}
