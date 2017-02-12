@@ -30,9 +30,10 @@ class WorkshopStatus:
     _REQUESTED = [2, "Workshop Requested"]
     _ACCEPTED = [3, "Workshop Accepted "]
     _DECLINED = [4, "Workshop Declined"]
-    _COMPLETED = [5, "Workshop Completed"]
     _FEEDBACK_PENDING = [5, "FeedBack Pending"]
     _HOLD = [6, "Workshop On Hold"]
+    _COMPLETED = [7, "Workshop Completed"]
+    _UNABLE_TO_COMPLETE = [8, "Workshop unable to complete"]
 
 
 @choices
