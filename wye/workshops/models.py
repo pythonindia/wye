@@ -23,6 +23,7 @@ class WorkshopSections(TimeAuditModel):
     python2, Python3, Django, Flask, Gaming
     '''
     name = models.CharField(max_length=300, unique=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'workshop_section'
@@ -43,7 +44,8 @@ class Workshop(TimeAuditModel):
     workshop_level = models.PositiveSmallIntegerField(
         choices=WorkshopLevel.CHOICES, verbose_name="Workshop Level")
     workshop_section = models.ForeignKey(WorkshopSections)
-    number_of_volunteers = models.PositiveSmallIntegerField(default=0, null=True, blank=True)
+    number_of_volunteers = models.PositiveSmallIntegerField(
+        default=0, null=True, blank=True)
     volunteer = models.ManyToManyField(User, related_name='workshop_volunteer')
     is_active = models.BooleanField(default=True)
     status = models.PositiveSmallIntegerField(
@@ -243,6 +245,7 @@ class WorkshopRatingValues(TimeAuditModel):
     name = models.CharField(max_length=300)
     feedback_type = models.PositiveSmallIntegerField(
         choices=FeedbackType.CHOICES, verbose_name="User_type")
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'workshop_vote_value'

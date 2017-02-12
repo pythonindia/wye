@@ -34,6 +34,7 @@ class WorkshopForm(forms.ModelForm):
         self.fields['requester'].queryset = self.get_organisations(user)
         self.fields['location'].required = False
         self.fields['location'].widget = forms.HiddenInput()
+        self.fields['workshop_section'].queryset = WorkshopSections.objects.filter(is_active=True)
 
     def clean_location(self):
         if "requester" not in self.cleaned_data:
