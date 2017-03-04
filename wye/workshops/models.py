@@ -10,7 +10,7 @@ from wye.base.constants import (
     WorkshopLevel,
     WorkshopStatus,
 )
-from wye.base.emailer_html import send_email_to_list
+from wye.base.emailer_html import send_email_to_id
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
 from wye.regions.models import Location
@@ -91,11 +91,12 @@ class Workshop(TimeAuditModel):
             text_body = loader.get_template(
                 'email_messages/workshop/create_workshop/message.txt').render(
                 context)
-            send_email_to_list(
-                subject,
-                body=email_body,
-                users_list=region_interested_member,
-                text_body=text_body)
+            for email_id in region_interested_member:
+                send_email_to_id(
+                    subject,
+                    body=email_body,
+                    email_id=email_id,
+                    text_body=text_body)
 
         super(Workshop, self).save(force_insert, force_update, using)
 

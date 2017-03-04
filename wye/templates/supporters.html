@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Partner | {{ block.super }}{% endblock %}
+
+{% block header %}
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">PARTNERS</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="push-6-bottom">
+        <p> Community partner</p>
+        <a href="https://discuss.fsmk.org/" class="btn btn-theme btn-theme-secondary">
+            <img style="width:300px;" src="{% static 'img/supporter/fsmk.png' %}" alt="">
+        </a>
+    </div>
+{% endblock %}
