@@ -130,34 +130,52 @@
                       <li class="list-group-item">
                          <div class="row">
                       
-                {% if workshop|show_draft_button:user  %}
-                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/hold/" class="btn btn-warning ws-hold">Hold</a>
-                {% endif %}
-                {% if workshop|show_requested_button:user %}
-                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-publish">Publish/Request</a>
-                {% endif %}
-                {% if workshop|show_accepted_button:user %}
-                    <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/accept/" class="btn btn-success ws-accept">Accept</a>
-                {% endif %}
-                {% if workshop|show_decline_button:user %}
-                   <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
-                {% endif %}
-               {% if workshop|show_reject_button:user %}
-                    <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
-                {% endif %}
-         {% if workshop|show_accept_volunteer_button:user %}
-                  <a href="javascript:void(0);" data-url="{% url "workshops:workshop_opt_in_volunteer" workshop.pk  %}"  class="btn btn-primary vol-ws-accept">Opt-In as Volunteer</a>
-               {% endif %}
-               {% if workshop|show_opt_out_volunteer_button:user %}
-                  <a href="javascript:void(0);" data-url="{% url "workshops:workshop_opt_out_volunteer" workshop.pk %}"  class="btn btn-danger vol-ws-reject">Opt-Out as Volunteer</a>
-               {% endif %}
-                {% if workshop|show_feedback_button:user %}
-                    <a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
-                {% endif %}
-                </div>
-                      </li>
+                            {% if workshop|show_draft_button:user  %}
+                                <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/hold/" class="btn btn-warning ws-hold">Hold</a>
+                            {% endif %}
+                            {% if workshop|show_requested_button:user %}
+                                <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-publish">Publish/Request</a>
+                            {% endif %}
+                            {% if workshop|show_accepted_button:user %}
+                                <a href="javascript:void(0)" data-url="/workshop/{{workshop.pk}}/accept/" class="btn btn-success ws-accept">Accept</a>
+                            {% endif %}
+                            {% if workshop|show_decline_button:user %}
+                               <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
+                            {% endif %}
+                           {% if workshop|show_reject_button:user %}
+                                <a href="javascript:void(0)" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
+                            {% endif %}
+                            {% if workshop|show_accept_volunteer_button:user %}
+                              <a href="javascript:void(0);" data-url="{% url "workshops:workshop_opt_in_volunteer" workshop.pk  %}"  class="btn btn-primary vol-ws-accept">Opt-In as Volunteer</a>
+                           {% endif %}
+                           {% if workshop|show_opt_out_volunteer_button:user %}
+                              <a href="javascript:void(0);" data-url="{% url "workshops:workshop_opt_out_volunteer" workshop.pk %}"  class="btn btn-danger vol-ws-reject">Opt-Out as Volunteer</a>
+                           {% endif %}
+                            {% if workshop|show_feedback_button:user %}
+                                <a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% if user.is_staff %}
+                        <li class="list-group-item">
+                            <div>
+                            {% for feedback in workshop.workshopfeedback_set.all %}
+                                <div>
+                                    {{feedback.get_feedback_type_display}}<br>
+                                    {{feedback.comment}}<br>
+                                    
+                                    {% for voting in feedback.workshop_feedback.all %}
+                                        <p>{{voting.workshop_rating.name}} :{{voting.rating}}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </li>
+                   {% endif %}
+            
                 </ul>
             </div>
+           
         </div>
     </div>
 
