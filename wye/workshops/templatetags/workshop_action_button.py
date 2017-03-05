@@ -76,7 +76,7 @@ def show_volunteer_count(workshop, user):
 def show_accept_volunteer_button(workshop, user):
     number_of_volunteers = 0 if (
         not workshop.number_of_volunteers) else workshop.number_of_volunteers
-    if Profile.is_volunteer(user) and \
+    if user.is_authenticated() and Profile.is_volunteer(user) and \
             number_of_volunteers - workshop.volunteer.count() >= 1 and \
             user not in workshop.volunteer.all() and  \
             user not in workshop.requester.user.all():
