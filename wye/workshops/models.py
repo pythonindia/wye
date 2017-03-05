@@ -10,7 +10,7 @@ from wye.base.constants import (
     WorkshopLevel,
     WorkshopStatus,
 )
-from wye.base.emailer_html import send_email_to_list
+from wye.base.emailer_html import send_email_to_id
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
 from wye.regions.models import Location
@@ -23,6 +23,7 @@ class WorkshopSections(TimeAuditModel):
     python2, Python3, Django, Flask, Gaming
     '''
     name = models.CharField(max_length=300, unique=True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'workshop_section'
@@ -43,6 +44,9 @@ class Workshop(TimeAuditModel):
     workshop_level = models.PositiveSmallIntegerField(
         choices=WorkshopLevel.CHOICES, verbose_name="Workshop Level")
     workshop_section = models.ForeignKey(WorkshopSections)
+    number_of_volunteers = models.PositiveSmallIntegerField(
+        default=0, null=True, blank=True)
+    volunteer = models.ManyToManyField(User, related_name='workshop_volunteer')
     is_active = models.BooleanField(default=True)
     status = models.PositiveSmallIntegerField(
         choices=WorkshopStatus.CHOICES, verbose_name="Current Status",
@@ -87,11 +91,12 @@ class Workshop(TimeAuditModel):
             text_body = loader.get_template(
                 'email_messages/workshop/create_workshop/message.txt').render(
                 context)
-            send_email_to_list(
-                subject,
-                body=email_body,
-                users_list=region_interested_member,
-                text_body=text_body)
+            for email_id in region_interested_member:
+                send_email_to_id(
+                    subject,
+                    body=email_body,
+                    email_id=email_id,
+                    text_body=text_body)
 
         super(Workshop, self).save(force_insert, force_update, using)
 
@@ -108,7 +113,9 @@ class Workshop(TimeAuditModel):
             'decline': (WorkshopStatus.DECLINED, self.set_status),
             'publish': (WorkshopStatus.REQUESTED, self.set_status),
             'hold': (WorkshopStatus.HOLD, self.set_status),
-            'assign': ""
+            'assign': "",
+            'opt-in-as-volunteer': '',
+            'opt-out-as-volunteer': ''
         }
         if kwargs.get('action') not in actions:
             return {
@@ -182,6 +189,10 @@ class Workshop(TimeAuditModel):
         func = action_map.get(action)
         func(user)
 
+        if action == 'opt-out':
+            self.number_of_volunteers = 0
+            self.volunteer.clear()
+
         if self.presenter.count() > 0:
             self.status = WorkshopStatus.ACCEPTED
         else:
@@ -220,6 +231,12 @@ class Workshop(TimeAuditModel):
 
         return message
 
+        def opt_in_as_volunteer(self):
+            pass
+
+        def opt_out_as_volunteer(self):
+            pass
+
 
 class WorkshopRatingValues(TimeAuditModel):
     '''
@@ -229,6 +246,7 @@ class WorkshopRatingValues(TimeAuditModel):
     name = models.CharField(max_length=300)
     feedback_type = models.PositiveSmallIntegerField(
         choices=FeedbackType.CHOICES, verbose_name="User_type")
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'workshop_vote_value'

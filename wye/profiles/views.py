@@ -191,8 +191,8 @@ def partner_view(request):
                 'email_messages/partner/partner_message.txt').render(
                 email_context)
             email_body = loader.get_template(
-                'email_messages/partner/partner_message.html').render
-            (email_context)
+                'email_messages/partner/partner_message.html').render(
+                email_context)
             user_subject = '[PythonExpress] Partnership request Received'
             user_text_body = loader.get_template(
                 'email_messages/partner/message_user.txt').render(
@@ -202,9 +202,9 @@ def partner_view(request):
                 email_context)
 
             try:
-                send_email_to_list(
+                send_email_to_id(
                     subject,
-                    users_list=['contact@pythonexpress.in'],
+                    email_id='contact@pythonexpress.in',
                     body=email_body,
                     text_body=text_body)
 

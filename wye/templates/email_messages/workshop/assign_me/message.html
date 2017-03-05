@@ -1,16 +1,31 @@
-{% if presenter %}
-    Hey {{ presenter_name }},
+{% extends "email_messages/layout.html" %}
 
-    We're writing in to let you know that the Workshop at {{ workshop_organization }} to be conducted on {{ date }} has been {% if assigned %} assigned to {% else %} unassigned from {% endif %} you. Please visit the url below for more information.
-    {{ workshop_url }}
- 
-{% else %}
-     Hello folks!
-     
-     Just giving you a heads up. The Workshop you are planning to conduct on {{ date }} has been {% if assigned %} assigned to {% else %} unassigned from {% endif %} {{ presenter_name }}. Please visit the url below for more information.
-     {{ workshop_url }}
+{% block header_content %}
+Workshop Accepted
+{% endblock %}
 
-{% endif %}
+{% block content_body %}
+{% block content %}
+    {% if presenter %}
+        <p>Hey {{ presenter_name }},</p>
 
-Warmly,
-The PythonExpress team.
+        <p>We're writing in to let you know that the Workshop at {{ workshop_organization }} to be conducted on {{ date }} has been {% if assigned %} assigned to {% else %} unassigned from {% endif %} you. 
+        </p>
+        <p>Please visit the url below for more information.
+            {{ workshop_url }}
+        </p>
+
+    {% else %}
+        <p>Hello folks!</p>
+
+        <p>Just giving you a heads up. The Workshop you are planning to conduct on {{ date }} has been {% if assigned %} assigned to {% else %} unassigned from {% endif %} {{ presenter_name }}. </p>
+        <p>Please visit the url below for more information.
+        {{ workshop_url }}
+        </p>
+    {% endif %}
+    <p>May the love of Python spread far and wide!</p>
+	<p>Warmly,</p>
+	<p>The PythonExpress team</p>
+    {% endblock %}
+{% endblock %}							
+                                            

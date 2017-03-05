@@ -30,14 +30,14 @@
                                 <li><a href="/organisation/" class="{% if request.resolver_match.namespace == 'organisations' %}active{% endif %}">Organisations</a></li>
                                 <li><a href="/workshop/" class="{% if request.resolver_match.namespace == 'workshops' %}active{% endif %}">Workshops</a></li>
                                 {% if user.is_staff %}
-                                	<li><a href="/region" class="{% if request.resolver_match.namespace == 'regions' %}active{% endif %}">Regions</a></li>
+                                	<li><a href="/region/" class="{% if request.resolver_match.namespace == 'regions' %}active{% endif %}">Regions</a></li>
                                 {% endif %}
                             {% endif %}
-                            {% if not user.is_authenticated %}
-                                <li><a href="/about" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
-                                <li><a href="/workshops_upcoming" class="{% if request.resolver_match.url_name == 'upcoming_workshops' %}active{% endif %}">Upcoming Workshops</a></li>
-                            {% endif %}
+                            <li><a href="/about" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
+                                <!-- <li><a href="/workshops_upcoming" class="{% if request.resolver_match.url_name == 'upcoming_workshops' %}active{% endif %}">Upcoming Workshops</a></li> -->
+                            
                             <li><a href="/faq" class="{% if request.resolver_match.url_name == 'faq' %}active{% endif %}">FAQ</a></li>
+                            <li><a href="/supporter" class="{% if request.resolver_match.url_name == 'supporter' %}active{% endif %}">Partner</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             {% block loginindicator %}

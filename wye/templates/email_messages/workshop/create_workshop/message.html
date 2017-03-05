@@ -1,9 +1,22 @@
-Hello folks!
-     
-Your organization's {{ workshop_topic }} workshop request on {{ date }} has been successfully added! We shall be notifying all the regional leads and potential instructors soon. Meanwhile, do visit the url below for more information.
-{{ workshop_url }}
+{% extends "email_messages/layout.html" %}
 
-May the love of Python spread far and wide!
+{% block header_content %}
+New Workshop request 
+{% endblock %}
 
-Warmly,
-The PythonExpress team.
+
+{% block content_body %}
+    {% block content %}
+        <p> Hello folks!</p>
+
+        <p> Your organization's {{ workshop_topic }} workshop request on {{ date }} has been successfully added! We shall be notifying all the regional leads and potential instructors soon. <p>
+        <p> Meanwhile, do visit the url below for more information.
+        <a href="{{ workshop_url }}"> {{ workshop_url }}</a>
+        </p>
+        <p>May the love of Python spread far and wide!</p>
+		<p>Warmly,</p>
+		<p>The PythonExpress team</p>
+    {% endblock %}
+{% endblock %}
+							
+                                           
