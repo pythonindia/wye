@@ -141,45 +141,46 @@ def workshop_create(request):
         return render(request, template_name, context_dict)
     workshop = form.save()
     domain = Site.objects.get_current().domain
-    context = {
-        'workshop': workshop,
-        'date': workshop.expected_date,
-        'workshop_url': domain + '/workshop/{}/'.format(workshop.id)
-    }
-    # Collage POC and admin email
-    poc_admin_user = Profile.get_user_with_type(
-        user_type=['Collage POC', 'admin']
-    ).values_list('email', flat=True)
+    if workshop and workshop.id:
+        context = {
+            'workshop': workshop,
+            'date': workshop.expected_date,
+            'workshop_url': domain + '/workshop/{}/'.format(workshop.id)
+        }
+        # Collage POC and admin email
+        poc_admin_user = Profile.get_user_with_type(
+            user_type=['Collage POC', 'admin']
+        ).values_list('email', flat=True)
 
-    org_user_emails = workshop.requester.user.filter(
-        is_active=True).values_list('email', flat=True)
-    # all presenter if any
-    all_presenter_email = workshop.presenter.values_list(
-        'email', flat=True)
-    # List of tutor who have shown interest in that location
-    region_interested_member = Profile.objects.filter(
-        interested_locations=workshop.requester.location,
-        usertype__slug='tutor'
-    ).values_list('user__email', flat=True)
-    all_email = []
-    all_email.extend(org_user_emails)
-    all_email.extend(all_presenter_email)
-    all_email.extend(poc_admin_user)
-    all_email.extend(region_interested_member)
-    all_email = set(all_email)
-    send_tweet(context)
+        org_user_emails = workshop.requester.user.filter(
+            is_active=True).values_list('email', flat=True)
+        # all presenter if any
+        all_presenter_email = workshop.presenter.values_list(
+            'email', flat=True)
+        # List of tutor who have shown interest in that location
+        region_interested_member = Profile.objects.filter(
+            interested_locations=workshop.requester.location,
+            usertype__slug='tutor'
+        ).values_list('user__email', flat=True)
+        all_email = []
+        all_email.extend(org_user_emails)
+        all_email.extend(all_presenter_email)
+        all_email.extend(poc_admin_user)
+        all_email.extend(region_interested_member)
+        all_email = set(all_email)
+        send_tweet(context)
 
-    subject = '[PythonExpress] Workshop request status.'
-    email_body = loader.get_template(
-        'email_messages/workshop/create_workshop/message.html').render(context)
-    text_body = loader.get_template(
-        'email_messages/workshop/create_workshop/message.txt').render(context)
-    send_email_to_list(
-        subject,
-        body=email_body,
-        users_list=all_email,
-        text_body=text_body)
-    success_url = reverse_lazy('workshops:workshop_list')
+        subject = '[PythonExpress] Workshop request status.'
+        email_body = loader.get_template(
+            'email_messages/workshop/create_workshop/message.html').render(context)
+        text_body = loader.get_template(
+            'email_messages/workshop/create_workshop/message.txt').render(context)
+        send_email_to_list(
+            subject,
+            body=email_body,
+            users_list=all_email,
+            text_body=text_body)
+        success_url = reverse_lazy('workshops:workshop_list')
     return HttpResponseRedirect(success_url)
 
 
