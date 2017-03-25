@@ -72,31 +72,31 @@ class Workshop(TimeAuditModel):
         from wye.profiles.models import Profile
         if not self.id:
             domain = Site.objects.get_current().domain
-            context = {
-                'workshop': self,
-                'date': self.expected_date,
-                'workshop_url': domain + '/workshop/{}/'.format(self.id),
-                'workshop_topic': self.workshop_section.name
-            }
             # get region_interested_member email ids to notify them
             region_interested_member = Profile.objects.filter(
                 interested_locations=self.requester.location,
                 usertype__slug='tutor'
             ).values_list('user__email', flat=True)
 
-            subject = '[PythonExpress] Workshop request status.'
-            email_body = loader.get_template(
-                'email_messages/workshop/create_workshop/message.html').render(
-                context)
-            text_body = loader.get_template(
-                'email_messages/workshop/create_workshop/message.txt').render(
-                context)
-            for email_id in region_interested_member:
-                send_email_to_id(
-                    subject,
-                    body=email_body,
-                    email_id=email_id,
-                    text_body=text_body)
+            if self and self.id:
+                context = {
+                    'workshop': self,
+                    'date': self.expected_date,
+                    'workshop_url': domain + '/workshop/{}/'.format(self.id),
+                    'workshop_topic': self.workshop_section.name
+                }
+                subject = '[PythonExpress] Workshop request status.'
+                email_body = loader.get_template(
+                        'email_messages/workshop/create_workshop/message.html').render(
+                        context)
+                text_body = loader.get_template(
+                        'email_messages/workshop/create_workshop/message.txt').render(
+                        context)
+                for email_id in region_interested_member:
+                    send_email_to_id(
+                        subject,
+                        body=email_body,
+                        email_id=email_id, text_body=text_body)
 
         super(Workshop, self).save(force_insert, force_update, using)
 
