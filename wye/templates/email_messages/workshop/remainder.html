@@ -1,0 +1,16 @@
+{% extends "email_messages/layout.html" %}
+
+{% block header_content %}
+Request forFeedback 
+{% endblock %}
+
+
+{% block content_body %}
+    {% block content %}
+        <p>Gentle reminder for PythonExpress workshop !! Namaste</p>
+
+		<p>The workshop on {{workshop_title}} scheduled for {{workshop_date}} by {{trainer}} at {{organiser}}, {{venue}} is a go! If there is any concern / query please feel free to reach out to PythonExpress team via contact@pythonexpress.in</p>
+		<p>
+		Let’s have a successful workshop! All the best!</p>
+    {% endblock %}
+{% endblock %}
