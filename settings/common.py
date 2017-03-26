@@ -259,16 +259,17 @@ CELERYBEAT_SCHEDULE = {
     'send-upcoming_event_reminder': {
         'task': 'wye.workshops.tasks.workshop_reminder',
         'schedule': crontab(hour=7, minute=30),
-        'args': (2, False)
+        'args': (2, False, False)
     },
     'send-feedback-reminder': {
-        'task': 'wye.workshops.tasks.workshop_feedback',
+        'task': 'wye.workshops.tasks.workshop_reminder',
         'schedule': crontab(hour=7, minute=30),
+        'args': (2, False, True)
     },
     'send-feedback-second-reminder': {
-        'task': 'wye.workshops.tasks.workshop_feedback',
+        'task': 'wye.workshops.tasks.workshop_reminder',
         'schedule': crontab(hour=7, minute=30),
-        'args': (2,)
+        'args': (2, False, True)
     },
 }
 
