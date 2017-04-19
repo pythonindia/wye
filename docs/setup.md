@@ -54,6 +54,25 @@ Follow this guide to setup your development machine.
     python manage.py runserver
     ```
 
+## Troubleshooting 
+- If there is a problem in creating database `wye` . The user has to be changed to `postgres` do that.
+    
+    ```
+    sudo su postgres
+    ```
+- Error when executing `python manage.py migrate` 
+   -error `conn = _connect(dsn, connection_factory=connection_factory, async=async)django.db.utils.OperationalError: fe_sendauth: no password supplied`
+   - Supply the password for the postgres which has been used to set it up.
+   - If setting postgres for first time 
+  
+    ```
+    sudo su postgres
+    psql
+    alter user postgres password 'password'
+    ```
+  
+
+    
 
 [git]: https://git-scm.com/downloads
 [virtualenv]: https://virtualenv.pypa.io/
