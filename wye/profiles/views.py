@@ -163,9 +163,9 @@ def contact(request):
             return HttpResponseRedirect('/thankyou')
     else:
         if request.user.is_authenticated():
-            form = ContactUsForm(initial={'name':request.user.first_name
+            form = ContactUsForm(initial={'name': request.user.first_name
                                           + " " + request.user.last_name,
-                                          'email':request.user.email
+                                          'email': request.user.email
                                           })
         else:
             form = ContactUsForm()
