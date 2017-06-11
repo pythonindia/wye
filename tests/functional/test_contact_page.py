@@ -47,7 +47,7 @@ def test_contact_page(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('Thank')
 
-    # ---------------- testing autofill name and email -----------------------
+    # ---------------- testing auto fill name and email -----------------------
     f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
     user.set_password('123123')
@@ -66,10 +66,8 @@ def test_contact_page(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     url = base_url + '/contact/'
     browser.visit(url)
-
     name = browser.find_by_id('id_name').value
-    assert name == user.first_name + user.last_name
-
+    assert name == user.first_name + " " + user.last_name
     email = browser.find_by_id('id_email').value
     assert email == user.email
 
@@ -79,9 +77,7 @@ def test_contact_page(base_url, browser, outbox):
     assert 'Home | PythonExpress' in browser.title
     url = base_url + '/contact/'
     browser.visit(url)
-
     name = browser.find_by_id('id_name').value
     assert name == ''
-
     email = browser.find_by_id('id_email').value
     assert email == ''
