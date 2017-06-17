@@ -162,7 +162,13 @@ def contact(request):
                 print(e)
             return HttpResponseRedirect('/thankyou')
     else:
-        form = ContactUsForm()
+        if request.user.is_authenticated():
+            form = ContactUsForm(initial={'name': request.user.first_name +
+                                          " " + request.user.last_name,
+                                          'email': request.user.email
+                                          })
+        else:
+            form = ContactUsForm()
     return render(request, 'contact.html', {'form': form})
 
 

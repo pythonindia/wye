@@ -1,5 +1,6 @@
 import re
-# from .. import factories as f
+
+from .. import factories as f
 
 
 def get_captcha_value(html_body):
@@ -46,3 +47,45 @@ def test_contact_page(base_url, browser, outbox):
     browser.fill('captcha_0', captcha_value)
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('Thank')
+
+    # ---------------- testing auto fill name and email -----------------------
+    f.create_usertype(slug='tutor', display_name='tutor')
+    user = f.create_user()
+    user.first_name = 'test'
+    user.last_name = 'testing'
+    user.set_password('123123')
+    user.save()
+    url = base_url + '/accounts/login/'
+    browser.visit(url)
+    browser.fill('login', user.email)
+    browser.fill('password', '123123')
+    browser.find_by_css('[type=submit]')[0].click()
+    assert len(outbox) == 3
+    mail = outbox[2]
+    confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
+    assert confirm_link
+    browser.visit(confirm_link[0])
+    assert browser.title, "Confirm E-mail Address"
+    browser.find_by_css('[type=submit]')[0].click()
+    url = base_url + '/accounts/login/'
+    browser.visit(url)
+    browser.fill('login', user.email)
+    browser.fill('password', '123123')
+    browser.find_by_css('[type=submit]')[0].click()
+    url = base_url + '/contact/'
+    browser.visit(url)
+    name = browser.find_by_id('id_name').value
+    assert name == user.first_name + " " + user.last_name
+    email = browser.find_by_id('id_email').value
+    assert email == user.email
+
+    # -------------------After logging out---------------
+    url = base_url + '/accounts/logout/'
+    browser.visit(url)
+    assert 'Home | PythonExpress' in browser.title
+    url = base_url + '/contact/'
+    browser.visit(url)
+    name = browser.find_by_id('id_name').value
+    assert name == ''
+    email = browser.find_by_id('id_email').value
+    assert email == ''
