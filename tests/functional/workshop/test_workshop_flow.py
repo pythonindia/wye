@@ -109,7 +109,6 @@ def test_workshop_flow(base_url, browser, outbox):
 
     workshop = f.create_workshop(
         requester=org,
-        location=org.location,
         status=WorkshopStatus.REQUESTED)
 
     workshop.expected_date = datetime.now() + timedelta(days=20)

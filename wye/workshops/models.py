@@ -9,6 +9,7 @@ from wye.base.constants import (
     FeedbackType,
     WorkshopLevel,
     WorkshopStatus,
+    YesNO
 )
 from wye.base.emailer_html import send_email_to_id
 from wye.base.models import TimeAuditModel
@@ -40,7 +41,7 @@ class Workshop(TimeAuditModel):
     requester = models.ForeignKey(
         Organisation, related_name='workshop_requester')
     presenter = models.ManyToManyField(User, related_name='workshop_presenter')
-    location = models.ForeignKey(Location, related_name='workshop_location')
+    # location = models.ForeignKey(Location, related_name='workshop_location')
     workshop_level = models.PositiveSmallIntegerField(
         choices=WorkshopLevel.CHOICES, verbose_name="Workshop Level")
     workshop_section = models.ForeignKey(WorkshopSections)
@@ -48,9 +49,25 @@ class Workshop(TimeAuditModel):
         default=0, null=True, blank=True)
     volunteer = models.ManyToManyField(User, related_name='workshop_volunteer')
     is_active = models.BooleanField(default=True)
+
     status = models.PositiveSmallIntegerField(
         choices=WorkshopStatus.CHOICES, verbose_name="Current Status",
         default=WorkshopStatus.REQUESTED)
+    travel_reimbursement = models.PositiveSmallIntegerField(
+        choices=YesNO.CHOICES,
+        verbose_name="Travel Reimbursement Support",
+        default=YesNO.NO)
+    hotel_reimbursement = models.PositiveSmallIntegerField(
+        choices=YesNO.CHOICES,
+        verbose_name="Stay Reimbursement Support",
+        default=YesNO.NO)
+    budget = models.CharField(max_length=5, null=True)
+    reimbursement_mode = models.TextField(null=True)
+    tutor_reimbursement_flag = models.PositiveSmallIntegerField(
+        choices=YesNO.CHOICES,
+        verbose_name=" Do you need Travel/Stay reimbursement ?",
+        default=YesNO.NO)
+    comments = models.TextField()
 
     class Meta:
         db_table = 'workshops'
@@ -218,7 +235,7 @@ class Workshop(TimeAuditModel):
 
         topic = workshop.workshop_section
         organization = workshop.requester
-        location = workshop.location
+        location = workshop.requester.location
         workshop_url = context.get('workshop_url', None)
         message = "{} workshop at {} on {} confirmed! Details: {}".format(
             topic, organization, date, workshop_url)

@@ -173,7 +173,7 @@ class Command(BaseCommand):
                     2015, random.randrange(1, 12), random.randrange(1, 29)),
                 description=self.fake.text(),
                 requester=random.choice(organisations),
-                location=random.choice(locations),
+                #location=random.choice(locations),
                 workshop_level=WorkshopLevel.BEGINNER,
                 workshop_section=random.choice(sections),
                 status=WorkshopStatus.COMPLETED

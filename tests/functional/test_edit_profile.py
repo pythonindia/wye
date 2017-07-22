@@ -10,13 +10,14 @@ pytestmark = pytest.mark.django_db
 def test_signup_college_poc_flow(base_url, browser, outbox):
     f.create_usertype(slug='tutor', display_name='tutor')
     user = f.create_user()
-    user.set_password('123123')
+    # user.set_password('123123')
     user.save()
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
+    print(outbox)
     assert len(outbox) == 1
     mail = outbox[0]
     confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
@@ -30,8 +31,7 @@ def test_signup_college_poc_flow(base_url, browser, outbox):
     browser.fill('login', user.email)
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
-
-    assert browser.is_text_present("Dashboard")
+    assert browser.is_text_present("My Profile")
 
     poc_type = f.create_usertype(slug='poc', display_name='College POC')
     user.profile.usertype.clear()
@@ -69,6 +69,7 @@ def test_signup_college_poc_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
+    # Use first name and last name
     browser.visit(url)
     browser.fill('mobile', '1234567890')
     browser.select('interested_sections', section1.id)
@@ -78,13 +79,25 @@ def test_signup_college_poc_flow(base_url, browser, outbox):
     assert browser.is_text_present('This field is required.')
 
     browser.visit(url)
+    browser.fill('first_name', 'First Name')
+    browser.fill('last_name', 'Last Name')
     browser.fill('mobile', '1234567890')
     browser.select('interested_sections', section1.id)
     browser.select('interested_states', state1.id)
     browser.select('location', location1.id)
-    # browser.fill('github', 'https://github.com')
+    assert browser.is_text_present('This field is required.')
+
+    browser.visit(url)
     browser.fill('first_name', 'First Name')
     browser.fill('last_name', 'Last Name')
+    browser.fill('mobile', '1234567890')
+    browser.select('interested_sections', section1.id)
+    browser.select('interested_states', state1.id)
+    browser.select('location', location1.id)
+    browser.fill('occupation', 'occupation')
+    browser.fill('work_location', 'work_location')
+    browser.fill('work_experience', 'work_experience')
+
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('Deactive Account')
 
@@ -94,7 +107,7 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     user = f.create_user()
     user.set_password('123123')
     user.save()
-    url = base_url + '/workshop/'
+    url = base_url + '/accounts/login/'
     browser.visit(url)
     browser.fill('login', user.email)
     browser.fill('password', '123123')
@@ -113,7 +126,7 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     browser.fill('password', '123123')
     browser.find_by_css('[type=submit]')[0].click()
 
-    assert browser.is_text_present("Dashboard")
+    assert browser.is_text_present("My Profile")
 
     poc_type = f.create_usertype(slug='poc', display_name='College POC')
     user.profile.usertype.clear()
@@ -191,10 +204,14 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     browser.select('interested_level', 1)
     browser.select('location', location1.id)
     browser.fill('github', 'https://github.com')
+    browser.fill('occupation', 'occupation')
+    browser.fill('work_location', 'work_location')
+    browser.fill('work_experience', 'work_experience')
+
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('Deactive Account')
 
-    org = f.create_organisation()
+    org = f.create_organisation(location=location1)
     org.user.add(user)
     # section2 = f.create_workshop_section(name='section2')
 
@@ -211,4 +228,4 @@ def test_signup_tutor_flow(base_url, browser, outbox):
 
     url = base_url + '/profile/' + user.username + '/'
     browser.visit(url)
-    assert browser.is_text_present('Deactive Account')
+    # assert browser.is_text_present('Deactive Account')

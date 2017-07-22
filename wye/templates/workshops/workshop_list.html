@@ -68,8 +68,6 @@
                                     <th>Section</th>
                                     <th>Level</th>
                                     <th>Status</th>
-                                    <!-- <th>Action</th> -->
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,30 +76,11 @@
                                         <td>{{ workshop.requester.name }}</td>
                                         <td>{{ workshop.get_presenter_list|join:", " }}</td>
                                         <td>{{ workshop.expected_date }}</td>
-                                        <td>{{ workshop.location }}</td>
+                                        <td>{{ workshop.requester.location }}</td>
                                         <td>{{ workshop.workshop_section.name }}</td>
                                         <td>{{ workshop.get_workshop_level_display }}</td>
                                         <td>{{ workshop.get_status_display }}</td>
-                                       <!--  <td>
-                                        {% if workshop|show_draft_button:user  %}
-                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'hold' %}" class="btn btn-warning ws-hold">Hold</a>
-                                        {% endif %}
-                                        {% if workshop|show_requested_button:user %}
-                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'publish' %}" class="btn btn-warning ws-hold">Publish/Request</a>
-                                        {% endif %}
-                                        {% if workshop|show_accepted_button:user %}
-                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'accept' %}" class="btn btn-success ws-accept">Accept</a>
-                                        {% endif %}
-					                    {% if workshop|show_decline_button:user %}
-					                       <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'decline' %}"  class="btn btn-danger ws-decline">Decline</a>
-                                        {% endif %}
-					                   {% if workshop|show_reject_button:user %}
-                                            <a href="javascript:void(0);" data-url="{% url "workshops:workshop_action" workshop.pk 'reject' %}"  class="btn btn-danger ws-reject">Reject</a>
-                                        {% endif %}
-                                        {% if workshop|show_feedback_button:user %}
-                                        	<a href="{% url 'workshops:workshop_feedback' workshop.pk %}" class="btn btn-default">Share Feedback</a>
-                                        {% endif %}
-                                        </td> -->
+                                       
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -119,38 +98,6 @@
             $('.clickable-row td:nth-child(-n + 5)').click(function() {
                window.document.location = $(this).parent().attr('data-href');
             });
-
-        $(".ws-accept").bind('click', function(){
-            $.post($(this).attr('data-url'), {}, function (data) {
-
-                if (data['status']) {
-                    window.location.reload();
-                } else {
-                    alert(data['msg']);
-                }
-            });
-        });
-        $(".ws-reject").bind('click', function() {
-            $.post($(this).attr('data-url'), {}, function(data) {
-                if (data["status"]) {
-                    window.location.reload();
-                }
-            });
-        });
-        $(".ws-hold").bind('click', function() {
-            $.post($(this).attr('data-url'), {}, function(data) {
-                if (data["status"]) {
-                    window.location.reload();
-                }
-            });
-        });
-	$(".ws-decline").bind('click', function() {
-            $.post($(this).attr('data-url'), {}, function(data) {
-                if (data["status"]) {
-                    window.location.reload();
-                }
-            });
-        });
     });
     </script>
 {% endblock %}

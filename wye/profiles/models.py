@@ -36,12 +36,23 @@ class UserType(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True, related_name='profile')
     mobile = models.CharField(max_length=10, blank=False, null=True)
+    occupation = models.CharField(
+        null=True, blank=True, max_length=300, verbose_name=u"Occupation")
+    work_location = models.CharField(
+        null=True, blank=True, max_length=500, verbose_name=u"Organisaiton/Company")
+    work_experience = models.FloatField(
+        null=True, blank=True, verbose_name=u"Work Experience(If Any)")
+    no_workshop = models.IntegerField(
+        verbose_name=u"Workshop conducted(apart from pythonexpress)",
+        default=0)
     is_mobile_visible = models.BooleanField(default=False)
     is_email_visible = models.BooleanField(default=False)
-    usertype = models.ManyToManyField(UserType, null=True)
+
     enable_notifications = models.BooleanField(
         default=True,
         verbose_name=u"Email Notification")
+
+    usertype = models.ManyToManyField(UserType, null=True)
 
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_level = models.PositiveSmallIntegerField(
@@ -55,13 +66,7 @@ class Profile(models.Model):
         verbose_name=u"Interested State *")
     location = models.ForeignKey(
         Location, related_name="user_location", null=True)
-    work_location = models.TextField(
-        null=True, blank=True, verbose_name=u"Present Company")
-    work_experience = models.FloatField(
-        null=True, blank=True, verbose_name=u"Work Experience")
-    no_workshop = models.IntegerField(
-        verbose_name=u"Workshop conducted(apart from pythonexpress)",
-        default=0)
+
     github = models.URLField(null=True, blank=True)
     facebook = models.URLField(null=True, blank=True)
     googleplus = models.URLField(null=True, blank=True)

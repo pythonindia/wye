@@ -86,7 +86,7 @@ class WorkshopFactory(Factory):
         lambda n: "Workshop_Description{}".format(n))
     no_of_participants = 20
     requester = factory.SubFactory("tests.factories.OrganisationFactory")
-    location = factory.SubFactory("tests.factories.LocationFactory")
+    # location = factory.SubFactory("tests.factories.LocationFactory")
     workshop_level = factory.Iterator(dict(WorkshopLevel.CHOICES).keys())
     workshop_section = factory.SubFactory(
         "tests.factories.WorkshopSectionFactory")

@@ -117,7 +117,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
 
     # edit profile
-    assert browser.is_text_present("Dashboard")
+    assert browser.is_text_present("My Profile")
 
     u = User.objects.get(email='user@example.com')
     u.profile.usertype.clear()

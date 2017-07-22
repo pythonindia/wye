@@ -10,7 +10,8 @@ from wye.base.constants import (
     WorkshopRatings,
     WorkshopLevel,
     WorkshopStatus,
-    FeedbackType)
+    FeedbackType,
+    YesNO)
 from wye.base.widgets import CalendarWidget
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
@@ -32,9 +33,15 @@ class WorkshopForm(forms.ModelForm):
             widget=CalendarWidget,
             input_formats=settings.ALLOWED_DATE_FORMAT)
         self.fields['requester'].queryset = self.get_organisations(user)
-        self.fields['location'].required = False
-        self.fields['location'].widget = forms.HiddenInput()
-        self.fields['workshop_section'].queryset = WorkshopSections.objects.filter(is_active=True)
+        self.fields[
+            'workshop_section'].queryset = WorkshopSections.objects.filter(
+            is_active=True)
+        if not self.instance.id:
+            self.fields['tutor_reimbursement_flag'].required = False
+            self.fields[
+                'tutor_reimbursement_flag'].widget = forms.HiddenInput()
+            self.fields['comments'].required = False
+            self.fields['comments'].widget = forms.HiddenInput()
 
     def clean_location(self):
         if "requester" not in self.cleaned_data:
@@ -79,7 +86,7 @@ class WorkshopEditForm(forms.ModelForm):
         self.fields['requester'].widget = forms.TextInput()
         self.fields['requester'].widget.attrs['readonly'] = True
         if RegionalLead.is_regional_lead(
-                request.user, self.instance.location):
+                request.user, self.instance.requester.location):
             self.fields['presenter'].queryset = User.objects.filter(
                 profile__usertype__slug="tutor"
             )
@@ -94,7 +101,7 @@ class WorkshopEditForm(forms.ModelForm):
         exclude = (
             'created_at', 'modified_at',
             'number_of_volunteers', 'volunteer',
-            'is_active', 'status', 'location')
+            'is_active', 'status')
 
 
 class WorkshopFeedbackForm(forms.Form):
@@ -193,3 +200,5 @@ class WorkshopListForm(forms.Form):
 class WorkshopVolunteer(forms.Form):
     CHOICE_LIST = ((idx, idx) for idx in range(0, 6))
     number_of_volunteers = forms.ChoiceField(choices=CHOICE_LIST)
+    tutor_reimbursement_flag = forms.ChoiceField(choices=YesNO.CHOICES)
+    comments = forms.CharField(widget=forms.Textarea)

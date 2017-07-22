@@ -76,6 +76,7 @@ class UserProfileForm(forms.ModelForm):
         self.fields['first_name'].initial = self.instance.user.first_name
         self.fields['last_name'].required = True
         self.fields['last_name'].initial = self.instance.user.last_name
+        self.fields['occupation'].required = True
         mandatory_field(self)
 
     def clean_interested_states(self):
@@ -128,6 +129,15 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         exclude = ('user', 'slug', 'interested_locations')
+        fields = (
+            'first_name', 'last_name',
+            'picture',
+            'occupation', 'work_location',
+            'work_experience', 'no_workshop', 'is_mobile_visible',
+            'is_email_visible', 'enable_notifications', 'usertype',
+            'interested_sections', 'interested_level', 'interested_states',
+            'location', 'github', 'facebook', 'googleplus',
+            'linkedin', 'twitter', 'slideshare')
 
 
 class ContactUsForm(forms.Form):
