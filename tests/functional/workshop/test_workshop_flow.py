@@ -60,6 +60,9 @@ def test_workshop_wrong_action(base_url, browser, outbox):
     user.profile.interested_sections.add(section1)
     user.profile.interested_level = 1
     user.profile.github = 'https://github.com'
+    user.profile.occupation = 'occupation'
+    user.profile.work_location = 'work_location'
+    user.profile.work_experience = 1
     user.profile.save()
     user.save()
 
@@ -73,10 +76,10 @@ def test_workshop_wrong_action(base_url, browser, outbox):
 def test_workshop_flow(base_url, browser, outbox):
     tutor_type = f.create_usertype(slug='tutor', display_name='tutor')
     poc_type = f.create_usertype(slug='poc', display_name='poc')
-    f.create_workshop_rating()
-    f.create_workshop_rating()
-    f.create_workshop_rating()
-    f.create_workshop_rating()
+    wr1 = f.create_workshop_rating()
+    wr2 = f.create_workshop_rating()
+    wr3 = f.create_workshop_rating()
+    wr4 = f.create_workshop_rating()
     state1 = f.create_state(name='state1')
     state2 = f.create_state(name='state2')
 
@@ -104,6 +107,9 @@ def test_workshop_flow(base_url, browser, outbox):
     org.user.add(user)
     user.profile.interested_locations.add(org.location)
     user.profile.location = org.location
+    user.profile.occupation = 'occupation'
+    user.profile.work_location = 'work_location'
+    user.profile.work_experience = 1
     user.profile.save()
     org.save()
 
@@ -133,6 +139,9 @@ def test_workshop_flow(base_url, browser, outbox):
     user.profile.interested_sections.add(section1)
     user.profile.interested_level = 1
     user.profile.github = 'https://github.com'
+    user.profile.occupation = 'occupation'
+    user.profile.work_location = 'work_location'
+    user.profile.work_experience = 1
     user.profile.save()
     user.save()
 
@@ -183,11 +192,17 @@ def test_workshop_flow(base_url, browser, outbox):
     workshop.save()
 
     browser.visit(url)
-    browser.screenshot()
+    print(wr1)
+    print('{}-{}'.format(wr1.id, wr1.feedback_type))
+    print(wr2)
+    print(wr3)
+    print(wr4)
     url = base_url + '/workshop/feedback/{}'.format(workshop.id)
     browser.visit(url)
-    browser.check('1-1')
-    browser.check('3-1')
+    for wr in [wr1, wr2, wr3, wr4]:
+        id = '{}-{}'.format(wr1.feedback_type, wr1.id)
+        browser.check(id)
+        # browser.check('3-1')
     browser.fill('comment', "Testing comments")
 
     browser.find_by_css('[type=submit]')[0].click()

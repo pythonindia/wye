@@ -30,6 +30,7 @@ class UserFactory(Factory):
 
     username = factory.Sequence(lambda n: 'user%04d' % n)
     email = factory.Sequence(lambda n: 'user%04d@email.com' % n)
+    is_active = True
     password = factory.PostGeneration(
         lambda obj, *args, **kwargs: obj.set_password('123123'))
 

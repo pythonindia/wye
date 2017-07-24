@@ -130,7 +130,7 @@ class UserProfileForm(forms.ModelForm):
         model = models.Profile
         exclude = ('user', 'slug', 'interested_locations')
         fields = (
-            'first_name', 'last_name',
+            'first_name', 'last_name', 'mobile',
             'picture',
             'occupation', 'work_location',
             'work_experience', 'no_workshop', 'is_mobile_visible',

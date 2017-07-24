@@ -17,7 +17,7 @@ from wye.workshops.views import upcoming_workshops
 urlpatterns = [
     url(r'^account_redirect/$', account_redirect, name='account-redirect'),
     url(r'^accounts/', include('allauth.urls')),
-    
+
 
     url(r'^django-admin/', include(admin.site.urls)),
     url(r'^dashboard/$', UserDashboard.as_view(),
