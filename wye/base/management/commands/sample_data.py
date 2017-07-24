@@ -163,7 +163,7 @@ class Command(BaseCommand):
 
     def create_sample_workshops(self, user):
         organisations = Organisation.objects.all()
-        locations = Location.objects.all()
+        # locations = Location.objects.all()
         sections = WorkshopSections.objects.all()
 
         for i in range(50):
@@ -173,7 +173,6 @@ class Command(BaseCommand):
                     2015, random.randrange(1, 12), random.randrange(1, 29)),
                 description=self.fake.text(),
                 requester=random.choice(organisations),
-                #location=random.choice(locations),
                 workshop_level=WorkshopLevel.BEGINNER,
                 workshop_section=random.choice(sections),
                 status=WorkshopStatus.COMPLETED

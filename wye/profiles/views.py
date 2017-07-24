@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -38,6 +38,7 @@ def profile_view(request, slug):
     except Profile.DoesNotExist:
         return render(request, 'error.html', {
             "message": "Profile does not exist"})
+
 
 def user_dashboad(request):
     profile, created = Profile.objects.get_or_create(
@@ -78,8 +79,6 @@ def user_dashboad(request):
             context['workshop_completed_tutor'] = \
                 requested_workshops.filter(
                 presenter=request.user)
-
-
 
 
 class UserDashboard(ListView):
@@ -190,7 +189,8 @@ def contact(request):
             user_email_body = loader.get_template(
                 'email_messages/contactus/message_user.html').render(
                 email_context)
-            site_admins = [email for name, email in settings.MANAGERS]  # @UnusedVariable
+            site_admins = [
+                email for name, email in settings.MANAGERS]  # @UnusedVariable
             try:
                 regional_lead = Profile.objects.filter(
                     usertype__slug__in=['lead', 'admin']).values_list(

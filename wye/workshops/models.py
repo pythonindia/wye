@@ -14,7 +14,7 @@ from wye.base.constants import (
 from wye.base.emailer_html import send_email_to_id
 from wye.base.models import TimeAuditModel
 from wye.organisations.models import Organisation
-from wye.regions.models import Location
+# from wye.regions.models import Location
 
 # from .decorators import  validate_assignme_action
 
@@ -49,7 +49,6 @@ class Workshop(TimeAuditModel):
         default=0, null=True, blank=True)
     volunteer = models.ManyToManyField(User, related_name='workshop_volunteer')
     is_active = models.BooleanField(default=True)
-
     status = models.PositiveSmallIntegerField(
         choices=WorkshopStatus.CHOICES, verbose_name="Current Status",
         default=WorkshopStatus.REQUESTED)
