@@ -8,21 +8,6 @@ from .. utils import create_user_verify_login
 def test_add_new_member_flow(base_url, browser, outbox):
     # ----------------- creating new user ------------------------
     f.create_usertype(slug='tutor', display_name='tutor')
-    # user = f.create_user()
-    # user.set_password('123123')
-    # user.save()
-    # url = base_url + '/accounts/login/'
-    # browser.visit(url)
-    # browser.fill('login', user.email)
-    # browser.fill('password', '123123')
-    # browser.find_by_css('[type=submit]')[0].click()
-    # assert len(outbox) == 1
-    # mail = outbox[0]
-    # confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
-    # assert confirm_link
-    # browser.visit(confirm_link[0])
-    # assert browser.title, "Confirm E-mail Address"
-    # browser.find_by_css('[type=submit]')[0].click()
     user = create_user_verify_login(base_url, browser, outbox)
     # ----------------------add user type -------------------
     location1 = f.create_locaiton(name='location1')
@@ -153,21 +138,6 @@ def test_add_new_member_flow(base_url, browser, outbox):
 def test_add_existing_member_flow(base_url, browser, outbox):
     # ------------------creating new user ----------------------
     f.create_usertype(slug='tutor', display_name='tutor')
-    # user = f.create_user()
-    # user.set_password('123123')
-    # user.save()
-    # url = base_url + '/accounts/login/'
-    # browser.visit(url)
-    # browser.fill('login', user.email)
-    # browser.fill('password', '123123')
-    # browser.find_by_css('[type=submit]')[0].click()
-    # assert len(outbox) == 1
-    # mail = outbox[0]
-    # confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
-    # assert confirm_link
-    # browser.visit(confirm_link[0])
-    # assert browser.title, "Confirm E-mail Address"
-    # browser.find_by_css('[type=submit]')[0].click()
     user = create_user_verify_login(base_url, browser, outbox)
     location1 = f.create_locaiton(name='location1')
     state1 = f.create_state(name='state1')
