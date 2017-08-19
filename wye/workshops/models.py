@@ -126,7 +126,7 @@ class Workshop(TimeAuditModel):
         actions = {
             'accept': ("opt-in", self.assign_me),
             'reject': ("opt-out", self.assign_me),
-            'decline': (WorkshopStatus.DECLINED, self.set_status),
+            'decline': (WorkshopStatus.REQUESTED, self.set_status), 
             'publish': (WorkshopStatus.REQUESTED, self.set_status),
             'hold': (WorkshopStatus.HOLD, self.set_status),
             'assign': "",
