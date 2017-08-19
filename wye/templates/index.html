@@ -131,7 +131,7 @@
                                 {% for workshop in upcoming_workshops %}
                                     <tr class="clickable-row" data-href="/workshop/{{workshop.id}}/">
                                         <td>{{forloop.counter}}</td>
-                                        <td>{{workshop.location}}</td>
+                                        <td>{{workshop.requester.location}}</td>
                                         <td>{{workshop.workshop_section.name}}</td>
                                         <td>{{workshop.get_workshop_level_display}}</td>
 

@@ -91,3 +91,9 @@ class WorkshopAudience:
     _TEN_PLUD_ONE = [9, "College 1 Year"]
     _SCHOOL = [10, "School"]
     _OTHERS = [11, "Others"]
+
+
+@choices
+class YesNO:
+    _YES = [1, "Yes"]
+    _NO = [2, "No"]

@@ -30,6 +30,7 @@ class UserFactory(Factory):
 
     username = factory.Sequence(lambda n: 'user%04d' % n)
     email = factory.Sequence(lambda n: 'user%04d@email.com' % n)
+    is_active = True
     password = factory.PostGeneration(
         lambda obj, *args, **kwargs: obj.set_password('123123'))
 
@@ -86,7 +87,7 @@ class WorkshopFactory(Factory):
         lambda n: "Workshop_Description{}".format(n))
     no_of_participants = 20
     requester = factory.SubFactory("tests.factories.OrganisationFactory")
-    location = factory.SubFactory("tests.factories.LocationFactory")
+    # location = factory.SubFactory("tests.factories.LocationFactory")
     workshop_level = factory.Iterator(dict(WorkshopLevel.CHOICES).keys())
     workshop_section = factory.SubFactory(
         "tests.factories.WorkshopSectionFactory")

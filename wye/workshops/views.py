@@ -50,7 +50,7 @@ def workshop_list(request):
     location_list = request.GET.getlist("location")
     if location_list:
         workshop_list = workshop_list.filter(
-            location__id__in=location_list
+            requester__location__id__in=location_list
         )
 
     presenter_list = request.GET.getlist("presenter")
@@ -314,11 +314,19 @@ def workshop_update_volunteer(request, pk):
 
     if request.POST:
         volunteers = request.POST.get('number_of_volunteers')
-
+        tutor_reimbursement_flag = request.POST.get('tutor_reimbursement_flag')
+        comments = request.POST.get('comments')
         if volunteers.strip() not in ('', None):
             workshop_volunteer = Workshop.objects.filter(pk=pk)
             workshop_volunteer.update(number_of_volunteers=volunteers)
-            return JsonResponse({"status": True, "msg": "Updated successfully"})
+        if tutor_reimbursement_flag:
+            workshop_volunteer.update(
+                tutor_reimbursement_flag=tutor_reimbursement_flag)
+        if comments:
+            workshop_volunteer.update(comments=comments)
+        return JsonResponse({
+                "status": True,
+                "msg": "Updated successfully"})
     return JsonResponse({"status": False, "msg": "Somthing went wrong"})
 
 
