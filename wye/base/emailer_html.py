@@ -1,6 +1,6 @@
 import threading
 
-from django.conf import settings
+# from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
 
