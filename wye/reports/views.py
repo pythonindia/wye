@@ -105,9 +105,6 @@ def get_tutor_college_poc_csv(request):
 
 @login_required
 def get_all_user_info(request):
-    # if not request.user.is_staff:
-    #     template_name = '403.html'
-    #     return render(request, template_name, {})
     users = User.objects.all()
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="all_users.csv"'
@@ -117,12 +114,19 @@ def get_all_user_info(request):
         'Is Presenter', 'Is POC', 'Is Regional Lead', 'Is Organiser']
     writer.writerow(csv_titles)
     for obj in users:
-        row = [
-            obj.id, obj.first_name, obj.last_name, obj.email, obj.is_active,
-            Profile.is_presenter(obj),
-            Profile.is_coordinator(obj),
-            Profile.is_regional_lead(obj),
-            Profile.is_organiser(obj)]
+        try:
+            row = [
+                obj.id,
+                obj.first_name,
+                obj.last_name,
+                obj.email,
+                obj.is_active,
+                Profile.is_presenter(obj),
+                Profile.is_coordinator(obj),
+                Profile.is_regional_lead(obj),
+                Profile.is_organiser(obj)]
 
-        writer.writerow(row)
+            writer.writerow(row)
+        except Exception:
+            pass
     return response
