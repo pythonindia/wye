@@ -78,6 +78,12 @@
                             <div class="col-xs-8">{{ workshop.description }}</div>
                         </div>
                     </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Target Audience</strong></div>
+                            <div class="col-xs-8">{{ workshop.get_target_audience_display }}</div>
+                        </div>
+                    </li>
                     {% if show_contact_flag %}
                     <li class="list-group-item">
                         <div class="row">
@@ -102,6 +108,45 @@
                             {% endfor %}
                         </div>
                     </li>
+                    {% endif %}
+                    {% if is_admin %}
+                     <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Travel Reimbursement</strong></div>
+                            <div class="col-xs-8">{{ workshop.travel_reimbursement }}</div>
+                        </div>
+                    </li>
+                     <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Hotel Reimbursement</strong></div>
+                            <div class="col-xs-8">{{ workshop.hotel_reimbursement }}</div>
+                        </div>
+                    </li>
+                     <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Budget</strong></div>
+                            <div class="col-xs-8">{{ workshop.budget }}</div>
+                        </div>
+                    </li>
+                     <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>reimbursement_mode</strong></div>
+                            <div class="col-xs-8">{{ workshop.reimbursement_mode }}</div>
+                        </div>
+                    </li>
+                     <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Tutor Reimbursement</strong></div>
+                            <div class="col-xs-8">{{ workshop.tutor_reimbursement_flag }}</div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xs-4"><strong>Tutor Comment</strong></div>
+                            <div class="col-xs-8">{{ workshop.comments }}</div>
+                        </div>
+                    </li>
+                    
                     {% endif %}
 
                     <li class="list-group-item">
@@ -217,19 +262,18 @@
 	   function update_volunteers() {
             $("#volunteer-modal").modal('show');
             $("#set-volunteer").bind('click', function() {
-                alert("AM here");
                 $.post(
                     $(".modal-dialog").attr('data-url'),
                     {"number_of_volunteers": $("#id_number_of_volunteers").val()
                     },
                     function (data) {
                         $("#volunteer-msg").text(data['msg']);
-                        //window.location.reload();
+                        window.location.reload();
                     });
                 });
                 $("#volunteer-modal").on('hidden.bs.modal', function(){
                     $("#volunteer-msg").text("");
-                    //window.location.reload();
+                    window.location.reload();
                 });
         }
 
