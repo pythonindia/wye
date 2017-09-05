@@ -81,12 +81,16 @@ def workshop_list(request):
     context_dict['user'] = request.user
     # need to improve the part
     context_dict['is_not_tutor'] = False
+    context_dict['is_admin'] = False
+    if request.user.is_superuser:
+        context_dict['is_admin'] = True
     # as user can be tutor and regional lead hence we need to verify like
     # this
     if (Profile.is_regional_lead(request.user) or
             Profile.is_organiser(request.user) or
             Profile.is_admin(request.user)):
         context_dict['is_not_tutor'] = True
+
     context_dict['form'] = WorkshopListForm(user=request.user)
 
     return render(request, template_name, context_dict)

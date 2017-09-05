@@ -9,7 +9,8 @@ from wye.base.constants import (
     FeedbackType,
     WorkshopLevel,
     WorkshopStatus,
-    YesNO
+    YesNO,
+    WorkshopAudience
 )
 from wye.base.emailer_html import send_email_to_id
 from wye.base.models import TimeAuditModel
@@ -67,6 +68,9 @@ class Workshop(TimeAuditModel):
         verbose_name=" Do you need Travel/Stay reimbursement ?",
         default=YesNO.NO)
     comments = models.TextField()
+    target_audience = models.PositiveSmallIntegerField(
+        choices=WorkshopAudience.CHOICES, verbose_name="Audience",
+        default=WorkshopAudience.BE_FINAL_YEAR)
 
     class Meta:
         db_table = 'workshops'

@@ -80,17 +80,20 @@ class ContactFeedbackType:
 
 @choices
 class WorkshopAudience:
-    _BE_FINAL_YEAR = [1, "B.E Final Year"]
-    _BE_THIRD_YEAR = [2, "B.E Third Year"]
-    _BE_SECOND_YEAR = [3, "B.E Second Year"]
-    _BE_FIRST_YEAR = [4, "B.E Second Year"]
-    _MASTER_FINAL_YEAR = [5, "MASTER Final Year"]
-    _MASTER_SECOND_YEAR = [6, "MASTER Second Year"]
-    _MASTER_FIRST_YEAR = [7, "MASTER Second Year"]
-    _TEN_PLUS_TWO = [8, "College 2nd year"]
-    _TEN_PLUD_ONE = [9, "College 1 Year"]
-    _SCHOOL = [10, "School"]
-    _OTHERS = [11, "Others"]
+    _BE_FINAL_YEAR = [1, "Engineering 4th Year"]
+    _BE_THIRD_YEAR = [2, "Engineering 3rd Year"]
+    _BE_SECOND_YEAR = [3, "Engineering 2ndYear"]
+    _BE_FIRST_YEAR = [4, "Engineering 1st Year"]
+    _MASTER_FINAL_YEAR = [5, "MCA Final Year"]
+    _MASTER_SECOND_YEAR = [6, "MCA Second Year"]
+    _MASTER_FIRST_YEAR = [7, "MCA First Year"]
+    _DIPLOMA_THIRD_YEAR = [8, "Diploma 3rd Year"]
+    _DIPLOMA_SECOND_YEAR = [9, "Diploma 2nd Year"]
+    _DIPLOMA_FIRST_YEAR = [10, "Diploma 1st Year"]
+    _TEN_PLUS_TWO = [11, "10+2"]
+    _TEN_PLUD_ONE = [12, "10+1"]
+    _SCHOOL = [13, "School"]
+    _OTHERS = [14, "Others"]
 
 
 @choices
