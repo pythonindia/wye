@@ -52,7 +52,7 @@ class Profile(models.Model):
         default=True,
         verbose_name=u"Email Notification")
 
-    usertype = models.ManyToManyField(UserType, null=True)
+    usertype = models.ManyToManyField(UserType)
 
     interested_sections = models.ManyToManyField(WorkshopSections)
     interested_level = models.PositiveSmallIntegerField(
@@ -60,9 +60,9 @@ class Profile(models.Model):
         verbose_name="Interested Workshop Level",
         null=True, blank=True)
     interested_locations = models.ManyToManyField(
-        Location, null=True, blank=True)
+        Location)
     interested_states = models.ManyToManyField(
-        State, null=True, blank=True,
+        State,
         verbose_name=u"Interested State *")
     location = models.ForeignKey(
         Location, related_name="user_location", null=True)

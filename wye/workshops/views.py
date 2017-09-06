@@ -81,9 +81,6 @@ def workshop_list(request):
     context_dict['user'] = request.user
     # need to improve the part
     context_dict['is_not_tutor'] = False
-    context_dict['is_admin'] = False
-    if request.user.is_superuser:
-        context_dict['is_admin'] = True
     # as user can be tutor and regional lead hence we need to verify like
     # this
     if (Profile.is_regional_lead(request.user) or
@@ -111,13 +108,15 @@ def workshop_details(request, pk):
         show_contact_flag = True
     if (user_is_presenter):
         display_edit_button = True
-
-    form = WorkshopVolunteer(initial={'number_of_volunteers': workshop_obj.number_of_volunteers or 0})
+    is_admin = True if user.is_superuser else False
+    form = WorkshopVolunteer(initial={
+        'number_of_volunteers': workshop_obj.number_of_volunteers or 0})
 
     context_dict = {
         'workshop': workshop_obj,
         'show_contact_flag': show_contact_flag,
         'display_edit_button': display_edit_button,
+        'is_admin': is_admin,
         'form': form
     }
     return render(request, template_name, context_dict)
