@@ -9,10 +9,23 @@
 {% endblock %}
 
 {% block content %}
-    <div class="push-6-bottom">
-        <p> Community partner</p>
-        <a href="https://discuss.fsmk.org/" class="btn btn-theme btn-theme-secondary">
-            <img style="width:300px;" src="{% static 'img/supporter/fsmk.png' %}" alt="">
-        </a>
+	<div class="push-12-bottom">
+		<div class="row">
+            <div class="col-xs-6">
+		        <h2><u>Sponsors</u></h2>
+		        <br>
+		        <a href="python.org/psf/" >
+		            <img style="width:300px;" src="{% static 'img/supporter/psf-logo-narrow-256x84-alpha.png' %}" alt="">
+		        </a>
+    		</div>
+    		<div class="push-6-bottom">
+    			<h2><u>Community partners</u></h2>
+		        <br>
+        		<a href="https://discuss.fsmk.org/" >
+            		<img style="width:300px;" src="{% static 'img/supporter/fsmk.png' %}" alt="">
+        		</a>
+    		</div>
+    	</div>
     </div>
+    
 {% endblock %}
