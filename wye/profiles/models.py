@@ -2,14 +2,20 @@
 import json
 from dateutil.rrule import rrule, MONTHLY
 from django.contrib.auth.models import User
+# from django.http import HttpResponse
 from django.db import models
 from django.db.models.signals import post_save
 from django.utils.functional import cached_property
-
+from django.db.models import Avg
 from slugify import slugify
+# from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+# from matplotlib.figure import Figure
+# from matplotlib.dates import DateFormatter
 from wye.base.constants import WorkshopLevel, WorkshopStatus
 from wye.regions.models import Location, State
-from wye.workshops.models import Workshop, WorkshopSections
+from wye.workshops.models import (
+    Workshop, WorkshopSections,
+    WorkshopVoting, WorkshopFeedBack)
 from wye.organisations.models import Organisation
 
 
@@ -82,7 +88,7 @@ class Profile(models.Model):
         verbose_name_plural = 'UserProfiles'
 
     def __str__(self):
-        return '{} {}'.format(self.user, self.slug)
+        return '{} {}'.format(self.user, self.user.username)
 
     @property
     def is_profile_filled(self):
@@ -97,11 +103,11 @@ class Profile(models.Model):
             return True
         return False
 
-    @cached_property
-    def slug(self):
-        return slugify(
-            self.user.username,
-            only_ascii=True)
+    # @cached_property
+    # def slug(self):
+    #     return slugify(
+    #         self.user.username,
+    #         only_ascii=True)
 
     @property
     def get_workshop_details(self):
@@ -134,14 +140,19 @@ class Profile(models.Model):
                     self.get_workshop_details if (
                         x.status == WorkshopStatus.COMPLETED)])
 
-    @property
-    def get_last_workshop_date(self):
-        pass
+    # @property
+    # def get_last_workshop_date(self):
+    #     pass
 
     @property
     def get_avg_workshop_rating(self):
-        # TODO: Complete!
-        return 0
+        workshops = self.get_workshop_details
+        voting = WorkshopVoting.objects.filter(
+            workshop_feedback__workshop__id__in=[
+                w.id for w in workshops]).filter(
+            workshop_feedback__feedback_type=2).aggregate(
+            Avg('workshop_rating__feedback_type'))
+        return voting['workshop_rating__feedback_type__avg']
 
     @staticmethod
     def get_user_with_type(user_type=None):
@@ -163,12 +174,30 @@ class Profile(models.Model):
 
     @property
     def get_graph_data(self):
+        # from django_pandas.io import read_frame
+        # qs = Workshop.objects.filter(
+        #     presenter=self.user,
+        #     status=WorkshopStatus.COMPLETED,
+        #     is_active=True)
+        # # df = read_frame(qs)
+        # df = read_frame(qs,
+        #                 fieldnames=['workshop_section', 'expected_date'])
+        # print(df)
+        # fig = Figure()
+        # ax = fig.add_subplot(111)
+        # df.plot(ax=ax)
+        # canvas = FigureCanvas(fig)
+        # response = HttpResponse(content_type='image/png')
+        # canvas.print_png(response)
+        # return response
+
         sections = WorkshopSections.objects.all()
         workshops = Workshop.objects.filter(
             presenter=self.user,
             status=WorkshopStatus.COMPLETED,
             is_active=True
         )
+
         if workshops:
             max_workshop_date = workshops.aggregate(
                 models.Max('expected_date'))['expected_date__max']
@@ -189,8 +218,9 @@ class Profile(models.Model):
                                 expected_date__month=d.month,
                                 workshop_section=section.pk).count()
                             values.append(
-                                {'x': "{}-{}".format(d.year, d.month), 'y': y})
+                                {'x': "{}-{}".format(d.month, d.year), 'y': y})
                         data.append({'key': section.name, 'values': values})
+                    # print(data)
                     return json.dumps(data)
                 else:
                     return []
@@ -198,6 +228,16 @@ class Profile(models.Model):
                 return []
         else:
             return []
+    @property
+    def get_organisation_name(self):
+        return self.user.organisation_students.all()
+
+    @property
+    def get_student_workshop_attended_count(self):
+        return self.user.workshop_attended.count()
+    @property
+    def get_student_workshop_attended(self):
+        return self.user.workshop_attended.all()
 
     @classmethod
     def is_presenter(cls, user):
@@ -212,6 +252,10 @@ class Profile(models.Model):
         return user.profile.usertype.filter(slug__iexact="lead").exists()
 
     @classmethod
+    def is_student(cls, user):
+        return user.profile.usertype.filter(slug__iexact="student").exists()
+
+    @classmethod
     def is_admin(cls, user):
         return user.profile.usertype.filter(slug__iexact="admin").exists()
 
@@ -223,6 +267,10 @@ class Profile(models.Model):
     @classmethod
     def is_volunteer(cls, user):
         return user.profile.usertype.filter(slug__iexact="volunteer").exists()
+
+
+class TutorBadges(models.Model):
+    pass
 
 
 def create_user_profile(sender, instance, created, **kwargs):

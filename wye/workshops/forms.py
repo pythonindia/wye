@@ -202,3 +202,7 @@ class WorkshopVolunteer(forms.Form):
     number_of_volunteers = forms.ChoiceField(choices=CHOICE_LIST)
     tutor_reimbursement_flag = forms.ChoiceField(choices=YesNO.CHOICES)
     comments = forms.CharField(widget=forms.Textarea)
+
+
+class WorkshopCertificateForm(forms.Form):
+    file = forms.FileField()

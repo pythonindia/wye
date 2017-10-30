@@ -85,6 +85,12 @@
                         </li>
                         <li class="list-group-item">
                             <div class="row">
+                                <div class="col-xs-4"><strong>Number of student register</strong></div>
+                                <div class="col-xs-8">{{object.students.count}}</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
                                 <div class="col-xs-4"><strong>Users</strong></div>
                                 <div class="col-xs-8">
                                     <ul class="list-silent">
@@ -98,6 +104,7 @@
                             <a href="{% url 'organisations:organisation_member_add' organisation.pk  %}" class="btn btn-success"><i class="fa fa-cog"></i>Add Users</a>
                             {% endif %}
                         </li>
+                        
                     </ul>
                 </div>
             </div>

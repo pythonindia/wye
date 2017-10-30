@@ -1,7 +1,4 @@
 from django import forms
-
-# import autocomplete_light
-
 from .models import Organisation, User
 
 
@@ -14,9 +11,6 @@ class OrganisationForm(forms.ModelForm):
         model = Organisation
         exclude = ('user', 'created_at', 'modified_at',
                    'active', 'created_by', 'modified_by')
-#         widgets = {
-#             'name': autocomplete_light.TextWidget('OrganisationAutocomplete'),
-#         }
 
 
 class OrganisationMemberAddForm(forms.ModelForm):
@@ -31,7 +25,8 @@ class OrganisationMemberAddForm(forms.ModelForm):
                    'location', 'organisation_role',
                    'active', 'created_by', 'modified_by')
 
-    existing_user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
+    existing_user = forms.ModelChoiceField(
+        queryset=User.objects.all(), required=False)
     new_user = forms.EmailField(label='Invite New User', required=False)
 
 

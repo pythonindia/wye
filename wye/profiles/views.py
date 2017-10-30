@@ -3,10 +3,9 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render
 from django.template import Context, loader
 from django.views.generic import UpdateView
-from django.views.generic.list import ListView
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from wye.base.constants import WorkshopStatus
@@ -20,7 +19,8 @@ from .forms import ContactUsForm, UserProfileForm, PartnerForm
 
 @login_required
 def account_redirect(request):
-    return redirect('/profile/{}/'.format(request.user.profile.slug))
+    print(request.user.username)
+    return redirect('/profile/{}/'.format(request.user.username))
 
 
 def profile_view(request, slug):
@@ -40,108 +40,45 @@ def profile_view(request, slug):
             "message": "Profile does not exist"})
 
 
-def user_dashboad(request):
-    profile, created = Profile.objects.get_or_create(
-        user__id=request.user.id)
-    if not profile.is_profile_filled:
-        return redirect('profiles:profile-edit', slug=request.user.username)
-    workshop_all = Workshop.objects.filter(
-        is_active=True).order_by('-expected_date')
+# def user_dashboad(request):
+#     profile, created = Profile.objects.get_or_create(
+#         user__id=request.user.id)
+#     if not profile.is_profile_filled:
+#         return redirect('profiles:profile-edit', slug=request.user.username)
+#     workshop_all = Workshop.objects.filter(
+#         is_active=True).order_by('-expected_date')
 
-    accept_workshops = workshop_all.filter(
-        status=WorkshopStatus.ACCEPTED).filter(
-            presenter__id__in=[request.user.id])
-    requested_workshops = workshop_all.filter(
-        status=WorkshopStatus.REQUESTED).filter(
-            presenter__id__in=[request.user.id])
-    requested_workshops = workshop_all.filter(
-        status=WorkshopStatus.REQUESTED).filter(
-            presenter__id__in=[request.user.id])
+#     accept_workshops = workshop_all.filter(
+#         status=WorkshopStatus.ACCEPTED).filter(
+#             presenter__id__in=[request.user.id])
+#     requested_workshops = workshop_all.filter(
+#         status=WorkshopStatus.REQUESTED).filter(
+#             presenter__id__in=[request.user.id])
+#     requested_workshops = workshop_all.filter(
+#         status=WorkshopStatus.REQUESTED).filter(
+#             presenter__id__in=[request.user.id])
 
-    organisation_all = Organisation.objects.all()
-    context = {}
-    for each_type in profile.get_user_type:
-        if each_type == 'poc':
-            context['is_college_poc'] = True
-            context['users_organisation'] = organisation_all.filter(
-                user=request.user)
-            context['workshop_requested_under_poc'] = workshop_all.filter(
-                requester__id__in=organisation_all.values_list(
-                    'id', flat=True))
-            context['workshops_accepted_under_poc'] = workshop_all.filter(
-                status=WorkshopStatus.ACCEPTED,
-                requester__id__in=organisation_all.values_list(
-                    'id', flat=True))
-        else:
-            context['is_tutor'] = True
-            context['workshop_requested_tutor'] = accept_workshops.filter(
-                presenter=request.user)
-            context['workshop_completed_tutor'] = \
-                requested_workshops.filter(
-                presenter=request.user)
-
-
-class UserDashboard(ListView):
-    model = Profile
-    template_name = 'profile/dashboard.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        user_profile = get_object_or_404(
-            Profile, user__id=self.request.user.id)
-        if not user_profile.get_user_type:
-            return redirect('profiles:profile-edit',
-                            slug=request.user.username)
-        return super(UserDashboard, self).dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(UserDashboard, self).get_context_data(**kwargs)
-        profile = Profile.objects.get(user=self.request.user)
-        workshop_all = Workshop.objects.filter(is_active=True)
-        accept_workshops = workshop_all.filter(
-            status=WorkshopStatus.ACCEPTED)
-        requested_workshops = workshop_all.filter(
-            status=WorkshopStatus.REQUESTED)
-        organisation_all = Organisation.objects.all()
-        for each_type in profile.get_user_type:
-            if each_type == 'tutor':
-                context['is_tutor'] = True
-                context['workshop_requested_tutor'] = accept_workshops.filter(
-                    presenter=self.request.user)
-                context['workshop_completed_tutor'] = \
-                    requested_workshops.filter(
-                    presenter=self.request.user)
-            if each_type == 'lead':
-                context['is_regional_lead'] = True
-                context['workshops_accepted_under_rl'] = accept_workshops
-                context['workshops_pending_under_rl'] = requested_workshops
-                context['interested_tutors'] = Profile.objects.filter(
-                    usertype__slug='tutor',
-                    interested_locations__name__in=profile.get_interested_locations)\
-                    .exclude(user=self.request.user).count()
-                context['interested_locations'] = organisation_all.filter(
-                    location__name__in=profile.get_interested_locations)\
-                    .count()
-
-            if each_type == 'poc':
-                context['is_college_poc'] = True
-                context['users_organisation'] = organisation_all.filter(
-                    user=self.request.user)
-                context['workshop_requested_under_poc'] = workshop_all.filter(
-                    requester__id__in=organisation_all.values_list(
-                        'id', flat=True))
-                context['workshops_accepted_under_poc'] = workshop_all.filter(
-                    status=WorkshopStatus.ACCEPTED,
-                    requester__id__in=organisation_all.values_list(
-                        'id', flat=True))
-
-            if each_type == 'admin':
-                context['is_admin'] = True
-                context['workshops_by_status'] = workshop_all.order_by(
-                    'status')
-                context['workshops_by_region'] = workshop_all.order_by(
-                    'location')
-
-        return context
+#     organisation_all = Organisation.objects.all()
+#     context = {}
+#     for each_type in profile.get_user_type:
+#         if each_type == 'poc':
+#             context['is_college_poc'] = True
+#             context['users_organisation'] = organisation_all.filter(
+#                 user=request.user)
+#             context['workshop_requested_under_poc'] = workshop_all.filter(
+#                 requester__id__in=organisation_all.values_list(
+#                     'id', flat=True))
+#             context['workshops_accepted_under_poc'] = workshop_all.filter(
+#                 status=WorkshopStatus.ACCEPTED,
+#                 requester__id__in=organisation_all.values_list(
+#                     'id', flat=True))
+#         else:
+#             context['is_tutor'] = True
+#             context['workshop_requested_tutor'] = accept_workshops.filter(
+#                 presenter=request.user)
+#             context['workshop_completed_tutor'] = \
+#                 requested_workshops.filter(
+#                 presenter=request.user)
 
 
 class ProfileEditView(UpdateView):
@@ -192,9 +129,9 @@ def contact(request):
             site_admins = [
                 email for name, email in settings.MANAGERS]  # @UnusedVariable
             try:
-                regional_lead = Profile.objects.filter(
-                    usertype__slug__in=['lead', 'admin']).values_list(
-                    'user__email', flat=True)
+                regional_lead = list(Profile.objects.filter(
+                    usertype__slug__in=['admin']).values_list(
+                    'user__email', flat=True))
                 regional_lead.extend(site_admins)
                 send_email_to_list(
                     subject,

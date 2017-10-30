@@ -100,5 +100,4 @@ def test_report_page(base_url, browser, outbox):
     browser.find_by_css('[name=workshops]')[0].click()
 
     browser.visit(url)
-    print(browser.html)
     browser.find_by_css('[name=users]')[0].click()

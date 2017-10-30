@@ -1,0 +1,7 @@
+ Hello ,
+Greetings!
+Certificate of participation for student {{full_name}} is attached here in the email. Request you to hand this over to the concerned student.
+
+May the love of Python spread far and wide!
+Warmly,
+The PythonExpress team

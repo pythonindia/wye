@@ -94,7 +94,7 @@ OUR_APPS = (
     'wye.organisations',
     'wye.workshops',
     'wye.regions',
-    'wye.social',
+    'wye.social'
 )
 
 THIRD_PARTY_APPS = (
@@ -105,7 +105,7 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
-    'djcelery'
+    'djcelery',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS
@@ -146,7 +146,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wye.wsgi.application'
 
-
+FILE_UPLOAD_HANDLERS = [
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 

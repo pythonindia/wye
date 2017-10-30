@@ -6,7 +6,6 @@ class ProfileAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_display = (
         'user',
-        'slug',
         'mobile')
     search_fields = ('user__username', 'mobile')
     list_filter = (
@@ -18,12 +17,10 @@ class UserTypeAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_display = (
         'display_name',
-        'slug',
         'active')
-    search_fields = ('slug', 'display_name')
+    search_fields = ('user__username', 'display_name')
     list_filter = (
-        'active',
-        'slug')
+        'active',)
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(UserType, UserTypeAdmin)

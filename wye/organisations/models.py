@@ -19,6 +19,7 @@ class Organisation(AuditModel):
         max_length=300, verbose_name="Your position in organisation")
     user = models.ManyToManyField(User, related_name='organisation_users')
     active = models.BooleanField(default=True)
+    students = models.ManyToManyField(User, related_name='organisation_students')
 
     @classmethod
     def list_user_organisations(cls, user):

@@ -40,6 +40,7 @@ class WorkshopStatus:
 class WorkshopLevel:
     _BEGINNER = [1, "Beginner"]
     _INTERMEDIATE = [2, "Intermediate"]
+    _ADVANCE = [2, "Advance"]
 
 
 @choices
