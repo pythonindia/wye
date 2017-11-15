@@ -143,12 +143,7 @@ class WorkshopListForm(forms.Form):
     Form to filter workshop list
     """
     state = forms.ModelMultipleChoiceField(
-        label="Workshop Location",
-        required=False,
-        queryset='')
-
-    presenter = forms.ModelMultipleChoiceField(
-        label="Presenter",
+        label="State",
         required=False,
         queryset='')
 
@@ -162,26 +157,11 @@ class WorkshopListForm(forms.Form):
         required=False,
         queryset='')
 
-    status = forms.MultipleChoiceField(
-        label="Status",
-        required=False,
-        choices=WorkshopStatus.CHOICES)
-
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(WorkshopListForm, self).__init__(*args, **kwargs)
-        self.fields['state'].queryset = self.get_all_locations(user)
-        if Profile.is_admin(user) or Profile.is_regional_lead(user):
-            self.fields['presenter'].queryset = User.objects.filter(
-                profile__usertype__slug="tutor"
-            )
-        elif 'poc' in user.profile.get_user_type:
-            self.fields['presenter'].queryset = User.objects.filter(
-                profile__usertype__slug="tutor",
-                profile__location__state__in=self.get_all_states(user)
-            )
-        else:
-            del self.fields['presenter']
+        self.fields['state'].queryset = self.get_all_states(user)
+
         self.fields['section'].queryset = WorkshopSections.objects.all()
 
     def get_all_locations(self, user):

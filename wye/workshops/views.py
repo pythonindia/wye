@@ -5,31 +5,30 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, render
 from django.views import generic
-from io import BytesIO
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
+# from io import BytesIO
+# from reportlab.pdfgen import canvas
+# from django.http import HttpResponse
 from braces import views
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.social.sites.twitter import send_tweet
 from wye.base.views import (
-    verify_user_profile,
-    add_user_create_reset_password_link)
+    verify_user_profile)
+# add_user_create_reset_password_link)
 from wye.base.constants import WorkshopStatus
 from .forms import (
     WorkshopForm,
     WorkshopEditForm,
     WorkshopFeedbackForm,
     WorkshopListForm,
-    WorkshopVolunteer,
-    WorkshopCertificateForm)
+    WorkshopVolunteer)
 from .mixins import (
     WorkshopEmailMixin,
     WorkshopAccessMixin
 )
 from .utils import send_mail_to_group
 from .models import Workshop, WorkshopFeedBack
-import xlrd
+# import xlrd
 
 
 @login_required
@@ -42,7 +41,8 @@ def workshop_list(request):
         return redirect('profiles:profile-edit', slug=request.user.username)
     context_dict = {}
     workshop_list = Workshop.objects.filter(
-        is_active=True).order_by('-expected_date')
+        is_active=True, status__in=[
+            WorkshopStatus.REQUESTED]).order_by('-expected_date', 'status')
     workshop_list = workshop_list.filter(
         requester__location__state__id__in=[
             x.id for x in request.user.profile.interested_states.all()]
@@ -52,12 +52,6 @@ def workshop_list(request):
     if location_list:
         workshop_list = workshop_list.filter(
             requester__location__id__in=location_list
-        )
-
-    presenter_list = request.GET.getlist("presenter")
-    if presenter_list:
-        workshop_list = workshop_list.filter(
-            presenter__id__in=presenter_list
         )
 
     workshop_level_list = request.GET.getlist("level")
@@ -70,12 +64,6 @@ def workshop_list(request):
     if workshop_section_list:
         workshop_list = workshop_list.filter(
             workshop_section__id__in=workshop_section_list
-        )
-
-    status_list = request.GET.getlist("status")
-    if status_list:
-        workshop_list = workshop_list.filter(
-            status__in=status_list
         )
 
     context_dict['workshop_list'] = workshop_list
