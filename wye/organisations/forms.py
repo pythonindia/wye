@@ -29,6 +29,15 @@ class OrganisationMemberAddForm(forms.ModelForm):
         queryset=User.objects.all(), required=False)
     new_user = forms.EmailField(label='Invite New User', required=False)
 
+    def clean(self):
+        user = self.cleaned_data.get('existing_user')
+        new_user = self.cleaned_data['new_user']
+
+        if not (user or new_user):
+            raise forms.ValidationError(
+                'Please choose existing user or add new user')
+        return self.cleaned_data
+
 
 class UserRegistrationForm(forms.ModelForm):
     """

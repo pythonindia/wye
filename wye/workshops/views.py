@@ -5,16 +5,12 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, render
 from django.views import generic
-# from io import BytesIO
-# from reportlab.pdfgen import canvas
-# from django.http import HttpResponse
 from braces import views
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.social.sites.twitter import send_tweet
 from wye.base.views import (
     verify_user_profile)
-# add_user_create_reset_password_link)
 from wye.base.constants import WorkshopStatus
 from .forms import (
     WorkshopForm,
@@ -28,7 +24,6 @@ from .mixins import (
 )
 from .utils import send_mail_to_group
 from .models import Workshop, WorkshopFeedBack
-# import xlrd
 
 
 @login_required

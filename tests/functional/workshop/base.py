@@ -37,7 +37,18 @@ def login_and_confirm(browser, url, outbox, user, password):
 
 def workshop_create(browser, url, org, section):
     browser.visit(url)
-    browser.fill('no_of_participants', 10)
+    browser.select('no_of_participants', 10)
+    browser.fill('expected_date', '11/12/2018')
+    browser.fill('description', "test")
+    browser.select('requester', org.id)
+    browser.select('workshop_level', WorkshopLevel.BEGINNER)
+    browser.select('workshop_section', section.id)
+    browser.find_by_css('[type=submit]')[0].click()
+
+
+def profile_create(browser, url, org, section):
+    browser.visit(url)
+    browser.select('no_of_participants', 10)
     browser.fill('expected_date', '11/12/2018')
     browser.fill('description', "test")
     browser.select('requester', org.id)

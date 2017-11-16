@@ -92,7 +92,7 @@ class ProfileEditView(UpdateView):
 
     def get_success_url(self):
         return reverse('profiles:profile-page', kwargs={
-            'slug': self.object.slug})
+            'slug': self.object.user.username})
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.pk == self.get_object().pk:

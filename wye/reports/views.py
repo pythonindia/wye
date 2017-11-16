@@ -97,57 +97,61 @@ def index(request):
     ret = []
     for index, row in d.items():
         ret.append({"key": index, "values": row})
-    print(ret)
     context_dict['line_graph'] = ret
-    template_name = 'reports/index.html'
-    return render(request, template_name, context_dict)
-
-
-@login_required
-def index_old(request):
-    context_dict = {}
-    if not request.user.is_staff:
-        template_name = '403.html'
-        return render(request, template_name, context_dict)
-
-    workshops = Workshop.objects.filter(is_active=True)
-    context_dict['workshops'] = {
-        'completed': workshops.filter(status=WorkshopStatus.COMPLETED).count(),
-        'drafted': workshops.filter(status=WorkshopStatus.DRAFT).count(),
-        'hold': workshops.filter(status=WorkshopStatus.HOLD).count(),
-        'feedback_pending': workshops.filter(
-            status=WorkshopStatus.FEEDBACK_PENDING).count(),
-    }
-    workshop_finished = workshops.filter(
-        status__in=[WorkshopStatus.COMPLETED,
-                    WorkshopStatus.FEEDBACK_PENDING])
-    tutors_dict = {}
-    tutors = [
-        user for w in workshop_finished for user in w.presenter.all()]
-    for tutor in tutors:
-        tutors_dict[tutor.id] = [
-            tutor.username,
-            tutor.first_name,
-            tutor.last_name,
-            tutor.profile.get_workshop_completed_count]
-    context_dict['tutors'] = tutors_dict
-    org_dict = {}
-    orgs = [
-        w.requester for w in workshop_finished]
-    for org in orgs:
-        if org.id in org_dict:
-            count = org_dict[org.id][1] + 1
-        else:
-            count = 1
-        org_dict[org.id] = [org.name, count, org.location.name]
-
-    context_dict['orgs'] = org_dict
-    template_name = 'reports/index.html'
     years = [('all', 'All')]
     for y in range(2016, int(datetime.datetime.today().strftime('%Y')) + 1):
         years.append((y, y))
     context_dict['years'] = years
+
+    template_name = 'reports/index.html'
     return render(request, template_name, context_dict)
+
+
+# @login_required
+# def index_old(request):
+#     context_dict = {}
+#     if not request.user.is_staff:
+#         template_name = '403.html'
+#         return render(request, template_name, context_dict)
+
+#     workshops = Workshop.objects.filter(is_active=True)
+#     context_dict['workshops'] = {
+#         'completed': workshops.filter(status=WorkshopStatus.COMPLETED).count(),
+#         'drafted': workshops.filter(status=WorkshopStatus.DRAFT).count(),
+#         'hold': workshops.filter(status=WorkshopStatus.HOLD).count(),
+#         'feedback_pending': workshops.filter(
+#             status=WorkshopStatus.FEEDBACK_PENDING).count(),
+#     }
+#     workshop_finished = workshops.filter(
+#         status__in=[WorkshopStatus.COMPLETED,
+#                     WorkshopStatus.FEEDBACK_PENDING])
+#     tutors_dict = {}
+#     tutors = [
+#         user for w in workshop_finished for user in w.presenter.all()]
+#     for tutor in tutors:
+#         tutors_dict[tutor.id] = [
+#             tutor.username,
+#             tutor.first_name,
+#             tutor.last_name,
+#             tutor.profile.get_workshop_completed_count]
+#     context_dict['tutors'] = tutors_dict
+#     org_dict = {}
+#     orgs = [
+#         w.requester for w in workshop_finished]
+#     for org in orgs:
+#         if org.id in org_dict:
+#             count = org_dict[org.id][1] + 1
+#         else:
+#             count = 1
+#         org_dict[org.id] = [org.name, count, org.location.name]
+
+#     context_dict['orgs'] = org_dict
+#     template_name = 'reports/index.html'
+#     years = [('all', 'All')]
+#     for y in range(2016, int(datetime.datetime.today().strftime('%Y')) + 1):
+#         years.append((y, y))
+#     context_dict['years'] = years
+#     return render(request, template_name, context_dict)
 
 
 @login_required

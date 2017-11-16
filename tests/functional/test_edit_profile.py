@@ -14,7 +14,6 @@ def create_user_type(slug='tutor'):
 
 def test_signup_college_poc_flow(base_url, browser, outbox):
     tutor_type = create_user_type(slug='tutor')
-    print(tutor_type)
     user = create_user_verify_login(base_url, browser, outbox)
     browser.fill('login', user.email)
     browser.fill('password', '123123')

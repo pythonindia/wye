@@ -186,7 +186,6 @@ def test_workshop_flow(base_url, browser, outbox):
     assert accept_workshop_link
     accept_workshop_link.click()
 
-    # print(datetime.now() + timedelta(days=-10))
     workshop.expected_date = datetime.now() + timedelta(days=-60)
     # workshop.status = WorkshopStatus.FEEDBACK_PENDING
     workshop.save()

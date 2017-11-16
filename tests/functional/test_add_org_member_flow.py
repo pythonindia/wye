@@ -54,7 +54,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
     # invite mail
     # assert len(outbox) == 6
     mail = outbox[5]
-    # print(mail.body)
+
     invite_link = re.findall(r'http.*/invitation/.*/', mail.body)
     assert invite_link
     browser.visit(invite_link[0])
@@ -116,8 +116,7 @@ def test_add_new_member_flow(base_url, browser, outbox):
 
     url = base_url + '/profile/randomnessprevails/edit'
     browser.visit(url)
-
-    browser.fill('mobile', '0812739120')
+    browser.fill('mobile', '1234567890')
     browser.select('usertype', poc_type.id)
     browser.select('interested_sections', section1.id)
     browser.fill('occupation', 'occupation')
@@ -125,8 +124,8 @@ def test_add_new_member_flow(base_url, browser, outbox):
     browser.fill('work_experience', 1)
     browser.select('interested_states', state1.id)
     browser.select('location', location2.id)
-    browser.find_by_css('[type=submit]')[0].click()
 
+    browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('My Profile')
     assert browser.is_text_present('Graph')
 

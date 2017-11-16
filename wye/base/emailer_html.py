@@ -44,10 +44,11 @@ def send_email_to_id(subject, body, email_id, text_body,
     email.attach_alternative(body, "text/html")
     EmailThread(email).start()
 
-def send_email_to_id_with_attachment(subject, body, email_id, text_body,filename,
-                     bcc_admins=True, bcc_managers=False):
+
+def send_email_to_id_with_attachment(subject, body, email_id, text_body, filename,
+                                     bcc_admins=True, bcc_managers=False):
     bcc = []
-    
+
     from_user = 'PythonExpress <noreply@pythonexpress.in>'
     part = MIMEApplication(open(filename, "rb").read())
     part.add_header('Content-Disposition', 'attachment',
@@ -58,11 +59,12 @@ def send_email_to_id_with_attachment(subject, body, email_id, text_body,filename
     email.attach_alternative(body, "text/html")
     EmailThread(email).start()
     # EMail to Admins
-    
+
     email = EmailMultiAlternatives(
         subject, text_body, from_user, ['contact@pythonexpress.in'], bcc)
     email.attach_alternative(body, "text/html")
     EmailThread(email).start()
+
 
 class EmailThread(threading.Thread):
 

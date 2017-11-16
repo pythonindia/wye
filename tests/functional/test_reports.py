@@ -34,7 +34,7 @@ def test_report_home_page(base_url, browser, outbox):
     user.is_staff = True
     user.save()
     browser.visit(url)
-    org_create_link = browser.find_by_text('Total workshops')[0]
+    org_create_link = browser.find_by_text('Statewise workshop Completed')[0]
     assert org_create_link
 
 

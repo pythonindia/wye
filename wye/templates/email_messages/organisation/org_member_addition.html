@@ -9,12 +9,13 @@ New Member Confirmation
         <p>Hey {{new_member_name}},</p>
         <p>You're added to the  organization {{ org_name }}.</p>
         <p> You can now access the organization dashboard and manage workshops. <a href="link-to-profile">Visit your profile to view or update your organization details.</a></p>
+        {% if token %}
         <p>But first you need to create an account, follow this link to create your user account.</p>
         <p>{{ host }}{% url "invitation_register" user.id token %}</p>
+        {% endif %}
 		<p>If you have any questions, do visit our <a href="link-to-FAQ-page">FAQ page</a>. If that doesn't answer your question, feel free to drop a line to contact@pythonexpress.in and we'll get back to you.</p>
 		<p>May the love of Python spread far and wide!</p>
 		<p>Warmly,</p>
 		<p>The PythonExpress team</p>
     {% endblock %}
 {% endblock %}
-                                            
