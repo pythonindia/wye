@@ -2,20 +2,14 @@
 import json
 from dateutil.rrule import rrule, MONTHLY
 from django.contrib.auth.models import User
-# from django.http import HttpResponse
 from django.db import models
 from django.db.models.signals import post_save
-from django.utils.functional import cached_property
 from django.db.models import Avg
-from slugify import slugify
-# from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-# from matplotlib.figure import Figure
-# from matplotlib.dates import DateFormatter
 from wye.base.constants import WorkshopLevel, WorkshopStatus
 from wye.regions.models import Location, State
 from wye.workshops.models import (
     Workshop, WorkshopSections,
-    WorkshopVoting, WorkshopFeedBack)
+    WorkshopVoting)
 from wye.organisations.models import Organisation
 
 
@@ -45,7 +39,8 @@ class Profile(models.Model):
     occupation = models.CharField(
         null=True, blank=True, max_length=300, verbose_name=u"Occupation")
     work_location = models.CharField(
-        null=True, blank=True, max_length=500, verbose_name=u"Organisaiton/Company")
+        null=True, blank=True, max_length=500,
+        verbose_name=u"Organisaiton/Company")
     work_experience = models.FloatField(
         null=True, blank=True, verbose_name=u"Work Experience(If Any)")
     no_workshop = models.IntegerField(
@@ -103,12 +98,6 @@ class Profile(models.Model):
             return True
         return False
 
-    # @cached_property
-    # def slug(self):
-    #     return slugify(
-    #         self.user.username,
-    #         only_ascii=True)
-
     @property
     def get_workshop_details(self):
         return Workshop.objects.filter(is_active=True).filter(
@@ -140,10 +129,6 @@ class Profile(models.Model):
                     self.get_workshop_details if (
                         x.status == WorkshopStatus.COMPLETED)])
 
-    # @property
-    # def get_last_workshop_date(self):
-    #     pass
-
     @property
     def get_avg_workshop_rating(self):
         workshops = self.get_workshop_details
@@ -174,23 +159,6 @@ class Profile(models.Model):
 
     @property
     def get_graph_data(self):
-        # from django_pandas.io import read_frame
-        # qs = Workshop.objects.filter(
-        #     presenter=self.user,
-        #     status=WorkshopStatus.COMPLETED,
-        #     is_active=True)
-        # # df = read_frame(qs)
-        # df = read_frame(qs,
-        #                 fieldnames=['workshop_section', 'expected_date'])
-        # print(df)
-        # fig = Figure()
-        # ax = fig.add_subplot(111)
-        # df.plot(ax=ax)
-        # canvas = FigureCanvas(fig)
-        # response = HttpResponse(content_type='image/png')
-        # canvas.print_png(response)
-        # return response
-
         sections = WorkshopSections.objects.all()
         workshops = Workshop.objects.filter(
             presenter=self.user,
@@ -228,6 +196,7 @@ class Profile(models.Model):
                 return []
         else:
             return []
+
     @property
     def get_organisation_name(self):
         return self.user.organisation_students.all()
@@ -235,6 +204,7 @@ class Profile(models.Model):
     @property
     def get_student_workshop_attended_count(self):
         return self.user.workshop_attended.count()
+
     @property
     def get_student_workshop_attended(self):
         return self.user.workshop_attended.all()

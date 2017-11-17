@@ -1,11 +1,3 @@
-# from django.contrib.auth.decorators import login_required
-# from django.views.decorators.csrf import csrf_exempt
-# from django.core.urlresolvers import reverse, reverse_lazy
-# from django.http import HttpResponseRedirect, JsonResponse
-# from django.shortcuts import get_object_or_404
-# from django.views import generic
-
-
 import os
 from io import BytesIO
 from django.template import loader
@@ -16,9 +8,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from reportlab.lib.colors import black, red
-# from wye.profiles.models import Profile
 from wye.base.views import add_user_create_reset_password_link
-# from wye.base.constants import WorkshopStatus
 from wye.base.emailer_html import (
     send_email_to_id, send_email_to_id_with_attachment)
 from .forms import WorkshopCertificateForm
@@ -116,11 +106,11 @@ def register_students(request, pk):
                 email = WorkSheet.cell_value(row, 2)
                 mobile = WorkSheet.cell_value(row, 3)
                 workshop_name = workshop.workshop_section.name
-                institute = workshop.requester.name
+                # institute = workshop.requester.name
                 workshop_date = workshop.expected_date
-                presenters = workshop.presenter.all()
-                presenters_name = "\n".join(
-                    ["{} {}".format(p.first_name, p.last_name) for p in presenters])
+                # presenters = workshop.presenter.all()
+                # presenters_name = "\n".join(
+                #     ["{} {}".format(p.first_name, p.last_name) for p in presenters])
                 student_user_type = UserType.objects.get(slug='student')
                 user, newly_created = add_user_create_reset_password_link(
                     first_name, last_name, email, mobile, student_user_type)

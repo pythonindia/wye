@@ -48,19 +48,22 @@ def verify_user_profile(f):
         return f(request, *args, **kwargs)
     return wrap
 
+
 def get_username(email):
-        """
-        Returns a UUID-based 'random' and unique username.
+    """
+    Returns a UUID-based 'random' and unique username.
 
-        This is required data for user models with a username field.
-        """
-        uuid_str = str(uuid.uuid4())
-        username = email.split("@")[0]
-        # uuid_str = uuid_str[:30 - len(username)]
-        print(username)
-        return username 
+    This is required data for user models with a username field.
+    """
+    # uuid_str = str(uuid.uuid4())
+    username = email.split("@")[0]
+    # uuid_str = uuid_str[:30 - len(username)]
+    # print(username)
+    return username
 
-def add_user_create_reset_password_link(first_name, last_name, email, mobile, usertype):
+
+def add_user_create_reset_password_link(
+        first_name, last_name, email, mobile, usertype):
     user, created = User.objects.get_or_create(email=email)
     if created:
         user.first_name = first_name
@@ -76,4 +79,3 @@ def add_user_create_reset_password_link(first_name, last_name, email, mobile, us
         profile.mobile = mobile
         profile.save()
     return user, created
-

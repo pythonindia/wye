@@ -10,7 +10,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from wye.base.constants import WorkshopStatus
 from wye.base.emailer_html import send_email_to_id, send_email_to_list
-from wye.organisations.models import Organisation
+# from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.workshops.models import Workshop
 
@@ -19,7 +19,6 @@ from .forms import ContactUsForm, UserProfileForm, PartnerForm
 
 @login_required
 def account_redirect(request):
-    print(request.user.username)
     return redirect('/profile/{}/'.format(request.user.username))
 
 
@@ -38,47 +37,6 @@ def profile_view(request, slug):
     except Profile.DoesNotExist:
         return render(request, 'error.html', {
             "message": "Profile does not exist"})
-
-
-# def user_dashboad(request):
-#     profile, created = Profile.objects.get_or_create(
-#         user__id=request.user.id)
-#     if not profile.is_profile_filled:
-#         return redirect('profiles:profile-edit', slug=request.user.username)
-#     workshop_all = Workshop.objects.filter(
-#         is_active=True).order_by('-expected_date')
-
-#     accept_workshops = workshop_all.filter(
-#         status=WorkshopStatus.ACCEPTED).filter(
-#             presenter__id__in=[request.user.id])
-#     requested_workshops = workshop_all.filter(
-#         status=WorkshopStatus.REQUESTED).filter(
-#             presenter__id__in=[request.user.id])
-#     requested_workshops = workshop_all.filter(
-#         status=WorkshopStatus.REQUESTED).filter(
-#             presenter__id__in=[request.user.id])
-
-#     organisation_all = Organisation.objects.all()
-#     context = {}
-#     for each_type in profile.get_user_type:
-#         if each_type == 'poc':
-#             context['is_college_poc'] = True
-#             context['users_organisation'] = organisation_all.filter(
-#                 user=request.user)
-#             context['workshop_requested_under_poc'] = workshop_all.filter(
-#                 requester__id__in=organisation_all.values_list(
-#                     'id', flat=True))
-#             context['workshops_accepted_under_poc'] = workshop_all.filter(
-#                 status=WorkshopStatus.ACCEPTED,
-#                 requester__id__in=organisation_all.values_list(
-#                     'id', flat=True))
-#         else:
-#             context['is_tutor'] = True
-#             context['workshop_requested_tutor'] = accept_workshops.filter(
-#                 presenter=request.user)
-#             context['workshop_completed_tutor'] = \
-#                 requested_workshops.filter(
-#                 presenter=request.user)
 
 
 class ProfileEditView(UpdateView):

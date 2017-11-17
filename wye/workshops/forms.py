@@ -9,7 +9,6 @@ from django.core.exceptions import ValidationError
 from wye.base.constants import (
     WorkshopRatings,
     WorkshopLevel,
-    WorkshopStatus,
     FeedbackType,
     YesNO)
 from wye.base.widgets import CalendarWidget
@@ -133,7 +132,6 @@ class WorkshopFeedbackForm(forms.Form):
         self.fields["comment"] = forms.CharField(widget=forms.Textarea)
 
     def save(self, user, workshop_id):
-        print(dir(self))
         data = {k: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)
 

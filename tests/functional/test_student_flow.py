@@ -2,7 +2,7 @@ from tests import base
 from datetime import datetime, timedelta
 from tests import factories as f
 from .. utils import create_user_verify_login
-from wye.base.constants import WorkshopStatus, WorkshopLevel
+from wye.base.constants import WorkshopStatus
 
 import os
 outbox_len = 0
@@ -57,7 +57,7 @@ def test_student_profile_create(base_url, browser, outbox):
 def test_student_register(base_url, browser, outbox):
     """
     """
-    student_poc = f.create_usertype(slug='student', display_name='Student')
+    f.create_usertype(slug='student', display_name='Student')
     f.create_usertype(slug='tutor', display_name='tutor')
     user = create_user_verify_login(base_url, browser, outbox)
     user.first_name = 'First Name'
@@ -101,7 +101,7 @@ def test_student_register(base_url, browser, outbox):
 def test_student_email_certificate(base_url, browser, outbox):
     """
     """
-    student_poc = f.create_usertype(slug='student', display_name='Student')
+    f.create_usertype(slug='student', display_name='Student')
     f.create_usertype(slug='tutor', display_name='tutor')
     user = create_user_verify_login(base_url, browser, outbox)
     user.first_name = 'First Name'

@@ -1,5 +1,6 @@
+import os
 import threading
-
+from email.mime.application import MIMEApplication
 # from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
@@ -45,8 +46,9 @@ def send_email_to_id(subject, body, email_id, text_body,
     EmailThread(email).start()
 
 
-def send_email_to_id_with_attachment(subject, body, email_id, text_body, filename,
-                                     bcc_admins=True, bcc_managers=False):
+def send_email_to_id_with_attachment(
+        subject, body, email_id, text_body, filename,
+        bcc_admins=True, bcc_managers=False):
     bcc = []
 
     from_user = 'PythonExpress <noreply@pythonexpress.in>'
