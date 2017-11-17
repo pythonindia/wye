@@ -7,7 +7,7 @@ SECRET_KEY = 'changeme!!'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "wye",
+        'NAME': "test_wye",
         'USER': "",
         'PASSWORD': "",
         'HOST': "localhost",
