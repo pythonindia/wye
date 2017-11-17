@@ -1,7 +1,7 @@
 
 
 import pytest
-
+from .. import base
 from .. import factories as f
 from .. utils import create_user_verify_login
 pytestmark = pytest.mark.django_db
@@ -73,18 +73,9 @@ def test_signup_college_poc_flow(base_url, browser, outbox):
     assert browser.is_text_present('This field is required.')
 
     # Sucess case
-    browser.visit(url)
-    browser.fill('first_name', 'First Name')
-    browser.fill('last_name', 'Last Name')
-    browser.fill('mobile', '1234567890')
-    browser.fill('occupation', 'occupation')
-    browser.fill('work_location', 'work_location')
-    browser.fill('work_experience', 1)
-    browser.select('interested_sections', section1.id)
-    browser.select('interested_states', state1.id)
-    browser.select('location', location1.id)
-    browser.find_by_css('[type=submit]')[0].click()
-
+    browser = base.profile_poc_create(
+        browser, url, None,
+        section1.id, state1.id, location1.id)
     assert browser.is_text_present('Deactive Account')
 
 
@@ -164,20 +155,8 @@ def test_signup_tutor_flow(base_url, browser, outbox):
     browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('This field is required.')
 
-    browser.visit(url)
-    browser.fill('first_name', 'First Name')
-    browser.fill('last_name', 'Last Name')
-    browser.fill('mobile', '1234567890')
-    browser.select('interested_sections', section1.id)
-    browser.select('interested_states', state1.id)
-    browser.select('interested_level', 1)
-    browser.select('location', location1.id)
-    browser.fill('github', 'https://github.com')
-    browser.fill('occupation', 'occupation')
-    browser.fill('work_location', 'work_location')
-    browser.fill('work_experience', 1)
-
-    browser.find_by_css('[type=submit]')[0].click()
+    browser = base.profile_tutor_create(
+        browser, url, tutor_type.id, section1.id, state1.id, location1.id)
     assert browser.is_text_present('Deactive Account')
 
     org = f.create_organisation(location=location1)

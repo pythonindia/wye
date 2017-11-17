@@ -1,4 +1,4 @@
-import base
+from tests import base
 from tests import factories as f
 
 outbox_len = 0

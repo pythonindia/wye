@@ -1,5 +1,6 @@
 import re
 from .. import factories as f
+from .. import base
 from django.contrib.auth.models import User
 
 from .. utils import create_user_verify_login
@@ -115,17 +116,9 @@ def test_add_new_member_flow(base_url, browser, outbox):
     location2 = f.create_locaiton(name='location2')
 
     url = base_url + '/profile/randomnessprevails/edit'
-    browser.visit(url)
-    browser.fill('mobile', '1234567890')
-    browser.select('usertype', poc_type.id)
-    browser.select('interested_sections', section1.id)
-    browser.fill('occupation', 'occupation')
-    browser.fill('work_location', 'work_location')
-    browser.fill('work_experience', 1)
-    browser.select('interested_states', state1.id)
-    browser.select('location', location2.id)
+    browser = base.profile_poc_create(browser, url, poc_type.id,
+                                      section1.id, state1.id, location2.id)
 
-    browser.find_by_css('[type=submit]')[0].click()
     assert browser.is_text_present('My Profile')
     assert browser.is_text_present('Graph')
 

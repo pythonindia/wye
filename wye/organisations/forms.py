@@ -10,7 +10,8 @@ class OrganisationForm(forms.ModelForm):
     class Meta:
         model = Organisation
         exclude = ('user', 'created_at', 'modified_at',
-                   'active', 'created_by', 'modified_by')
+                   'active', 'created_by', 'modified_by',
+                   'students')
 
 
 class OrganisationMemberAddForm(forms.ModelForm):
@@ -23,7 +24,8 @@ class OrganisationMemberAddForm(forms.ModelForm):
         exclude = ('user', 'created_at', 'modified_at',
                    'name', 'organisation_type', 'description',
                    'location', 'organisation_role',
-                   'active', 'created_by', 'modified_by')
+                   'active', 'created_by', 'modified_by',
+                   'students')
 
     existing_user = forms.ModelChoiceField(
         queryset=User.objects.all(), required=False)

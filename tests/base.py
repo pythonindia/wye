@@ -46,12 +46,40 @@ def workshop_create(browser, url, org, section):
     browser.find_by_css('[type=submit]')[0].click()
 
 
-def profile_create(browser, url, org, section):
+def profile_poc_create(
+        browser, url, usertype_id,
+        section_id, state_id, location_id):
     browser.visit(url)
-    browser.select('no_of_participants', 10)
-    browser.fill('expected_date', '11/12/2018')
-    browser.fill('description', "test")
-    browser.select('requester', org.id)
-    browser.select('workshop_level', WorkshopLevel.BEGINNER)
-    browser.select('workshop_section', section.id)
+    browser.fill('first_name', 'First Name')
+    browser.fill('last_name', 'Last Name')
+    browser.fill('mobile', '1234567890')
+    browser.fill('occupation', 'occupation')
+    browser.fill('work_location', 'work_location')
+    browser.fill('work_experience', 1)
+    if usertype_id:
+        browser.select('usertype', usertype_id)
+    browser.select('interested_sections', section_id)
+    browser.select('interested_states', state_id)
+    browser.select('location', location_id)
     browser.find_by_css('[type=submit]')[0].click()
+    return browser
+
+
+def profile_tutor_create(
+        browser, url, usertype_id,
+        section_id, state_id, location_id):
+    browser.visit(url)
+    browser.fill('first_name', 'First Name')
+    browser.fill('last_name', 'Last Name')
+    browser.fill('mobile', '1234567890')
+    browser.select('usertype', usertype_id)
+    browser.select('interested_sections', section_id)
+    browser.select('interested_states', state_id)
+    browser.select('interested_level', 1)
+    browser.select('location', location_id)
+    browser.fill('github', 'https://github.com')
+    browser.fill('occupation', 'occupation')
+    browser.fill('work_location', 'work_location')
+    browser.fill('work_experience', 1)
+    browser.find_by_css('[type=submit]')[0].click()
+    return browser

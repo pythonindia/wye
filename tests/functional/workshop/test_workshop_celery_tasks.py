@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-import base
+from tests import base
 from tests import factories as f
 from wye.base.constants import WorkshopStatus, WorkshopLevel
 from wye.workshops.tasks import workshop_reminder
