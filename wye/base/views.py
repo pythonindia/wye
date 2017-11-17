@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-import uuid
+# import uuid
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.workshops.models import Workshop

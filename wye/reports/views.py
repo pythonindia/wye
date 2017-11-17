@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django_pandas.io import read_frame, pd
-from wye.base.constants import WorkshopStatus
+# from wye.base.constants import WorkshopStatus
 from wye.workshops.models import Workshop
 from wye.profiles.models import Profile
 

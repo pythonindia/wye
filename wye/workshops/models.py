@@ -73,7 +73,8 @@ class Workshop(TimeAuditModel):
     target_audience = models.PositiveSmallIntegerField(
         choices=WorkshopAudience.CHOICES, verbose_name="Audience",
         default=WorkshopAudience.BE_FINAL_YEAR)
-    student_attended = models.ManyToManyField(User, related_name='workshop_attended')
+    student_attended = models.ManyToManyField(
+        User, related_name='workshop_attended')
 
     class Meta:
         db_table = 'workshops'
@@ -306,4 +307,3 @@ class WorkshopVoting(TimeAuditModel):
             for k, v in kwargs.items()
         ]
         cls.objects.bulk_create(object_list)
-
