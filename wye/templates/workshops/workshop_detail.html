@@ -100,7 +100,7 @@
                             <div class="col-xs-2"><strong>Presenter/Tutor</strong></div>
                             {% for u in workshop.presenter.all %}
                                 {{u.profile.slug}}
-                                <a href="{% url 'profiles:profile-page' u.profile.slug %}" >
+                                <a href="{% url 'profiles:profile-page' u.username %}" >
                                     <div class="col-xs-2"><u>{{ u.get_full_name}}</u></div>
                                 </a>
                                 <div class="col-xs-4">{{ u.email}}</div>

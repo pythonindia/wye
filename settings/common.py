@@ -146,7 +146,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wye.wsgi.application'
 
-
+FILE_UPLOAD_HANDLERS = [
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 

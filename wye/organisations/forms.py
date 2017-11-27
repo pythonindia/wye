@@ -1,7 +1,4 @@
 from django import forms
-
-# import autocomplete_light
-
 from .models import Organisation, User
 
 
@@ -13,10 +10,8 @@ class OrganisationForm(forms.ModelForm):
     class Meta:
         model = Organisation
         exclude = ('user', 'created_at', 'modified_at',
-                   'active', 'created_by', 'modified_by')
-#         widgets = {
-#             'name': autocomplete_light.TextWidget('OrganisationAutocomplete'),
-#         }
+                   'active', 'created_by', 'modified_by',
+                   'students')
 
 
 class OrganisationMemberAddForm(forms.ModelForm):
@@ -29,10 +24,21 @@ class OrganisationMemberAddForm(forms.ModelForm):
         exclude = ('user', 'created_at', 'modified_at',
                    'name', 'organisation_type', 'description',
                    'location', 'organisation_role',
-                   'active', 'created_by', 'modified_by')
+                   'active', 'created_by', 'modified_by',
+                   'students')
 
-    existing_user = forms.ModelChoiceField(queryset=User.objects.all(), required=False)
+    existing_user = forms.ModelChoiceField(
+        queryset=User.objects.all(), required=False)
     new_user = forms.EmailField(label='Invite New User', required=False)
+
+    def clean(self):
+        user = self.cleaned_data.get('existing_user')
+        new_user = self.cleaned_data['new_user']
+
+        if not (user or new_user):
+            raise forms.ValidationError(
+                'Please choose existing user or add new user')
+        return self.cleaned_data
 
 
 class UserRegistrationForm(forms.ModelForm):

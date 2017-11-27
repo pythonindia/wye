@@ -1,8 +1,0 @@
-{{ new_member_name }} was added to the organization {{ org_name }}.
-
-If you have any questions, do visit our FAQ page (link-to-FAQ-page). If that doesn't answer your question, feel free to drop a line to contact@pythonexpress.in and we'll get back to you.
-
-May the love of Python spread far and wide!
-
-Warmly,
-The PythonExpress team

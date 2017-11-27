@@ -49,7 +49,7 @@
                                             <img class="img-circle user_image" src="/media/{{user.profile.picture}}" /><span class="pad-3q">{{request.user.get_full_name}}</span><i class="fa fa-caret-down"></i>
                                         </a>
                                         <ul class="dropdown-menu sub" aria-labelledby="user_dropdown">
-                                            <li><a href="/dashboard/" class="{% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}"><i class="fa fa-dashboard fa-width"></i>Dashboard</a></li>
+                                            <!-- <li><a href="/dashboard/" class="{% if request.resolver_match.namespace == 'dashboard' %}active{% endif %}"><i class="fa fa-dashboard fa-width"></i>Dashboard</a></li> -->
                                             <li><a href="{% url 'profiles:profile-page' slug=user.username %}"><i class="fa fa-user fa-width"></i>Profile</a></li>
                                             {% if user.is_staff %}
                                                 <li><a href="{% url 'admin:index' %}" target="_blank">Admin</a></li>

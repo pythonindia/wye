@@ -11,7 +11,7 @@
     <div class="push-6-bottom">
         <div class="row push-2-bottom">
             <div class="col-sm-12 sub">
-                <a href="{% url 'profiles:profile-page' profile.slug %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Profile</a>
+                <a href="{% url 'profiles:profile-page' profile.user.username %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Profile</a>
             </div>
         </div>
         <div class="row">

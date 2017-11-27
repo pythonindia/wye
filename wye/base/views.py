@@ -1,5 +1,7 @@
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+# import uuid
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
 from wye.workshops.models import Workshop
@@ -45,3 +47,33 @@ def verify_user_profile(f):
                 '/profile/{}/edit'.format(request.user.username))
         return f(request, *args, **kwargs)
     return wrap
+
+
+def get_username(email):
+    """
+    Returns a UUID-based 'random' and unique username.
+
+    This is required data for user models with a username field.
+    """
+    # uuid_str = str(uuid.uuid4())
+    username = email.split("@")[0]
+    # uuid_str = uuid_str[:30 - len(username)]
+    # print(username)
+    return username
+
+
+def add_user_create_reset_password_link(
+        first_name, last_name, email, mobile, usertype):
+    user, created = User.objects.get_or_create(email=email)
+    if created:
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = get_username(email)
+        user.is_active = True
+        user.set_password('123456')
+        user.save()
+        profile, created = Profile.objects.get_or_create(user=user)
+        profile.usertype.add(usertype)
+        profile.mobile = mobile
+        profile.save()
+    return user, created

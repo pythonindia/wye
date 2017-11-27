@@ -50,23 +50,6 @@ def test_contact_page(base_url, browser, outbox):
 
     # ---------------- testing auto fill name and email -----------------------
     f.create_usertype(slug='tutor', display_name='tutor')
-    # user = f.create_user()
-    # user.first_name = 'test'
-    # user.last_name = 'testing'
-    # user.set_password('123123')
-    # user.save()
-    # url = base_url + '/accounts/login/'
-    # browser.visit(url)
-    # browser.fill('login', user.email)
-    # browser.fill('password', '123123')
-    # browser.find_by_css('[type=submit]')[0].click()
-    # assert len(outbox) == 3
-    # mail = outbox[2]
-    # confirm_link = re.findall(r'http.*/accounts/.*/', mail.body)
-    # assert confirm_link
-    # browser.visit(confirm_link[0])
-    # assert browser.title, "Confirm E-mail Address"
-    # browser.find_by_css('[type=submit]')[0].click()
     user = create_user_verify_login(base_url, browser, outbox)
     user.first_name = 'test'
     user.last_name = 'testing'

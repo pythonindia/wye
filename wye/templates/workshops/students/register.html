@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static from staticfiles %}
+{% block header %}
+    <div class="banner push-2 text-center">
+        <h1 class="space-0">Student Register for Workshop</h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {{ form.media }}
+    <div class="push-6-bottom">
+        <div class="row push-2-bottom">
+            <div class="col-sm-12 sub">
+                <a href="{% url 'workshops:workshop_list' %}"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;My Workshops</a>
+            </div>
+        </div>
+        <div class="row">
+            Download sample <a href="{% static 'certificate/student_list_format.xlsx' %}">format</a> here
+            <link rel="stylesheet" href="{% static 'certificate/student_list_format.xlsx' %}">
+        </div>
+        <div class="row">
+            <div class="col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+                <form method="post" action="{% url 'workshops:register_students' workshop.pk %}" enctype="multipart/form-data">{% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" class="btn btn-theme regular" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

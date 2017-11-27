@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-import base
+from tests import base
 from tests import factories as f
 from wye.base.constants import WorkshopStatus, WorkshopLevel
 from wye.regions.models import RegionalLead
@@ -65,14 +65,6 @@ def test_workshop_list(base_url, browser, outbox):
     data_check = browser.find_by_text(org.name)
     assert not data_check
 
-    browser.visit(url + "?presenter={}".format(user.id))
-    data_check = browser.find_by_text(org.name)
-    assert not data_check
-
-    browser.visit(url + "?status={}".format(WorkshopStatus.REQUESTED))
-    data_check = browser.find_by_text(org.name)
-    assert data_check
-
     browser.visit(url + "?level={}".format(WorkshopStatus.ACCEPTED))
     data_check = browser.find_by_text(org.name)
     assert not data_check
@@ -84,12 +76,6 @@ def test_workshop_list(base_url, browser, outbox):
     base.login_and_confirm(browser, url, outbox, user, password)
     # user.profile.usertype.add(tutor_type)
     # user.save()
-
-    # url = base_url + '/workshop/'
-    # base.login(browser, url, user, password)
-    # # User not associate with workshop
-    # data_check = browser.find_by_text(org.name)
-    # assert [] == data_check
 
     # User associated with workshop
     workshop.presenter.add(user)

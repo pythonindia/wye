@@ -34,7 +34,16 @@
                 <ul class="list-group sub">
                     <li class="list-group-item">
                         <span class="wrap-word"><i class="fa fa-map-marker fa-width"></i>{{object.location.name}}</span>
+
                     </li>
+                    {% if object.get_organisation_name %}
+                        <li class="list-group-item">
+                        {% for org in object.get_organisation_name %}
+                            {{org}}
+                        {% endfor %}
+                        </li>
+                    {% endif %}
+
                     {% if object.is_email_visible %}
                         <a class="list-group-item" href="mailto:{{object.user.email}}" title="{{object.user.email}}">
                             <span class="wrap-word"><i class="fa fa-envelope-o fa-width"></i>{{object.user.email}}</span>
@@ -74,13 +83,14 @@
                             <!-- {% if object.user.profile.reddit %}
                                 <a href="{{object.user.profile.reddit}}" title="Reddit" target="_blank" class="reddit"><i class="fa fa-reddit-square"></i></a>
                             {% endif %} -->
+
                         </div>
                     </li>
                     {% if request.user.pk == object.pk %}
                         <li class="list-group-item">
-                            <a href="{% url 'profiles:profile-edit' slug=object.slug %}" class="btn btn-block btn-theme-primary sub">Edit</a>
+                            <a href="{% url 'profiles:profile-edit' slug=object.user.username %}" class="btn btn-block btn-theme-primary sub">Edit</a>
                         </li>
-                        <a href="{% url 'profiles:account_deactivate'  slug=object.slug %}"><i class="fa fa-power-off fa-width"></i>Deactive Account</a>
+                        <a href="{% url 'profiles:account_deactivate'  slug=object.user.username %}"><i class="fa fa-power-off fa-width"></i>Deactive Account</a>
                     {% endif %}
                 </ul>
             </div>
@@ -110,7 +120,7 @@
                                     <h4>Average Rating</h4>
                                     <h3>
                                         <i class="fa fa-star"></i>
-                                        {{object.get_avg_workshop_rating}}<small>/5</small>
+                                        {{object.get_avg_workshop_rating|default_if_none:0}}<small>/5</small>
                                     </h3>
                                 </div>
                                 <div class="col-md-4">
@@ -166,6 +176,44 @@
                     </div>
                 </div>
             </div>
+        </div>
+        {% if object.get_student_workshop_attended_count %}
+        <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-rocket"></i>&nbsp;&nbsp;Workshop Attended</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>sl.no </th>
+                                        <th>Workshop Section</th>
+                                        <th>Workshop level</th>
+                                        <th>Tentative Dates *</th>
+                                        <th>College</th>
+                                        <th>Download Certificate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for workshop in object.get_student_workshop_attended %}
+                                        <tr class="clickable-row" data-href="{% url 'workshops:workshop_detail' workshop.pk %}">
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{workshop.workshop_section.name}}</td>
+                                        <td>{{workshop.get_workshop_level_display}}</td>
+                                        <td>{{workshop.expected_date|date:'l,  M. d Y' }}</td>
+                                        <td>{{workshop.requester.name}}</td>
+                                        <td><a href="/workshop/certificate/{{workshop.id}}/download/">Download</a></td>
+                                        </tr>
+                                    {% endfor %}    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

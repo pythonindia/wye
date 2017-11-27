@@ -1,23 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse, reverse_lazy
-# from django.db.models import Q
-from django.contrib.sites.models import Site
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect, render
-from django.template import loader
 from django.views import generic
-
 from braces import views
-from wye.base.emailer_html import send_email_to_list
 from wye.organisations.models import Organisation
 from wye.profiles.models import Profile
-# from wye.regions.models import RegionalLead
-from wye.base.constants import WorkshopStatus
-
 from wye.social.sites.twitter import send_tweet
-from wye.base.views import verify_user_profile
+from wye.base.views import (
+    verify_user_profile)
+from wye.base.constants import WorkshopStatus
 from .forms import (
     WorkshopForm,
     WorkshopEditForm,
@@ -28,6 +22,7 @@ from .mixins import (
     WorkshopEmailMixin,
     WorkshopAccessMixin
 )
+from .utils import send_mail_to_group
 from .models import Workshop, WorkshopFeedBack
 
 
@@ -41,7 +36,8 @@ def workshop_list(request):
         return redirect('profiles:profile-edit', slug=request.user.username)
     context_dict = {}
     workshop_list = Workshop.objects.filter(
-        is_active=True).order_by('-expected_date')
+        is_active=True, status__in=[
+            WorkshopStatus.REQUESTED]).order_by('-expected_date', 'status')
     workshop_list = workshop_list.filter(
         requester__location__state__id__in=[
             x.id for x in request.user.profile.interested_states.all()]
@@ -51,12 +47,6 @@ def workshop_list(request):
     if location_list:
         workshop_list = workshop_list.filter(
             requester__location__id__in=location_list
-        )
-
-    presenter_list = request.GET.getlist("presenter")
-    if presenter_list:
-        workshop_list = workshop_list.filter(
-            presenter__id__in=presenter_list
         )
 
     workshop_level_list = request.GET.getlist("level")
@@ -69,12 +59,6 @@ def workshop_list(request):
     if workshop_section_list:
         workshop_list = workshop_list.filter(
             workshop_section__id__in=workshop_section_list
-        )
-
-    status_list = request.GET.getlist("status")
-    if status_list:
-        workshop_list = workshop_list.filter(
-            status__in=status_list
         )
 
     context_dict['workshop_list'] = workshop_list
@@ -117,7 +101,8 @@ def workshop_details(request, pk):
         'show_contact_flag': show_contact_flag,
         'display_edit_button': display_edit_button,
         'is_admin': is_admin,
-        'form': form
+        'form': form,
+        'user': request.user
     }
     return render(request, template_name, context_dict)
 
@@ -143,46 +128,16 @@ def workshop_create(request):
         context_dict['errors'] = form.errors
         return render(request, template_name, context_dict)
     workshop = form.save()
-    domain = Site.objects.get_current().domain
+    # domain = Site.objects.get_current().domain
     if workshop and workshop.id:
         context = {
             'workshop': workshop,
             'date': workshop.expected_date,
-            'workshop_url': domain + '/workshop/{}/'.format(workshop.id)
+            'workshop_url': workshop.build_absolute_uri(
+                reverse('workshops:workshop_detail', args=[workshop.pk]))
         }
-        # Collage POC and admin email
-        poc_admin_user = Profile.get_user_with_type(
-            user_type=['Collage POC', 'admin']
-        ).values_list('email', flat=True)
-
-        org_user_emails = workshop.requester.user.filter(
-            is_active=True).values_list('email', flat=True)
-        # all presenter if any
-        all_presenter_email = workshop.presenter.values_list(
-            'email', flat=True)
-        # List of tutor who have shown interest in that location
-        region_interested_member = Profile.objects.filter(
-            interested_locations=workshop.requester.location,
-            usertype__slug='tutor'
-        ).values_list('user__email', flat=True)
-        all_email = []
-        all_email.extend(org_user_emails)
-        all_email.extend(all_presenter_email)
-        all_email.extend(poc_admin_user)
-        all_email.extend(region_interested_member)
-        all_email = set(all_email)
+        send_mail_to_group(context, workshop)
         send_tweet(context)
-
-        subject = '[PythonExpress] Workshop request status.'
-        email_body = loader.get_template(
-            'email_messages/workshop/create_workshop/message.html').render(context)
-        text_body = loader.get_template(
-            'email_messages/workshop/create_workshop/message.txt').render(context)
-        send_email_to_list(
-            subject,
-            body=email_body,
-            users_list=all_email,
-            text_body=text_body)
         success_url = reverse_lazy('workshops:workshop_list')
     return HttpResponseRedirect(success_url)
 
@@ -221,6 +176,29 @@ class WorkshopToggleActive(views.LoginRequiredMixin, views.CsrfExemptMixin,
         return self.render_json_response(response)
 
 
+@login_required
+def workshop_feedback_view(request, pk):
+    context_dict = {}
+    template_name = "workshops/workshop_feedback.html"
+    context_dict['workshop'] = Workshop.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = WorkshopFeedbackForm(
+            data=request.POST, user=request.user, id=pk)
+        if form.is_valid():
+            WorkshopFeedBack.save_feedback(
+                request.user, pk, **request.POST)
+            success_url = reverse_lazy('workshops:workshop_list')
+            return HttpResponseRedirect(success_url)
+        context_dict['form'] = form
+        context_dict['user'] = request.user
+        return render(request, template_name, context_dict)
+    else:
+        context_dict['form'] = WorkshopFeedbackForm(
+            user=request.user, id=pk)
+    context_dict['user'] = request.user
+    return render(request, template_name, context_dict)
+
+
 class WorkshopAction(views.CsrfExemptMixin, views.LoginRequiredMixin,
                      views.JSONResponseMixin, WorkshopEmailMixin,
                      generic.UpdateView):
@@ -254,59 +232,7 @@ class WorkshopAction(views.CsrfExemptMixin, views.LoginRequiredMixin,
         # email to presenter and group
         self.send_mail_to_presenter(user, context)
         context['presenter'] = False
-        self.send_mail_to_group(context, exclude_emails=[user.email])
-
-
-# class WorkshopFeedbackView(views.LoginRequiredMixin,
-#                            generic.FormView):
-#     form_class = WorkshopFeedbackForm
-#     template_name = "workshops/workshop_feedback.html"
-#     success_url = reverse_lazy('workshops:workshop_list')
-
-#     def form_valid(self, form):
-#         workshop_id = self.kwargs.get('pk')
-#         form.save(self.request.user, workshop_id)
-#         return super(WorkshopFeedbackView, self).form_valid(form)
-
-#     def get_context_data(self, *args, **kwargs):
-#         context = super(WorkshopFeedbackView, self).get_context_data(
-#             *args, **kwargs)
-#         context['workshop'] = Workshop.objects.get(pk=self.kwargs.get('pk'))
-#         return context
-
-
-@login_required
-def workshop_feedback_view(request, pk):
-    context_dict = {}
-    template_name = "workshops/workshop_feedback.html"
-    context_dict['workshop'] = Workshop.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = WorkshopFeedbackForm(
-            data=request.POST, user=request.user, id=pk)
-        if form.is_valid():
-            WorkshopFeedBack.save_feedback(
-                request.user, pk, **request.POST)
-            success_url = reverse_lazy('workshops:workshop_list')
-            return HttpResponseRedirect(success_url)
-        context_dict['form'] = form
-        context_dict['user'] = request.user
-        return render(request, template_name, context_dict)
-    else:
-        context_dict['form'] = WorkshopFeedbackForm(
-            user=request.user, id=pk)
-    context_dict['user'] = request.user
-    return render(request, template_name, context_dict)
-
-
-def upcoming_workshops(request):
-    template_name = 'upcoming.html'
-    workshop_list = Workshop.objects.filter(is_active=True).filter(
-        status__in=[WorkshopStatus.REQUESTED,
-                    WorkshopStatus.ACCEPTED]).order_by('expected_date')
-    context_dict = {}
-    context_dict['workshop_list'] = workshop_list
-
-    return render(request, template_name, context_dict)
+        send_mail_to_group(context, workshop, exclude_emails=[user.email])
 
 
 @csrf_exempt
@@ -328,8 +254,8 @@ def workshop_update_volunteer(request, pk):
         if comments:
             workshop_volunteer.update(comments=comments)
         return JsonResponse({
-                "status": True,
-                "msg": "Updated successfully"})
+            "status": True,
+            "msg": "Updated successfully"})
     return JsonResponse({"status": False, "msg": "Somthing went wrong"})
 
 
@@ -358,7 +284,7 @@ def workshop_accept_as_volunteer(request, pk):
         else:
             return JsonResponse({
                 "status": False,
-                "msg": "Unable to register you, as requirement already fulfilled"})
+                "msg": "Sorry, We have got required volunteers already"})
     return JsonResponse({"status": False, "msg": "Something went wrong"})
 
 

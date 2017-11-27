@@ -1,0 +1,23 @@
+{% extends "email_messages/layout.html" %}
+
+{% block header_content %}
+Intro for Workshop
+{% endblock %}
+
+{% block content_body %}
+    {% block content %}
+        <tr>
+            <td>
+                <p> Hello ,</p>
+    			<p>Greetings!</p>
+    			<p>Certificate of participation for student {{full_name}} is attached here in the email. Request you to hand this over to the concerned student.</p>
+    
+                <p>May the love of Python spread far and wide!</p>
+    			<p>Warmly,</p>
+    			<p>The PythonExpress team</p>
+
+        </td>
+    </tr>
+    {% endblock %}
+{% endblock %}
+                                        

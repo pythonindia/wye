@@ -186,17 +186,11 @@ def test_workshop_flow(base_url, browser, outbox):
     assert accept_workshop_link
     accept_workshop_link.click()
 
-    # print(datetime.now() + timedelta(days=-10))
     workshop.expected_date = datetime.now() + timedelta(days=-60)
     # workshop.status = WorkshopStatus.FEEDBACK_PENDING
     workshop.save()
 
     browser.visit(url)
-    print(wr1)
-    print('{}-{}'.format(wr1.id, wr1.feedback_type))
-    print(wr2)
-    print(wr3)
-    print(wr4)
     url = base_url + '/workshop/feedback/{}'.format(workshop.id)
     browser.visit(url)
     for wr in [wr1, wr2, wr3, wr4]:

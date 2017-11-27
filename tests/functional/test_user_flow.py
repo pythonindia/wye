@@ -50,14 +50,6 @@ def test_signup_flow(base_url, browser, outbox):
     assert "Confirm E-mail Address" in browser.title
     browser.find_by_css('[type=submit]')[0].click()
 
-    # assert "Login" in browser.title
-
-    # browser.fill('login', 'random@a.com')
-    # browser.fill('password', 'secretpassword')
-    # browser.find_by_css('[type=submit]')[0].click()
-
-    # assert browser.is_text_present("My Profile")
-
     u = User.objects.get(email='random@a.com')
     u.profile.usertype.clear()
     poc_type = f.create_usertype(slug='poc', display_name='College POC')

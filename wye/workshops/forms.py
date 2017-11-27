@@ -9,7 +9,6 @@ from django.core.exceptions import ValidationError
 from wye.base.constants import (
     WorkshopRatings,
     WorkshopLevel,
-    WorkshopStatus,
     FeedbackType,
     YesNO)
 from wye.base.widgets import CalendarWidget
@@ -43,12 +42,12 @@ class WorkshopForm(forms.ModelForm):
             self.fields['comments'].required = False
             self.fields['comments'].widget = forms.HiddenInput()
 
-    def clean_location(self):
-        if "requester" not in self.cleaned_data:
-            return ""
+    # def clean_location(self):
+    #     if "requester" not in self.cleaned_data:
+    #         return ""
 
-        organisation = self.cleaned_data['requester']
-        return organisation.location
+    #     organisation = self.cleaned_data['requester']
+    #     return organisation.location
 
     def get_organisations(self, user):
         if Profile.is_admin(user):
@@ -60,10 +59,10 @@ class WorkshopForm(forms.ModelForm):
 
     def clean_expected_date(self):
         date = self.cleaned_data['expected_date']
-        if not (date > datetime.date.today() + datetime.timedelta(days=14)):
+        if not (date > datetime.date.today() + datetime.timedelta(days=7)):
             raise ValidationError(
                 '''Workshop request has to future date and
-                 atleast 2 weeks ahead of today''')
+                 atleast week ahead of today''')
         else:
             return date
 
@@ -133,7 +132,6 @@ class WorkshopFeedbackForm(forms.Form):
         self.fields["comment"] = forms.CharField(widget=forms.Textarea)
 
     def save(self, user, workshop_id):
-        print(dir(self))
         data = {k: v for k, v in self.cleaned_data.items()}
         WorkshopFeedBack.save_feedback(user, workshop_id, **data)
 
@@ -143,12 +141,7 @@ class WorkshopListForm(forms.Form):
     Form to filter workshop list
     """
     state = forms.ModelMultipleChoiceField(
-        label="Workshop Location",
-        required=False,
-        queryset='')
-
-    presenter = forms.ModelMultipleChoiceField(
-        label="Presenter",
+        label="State",
         required=False,
         queryset='')
 
@@ -162,26 +155,11 @@ class WorkshopListForm(forms.Form):
         required=False,
         queryset='')
 
-    status = forms.MultipleChoiceField(
-        label="Status",
-        required=False,
-        choices=WorkshopStatus.CHOICES)
-
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(WorkshopListForm, self).__init__(*args, **kwargs)
-        self.fields['state'].queryset = self.get_all_locations(user)
-        if Profile.is_admin(user) or Profile.is_regional_lead(user):
-            self.fields['presenter'].queryset = User.objects.filter(
-                profile__usertype__slug="tutor"
-            )
-        elif 'poc' in user.profile.get_user_type:
-            self.fields['presenter'].queryset = User.objects.filter(
-                profile__usertype__slug="tutor",
-                profile__location__state__in=self.get_all_states(user)
-            )
-        else:
-            del self.fields['presenter']
+        self.fields['state'].queryset = self.get_all_states(user)
+
         self.fields['section'].queryset = WorkshopSections.objects.all()
 
     def get_all_locations(self, user):
@@ -202,3 +180,7 @@ class WorkshopVolunteer(forms.Form):
     number_of_volunteers = forms.ChoiceField(choices=CHOICE_LIST)
     tutor_reimbursement_flag = forms.ChoiceField(choices=YesNO.CHOICES)
     comments = forms.CharField(widget=forms.Textarea)
+
+
+class WorkshopCertificateForm(forms.Form):
+    file = forms.FileField()

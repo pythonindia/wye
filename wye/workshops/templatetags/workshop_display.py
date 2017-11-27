@@ -1,9 +1,9 @@
-from django import template
+# from django import template
 
-register = template.Library()
+# register = template.Library()
 
 
-@register.inclusion_tag('workshops/workshop_display.html')
-def show_workshops(workshops):
+# @register.inclusion_tag('workshops/workshop_display.html')
+# def show_workshops(workshops):
 
-    return {'workshop': workshops}
+#     return {'workshop': workshops}

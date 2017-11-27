@@ -1,0 +1,10 @@
+Hello {{ full_name }},
+
+Welcome to PythonExpress family! 
+Hope the {{workshop_section}} workshop held on {{workshop_date}} was a good learning experience.
+Your "Certificate of Participation" is available to download.</p>
+Please log into https://pythonexpress.in and download certificate from My Profile page. For more details refer http://pythonexpress.in/faq/
+May the love of Python spread far and wide!
+
+Warmly,
+The PythonExpress team

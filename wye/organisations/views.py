@@ -145,7 +145,8 @@ class OrganisationUpdate(views.LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy('organisations:organisation_list')
 
     def get_object(self, queryset=None):
-        org = Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])
+        org = Organisation.objects.get(
+            user=self.request.user, id=self.kwargs['pk'])
         if org.created_by == self.request.user:
             return Organisation.objects.get(user=self.request.user, id=self.kwargs['pk'])
         else:
@@ -181,11 +182,11 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
 
     def post(self, request, *args, **kwargs):
         form = OrganisationMemberAddForm(data=request.POST)
+        org = Organisation.objects.get(id=self.kwargs['pk'])
         if form.is_valid():
             existing_user = form.cleaned_data['existing_user']
             new_user = form.cleaned_data['new_user']
 
-            org = Organisation.objects.get(id=self.kwargs['pk'])
             host = '{}://{}'.format(settings.SITE_PROTOCOL,
                                     request.META['HTTP_HOST'])
 
@@ -195,6 +196,8 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
                 'org_name': org.name,
                 'host': host
             }
+            subject = "[Python Express]:You are added in %s organisation" % (
+                org.location.name)
 
             if existing_user:
                 # add user to organisation
@@ -205,21 +208,6 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
                 # set email user's name in context
                 context['new_member_name'] = '%s %s' % (user.first_name,
                                                         user.last_name)
-                email_context = Context(context)
-
-                # send mail to user being added
-                subject = "You are added in %s organisation" % (
-                    org.location.name)
-                email_body = loader.get_template(
-                    'email_messages/organisation/to_new_member_existing.html').render(
-                        email_context)
-                text_body = loader.get_template(
-                    'email_messages/organisation/to_new_member_existing.txt').render(email_context)
-
-                send_email_to_id(subject,
-                                 body=email_body,
-                                 email_id=user.email,
-                                 text_body=text_body)
 
             elif new_user:
                 # generate a random password
@@ -230,7 +218,6 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
                             email=new_user,
                             password=random_password)
 
-                # user is inactive initialy
                 user.is_active = False
                 user.save()
 
@@ -238,22 +225,22 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
                 org.user.add(user.id)
                 org.save()
 
-                # set the email context, the token will be used to generate a unique varification
+                # set the email context,
+                # the token will be used to generate a unique varification
                 # link
                 token = self.get_token(user)
 
                 context['new_member_name'] = '%s' % (user.email)
                 context['token'] = token
                 context['user'] = user
-                email_context = Context(context)
 
-                # set the meta
-                subject = "[Python Express]:You are added in %s organisation" % (
-                    org.location.name)
+            # Before sending email confirm user is created
+            if user:
+                email_context = Context(context)
                 email_body = loader.get_template(
-                    'email_messages/organisation/to_new_member.html').render(email_context)
+                    'email_messages/organisation/org_member_addition.html').render(email_context)
                 text_body = loader.get_template(
-                    'email_messages/organisation/to_new_member.txt').render(email_context)
+                    'email_messages/organisation/org_member_addition.txt').render(email_context)
 
                 # send the mail to new user
                 send_email_to_id(subject,
@@ -261,43 +248,33 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
                                  email_id=new_user,
                                  text_body=text_body)
 
-            # These mails will be sent in both cases.
-            subject = "user %s %s added in %s organisation" % (
-                user.first_name, user.last_name, org.location.name)
-            email_body = loader.get_template(
-                'email_messages/organisation/member_addition_to_user.html').render(
-                    email_context)
-            text_body = loader.get_template(
-                'email_messages/organisation/member_addition_to_user.txt').render(
-                    email_context)
+                # These mails will be sent in both cases.
+                subject = "user %s %s added in %s organisation" % (
+                    user.first_name, user.last_name, org.location.name)
+                email_body = loader.get_template(
+                    'email_messages/organisation/member_addition_to_user.html').render(
+                        email_context)
+                text_body = loader.get_template(
+                    'email_messages/organisation/member_addition_to_user.txt').render(
+                        email_context)
 
-            # send mail to the user who added the new member
-            send_email_to_id(subject,
-                             body=email_body,
-                             email_id=request.user.email,
-                             text_body=text_body)
+                # send mail to the user who added the new member
+                send_email_to_id(subject,
+                                 body=email_body,
+                                 email_id=request.user.email,
+                                 text_body=text_body)
 
-            regional_lead = Profile.objects.filter(
-                interested_locations=org.location,
-                usertype__slug='lead').values_list('user__email', flat=True)
-
-            email_body = loader.get_template(
-                'email_messages/organisation/member_addition_to_lead.html').render(
-                    email_context)
-            text_body = loader.get_template(
-                'email_messages/organisation/member_addition_to_lead.txt').render(
-                    email_context)
-
-            # send mail to the regional leads
-            send_email_to_list(subject,
-                               body=email_body,
-                               users_list=regional_lead,
-                               text_body=text_body)
-
-            return HttpResponseRedirect(self.success_url)
+                return HttpResponseRedirect(self.success_url)
+            else:
+                from django.forms.util import ErrorList
+                errors = form._errors.setdefault("existing_user", ErrorList())
+                errors.append(
+                    u"Something went wrong as this message was not expected")
+                render(request, self.template_name, {
+                       'form': form, 'organisation': org})
 
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {'form': form, 'organisation': org})
 
 
 def activate_view(request, user_id, token):

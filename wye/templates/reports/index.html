@@ -5,87 +5,31 @@
         <h1 class="space-0">Reports</h1>
     </div>
 {% endblock %}
+{% load static from staticfiles %}
 
+{% block extracss %}
+<style>
+
+#location svg {
+  height: 400px;
+}
+
+#workshop svg {
+  height: 300px;
+}
+
+#year_attendee svg {
+  height: 300px;
+  /*width:  600px;*/
+}
+</style>
+
+
+    <link rel="stylesheet" href="{% static 'css/libs/nv.d3.min.css' %}">
+{% endblock %}
 {% block content %}
     <section class="myreports">
         <div class="push-4-bottom">
-            <div class="row">
-                <div class="col-xs-4">
-                    <h3 class="space-1q-top">Total workshops</h3>
-                     <div class="table-responsive">
-                        <table class="table table-bordered table-clickable sub">
-                            <thead>
-                                <tr>
-                                    <th>Completed</th>
-                                    <th>Drated</th>
-                                    <th>Hold</th>
-                                    <th>Feedback Pending</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                 <tr>
-                                    <td>{{workshops.completed}}</td>
-                                    <td>{{workshops.drafted}}</td>
-                                    <td>{{workshops.hold}}</td>
-                                    <td>{{workshops.feedback_pending}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <h3 class="space-1q-top">Tutors</h3>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-clickable sub">
-                            <thead>
-                                <tr>
-                                    <th>User Id</th>
-                                    <th>Full Name</th>
-                                    <th>Conducted workshops</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for user_id, user_info in tutors.items %}
-                                 <tr>
-                                    <td><a href="/profile/{{user_info.0}}/">{{user_id}}</a></td>
-                                    <td>{{user_info.1}} {{user_info.2}}</td>
-                                    <td>{{user_info.3}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <h3 class="space-1q-top">Colleges</h3>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-clickable sub">
-                            <thead>
-                                <tr>
-                                    <th>Org id</th>
-                                    <th>Name</th>
-                                    <th>Location</th>
-                                    <th>Workshop</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for org_id, org_info in orgs.items %}
-                                 <tr>
-                                    <td><a href="">{{org_id}}</a></td>
-                                    <td>{{org_info.0}} </td>
-                                    <td>{{org_info.2}}</td>
-                                    <td>{{org_info.1}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-            </div>
-
             <div class="row">
                 <div class="col-xs-6">
                     <h3 class="space-1q-top">All workshop CSV</h3>
@@ -117,7 +61,117 @@
                 </div>
             </div>
     </section>
+     <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <i class="fa fa-pie-chart"></i>Statewise workshop Completed</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="location">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <i class="fa fa-pie-chart"></i>Workshop Completed</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="workshop">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <i class="fa fa-pie-chart"></i>Workshops attendee per month</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="year_attendee">
+                                <svg></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
 
 {% endblock %}
 
+{% block footer_scripts %}
+
+<script src="{% static 'js/libs/d3.min.js' %}"></script>
+<script src="{% static 'js/libs/nv.d3.min.js' %}"></script>
+<script type="text/javascript">
+    var nv;
+    nv.addGraph(function() {
+        var chart = nv.models.pieChart()
+            .x(function(d) { return d.label })
+            .y(function(d) { return d.values })
+        .showLabels(true)
+      ;
+    
+    var data = {{location| safe}};
+    d3.select("#location svg")
+        .datum(data)
+        .transition()
+        .call(chart);
+        nv.utils.windowResize(chart.update);
+        return chart;
+  
+    });
+
+    var nv;
+    nv.addGraph(function() {
+        var chart = nv.models.multiBarChart();
+        var data = {{workshop_tutor|safe}};
+
+        
+        d3.select('#workshop svg')
+            .datum(data)
+            .transition()
+            .duration(500)
+            .call(chart);
+            nv.utils.windowResize(chart.update);
+            return chart;
+        });
+
+    var nv;
+    nv.addGraph(function() {
+        // var chart =  nv.models.lineChart();
+        var data = {{line_graph | safe}};
+        var chart = nv.models.multiBarChart();
+        
+
+        
+        d3.select('#year_attendee svg')
+            .datum(data)
+            .transition()
+            .duration(500)
+            .call(chart);
+            nv.utils.windowResize(chart.update);
+            return chart;
+        });
+</script>
+{% endblock %}
 
