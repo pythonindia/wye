@@ -14,22 +14,27 @@ cache:
 before_cache:
   - rm -f $HOME/.cache/pip/log/debug.log
 
-before_script:
-- psql -c "CREATE DATABASE wye" -U postgres
+install: 
+- pip install pip==9.0.1
+- pip-accel install -r requirements/dev.txt --allow-all-external
+- pip install coveralls
 
-install:
-- pip install pip-accel
-- pip-accel install -r requirements/dev.txt
-- pip-accel install python-coveralls
+env:
+  - DJANGO_SETTINGS_MODULE="settings.testing"
 
 script:
 - flake8
-- py.test --cov --fail-on-template-vars --splinter-webdriver=phantomjs -v --tb=native
+- py.test --cov -v --tb=native
+- coverage report -m
 
-after_script:
-- coveralls
+after_success:
+  coveralls
+
 
 notifications:
   email:
     on_success: change  # [always|never|change]
     on_failure: always  # [always|never|change]
+
+services:
+  - redis-server
