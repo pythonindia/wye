@@ -59,3 +59,4 @@ PyPDF2==1.26.0
 # Graph
 django-pandas==0.4.5
 pandas==0.20.3
+numpy==1.13.3

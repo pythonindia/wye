@@ -72,8 +72,6 @@ def add_user_create_reset_password_link(
         user.is_active = True
         user.set_password('123456')
         user.save()
-        print("After creating user")
-        print(user.username)
         profile, created = Profile.objects.get_or_create(user=user)
         profile.usertype.add(usertype)
         profile.mobile = mobile

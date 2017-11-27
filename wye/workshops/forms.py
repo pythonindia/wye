@@ -42,12 +42,12 @@ class WorkshopForm(forms.ModelForm):
             self.fields['comments'].required = False
             self.fields['comments'].widget = forms.HiddenInput()
 
-    def clean_location(self):
-        if "requester" not in self.cleaned_data:
-            return ""
+    # def clean_location(self):
+    #     if "requester" not in self.cleaned_data:
+    #         return ""
 
-        organisation = self.cleaned_data['requester']
-        return organisation.location
+    #     organisation = self.cleaned_data['requester']
+    #     return organisation.location
 
     def get_organisations(self, user):
         if Profile.is_admin(user):
@@ -59,10 +59,10 @@ class WorkshopForm(forms.ModelForm):
 
     def clean_expected_date(self):
         date = self.cleaned_data['expected_date']
-        if not (date > datetime.date.today() + datetime.timedelta(days=14)):
+        if not (date > datetime.date.today() + datetime.timedelta(days=7)):
             raise ValidationError(
                 '''Workshop request has to future date and
-                 atleast 2 weeks ahead of today''')
+                 atleast week ahead of today''')
         else:
             return date
 

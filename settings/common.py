@@ -46,7 +46,7 @@ SITE_VARIABLES = {
     'footer': {
         'copyright': {
             'year': '2014-{}'.format(datetime.datetime.today().strftime('%Y')),
-            'url': 'https://pssi.org.in/',
+            'url': 'http://pssi.org.in/',
             'label': 'Python Software Society of India'
         },
         'social': [
@@ -105,7 +105,7 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
-    'djcelery',
+    'djcelery'
 )
 
 INSTALLED_APPS = DEFAULT_APPS + OUR_APPS + THIRD_PARTY_APPS
