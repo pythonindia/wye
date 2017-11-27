@@ -46,7 +46,7 @@ SITE_VARIABLES = {
     'footer': {
         'copyright': {
             'year': '2014-{}'.format(datetime.datetime.today().strftime('%Y')),
-            'url': 'http://pssi.org.in/',
+            'url': 'https://pssi.org.in/',
             'label': 'Python Software Society of India'
         },
         'social': [
@@ -94,7 +94,7 @@ OUR_APPS = (
     'wye.organisations',
     'wye.workshops',
     'wye.regions',
-    'wye.social'
+    'wye.social',
 )
 
 THIRD_PARTY_APPS = (
