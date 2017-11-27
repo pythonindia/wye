@@ -16,7 +16,7 @@ before_cache:
 
 install: 
 - pip install pip==9.0.1
-- pip-accel install -r requirements/dev.txt --allow-all-external
+- pip install -r requirements/dev.txt --allow-all-external
 - pip install coveralls
 
 env:
