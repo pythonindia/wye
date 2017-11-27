@@ -4,7 +4,7 @@ from tests import factories as f
 from .. utils import create_user_verify_login
 from wye.base.constants import WorkshopStatus
 
-import os
+# import os
 outbox_len = 0
 password = '123123'
 
