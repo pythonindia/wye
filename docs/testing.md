@@ -1,11 +1,11 @@
 # Testing
 
 - Read existing tests inside `/tests/` folder to get an idea of how the tests are organized.
-- Get yourself familiar with `[fixtures]` & `[factories]`. They are your friend.
+- Get yourself familiar with [`fixtures`] & [`factories`]. They are your friend.
 - Read https://splinter.readthedocs.org/en/latest/api/driver-and-element-api.html to get your self with all the methods available with `browser` fixture. You must include `base_url` fixture, in your test cases to start a Live Test Server.
 
-[fixtures]: https://pytest.org/latest/fixture.html
-[factories]: https://factoryboy.readthedocs.org
+[`fixtures`]: https://pytest.org/latest/fixture.html
+[`factories`]: https://factoryboy.readthedocs.org
 
 ## Run tests partially
 
