@@ -1,0 +1,3 @@
+{
+  "tests/functional/test_student_flow.py::test_student_profile_create": true
+}

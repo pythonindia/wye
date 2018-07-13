@@ -49,7 +49,7 @@ urlpatterns = [
         include('wye.regions.urls', namespace="regions")),
     url(r'^reports/',
         include('wye.reports.urls', namespace="reports")),
-    url(r'^invitation/(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
+    url(r'^invitation/(?P<user_id>[0-9]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
         view=activate_view, name="invitation_register"),
     url(r'^$', HomePageView.as_view(),
         name='home-page'),
