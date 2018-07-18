@@ -9,15 +9,13 @@ addons:
 cache:
   directories:
     - $HOME/.cache/pip
-    - $HOME/.pip-accel
 
-before_cache:
-  - rm -f $HOME/.cache/pip/log/debug.log
 
 install: 
-- pip install pip-accel
-- pip-accel install -r requirements/dev.txt
-- pip-accel install python-coveralls
+  - pip install pip==9.0.1
+  - pip install -r requirements-dev.txt --allow-all-external
+  - pip install coveralls
+  - pip install --upgrade pytest
 
 env:
   - DJANGO_SETTINGS_MODULE="settings.testing"
