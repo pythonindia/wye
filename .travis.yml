@@ -13,9 +13,8 @@ cache:
 
 install: 
   - pip install pip==9.0.1
-  - pip install -r requirements-dev.txt --allow-all-external
+  - pip install -r requirements/dev.txt
   - pip install coveralls
-  - pip install --upgrade pytest
 
 env:
   - DJANGO_SETTINGS_MODULE="settings.testing"
