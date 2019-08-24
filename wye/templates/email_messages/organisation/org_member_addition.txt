@@ -8,7 +8,7 @@ But first you need to create an account, follow this link to create your user ac
 {{ host }}{% url "invitation_register" user.id token %}
 {% endif %}
 
-If you have any questions, do visit our FAQ page (link-to-FAQ-page). If that doesn't answer your question, feel free to drop a line to contact@pythonexpress.in and we'll get back to you.
+If you have any questions, do visit our FAQ page (link-to-FAQ-page). If that doesn't answer your question, feel free to drop a line to contact@pythonexpress.org and we'll get back to you.
 
 May the love of Python spread far and wide!
 

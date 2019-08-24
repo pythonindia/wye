@@ -42,7 +42,7 @@ You can invoke `py.test` with various command line arguments, that can drastical
 
 #### Login Details
 
-Email: admin@pythonexpress.in
+Email: admin@pythonexpress.org
 Password: 123123
 
 
