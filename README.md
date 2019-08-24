@@ -9,7 +9,7 @@ Wye is a software that connects colleges and organizations looking to conduct wo
 
 It is a web application built using python and Django.
 
-PythonExpress (https://pythonexpress.in) is used for Python and related technologies and it is deployed using wye project.
+PythonExpress (https://pythonexpress.org) is used for Python and related technologies and it is deployed using wye project.
 
 wye is pronounced as #Y
 
