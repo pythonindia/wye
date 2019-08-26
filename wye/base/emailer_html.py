@@ -13,14 +13,14 @@ def send_email_to_list(subject, body, users_list, text_body,
 
     # if bcc_managers:
     # bcc += [email for name, email in settings.MANAGERS]  # @UnusedVariable
-    from_user = 'PythonExpress <noreply@pythonexpress.in>'
+    from_user = 'PythonExpress <noreply@pythonexpress.org>'
     email = EmailMultiAlternatives(
         subject, text_body, from_user, users_list, bcc)
     email.attach_alternative(body, "text/html")
 
     EmailThread(email).start()
     email = EmailMultiAlternatives(
-        subject, text_body, from_user, ['contact@pythonexpress.in'], bcc)
+        subject, text_body, from_user, ['contact@pythonexpress.org'], bcc)
     email.attach_alternative(body, "text/html")
     EmailThread(email).start()
 
@@ -34,14 +34,14 @@ def send_email_to_id(subject, body, email_id, text_body,
     # if bcc_managers:
     # bcc += [email for name, email in settings.MANAGERS]  # @UnusedVariable
 
-    from_user = 'PythonExpress <noreply@pythonexpress.in>'
+    from_user = 'PythonExpress <noreply@pythonexpress.org>'
     email = EmailMultiAlternatives(
         subject, text_body, from_user, [email_id], bcc=bcc)
     email.attach_alternative(body, "text/html")
     EmailThread(email).start()
     # EMail to Admins
     email = EmailMultiAlternatives(
-        subject, text_body, from_user, ['contact@pythonexpress.in'], bcc)
+        subject, text_body, from_user, ['contact@pythonexpress.org'], bcc)
     email.attach_alternative(body, "text/html")
     EmailThread(email).start()
 
@@ -51,7 +51,7 @@ def send_email_to_id_with_attachment(
         bcc_admins=True, bcc_managers=False):
     bcc = []
 
-    from_user = 'PythonExpress <noreply@pythonexpress.in>'
+    from_user = 'PythonExpress <noreply@pythonexpress.org>'
     part = MIMEApplication(open(filename, "rb").read())
     part.add_header('Content-Disposition', 'attachment',
                     filename=os.path.basename(filename))
@@ -63,7 +63,7 @@ def send_email_to_id_with_attachment(
     # EMail to Admins
 
     email = EmailMultiAlternatives(
-        subject, text_body, from_user, ['contact@pythonexpress.in'], bcc)
+        subject, text_body, from_user, ['contact@pythonexpress.org'], bcc)
     email.attach_alternative(body, "text/html")
     EmailThread(email).start()
 

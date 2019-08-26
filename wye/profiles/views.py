@@ -154,7 +154,7 @@ def partner_view(request):
             try:
                 send_email_to_id(
                     subject,
-                    email_id='contact@pythonexpress.in',
+                    email_id='contact@pythonexpress.org',
                     body=email_body,
                     text_body=text_body)
 

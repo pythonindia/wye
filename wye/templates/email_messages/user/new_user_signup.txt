@@ -10,7 +10,7 @@ Glad to have you as a part of the PythonExpress family! If you'd like to registe
 
 (% endif %}
 
-In case you have any questions, please do visit our FAQ page (link-to-FAQ-page). If that doesn't answer you, then feel free to drop us a line at contact@pythonexpress.in and we'll get back to you.
+In case you have any questions, please do visit our FAQ page (link-to-FAQ-page). If that doesn't answer you, then feel free to drop us a line at contact@pythonexpress.org and we'll get back to you.
 
 May the love of Python spread far and wide!
 

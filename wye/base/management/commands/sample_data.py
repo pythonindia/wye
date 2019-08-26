@@ -42,7 +42,7 @@ class Command(BaseCommand):
         self.create_user_type(counter=NUMBER_OF_WORKSHOP_SECTIONS)
 
         self.stdout.write('  Creating Superuser')
-        email = 'admin@pythonexpress.in'
+        email = 'admin@pythonexpress.org'
         user = self.create_user(is_superuser=True, username='admin',
                                 email=email, is_active=True, is_staff=True,
                                 first_name='Admin')
