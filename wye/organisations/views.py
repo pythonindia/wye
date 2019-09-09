@@ -176,7 +176,7 @@ class OrganisationMemberAdd(views.LoginRequiredMixin, generic.UpdateView):
 
     def get_urls(self):
         return patterns('',
-                        url(r'^(?P<user_id>[\d]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
+                        url(r'^(?P<user_id>[0-9]+)-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',
                             view=self.activate_view, name="invitation_register")
                         )
 
