@@ -25,13 +25,11 @@ py.test --cov-report=html --cov
 
 Open `htmlcov/index.html` in your browser to see all the lines that are not getting covered during testing. Try to increase the overall percentage of test coverage in the project.
 
-## Faster browser test with headless browser
+## Browser test with headless browser
 
 ```
-py.test --splinter-webdriver=phantomjs
+py.test --splinter-webdriver=firefox
 ```
-
-Functional test with selenium using Firefox can be quiet time consuming. You can install [phantomjs](http://phantomjs.org/download.html) and use `--splinter-webdriver=phantomjs` parameter with `py.test`. Checkout all the parameters available at https://github.com/pytest-dev/pytest-splinter#command-line-options
 
 
 ## Use `pdb` while testing
