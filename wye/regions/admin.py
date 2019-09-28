@@ -18,6 +18,7 @@ class StateAdmin(admin.ModelAdmin):
     list_per_page = 10
     search_fields = ('name',)
 
+
 admin.site.register(Location, LocationAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(RegionalLead)

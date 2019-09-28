@@ -20,6 +20,7 @@ def signals_switch():
 
     return disconnect, reconnect
 
+
 disconnect_signals, reconnect_signals = signals_switch()
 
 

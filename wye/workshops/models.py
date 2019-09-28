@@ -233,7 +233,7 @@ class Workshop(TimeAuditModel):
         workshop = self
         try:
             date = workshop.expected_date.strftime('%d-%m-%Y')
-        except:
+        except Exception:
             date = workshop.expected_date
 
         topic = workshop.workshop_section

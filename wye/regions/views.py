@@ -85,17 +85,17 @@ class RegionalLeadCreateView(views.StaffuserRequiredMixin, generic.CreateView):
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST' and request.is_ajax:
-                form = forms.RegionalLeadForm(data=request.POST)
-                lead_choices = request.POST.get('leads')
-                form.fields['leads'].choices = (lead_choices, lead_choices)
+            form = forms.RegionalLeadForm(data=request.POST)
+            lead_choices = request.POST.get('leads')
+            form.fields['leads'].choices = (lead_choices, lead_choices)
 
-                if form.is_valid():
-                    form.modified_by = request.user
-                    form.created_by = request.user
-                    form.save()
-                    return HttpResponseRedirect(self.success_url)
-                else:
-                    return render(request, self.template_name, {'form': form})
+            if form.is_valid():
+                form.modified_by = request.user
+                form.created_by = request.user
+                form.save()
+                return HttpResponseRedirect(self.success_url)
+            else:
+                return render(request, self.template_name, {'form': form})
 
 
 class RegionalLeadUpdateView(views.StaffuserRequiredMixin, generic.UpdateView):

@@ -21,9 +21,8 @@ class UserTypeAdmin(admin.ModelAdmin):
         'slug',
         'active')
     search_fields = ('slug', 'display_name')
-    list_filter = (
-        'active',
-        'slug')
+    list_filter = ('active', 'slug')
+
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(UserType, UserTypeAdmin)

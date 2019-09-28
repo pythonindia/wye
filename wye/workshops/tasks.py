@@ -106,11 +106,9 @@ def workshop_reminder(days, intro=None, feedback=None):
                     # Below  loop is to send email individually
                     email_context = Context(context_dict)
                     for requester in workshop.requester.user.all():
-                            intro_emails(
-                                organisation, email_context, requester.email)
+                        intro_emails(organisation, email_context, requester.email)
                     for presenter in workshop.presenter.all():
-                            intro_emails(
-                                organisation, email_context, presenter.email)
+                        intro_emails(organisation, email_context, presenter.email)
                 else:
                     context_dict['workshop_title'] = workshop.workshop_section.name
                     context_dict['workshop_date'] = workshop.expected_date

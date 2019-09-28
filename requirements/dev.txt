@@ -17,4 +17,4 @@ pdbpp==0.8.*
 fancycompleter==0.4
 
 coverage==4.*
-flake8==2.4.*
+flake8==3.7.8

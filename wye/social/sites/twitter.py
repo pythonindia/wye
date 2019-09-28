@@ -11,7 +11,7 @@ def init_twitter():
             settings.TWITTER_ACCESS_TOKEN,
             settings.TWITTER_ACCESS_TOKEN_SECRET,
         )
-    except:
+    except Exception:
         # Log this error: Authentication Error.
         twitter = None
 
@@ -25,6 +25,6 @@ def send_tweet(context=None):
         if workshop:
             try:
                 twitter.update_status(status=workshop.get_tweet(context))
-            except:
+            except Exception:
                 # Log this error: Status Update error.
                 pass
