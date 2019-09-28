@@ -9,7 +9,7 @@ ipython==4.0.0
 
 # Testing
 # -------------------------------------------------
-pytest-django==2.9.*
+pytest-django==3.5.1
 pytest-cov==2.7.*
 pytest-splinter==2.0.*
 factory_boy==2.5.*
