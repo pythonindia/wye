@@ -237,6 +237,15 @@ DEFAULT_FROM_EMAIL = SITE_VARIABLES['site_name'] + ' <noreply@pssi.org.in>'
 
 # Social media keys
 
+#GitHub
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+        ],
+    }
+}
+
 # Twitter
 TWITTER_CONSUMER_KEY = os.environ.get("TWITTER_CONSUMER_KEY", "")
 TWITTER_CONSUMER_SECRET = os.environ.get("TWITTER_CONSUMER_SECRET", "")
