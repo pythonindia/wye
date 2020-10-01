@@ -5,7 +5,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/pythonindia/wye/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/pythonindia/wye/?branch=master)
 [![Code Health](https://landscape.io/github/pythonindia/wye/master/landscape.svg?style=flat)](https://landscape.io/github/pythonindia/wye/master)
 
-WYE - An Engaging Software
+WYE - An Engaging Software.
+
 Wye is a software that connects colleges and organizations looking to conduct workshops on various FOSS based technologies with experienced professionals to help students learn the programming language along with the real time usage in different domains.
 
 It is a web application built using python and Django.
